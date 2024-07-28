@@ -6,6 +6,7 @@ import ViewBooking from "./components/Booking/Pages/ViewBooking";
 import ViewDetailedBooking from "./components/Booking/Pages/ViewDetailedBooking";
 import FlightList from "./components/Search/FlightList";
 import FlightSummaryPage from "./components/BookFlight/FlightSummaryPage";
+import Profile from './components/Profile/Profile'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           />
           <Route path="/search" element={<FlightList />} />
           <Route path="book-flight" element={<FlightSummaryPage />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </>
