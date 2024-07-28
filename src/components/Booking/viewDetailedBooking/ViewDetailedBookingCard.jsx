@@ -11,10 +11,11 @@ import calculateDuration from "../../util/calculateDuration";
 
 
 const ViewDetailedBookingCard = ({ singleBookingData }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [openConnectionIndex, setOpenConnectionIndex] = useState(null);
+  let previousArrivalTime = null;
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const toggleDropdown = (index) => {
+    setOpenConnectionIndex(openConnectionIndex === index ? null : index);
   };
 
   return (
@@ -45,7 +46,6 @@ const ViewDetailedBookingCard = ({ singleBookingData }) => {
           </div>
         </div>
         {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
-          console.log({ value });
           return (
             <div key={index} className="border px-2 py-4 mb-4 my-2">
               <div className="flex gap-2 w-full p-1">
@@ -129,18 +129,11 @@ const ViewDetailedBookingCard = ({ singleBookingData }) => {
                   </div>
                 </div>
                 <div className="w-[60%] flex flex-col justify-between pl-4">
-                  <div className="p-2 bg-white shadow-md rounded-lg flex items-center gap-3">
+                  <div className="p-2 bg-white  rounded-lg flex items-center gap-3">
                     <h1 className="text-2xl font-bold text-gray-800">
                       Total Duration
                     </h1>
-                    <h1 className="text-2xl font-bold text-gray-500">
-                      {value.sI.length === 1
-                        ? calculateDuration(value.sI[0].dt, value.sI[0].at)
-                        : calculateDuration(
-                            value.sI[0].dt,
-                            value.sI[value.sI.length - 1].at
-                          )}
-                    </h1>
+                    <h1 className="text-2xl font-bold text-gray-500">{value.sI.length === 1 ? calculateDuration(value.sI[0].dt, value.sI[0].at) : calculateDuration(value.sI[0].dt, value.sI[value.sI.length - 1].at)}</h1>
                   </div>
                   <div className="flex justify-between mb-2 w-full">
                     <div className="flex gap-1 items-center w-1/3">
@@ -180,9 +173,7 @@ const ViewDetailedBookingCard = ({ singleBookingData }) => {
                         <div className="font-semibold">
                           {value.sI.length === 1
                             ? timeFormatChanger(value.sI[0].at)
-                            : timeFormatChanger(
-                                value.sI[value.sI.length - 1].at
-                              )}
+                            : timeFormatChanger(value.sI[value.sI.length - 1].at)}
                         </div>
                       </div>
                     </div>
@@ -197,156 +188,116 @@ const ViewDetailedBookingCard = ({ singleBookingData }) => {
                           Terminal
                         </div>
                         <div className="font-semibold">
-                          {value.sI[0].da.terminal}
+                          {value.sI[0].da.terminal
+                            ? value.sI[0].da.terminal
+                            : "T 1"}
                         </div>
                       </div>
                     </div>
                     <div className="flex gap-1 items-center w-1/3">
                       <div className="text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
-                        <BsDoorClosedFill />
+                        <MdOutlineAirlineSeatReclineExtra />
                       </div>
                       <div>
                         <div className="text-[#495049] font-semibold">
-                          Stops
+                          Seat Class
                         </div>
-                        <div className="font-semibold">
-                          {value.sI.length - 1}
-                        </div>
+                        <div className="font-semibold">Economy</div>
                       </div>
                     </div>
-                    <div className="flex gap-2 items-center w-1/3">
-                      <div className="text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
-                        <MdOutlineAirlineSeatReclineExtra />
-                      </div>
-                      <div className="flex flex-col">
-                        <div className="text-[#495049] font-semibold">Seat</div>
-                        <div className="font-semibold">0</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-full justify-end items-end flex py-2">
-                    {value.sI.length === 1 ? (
-                      <button
-                        disabled
-                        className="text-center text-sm font-semibold shadow-lg bg-[#007EC4] text-white py-1 px-3 rounded-lg"
-                      >
-                        Non Stop
-                      </button>
-                    ) : (
-                      <button
-                        className="text-center text-sm font-bold bg-[#007EC4] text-white py-1 px-3 rounded-lg"
-                        onClick={toggleDropdown}
-                      >
-                        View Connection detail
-                      </button>
-                    )}
                   </div>
                 </div>
               </div>
-              <div className="my-5">
-                {value.sI.length > 1 &&
-                  isDropdownOpen &&
-                  value.sI.map((singleValue, index) => {
-                    console.log({ singleValue });
-                    return (
-                      <React.Fragment key={index}>
-                        {index !== 0 && (
-                          <div className="text-sm text-gray-500 mt-4">
-                            <span>
-                              There is a Special No Meal fare Provided by the
-                              Airline
-                            </span>
-                            <div className="flex justify-between bg-blue-900 text-white p-3 rounded-md mt-4 mb-4">
-                              <div className="text-sm">
-                                Require to change plane
-                              </div>
-                              <div className="text-base font-medium">
-                                <span className="text-sm">
-                                  <div className="text-center">
-                                    <span className="text-sm">
-                                      Total Layover Time: {calculateDuration()}
-                                    </span>
-                                  </div>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        )}
+              <div className="w-full mt-1 flex flex-col gap-1">
+                {value.sI.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => toggleDropdown(index)}
+                      className="bg-[#007EC4] text-white w-full py-2 rounded-lg"
+                    >
+                      {openConnectionIndex === index
+                        ? "Hide Connections"
+                        : "View Connections"}
+                    </button>
+                    {openConnectionIndex === index && (
+                      <div className="bg-[#F3F7F9] text-slate-600 p-2">
+                        {value.sI.map((singleValue, index) => {
+                          const layoverDuration = previousArrivalTime ? calculateDuration(previousArrivalTime, singleValue.dt) : null;
+                          previousArrivalTime = singleValue.at;
 
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex-col w-1/3 ">
-                            <div className="w-full">
-                              <div className="mb-2">
-                                <div className="font-semibold text-xs border rounded-md inline-flex items-center shadow-md p-1 space-x-2">
-                                  <div className="w-5 h-5">
-                                    <img
-                                      src="https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/AA.png"
-                                      alt="Airline Logo"
-                                      className="w-full h-full object-contain"
-                                    />
-                                  </div>
-                                  <div>
-                                    <div>{singleValue.fD.aI.name}</div>
-                                    <div className="flex items-center space-x-1">
-                                      <span>{singleValue.fD.aI.code}</span>
-                                      <MdFlight className="w-3 h-3 rotate-45" />
-                                      <span>Economy</span>
+                          return (
+                            <React.Fragment key={index}>
+                              {index !== 0 && (
+                                <div className="text-sm text-gray-500 mt-4">
+                                  <span>There is a Special No Meal fare Provided by the Airline</span>
+                                  <div className="flex justify-between bg-blue-900 text-white p-3 rounded-md mt-4 mb-4">
+                                    <div className="text-sm">Require to change plane</div>
+                                    <div className="text-base font-medium">
+                                      <span className="text-sm">
+                                        <div className="text-center">
+                                          <span className="text-sm">Total Layover Time: {layoverDuration}</span>
+                                        </div>
+                                      </span>
                                     </div>
                                   </div>
                                 </div>
+                              )}
+
+                              <div className="flex items-center justify-between mb-4">
+                                <div className="flex-col w-1/3">
+                                  <div className="w-full">
+                                    <div className="mb-2">
+                                      <div className="font-semibold text-xs border rounded-md inline-flex items-center shadow-md p-1 space-x-2">
+                                        <div className="w-5 h-5">
+                                          <img
+                                            src="https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/AA.png"
+                                            alt="Airline Logo"
+                                            className="w-full h-full object-contain"
+                                          />
+                                        </div>
+                                        <div>
+                                          <div>{singleValue.fD.aI.name}</div>
+                                          <div className="flex items-center space-x-1">
+                                            <span>{singleValue.fD.aI.code}</span>
+                                            <MdFlight className="w-3 h-3 rotate-45" />
+                                            <span>Economy</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="text-lg font-bold">{singleValue.da.code}</div>
+                                  <div className="text-sm">{singleValue.da.city}, {singleValue.da.country}</div>
+                                  <div className="text-sm font-bold">{singleValue.da.name}</div>
+                                  <div className="text-sm">{singleValue.da?.terminal || "N/A"}</div>
+                                  <div className="text-sm font-semibold">{timeFormatChanger(singleValue.dt)}</div>
+                                </div>
+                                <div className="flex-col items-center w-1/3">
+                                  <div className="text-center">
+                                    <span className="text-sm">{calculateDuration(singleValue.dt, singleValue.at)}</span>
+                                  </div>
+                                  <div className="flex justify-center items-center">
+                                    <hr className="w-1/3 border-t border-gray-300" />
+                                    <MdFlight className="w-7 h-5 mx-2 rotate-90" />
+                                    <hr className="w-1/3 border-t border-gray-300" />
+                                  </div>
+                                  <div className="text-center text-sm">Non Stop</div>
+                                </div>
+                                <div className="flex-col w-1/3 text-right">
+                                  <div className="text-lg font-bold">{singleValue.aa.code}</div>
+                                  <div className="text-sm">{singleValue.aa.city}, {singleValue.aa.country}</div>
+                                  <div className="text-sm">{singleValue.aa.name}</div>
+                                  <div className="text-sm">{singleValue.aa?.terminal || "N/A"}</div>
+                                  <div className="text-sm font-semibold">{timeFormatChanger(singleValue.at)}</div>
+                                </div>
                               </div>
-                            </div>
-                            <div className="text-lg font-bold">
-                              {singleValue.da.code}
-                            </div>
-                            <div className="text-sm">
-                              {singleValue.da.city}, {singleValue.da.country}
-                            </div>
-                            <div className="text-sm font-bold">
-                              {singleValue.da.name}
-                            </div>
-                            <div className="text-sm">
-                              {singleValue.da?.terminal || "NA"}
-                            </div>
-                            <div className="text-sm font-semibold">
-                              {timeFormatChanger(singleValue.dt)}
-                            </div>
-                          </div>
-                          <div className="flex-col items-center w-1/3">
-                            <div className="text-center">
-                              <span className="text-sm">
-                                {calculateDuration(
-                                  singleValue.dt,
-                                  singleValue.at
-                                )}
-                              </span>
-                            </div>
-                            <div className="flex justify-center items-center">
-                              <hr className="w-1/3 border-t border-gray-300 " />
-                              <MdFlight className="w-7 h-5 mx-2 rotate-90" />
-                              <hr className="w-1/3 border-t border-gray-300" />
-                            </div>
-                            <div className="text-center text-sm">Non Stop</div>
-                          </div>
-                          <div className="flex-col w-1/3 text-right">
-                            <div className="text-lg font-bold">
-                              {singleValue.aa.code}
-                            </div>
-                            <div className="text-sm">
-                              {singleValue.aa.city}, {singleValue.aa.country}
-                            </div>
-                            <div className="text-sm">{singleValue.aa.name}</div>
-                            <div className="text-sm">
-                              {singleValue.aa?.terminal || "N/A"}
-                            </div>
-                            <div className="text-sm font-semibold">
-                              {timeFormatChanger(singleValue.at)}
-                            </div>
-                          </div>
-                        </div>
-                      </React.Fragment>
-                    );
-                  })}
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           );
