@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../Home/Header";
-import FlightTicket from "../viewBooking/FlightTickets";
+
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Header from "../../Home/Header"
+import FlightTicket from "../viewBooking/FlightTickets"
 
 const FlightBookings = () => {
   const [bookingFilter, setBookingFilter] = useState("UPCOMING");
@@ -35,16 +36,16 @@ const FlightBookings = () => {
           config
         );
       }
-      console.log({ response });
+      console.log({ response })
       if (response.status === 200) {
         setBookingData(response.data);
       }
     } catch (error) {
       console.log(error.message);
-      setBookingData([]);
+      setBookingData([])
     }
   };
-  console.log({ bookingData });
+  console.log({ bookingData })
   useEffect(() => {
     getBookingData();
   }, [bookingFilter]);
@@ -71,31 +72,28 @@ const FlightBookings = () => {
         <div className="flex justify-between h-10 items-center mb-3 p-2 rounded-lg border ">
           <div className="flex h-full w-full  justify-between">
             <button
-              className={`py-2 w-1/3 px-6 text-gray-600 border-b-2 ${
-                bookingFilter === "UPCOMING"
-                  ? "border-blue-600"
-                  : "border-transparent"
-              }`}
+              className={`py-2 w-1/3 px-6 text-gray-600 border-b-2 ${bookingFilter === "UPCOMING"
+                ? "border-blue-600"
+                : "border-transparent"
+                }`}
               onClick={() => setBookingFilter("UPCOMING")}
             >
               Upcoming
             </button>
             <button
-              className={`py-2 w-1/3 px-6 text-gray-600 border-l-2 border-l-slate-300 border-b-2 ${
-                bookingFilter === "COMPLETED"
-                  ? "border-blue-600"
-                  : "border-transparent"
-              }`}
+              className={`py-2 w-1/3 px-6 text-gray-600 border-l-2 border-l-slate-300 border-b-2 ${bookingFilter === "COMPLETED"
+                ? "border-blue-600"
+                : "border-transparent"
+                }`}
               onClick={() => setBookingFilter("COMPLETED")}
             >
               Completed
             </button>
             <button
-              className={`py-2 w-1/3 px-6 border-l-2 border-l-slate-300 text-gray-600 border-b-2 ${
-                bookingFilter === "CANCELLED"
-                  ? "border-blue-600"
-                  : "border-transparent"
-              } `}
+              className={`py-2 w-1/3 px-6 border-l-2 border-l-slate-300 text-gray-600 border-b-2 ${bookingFilter === "CANCELLED"
+                ? "border-blue-600"
+                : "border-transparent"
+                } `}
               onClick={() => setBookingFilter("CANCELLED")}
             >
               Cancelled
