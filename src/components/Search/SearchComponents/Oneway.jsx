@@ -68,6 +68,8 @@ import FlightDetailsCard from "../Cards/FlightDetailsCard";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import flightLogo from "../../../assets/home/logo/image 40.png";
 import OneWaySideBar from "./OneWaySidebar";
+import BookingCard from "./BookingCards"; 
+import { useNavigate } from "react-router-dom";
 
 const { TabPane } = Tabs;
 
@@ -76,12 +78,15 @@ const Oneway = ({ flightProps }) => {
 
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
-    maxPrice: 10000, // Set a higher initial max price
+    maxPrice: 100000,
     stops: [],
     departureTime: [],
     arrivalTime: [],
     airlines: []
   });
+
+  const [selectedFlight, setSelectedFlight] = useState([]);
+  const navigate=useNavigate()
 
   useEffect(() => {
     console.log("Filters changed:", filters);
@@ -115,6 +120,33 @@ const Oneway = ({ flightProps }) => {
   const startSegment = filteredFlights[0]?.sI[0];
   const endSegment = filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1];
 
+  const handleFlightSelection = (flightIndex, priceIndex) => {
+    setSelectedFlight([{ flightIndex, priceIndex }]);
+  };
+
+  const handleBooking = () => {
+    if (selectedFlight.length > 0) {
+      const bookings = selectedFlight.map(selected => ({
+        flightDetails: filteredFlights[selected.flightIndex].sI,
+        priceId: filteredFlights[selected.flightIndex].totalPriceList[selected.priceIndex].id
+      }));
+      console.log("Processing bookings:", bookings);
+  
+      navigate("/book-flight", { state: { bookings } });
+    }
+  };
+  
+  const getTotalPrice = () => {
+    if (selectedFlight.length > 0) {
+      const selected = selectedFlight[0];
+      const flight = filteredFlights[selected.flightIndex];
+      if (flight && flight.totalPriceList && flight.totalPriceList[selected.priceIndex]) {
+        return flight.totalPriceList[selected.priceIndex].fd.ADULT.fC.TF;
+      }
+    }
+    return 0;
+  };
+
   return (
     <div className="flex">
       <OneWaySideBar flights={flightProps} filters={filters} setFilters={setFilters} />
@@ -123,17 +155,20 @@ const Oneway = ({ flightProps }) => {
           <TabPane
             tab={
               <span>
-                {startSegment?.da.city} <ArrowRightOutlined /> {endSegment?.aa.city}
+                {filteredFlights[0]?.sI[0]?.da.city} <ArrowRightOutlined /> {filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa.city}
               </span>
             }
             key="1"
           >
             {filteredFlights.length > 0 ? (
               filteredFlights.map((flight, index) => (
-                <FlightDetailsCard 
-                  key={index} 
-                  flightDetails={flight}
+                <FlightDetailsCard
+                  key={index}
                   logo={flightLogo}
+                  flightDetails={flight}
+                  isSelected={selectedFlight.some(selected => selected.flightIndex === index)}
+                  selectedPriceIndex={selectedFlight.find(selected => selected.flightIndex === index)?.priceIndex}
+                  onSelect={(priceIndex) => handleFlightSelection(index, priceIndex)}
                 />
               ))
             ) : (
@@ -142,6 +177,13 @@ const Oneway = ({ flightProps }) => {
           </TabPane>
         </Tabs>
       </div>
+      {selectedFlight.length > 0 && (
+  <BookingCard
+    selectedFlights={selectedFlight.map(selected => filteredFlights[selected.flightIndex])}
+    totalPrice={getTotalPrice()}
+    onBook={handleBooking}
+  />
+)}
     </div>
   );
 };

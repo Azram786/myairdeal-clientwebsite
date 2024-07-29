@@ -371,6 +371,8 @@ import React, { useState, useEffect } from 'react';
 import FlightDetailsCard from '../Cards/FlightDetailsCard';
 import RoundSideBar from './Roundsidebar';
 import BookingCard from './BookingCards';
+import ReactToast from '../../util/ReactToast';
+import { useNavigate } from 'react-router-dom';
 
 const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
   const [filteredOnward, setFilteredOnward] = useState([]);
@@ -399,6 +401,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
     specialReturn: false
   });
 
+  const navigate = useNavigate()
   const applyFilters = (flights, direction) => {
     return flights.filter(flight => {
       if (!flight.sI || flight.sI.length === 0) {
@@ -546,13 +549,20 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
 
 
   const handleBooking = () => {
+    if (!selectedOnwardFlight || !selectedReturnFlight) {
+     ReactToast('Please select both onward and return flight')
+      return;
+    }
   
-    console.log(selectedReturnFlight.totalPriceList,selectedOnwardFlight)
-    const returnFlight=selectedReturnFlight?.totalPriceList[selectedReturnFlight.selectedPriceIndex].id
-    const onwardFlight=selectedOnwardFlight?.totalPriceList[selectedOnwardFlight.selectedPriceIndex].id
+    const returnFlight = selectedReturnFlight.totalPriceList[selectedReturnFlight.selectedPriceIndex].id;
+    const onwardFlight = selectedOnwardFlight.totalPriceList[selectedOnwardFlight.selectedPriceIndex].id;
+    const data = [
+      {returnFlightDetails: selectedReturnFlight.sI, returnPriceId: returnFlight},
+      {onwardFlightDetails: selectedOnwardFlight.sI, onwardPriceId: onwardFlight}
+    ];
+    console.log(data);
 
-    const data =[{return:selectedReturnFlight.sI,returnFlight},{onward:selectedReturnFlight.sI,onwardFlight}]
-  console.log(data)
+    navigate("/book-flight", { state: { booking:data } });
    
   };
 
@@ -568,8 +578,8 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
       />
       <div className="flex flex-col md:p-4 md:w-3/4">
         <div className='flex'>
-          <div className='w-1/2'> <h2 className="text-xl font-semibold mb-2">{getRoute(filteredOnward)}</h2></div>
-          <div className='w-1/2'> <h2 className="text-xl font-semibold mb-2">{getRoute(filteredReturn)}</h2></div>
+          <div className='w-1/2'> <h2 className="text-sm text-center md:text-xl font-semibold mb-2">{getRoute(filteredOnward)}</h2></div>
+          <div className='w-1/2'> <h2 className="text-sm text-center md:text-xl font-semibold mb-2">{getRoute(filteredReturn)}</h2></div>
         </div>
         <div className="flex h-[850px] overflow-y-auto no-scroll">
           <div className="w-1/2 md:pr-2">

@@ -24,27 +24,27 @@ const CustomModal = ({
         screenSize === "small"
           ? "80%"
           : screenSize === "medium"
-          ? "53%"
-          : "70%",
+            ? "53%"
+            : "70%",
       left:
         screenSize === "small"
           ? "50%"
           : screenSize === "medium"
-          ? "65%"
-          : "73%",
+            ? "65%"
+            : "73%",
       transform: "translate(-50%, -50%)",
       width:
         screenSize === "small"
           ? "80vw"
           : screenSize === "medium"
-          ? "60%"
-          : "45%",
+            ? "60%"
+            : "45%",
       height:
         screenSize === "small"
           ? "70vh"
           : screenSize === "medium"
-          ? "50%"
-          : "50%",
+            ? "50%"
+            : "50%",
 
       border: "1px solid black",
     },
@@ -77,11 +77,27 @@ const CustomModal = ({
     <Modal
       style={style}
       isOpen={modalIsOpen}
-      onRequestClose={() => setModelIsOpen(false)}
+      onRequestClose={() => {
+        setFormData((prev) => ({
+          ...prev, ADULT: "1",
+          CHILD: 0,
+          INFANT: "0",
+        }))
+        setModelIsOpen(false)
+      }}
     >
       <PassengerSelector
         formData={formData}
-        onClose={() => setModelIsOpen(false)}
+        onClose={() => {
+
+          setFormData((prev) => ({
+            ...prev, ADULT: "1",
+            CHILD: 0,
+            INFANT: "0",
+          }))
+
+          setModelIsOpen(false)
+        }}
         setFormData={setFormData}
       />
     </Modal>

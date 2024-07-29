@@ -175,6 +175,7 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import flightLogo from "../../../assets/home/logo/image 40.png";
 import SideBar from "./SideBar";
 import BookingCard from "./BookingCards";
+import { useNavigate } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
@@ -193,6 +194,8 @@ const MultiCity = ({ flightProps }) => {
   const [selectedFlights, setSelectedFlights] = useState(
     flightProps.map(() => ({ flightIndex: null, priceIndex: null }))
   );
+
+  const navigate=useNavigate()
 
   useEffect(() => {
     const newFilteredFlights = flightProps.map((flights, index) =>
@@ -247,13 +250,11 @@ const MultiCity = ({ flightProps }) => {
   };
 
   const handleBooking = () => {
-    // Check if all flights are selected
     const allFlightsSelected = selectedFlights.every(selected => 
       selected.flightIndex !== null && selected.priceIndex !== null
     );
   
     if (!allFlightsSelected) {
-      // Show an alert if not all flights are selected
       alert("Please select all connection flights before booking.");
       return;
     }
@@ -268,7 +269,8 @@ const MultiCity = ({ flightProps }) => {
     });
   
     console.log("Booking:", bookingData);
-    // Here you would typically send this data to your booking API
+    navigate("/book-flight", { state: { bookings:bookingData } });
+    
   };
 
   if (flightProps.length === 0) {

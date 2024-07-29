@@ -19,6 +19,7 @@ import ReactToast from "../util/ReactToast";
 import "react-datepicker/dist/react-datepicker.css";
 
 import formatDate from "../util/DateFormatChanger";
+import { useNavigate } from "react-router-dom";
 const FilterSection = () => {
   const [formData, setFormData] = useState({
     cabinClass: "ECONOMY",
@@ -41,6 +42,8 @@ const FilterSection = () => {
     pft: "REGULAR",
   });
 
+  const navigate = useNavigate()
+
   // State for dynamically rendering form elements
   const [dynamicFormData, setDynamicFormData] = useState([
     {
@@ -50,8 +53,7 @@ const FilterSection = () => {
     },
   ]);
 
-  console.log({ formData });
-  console.log({ dynamicFormData });
+
 
   const [Loading, setLoading] = useState(false);
 
@@ -100,8 +102,7 @@ const FilterSection = () => {
   const getCountriesHandlerOne = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${
-          import.meta.env.VITE_SERVER_URL
+        `${import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
@@ -121,8 +122,7 @@ const FilterSection = () => {
   const getCountriesHandlerTwo = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${
-          import.meta.env.VITE_SERVER_URL
+        `${import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
@@ -142,8 +142,7 @@ const FilterSection = () => {
   const fetchDefaultOptions = async () => {
     try {
       const response = await axios.get(
-        `${
-          import.meta.env.VITE_SERVER_URL
+        `${import.meta.env.VITE_SERVER_URL
         }search/airport-country-code?countrycode=IN`
       );
       const options = response.data.data.map((item) => ({
@@ -263,17 +262,19 @@ const FilterSection = () => {
         };
       }
       console.log("query", query);
+
       setLoading(true);
-      const data = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}search/flight`,
-        query,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // const data = await axios.post(
+      //   `${import.meta.env.VITE_SERVER_URL}search/flight`,
+      //   query,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
       setLoading(false);
+      navigate(`/search`, { state: { query } })
     } catch (error) {
       setLoading(false);
       console.log(error.message);
@@ -285,33 +286,30 @@ const FilterSection = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-evenly  w-full relative ">
-      <div className="     rounded-xl  shadow-md border border-gray-200 flex flex-col justify-center px-5 gap-4 max-w-[1900px] min-w-[210px] py-5  xs:w-[90%] relative top-[-100px] bg-white  ">
+    <div className="flex flex-col items-center justify-evenly  w-full relative max-w-[1900px] min-w-[210px] ">
+      <div className="     rounded-xl  shadow-md border border-gray-200 bg-white flex flex-col justify-center px-5 gap-4  py-5 md:w-[85%]  xs:w-[90%] relative top-[-100px]   ">
         {/* type of travel selecting section */}
 
         <div className="flex justify-center md:justify-stretch w-full text-white ">
           <button
-            className={`bg-[#007EC4] rounded-l-lg p-2 md:p-3 border-2 ${
-              typeOfTravel === "one-way" && "border-red-500"
-            }`}
+            className={`bg-[#007EC4] rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "border-red-500"
+              }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
           >
             One way
           </button>
           <button
-            className={`bg-[#01324D] md:p-3 p-2 border-2 ${
-              typeOfTravel === "round-trip" && "border-red-500"
-            } `}
+            className={`bg-[#01324D] md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "border-red-500"
+              } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
           >
             Round trip
           </button>
           <button
-            className={` bg-[#007EC4] rounded-r-lg md:p-3 p-2 border-2 ${
-              typeOfTravel === "multi-city" && "border-red-500"
-            }`}
+            className={` bg-[#007EC4] rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "border-red-500"
+              }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
           >
@@ -434,9 +432,8 @@ const FilterSection = () => {
                   <input
                     className="font-bold outline-none "
                     type="text"
-                    value={`${
-                      Number(formData.ADULT) + Number(formData.CHILD)
-                    } | ${formData.cabinClass}`}
+                    value={`${Number(formData.ADULT) + Number(formData.CHILD)
+                      } | ${formData.cabinClass}`}
                     readOnly
                   />
                 </div>

@@ -190,8 +190,20 @@ const ViewDetailedBookingCard = ({ singleBookingData }) => {
                         <div className="font-semibold">
                           {value.sI[0].da.terminal
                             ? value.sI[0].da.terminal
-                            : "T 1"}
+                            : "NA"}
                         </div>
+                      </div>
+                    </div>
+                    <div className="flex  gap-1 items-center w-1/3 ">
+                      <div className="text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
+                        <BsDoorClosedFill />
+                      </div>
+                      <div className="">
+                        <div className="text-[#495049] font-semibold">
+                          {" "}
+                          Stops
+                        </div>
+                        <div className="font-semibold">{value.sI.length - 1}</div>
                       </div>
                     </div>
                     <div className="flex gap-1 items-center w-1/3">

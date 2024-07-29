@@ -1,19 +1,73 @@
-import main_logo from "../../assets/home/logo/main_logo.png";
-import { useState } from "react";
-import { FiMenu } from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { FiMenu, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../store/slices/aut.slice";
+import main_logo from "../../assets/home/logo/main_logo.png";
+import axios from "axios";
+import { IoPersonCircleOutline } from "react-icons/io5";
+import { AiOutlineLogout } from "react-icons/ai";
+import { motion, AnimatePresence } from "framer-motion";
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
-  console.log({ token });
+  const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: "",
+    country: {
+      dialCode: '',
+      countryCode: '',
+      countryName: ''
+    },
+  });
+
   const handleNavigate = (path) => {
     setMenuOpen(false);
     navigate(path);
   };
+
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleSignOut = () => {
+    dispatch(logout());
+    navigate("/sign-in");
+  };
+
+  const getProfileData = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const profileData = {
+        firstName: response.data.firstName,
+        lastName: response.data.lastName,
+        email: response.data.email,
+        phone: ` ${response.data.phone}`,
+        country: {
+          dialCode: response.data.country.dialCode,
+          countryCode: response.data.country.countryCode,
+          countryName: response.data.country.countryName
+        },
+      };
+      setUserData(profileData);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getProfileData();
+  }, []);
 
   return (
     <div className="bg-[#ffffff] min-w-[250px]">
@@ -30,12 +84,56 @@ const Header = () => {
         </div>
         <div className="hidden md:flex gap-6 font-semibold 2xl:text-[1.2rem]">
           {token ? (
-            <button
-              className="h-[55px] 2xl:p-2 text-white bg-black rounded-lg w-28"
-              onClick={() => dispatch(logout())}
-            >
-              Log out
-            </button>
+            <div className="flex gap-2  justify-center items-center text-gray-300">
+              <div className="text-[#1F61BC] cursor-pointer">
+                Home
+              </div>
+              |
+              <div className="text-[#1F61BC] cursor-pointer">
+                My Bookings
+              </div>
+              |
+              <div className="relative text-[#1F61BC]">
+                <div
+                  className="flex items-center justify-center cursor-pointer"
+                  onClick={handleDropdownToggle}
+                >
+                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-200  font-bold">
+                    {userData.firstName.charAt(0)}
+                  </div>
+                  {dropdownOpen ? <FiChevronUp className="ml-2" /> : <FiChevronDown className="ml-2" />}
+                </div>
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute right-0 rounded-lg shadow-lg mt-2 bg-white border w-40 z-10"
+                    >
+                      <div
+                        className="px-4 py-2 cursor-pointer hover:bg-gray-200 flex items-center justify-between"
+                        onClick={() => handleNavigate("/profile")}
+                      >
+                        <div>
+                          Profile
+                        </div>
+                        <IoPersonCircleOutline />
+                      </div>
+                      <div
+                        className="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-200 justify-between"
+                        onClick={handleSignOut}
+                      >
+                        <div>
+                          Sign Out
+                        </div>
+                        <AiOutlineLogout />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
           ) : (
             <button
               className="h-[55px] 2xl:p-2 text-white bg-black rounded-lg w-28"
@@ -49,31 +147,6 @@ const Header = () => {
           <FiMenu size={24} onClick={() => setMenuOpen(!menuOpen)} />
         </div>
       </div>
-      {/* {menuOpen && (
-        <div className="absolute top-[8vh] right-[6vw] bg-white shadow-lg rounded-lg p-4 z-50 md:hidden">
-          <button
-            onClick={() => handleNavigate("/sign-in")}
-            className="block w-full text-left mb-2 p-2"
-          >
-            Login
-          </button>
-          {!token ? (
-            <button
-              // onClick={() => handleNavigate("/sign-up")}
-              className="block w-full text-left text-white bg-black rounded-lg p-2"
-            >
-              Log out
-            </button>
-          ) : (
-            <button
-              onClick={() => handleNavigate("/sign-up")}
-              className="block w-full text-left text-white bg-black rounded-lg p-2"
-            >
-              Sign up
-            </button>
-          )}
-        </div>
-      )} */}
     </div>
   );
 };

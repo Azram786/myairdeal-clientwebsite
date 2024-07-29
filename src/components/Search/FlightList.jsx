@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Oneway from "./SearchComponents/Oneway";
@@ -8,33 +9,38 @@ import MultiCity from "./SearchComponents/MultiCity";
 import FilterSection from "../Home/FilterSection";
 
 const FlightList = () => {
-  const [data, setData] = useState({
-    searchQuery: {
-      cabinClass: "ECONOMY",
-      paxInfo: {
-        ADULT: "2",
-        CHILD: "0",
-        INFANT: "0",
-      },
-      routeInfos: [
-        {
-          fromCityOrAirport: { code: "BLR" },
-          toCityOrAirport: { code: "BOM" },
-          travelDate: "2024-07-29",
-        },
+  // const [data, setData] = useState({
+  //   searchQuery: {
+  //     cabinClass: "ECONOMY",
+  //     paxInfo: {
+  //       ADULT: "2",
+  //       CHILD: "0",
+  //       INFANT: "0",
+  //     },
+  //     routeInfos: [
+  //       {
+  //         fromCityOrAirport: { code: "BLR" },
+  //         toCityOrAirport: { code: "DEL" },
+  //         travelDate: "2024-07-31",
+  //       },
 
-        {
-          fromCityOrAirport: { code: "BOM" },
-          toCityOrAirport: { code: "DEL" },
-          travelDate: "2024-08-09",
-        },
-      ],
-      searchModifiers: {
-        isDirectFlight: true,
-        isConnectingFlight: false,
-      },
-    },
-  });
+  //       {
+  //         fromCityOrAirport: { code: "DEL" },
+  //         toCityOrAirport: { code: "DXB" },
+  //         travelDate: "2024-08-09",
+  //       },
+  //     ],
+  //     searchModifiers: {
+  //       isDirectFlight: true,
+  //       isConnectingFlight: false,
+  //     },
+  //   },
+  // });
+  const location=useLocation();
+  const { query } = location.state || {};
+
+  const [data, setData] = useState(query);
+  console.log(query, "query")
 
   const [tripType, setTripType] = useState("");
   const [oneway, setOneWay] = useState([]);
@@ -42,6 +48,8 @@ const FlightList = () => {
   const [multicity, setMulticity] = useState([]);
   const [combo, setCombo] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+
 
   const getData = async () => {
     try {
@@ -75,6 +83,7 @@ const FlightList = () => {
   };
 
   useEffect(() => {
+
     getData();
   }, []);
 

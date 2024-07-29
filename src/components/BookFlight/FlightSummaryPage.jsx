@@ -12,9 +12,15 @@ import ProgressBar from "./ProgressBar";
 import Review from "./Review";
 import AddDetails from "./flightSummary/addDetails";
 import { ApiData } from "./dummy-meal";
+import { useLocation } from "react-router-dom";
 
 const FlightSummary = () => {
   const [currentStep, setCurrentStep] = useState(0);
+
+  const location = useLocation();
+  const { bookings } = location.state || {};
+
+  console.log(bookings,"booking")
 
   const handleSaveAndContinue = () => {
     setCurrentStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));

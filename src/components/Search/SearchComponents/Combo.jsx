@@ -119,6 +119,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Tabs, Button } from "antd";
+import { useNavigate } from 'react-router-dom';
 import ComboFlightCard from "../Cards/ComboFlightCard";
 import flightLogo from "../../../assets/home/logo/image 40.png"
 import ComboSideBar from "./ComboSidebar";
@@ -145,6 +146,8 @@ const Combo = ({ flightprops }) => {
     arrivalTime: [],
     airlines: []
   });
+
+  const navigate=useNavigate()
 
   useEffect(() => {
     const newFilteredFlights = flightprops.filter(flight => {
@@ -174,10 +177,13 @@ const Combo = ({ flightprops }) => {
 
 
   const handleBooking = (flightIndex, priceIndex) => {
+    
     const selectedFlight = filteredFlights[flightIndex];
     const selectedPrice = selectedFlight.totalPriceList[priceIndex];
     const priceId = selectedPrice.id;
-    console.log("Selected price ID:", priceId);
+    const data=[{flightDetails:selectedFlight,priceId}]
+
+    navigate("/book-flight", { state: { bookings:data } });
   };
 
   return (
