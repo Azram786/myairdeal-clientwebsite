@@ -32,20 +32,28 @@ const SeatSelection = ({ passengers, setPassengers, flightReviewData }) => {
                 className="flex flex-col space-y-2 p-4 border rounded-lg shadow-lg"
               >
                 {item.sI.map((segment, segIndex) => (
-                  <div key={segIndex} className="flex items-center space-x-3">
-                    <span className="font-medium">{segment.da.city}</span>
-                    <span className="text-lg">→</span>
-                    <span className="font-medium">{segment.aa.city}</span>
-                  </div>
+                  <>
+                    <div key={segIndex} className="flex items-center space-x-3">
+                      <span className="font-medium">{segment.da.city}</span>
+                      <span className="text-lg">→</span>
+                      <span className="font-medium">{segment.aa.city}</span>
+                    </div>
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className="bg-[#007ec4] text-white px-4 py-2 rounded"
+                    >
+                      Show Seat Map
+                    </button>
+                  </>
                 ))}
               </div>
               <div className="mb-6 flex justify-end">
-                <button
+                {/* <button
                   onClick={() => setIsModalOpen(true)}
                   className="bg-[#007ec4] text-white px-4 py-2 rounded"
                 >
                   Show Seat Map
-                </button>
+                </button> */}
                 <Modal
                   isOpen={isModalOpen}
                   onClose={() => setIsModalOpen(false)}
