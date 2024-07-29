@@ -16,10 +16,11 @@ import { motion } from 'framer-motion';
 const ViewDetailedBooking = () => {
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(null)
 
   const { token } = useSelector((state) => state.auth);
   const [singleBookingData, setSingleBookingData] = useState(null);
-
+  console.log({ singleBookingData })
   const queryParams = getQueryParams(location.search);
   const { bookingId } = queryParams;
   const [loading, setLoading] = useState(true)
@@ -36,6 +37,7 @@ const ViewDetailedBooking = () => {
         }
       );
 
+      setSearchQuery(response.data.searchQuery)
       setSingleBookingData(response.data.data);
       setLoading(false)
       console.log({ response });
@@ -49,6 +51,38 @@ const ViewDetailedBooking = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const DownloadInvoice = async () => {
+    try {
+
+      await axios
+        .post(
+          `${import.meta.env.VITE_SERVER_URL}invoice/generate`,
+          {
+            bookingId: singleBookingData.order.bookingId,
+          },
+          {
+            headers: {
+              authorization: ` Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          const linkSource = `data: application/pdf;base64,${res.data.base64String}`;
+          const downloadLink = document.createElement("a");
+          const fileName = `${singleBookingData.order.bookingId}.pdf`;
+
+          downloadLink.href = linkSource;
+          downloadLink.download = fileName;
+          downloadLink.click();
+        });
+
+
+
+      // If the request is successful and returns a PDF file, you can handle the file here
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     getSingleTicketDetailHandler();
   }, [bookingId]);
@@ -68,7 +102,9 @@ const ViewDetailedBooking = () => {
                 <button className="bg-red-500  flex justify-center items-center text-white p-2 w-[200px] rounded-lg">Cancel booking</button>
               </div> */}
                 <div className="">
-                  <button className="bg-white flex justify-center items-center text-[#007EC4] p-2 w-[200px] rounded-lg">
+                  <button className="bg-white flex justify-center items-center text-[#007EC4] p-2 w-[200px] rounded-lg"
+                    onClick={DownloadInvoice}
+                  >
                     <CiSaveDown1 />
                     Download ticket
                   </button>
@@ -81,7 +117,7 @@ const ViewDetailedBooking = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <ViewDetailedBookingCard singleBookingData={singleBookingData} />
+              <ViewDetailedBookingCard singleBookingData={singleBookingData} searchQuery={searchQuery} />
             </motion.div>
             <TicketLinks singleBookingData={singleBookingData} />
             <TermsAndConditions />
@@ -99,7 +135,7 @@ const ViewDetailedBooking = () => {
                 <div className="flex justify-between">
                   <div>Base Fare</div>
                   <div>
-                    {
+                    ₹ {
                       singleBookingData?.itemInfos.AIR.totalPriceInfo
                         .totalFareDetail.fC.BF
                     }
@@ -117,7 +153,7 @@ const ViewDetailedBooking = () => {
                     </div>
 
                     <div>
-                      {
+                      ₹ {
                         singleBookingData?.itemInfos.AIR.totalPriceInfo
                           .totalFareDetail.fC.TAF
                       }
@@ -128,7 +164,7 @@ const ViewDetailedBooking = () => {
                       <div className="flex justify-between">
                         <div>IGST</div>
                         <div>
-                          {
+                          ₹{
                             singleBookingData?.itemInfos.AIR.totalPriceInfo
                               .totalFareDetail.afC.TAF.AGST
                           }
@@ -137,7 +173,7 @@ const ViewDetailedBooking = () => {
                       <div className="flex justify-between">
                         <div>Other Taxes</div>
                         <div>
-                          {
+                          ₹ {
                             singleBookingData?.itemInfos.AIR.totalPriceInfo
                               .totalFareDetail.afC.TAF.OT
                           }
@@ -146,7 +182,7 @@ const ViewDetailedBooking = () => {
                       <div className="flex justify-between">
                         <div>Fuel Surcharge</div>
                         <div>
-                          {
+                          ₹{
                             singleBookingData?.itemInfos.AIR.totalPriceInfo
                               .totalFareDetail.afC.TAF.YR
                           }
@@ -169,7 +205,7 @@ const ViewDetailedBooking = () => {
               <div className="flex justify-between pt-3 border-t">
                 <div>Total</div>
                 <div>
-                  {
+                  ₹ {
                     singleBookingData?.itemInfos.AIR.totalPriceInfo
                       .totalFareDetail.fC.TF
                   }

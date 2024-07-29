@@ -8,29 +8,38 @@ import paymentFlight from "../../../assets/booking/viewDetailedBookings/paymentF
 import timeFormatChanger from "../../util/timeFormatChanger";
 import dateDateFormatChanger from "../../util/dateDateFormatChanger";
 import calculateDuration from "../../util/calculateDuration";
+import { useSelector } from "react-redux";
 
 
-const ViewDetailedBookingCard = ({ singleBookingData }) => {
+const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
+  const { user } = useSelector((state) => state.auth)
+  const { token } = useSelector((state) => state.auth)
   const [openConnectionIndex, setOpenConnectionIndex] = useState(null);
   let previousArrivalTime = null;
 
   const toggleDropdown = (index) => {
     setOpenConnectionIndex(openConnectionIndex === index ? null : index);
   };
-
+  console.log({ searchQuery })
+ 
   return (
     <div className="mt-4 border-l-0">
       <div className="mx-auto rounded-lg p-7">
         <div className="flex justify-between items-center bg-[#007EC4] p-4 rounded-t-xl text-white">
           <div className="flex items-center">
-            <img
-              src="https://via.placeholder.com/50"
-              alt="Profile"
-              className="h-16 w-16 rounded-full object-cover mr-4"
-            />
+            <div
+              className="h-16 w-16 flex items-center justify-center bg-white text-blue-500 font-bold text-xl rounded-full mr-4"
+            >
+              {user.firstName.charAt(0).toUpperCase()}
+            </div>
             <div>
-              <div className="text-xl font-bold">James Doe</div>
-              <div className="text-sm">ASKY-005</div>
+              <div className="text-xl font-bold">
+                {user.firstName} {user.lastName}
+              </div>
+              <div className="text-sm font-bold flex">
+                <div className="text-slate-400">ID:</div>
+                {singleBookingData.order.bookingId}
+              </div>
             </div>
           </div>
           <div className="text-right">
@@ -57,7 +66,7 @@ const ViewDetailedBookingCard = ({ singleBookingData }) => {
                       </div>
                       <div className="py-2 flex flex-col justify-between">
                         <div className="flex flex-col gap-1">
-                          <div className="text-slate-400">Economyyyyyyy</div>
+                          <div className="text-slate-400">{searchQuery.cabinClass}</div>
                           <div className="font-semibold text-[1.2rem]">
                             Emirates A380 Airbus
                           </div>
@@ -214,7 +223,7 @@ const ViewDetailedBookingCard = ({ singleBookingData }) => {
                         <div className="text-[#495049] font-semibold">
                           Seat Class
                         </div>
-                        <div className="font-semibold">Economy</div>
+                        <div className="font-semibold">{searchQuery.cabinClass}</div>
                       </div>
                     </div>
                   </div>
@@ -272,7 +281,7 @@ const ViewDetailedBookingCard = ({ singleBookingData }) => {
                                           <div className="flex items-center space-x-1">
                                             <span>{singleValue.fD.aI.code}</span>
                                             <MdFlight className="w-3 h-3 rotate-45" />
-                                            <span>Economy</span>
+                                            <span>{searchQuery.cabinClass}</span>
                                           </div>
                                         </div>
                                       </div>
