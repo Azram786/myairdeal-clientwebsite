@@ -8,7 +8,7 @@ import FlightList from "./components/Search/FlightList";
 import FlightSummaryPage from "./components/BookFlight/FlightSummaryPage";
 import { useSelector } from "react-redux";
 import Profile from './components/Profile/Profile'
-import TicketRaising from "./components/Booking/Pages/TicketRaising";
+import TicketRaising from "./components/Booking/viewDetailedBooking/TicketRaising";
 
 function App() {
   const token = useSelector((state) => state.auth.token);

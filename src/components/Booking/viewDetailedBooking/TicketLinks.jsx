@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { FaArrowRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import Modal from "react-modal";
+import React, { useState } from "react";
+import { FaArrowRight, FaTimes } from "react-icons/fa";
 import SubmitAmendment from "./SubmitAmendment";
+import TicketRaising from "./TicketRaising"; 
 
 const TicketLinks = ({ singleBookingData }) => {
   const links = [
@@ -23,60 +22,24 @@ const TicketLinks = ({ singleBookingData }) => {
     },
   ];
 
-  const [modalIsOpen, setModelIsOpen] = useState(false);
-  const [screenSize, setScreenSize] = useState();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedLink, setSelectedLink] = useState(null);
-
-  const navigate = useNavigate();
 
   const openModalHandler = (link) => {
     setSelectedLink(link);
-    setModelIsOpen(true);
+    setModalIsOpen(true);
   };
 
-  const style = {
-    content: {
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      width: screenSize === "small" ? "80vw" : "80%",
-      height: screenSize === "small" ? "70vh" : "60%",
-      border: "1px solid gray",
-      boxShadow: "0 4px 8px gray",
-      borderRadius: "10px",
-    },
-    overlay: {
-      background: "transparent",
-    },
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedLink(null);
   };
-
-  const updateScreenSize = () => {
-    if (window.innerWidth < 640) {
-      setScreenSize("small");
-    } else if (window.innerWidth < 1024) {
-      setScreenSize("medium");
-    } else {
-      setScreenSize("large");
-    }
-  };
-
-  useEffect(() => {
-    updateScreenSize();
-    window.addEventListener("resize", updateScreenSize);
-
-    return () => {
-      window.removeEventListener("resize", updateScreenSize);
-    };
-  }, []);
 
   const handleButtonClick = (link) => {
-    if (link.for === 'raise') {
-      navigate('/ticket-raising');
-    } else if (link.for === 'cancel') {
+    if (link.for === 'raise' || link.for === 'cancel') {
       openModalHandler(link);
     } else if (link.for === 'refund') {
-      // openModalHandler(link);
-      return null
+      return null;
     }
   };
 
@@ -86,15 +49,13 @@ const TicketLinks = ({ singleBookingData }) => {
         Quick links
       </div>
       {links.map((link, index) => (
-        <div key={index} className="flex items-center justify-between bg-blue-100 border-t border-blue-200 rounded-r-lg">
-          <div className="flex items-center justify-between bg-blue-100 border-t border-blue-200 p-4">
-            <div>
-              <h3 className="text-lg font-semibold">{link.title}</h3>
-              <p className="text-sm text-gray-700">{link.description}</p>
-            </div>
+        <div key={index} className="flex flex-col md:flex-row items-center justify-between bg-blue-100 border-t border-blue-200 rounded-lg p-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold">{link.title}</h3>
+            <p className="text-sm text-gray-700">{link.description}</p>
           </div>
           <button
-            className="bg-[#007EC4] h-full px-8 text-white rounded-r-lg"
+            className="bg-[#007EC4] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 text-white rounded-md md:rounded-r-lg flex items-center"
             onClick={() => handleButtonClick(link)}
           >
             <FaArrowRight className="text-xl" />
@@ -102,16 +63,33 @@ const TicketLinks = ({ singleBookingData }) => {
         </div>
       ))}
 
-      <Modal
-        isOpen={modalIsOpen}
-        style={style}
-        onRequestClose={() => setModelIsOpen(false)}
-      >
-        <SubmitAmendment singleBookingData={singleBookingData} />
-      </Modal>
+      {modalIsOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-center z-50">
+          <div className="bg-white flex justify-center flex-col rounded-lg shadow-xl w-[90%] md:w-1/2  md:mx-auto max-h-[90vh] ">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h2 className="text-2xl font-bold">
+                {selectedLink.for === 'raise' ? 'Raise a Ticket' : 'Cancel Ticket'}
+              </h2>
+              <button
+                onClick={closeModal}
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                <FaTimes className="text-xl" />
+              </button>
+            </div>
+            <div className="p-2 overflow-y-auto no-scroll flex justify-center items-center h-80 ">
+              {selectedLink.for === 'raise' ? (
+                <TicketRaising bookingId={singleBookingData?.order?.bookingId} closeModal={closeModal} />
+              ) : (
+                <SubmitAmendment singleBookingData={singleBookingData} />
+              )}
+            </div>
+            
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default TicketLinks;
-
