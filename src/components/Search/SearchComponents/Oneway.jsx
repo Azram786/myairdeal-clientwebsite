@@ -69,6 +69,7 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import flightLogo from "../../../assets/home/logo/image 40.png";
 import OneWaySideBar from "./OneWaySidebar";
 import BookingCard from "./BookingCards"; 
+import { useNavigate } from "react-router-dom";
 
 const { TabPane } = Tabs;
 
@@ -85,6 +86,7 @@ const Oneway = ({ flightProps }) => {
   });
 
   const [selectedFlight, setSelectedFlight] = useState([]);
+  const navigate=useNavigate()
 
   useEffect(() => {
     console.log("Filters changed:", filters);
@@ -129,8 +131,11 @@ const Oneway = ({ flightProps }) => {
         priceId: filteredFlights[selected.flightIndex].totalPriceList[selected.priceIndex].id
       }));
       console.log("Processing bookings:", bookings);
+  
+      navigate("/book-flight", { state: { bookings } });
     }
   };
+  
   const getTotalPrice = () => {
     if (selectedFlight.length > 0) {
       const selected = selectedFlight[0];

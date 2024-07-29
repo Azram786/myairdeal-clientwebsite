@@ -372,6 +372,7 @@ import FlightDetailsCard from '../Cards/FlightDetailsCard';
 import RoundSideBar from './Roundsidebar';
 import BookingCard from './BookingCards';
 import ReactToast from '../../util/ReactToast';
+import { useNavigate } from 'react-router-dom';
 
 const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
   const [filteredOnward, setFilteredOnward] = useState([]);
@@ -400,6 +401,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
     specialReturn: false
   });
 
+  const navigate = useNavigate()
   const applyFilters = (flights, direction) => {
     return flights.filter(flight => {
       if (!flight.sI || flight.sI.length === 0) {
@@ -559,6 +561,8 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
       {onwardFlightDetails: selectedOnwardFlight.sI, onwardPriceId: onwardFlight}
     ];
     console.log(data);
+
+    navigate("/book-flight", { state: { booking:data } });
    
   };
 
