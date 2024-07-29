@@ -11,8 +11,11 @@
 //   const startSegment = flightProps[0];
 //   const endSegment = flightProps[flightProps.length - 1];
 
+
+
 //   console.log(flightProps,"flight props");
 
+  
 //   const flightDetails = flightProps.map(flight => {
 //     return flight.sI.map(segment => {
 //         return {
@@ -24,6 +27,8 @@
 // }).flat();
 
 // console.log(flightDetails, "flight details")
+
+
 
 //   return (
 //     <div className="flex flex-row h-screen">
@@ -56,6 +61,7 @@
 
 // export default Oneway;
 
+
 import React, { useState, useEffect } from "react";
 import { Tabs } from "antd";
 import FlightDetailsCard from "../Cards/FlightDetailsCard";
@@ -74,12 +80,12 @@ const Oneway = ({ flightProps }) => {
     stops: [],
     departureTime: [],
     arrivalTime: [],
-    airlines: [],
+    airlines: []
   });
 
   useEffect(() => {
     console.log("Filters changed:", filters);
-    const newFilteredFlights = flightProps.filter((flight) => {
+    const newFilteredFlights = flightProps.filter(flight => {
       console.log("Processing flight:", flight);
       const price = flight.totalPriceList[0].fd.ADULT.fC.TF;
       const stops = flight.sI[0].stops;
@@ -88,30 +94,18 @@ const Oneway = ({ flightProps }) => {
       const airline = flight.sI[0].fD.aI.name;
 
       const priceMatch = price <= filters.maxPrice;
-      const stopsMatch =
-        filters.stops.length === 0 || filters.stops.includes(stops.toString());
-      const departureMatch =
-        filters.departureTime.length === 0 ||
-        filters.departureTime.some((range) => {
-          const [start, end] = range.split("-").map(Number);
-          return departureHour >= start && departureHour < end;
-        });
-      const arrivalMatch =
-        filters.arrivalTime.length === 0 ||
-        filters.arrivalTime.some((range) => {
-          const [start, end] = range.split("-").map(Number);
-          return arrivalHour >= start && arrivalHour < end;
-        });
-      const airlineMatch =
-        filters.airlines.length === 0 || filters.airlines.includes(airline);
+      const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString());
+      const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
+        const [start, end] = range.split('-').map(Number);
+        return departureHour >= start && departureHour < end;
+      });
+      const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
+        const [start, end] = range.split('-').map(Number);
+        return arrivalHour >= start && arrivalHour < end;
+      });
+      const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
 
-      return (
-        priceMatch &&
-        stopsMatch &&
-        departureMatch &&
-        arrivalMatch &&
-        airlineMatch
-      );
+      return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
     });
 
     console.log("New filtered flights:", newFilteredFlights);
@@ -123,26 +117,21 @@ const Oneway = ({ flightProps }) => {
 
   return (
     <div className="flex">
-      <OneWaySideBar
-        flights={flightProps}
-        filters={filters}
-        setFilters={setFilters}
-      />
+      <OneWaySideBar flights={flightProps} filters={filters} setFilters={setFilters} />
       <div className="flex-grow">
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={
               <span>
-                {startSegment?.da.city} <ArrowRightOutlined />{" "}
-                {endSegment?.aa.city}
+                {startSegment?.da.city} <ArrowRightOutlined /> {endSegment?.aa.city}
               </span>
             }
             key="1"
           >
             {filteredFlights.length > 0 ? (
               filteredFlights.map((flight, index) => (
-                <FlightDetailsCard
-                  key={index}
+                <FlightDetailsCard 
+                  key={index} 
                   flightDetails={flight}
                   logo={flightLogo}
                 />

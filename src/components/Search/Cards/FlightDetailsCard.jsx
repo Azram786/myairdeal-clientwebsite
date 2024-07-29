@@ -658,7 +658,7 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
 
   const totalDuration = data.reduce((sum, segment) => sum + segment.duration, 0);
 
-  const displayedPrices = showAllPrices ? priceList : priceList.slice(0, 3);
+  const displayedPrices = showAllPrices ? priceList : priceList.slice(0, 1);
 
   const handlePriceSelection = (index) => {
     setLocalSelectedPriceIndex(index);
@@ -773,8 +773,8 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
         <div className="flex items-center mb-4 md:mb-0">
           {logo && <img src={logo} alt="Airline logo" className="w-16 h-16 mr-6" />}
           <div>
-            <h1 className="text-lg font-bold">{startSegment.da.code}</h1>
-            <h1 className="text-sm text-gray-500">{startSegment.da.city}</h1>
+            <h1 className="text-lg font-bold">{startSegment?.da?.code}</h1>
+            <h1 className="text-sm text-gray-500">{startSegment?.da?.city}</h1>
             <h1 className="text-sm">{departureTime}</h1>
           </div>
         </div>
@@ -812,9 +812,9 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
               onClick={() => handlePriceSelection(index)}
               className={`
                 text-xs text-start space-y-2 flex items-center w-full md:w-auto
-                p-2 mb-2 cursor-pointer transition-all duration-200 ease-in-out
+                p-1 mb-2 cursor-pointer transition-all duration-200 ease-in-out
                 ${localSelectedPriceIndex === index 
-                  ? 'border-2 border-blue-500 bg-blue-50 rounded-md' 
+                  ? 'border border-blue-500  rounded-md' 
                   : 'border border-gray-200 hover:border-blue-300 rounded-md'}
               `}
             >
@@ -834,7 +834,7 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
               </div>
             </div>
           ))}
-          {priceList.length > 3 && (
+          {priceList.length > 1 && (
             <button
               onClick={() => setShowAllPrices(!showAllPrices)}
               className="text-blue-500 text-sm mt-2 flex items-center"
