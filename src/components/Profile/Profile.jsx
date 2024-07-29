@@ -438,7 +438,7 @@ const UserProfile = () => {
                                                             className="w-3/4"
                                                         />
                                                     ) : (
-                                                        <p className="mt-1 p-2 w-3/4 text-xl font-semibold text-[#1F61BC] uppercase">{userData.country.countryName} ("+{userData.country.dialCode})</p>
+                                                        <p className="mt-1 p-2 w-3/4 text-xl font-semibold text-[#1F61BC] uppercase">{userData.country.countryName} (+{userData.country.dialCode})</p>
                                                     )}
                                                 </div>
                                                 <div className=" flex flex-col gap-2 h-full">

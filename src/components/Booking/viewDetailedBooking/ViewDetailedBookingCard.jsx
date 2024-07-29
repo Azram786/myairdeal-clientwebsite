@@ -33,7 +33,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
               {user.firstName.charAt(0).toUpperCase()}
             </div>
             <div>
-              <div className="text-xl font-bold">
+              <div className="text-xl font-bold uppercase ">
                 {user.firstName} {user.lastName}
               </div>
               <div className="text-sm font-bold flex">

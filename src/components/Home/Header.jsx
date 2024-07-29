@@ -100,10 +100,10 @@ const Header = () => {
                   className="flex items-center justify-center cursor-pointer"
                   onClick={handleDropdownToggle}
                 >
-                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-200  font-bold">
+                  <div className="w-12 h-12 flex items-center justify-center rounded-full text-xl bg-gray-200 uppercase  font-bold">
                     {userData.firstName.charAt(0)}
                   </div>
-                  {dropdownOpen ? <FiChevronUp className="ml-2" /> : <FiChevronDown className="ml-2" />}
+                  {dropdownOpen ? <FiChevronUp className="ml-2 font-extrabold" /> : <FiChevronDown className="ml-2  font-extrabold" />}
                 </div>
                 <AnimatePresence>
                   {dropdownOpen && (

@@ -6,6 +6,8 @@ import { IoIosTime } from "react-icons/io";
 import { MdAirlineSeatReclineExtra } from "react-icons/md";
 import { MdAirlineStops } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const FlightTicket = ({ booking, index, bookingID }) => {
   // Utility function to format the date
@@ -16,6 +18,8 @@ const FlightTicket = ({ booking, index, bookingID }) => {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
+
+  const { token } = useSelector((state) => state.auth)
   const navigate = useNavigate();
   const formatTime = (dateString) => {
     const date = new Date(dateString);
@@ -26,6 +30,39 @@ const FlightTicket = ({ booking, index, bookingID }) => {
       navigate(`/view-detailed-booking?bookingId=${bookingID}`);
     } catch (error) {
       console.log(error.message);
+    }
+  };
+  const DownloadInvoice = async () => {
+    try {
+      console.log("downloading.......................")
+
+      await axios
+        .post(
+          `${import.meta.env.VITE_SERVER_URL}invoice/generate`,
+          {
+            bookingId: bookingID,
+          },
+          {
+            headers: {
+              authorization: ` Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          const linkSource = `data: application/pdf;base64,${res.data.base64String}`;
+          const downloadLink = document.createElement("a");
+          const fileName = `${bookingID}.pdf`;
+
+          downloadLink.href = linkSource;
+          downloadLink.download = fileName;
+          downloadLink.click();
+        });
+
+
+
+      // If the request is successful and returns a PDF file, you can handle the file here
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -135,7 +172,7 @@ const FlightTicket = ({ booking, index, bookingID }) => {
       </div>
 
       <div className="flex w-[25%] justify-end items-center space-x-4">
-        <button className="bg-[#007EC4] text-white px-4 py-2 rounded-sm">
+        <button onClick={() => DownloadInvoice()} className="bg-[#007EC4] text-white px-4 py-2 rounded-sm">
           Download Ticket
         </button>
         <button
