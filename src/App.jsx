@@ -8,7 +8,7 @@ import FlightList from "./components/Search/FlightList";
 import FlightSummaryPage from "./components/BookFlight/FlightSummaryPage";
 import { useSelector } from "react-redux";
 import Profile from "./components/Profile/Profile";
-import TicketRaising from "./components/Booking/Pages/TicketRaising";
+
 import Review from "./components/BookFlight/Review";
 
 function App() {
@@ -31,10 +31,7 @@ function App() {
           <Route path="/search" element={<FlightList />} />
           <Route path="book-flight" element={<FlightSummaryPage />} />
           <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/ticket-raising"
-            element={token ? <TicketRaising /> : <Login />}
-          />
+          
           <Route path="/review" component={Review} />
         </Routes>
       </BrowserRouter>

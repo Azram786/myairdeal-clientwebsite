@@ -14,6 +14,7 @@ import AddDetails from "./flightSummary/addDetails";
 import { ApiData } from "./dummy-meal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const FlightSummary = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -21,6 +22,8 @@ const FlightSummary = () => {
   const [Loading, setLoading] = useState(false);
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
   const [error, setError] = useState(null);
+  const token = useSelector((state) => state.auth.token);
+
 
   const location = useLocation();
   const { bookings } = location.state || {};
@@ -46,14 +49,19 @@ const FlightSummary = () => {
     setLoading(true);
     await axios
       .post(`https://myairdeal-backend.onrender.com/booking/review-price`, {
-        priceIds: bookingArray,
-      })
+        priceIds: bookingArray
+      },{
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
       .then((res) => {
         setLoading(false);
         console.log(res.data, "response datattata");
         setData(res.data);
       })
       .catch((error) => {
+        console.log(error)
         setLoading(false);
         console.log(error);
       });

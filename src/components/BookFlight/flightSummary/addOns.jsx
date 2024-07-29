@@ -3,6 +3,8 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import BagAndMeal from "./bagAndMeal";
 import SeatSelection from "./seatSelection";
 import axios from "axios";
+import {booking, flightData} from '../../BookFlight/Seats/dummy'
+import { useSelector } from "react-redux";
 
 const AddonsCard = ({
   passengers,
@@ -16,6 +18,8 @@ const AddonsCard = ({
   const [seatMapData, setSeatMapData] = useState(null);
   const [checkLoading, setCheckLoading] = useState(false);
   const [Errors, setErrors] = useState(null);
+  const token = useSelector((state) => state.auth.token);
+
 
   console.log(data, "Hello");
 
@@ -27,8 +31,14 @@ const AddonsCard = ({
         "https://myairdeal-backend.onrender.com/booking/seat-map",
         {
           bookingId,
-        }
+        },{
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      }
       );
+
+      console.log(response,"response-data")
       if (response.status == 200) {
         setSeatMapData(response.data);
       }
@@ -97,10 +107,10 @@ const AddonsCard = ({
           </div>
           {activeButton === "seatSelection" && (
             <SeatSelection
-              seatMapData={seatMapData}
+              seatMapData={null}
               passengers={passengers}
               setPassengers={setPassengers}
-              flightReviewData={data}
+              flightReviewData={flightData}
             />
           )}
           {activeButton === "addBagAndMeal" && (
