@@ -319,7 +319,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex }) => {
   ));
 
   return (
-    <div className=" w-full md:w-1/4 border p-2 md:p-4 md:m-2 shadow-md rounded-md md:h-screen">
+    <div className="flex flex-row  md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
       <div className=" grid  gap-2  w-full grid-cols-1">
         {/* Price slider */}
         <div className="mb-6 border-b border-gray-300 pb-4">

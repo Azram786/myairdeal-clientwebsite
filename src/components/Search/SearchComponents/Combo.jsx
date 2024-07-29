@@ -174,10 +174,12 @@ const Combo = ({ flightprops }) => {
 
 
   const handleBooking = (flightIndex, priceIndex) => {
+    
     const selectedFlight = filteredFlights[flightIndex];
     const selectedPrice = selectedFlight.totalPriceList[priceIndex];
     const priceId = selectedPrice.id;
-    console.log("Selected price ID:", priceId);
+
+    console.log("Selected Flight:", selectedFlight,priceId);
   };
 
   return (

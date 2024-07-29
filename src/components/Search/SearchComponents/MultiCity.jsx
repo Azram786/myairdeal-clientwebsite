@@ -247,13 +247,11 @@ const MultiCity = ({ flightProps }) => {
   };
 
   const handleBooking = () => {
-    // Check if all flights are selected
     const allFlightsSelected = selectedFlights.every(selected => 
       selected.flightIndex !== null && selected.priceIndex !== null
     );
   
     if (!allFlightsSelected) {
-      // Show an alert if not all flights are selected
       alert("Please select all connection flights before booking.");
       return;
     }
