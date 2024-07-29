@@ -11,7 +11,6 @@
 //   const [isLoading, setIsLoading] = useState(true);
 //   const [error, setError] = useState(null);
 
-
 //   console.log(onwardProps,"ORN",returnProps,"R")
 
 //   const [filters, setFilters] = useState({
@@ -103,15 +102,15 @@
 //       try {
 //         let filteredOnwardFlights = applyFilters(onwardProps, 'onward');
 //         let filteredReturnFlights = applyFilters(returnProps, 'return');
-        
+
 //         if (filters.specialReturn) {
 //           const specialReturnPairs = applySpecialReturnFilter(filteredOnwardFlights, filteredReturnFlights);
 //           filteredOnwardFlights = specialReturnPairs.map(pair => pair.onward);
 //           filteredReturnFlights = specialReturnPairs.map(pair => pair.return);
 //         }
-  
+
 //         console.log(filteredOnwardFlights, "filtered onward flights", filteredReturnFlights, "filtered return flights");
-        
+
 //         setFilteredOnward(filteredOnwardFlights);
 //         setFilteredReturn(filteredReturnFlights);
 //       } catch (err) {
@@ -121,7 +120,7 @@
 //         setIsLoading(false);
 //       }
 //     };
-  
+
 //     fetchAndFilterFlights();
 //   }, [filters, onwardProps, returnProps]);
 
@@ -129,15 +128,15 @@
 //     if (isLoading) {
 //       return <div>Loading flights...</div>;
 //     }
-  
+
 //     if (error) {
 //       return <div className="text-red-500">{error}</div>;
 //     }
-  
+
 //     if (!Array.isArray(flights) || flights.length === 0) {
 //       return <div>No flights available for the selected route.</div>;
 //     }
-  
+
 //     return (
 //       <div>
 //         {flights.map((flight, index) => (
@@ -178,7 +177,6 @@
 
 // export default RoundTrip;
 
-
 // import React, { useState, useEffect } from 'react';
 // import FlightDetailsCard from '../../Cards/FlightDetailsCard';
 // import RoundSideBar from './Roundsidebar';
@@ -189,9 +187,6 @@
 //   const [activeDirection, setActiveDirection] = useState('onward');
 //   const [isLoading, setIsLoading] = useState(true);
 //   const [error, setError] = useState(null);
-
-  
-
 
 //   const [filters, setFilters] = useState({
 //     onward: {
@@ -282,15 +277,15 @@
 //       try {
 //         let filteredOnwardFlights = applyFilters(onwardProps, 'onward');
 //         let filteredReturnFlights = applyFilters(returnProps, 'return');
-        
+
 //         if (filters.specialReturn) {
 //           const specialReturnPairs = applySpecialReturnFilter(filteredOnwardFlights, filteredReturnFlights);
 //           filteredOnwardFlights = specialReturnPairs.map(pair => pair.onward);
 //           filteredReturnFlights = specialReturnPairs.map(pair => pair.return);
 //         }
-  
+
 //         console.log(filteredOnwardFlights, "filtered onward flights", filteredReturnFlights, "filtered return flights");
-        
+
 //         setFilteredOnward(filteredOnwardFlights);
 //         setFilteredReturn(filteredReturnFlights);
 //       } catch (err) {
@@ -300,7 +295,7 @@
 //         setIsLoading(false);
 //       }
 //     };
-  
+
 //     fetchAndFilterFlights();
 //   }, [filters, onwardProps, returnProps]);
 
@@ -308,15 +303,15 @@
 //     if (isLoading) {
 //       return <div>Loading flights...</div>;
 //     }
-  
+
 //     if (error) {
 //       return <div className="text-red-500">{error}</div>;
 //     }
-  
+
 //     if (!Array.isArray(flights) || flights.length === 0) {
 //       return <div>No flights available for the selected route.</div>;
 //     }
-  
+
 //     return (
 //       <div>
 //         {flights.map((flight, index) => (
@@ -352,11 +347,11 @@
 //       </div>
 //         <div className="flex h-[850px] overflow-y-auto no-scroll">
 //           <div className="w-1/2 md:pr-2 ">
-           
+
 //             {renderFlightSection(filteredOnward)}
 //           </div>
 //           <div className="w-1/2 md:pl-2">
-           
+
 //             {renderFlightSection(filteredReturn)}
 //           </div>
 //         </div>
@@ -367,15 +362,17 @@
 
 // export default RoundTrip;
 
-import React, { useState, useEffect } from 'react';
-import FlightDetailsCard from '../Cards/FlightDetailsCard';
-import RoundSideBar from './Roundsidebar';
-import BookingCard from './BookingCards';
+import React, { useState, useEffect } from "react";
+import FlightDetailsCard from "../Cards/FlightDetailsCard";
+import RoundSideBar from "./Roundsidebar";
+import BookingCard from "./BookingCards";
+import ReactToast from "../../util/ReactToast";
+import { useNavigate } from "react-router-dom";
 
 const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
   const [filteredOnward, setFilteredOnward] = useState([]);
   const [filteredReturn, setFilteredReturn] = useState([]);
-  const [activeDirection, setActiveDirection] = useState('onward');
+  const [activeDirection, setActiveDirection] = useState("onward");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedOnwardFlight, setSelectedOnwardFlight] = useState(null);
@@ -383,48 +380,61 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
 
   const [filters, setFilters] = useState({
     onward: {
-      maxPrice: Math.max(...onwardProps.flatMap(flight => flight.totalPriceList.map(price => price.fd.ADULT.fC.TF))),
+      maxPrice: Math.max(
+        ...onwardProps.flatMap((flight) =>
+          flight.totalPriceList.map((price) => price.fd.ADULT.fC.TF)
+        )
+      ),
       stops: [],
       departureTime: [],
       arrivalTime: [],
       airlines: [],
     },
     return: {
-      maxPrice: Math.max(...returnProps.flatMap(flight => flight.totalPriceList.map(price => price.fd.ADULT.fC.TF))),
+      maxPrice: Math.max(
+        ...returnProps.flatMap((flight) =>
+          flight.totalPriceList.map((price) => price.fd.ADULT.fC.TF)
+        )
+      ),
       stops: [],
       departureTime: [],
       arrivalTime: [],
       airlines: [],
     },
-    specialReturn: false
+    specialReturn: false,
   });
 
+  const navigate = useNavigate();
   const applyFilters = (flights, direction) => {
-    return flights.filter(flight => {
+    return flights.filter((flight) => {
       if (!flight.sI || flight.sI.length === 0) {
-        console.error('Invalid flight data:', flight);
+        console.error("Invalid flight data:", flight);
         return false;
       }
 
       const directionFilters = filters[direction];
       const stops = flight.sI.length - 1;
-      const airline = flight.sI[0]?.fD?.aI?.name || '';
+      const airline = flight.sI[0]?.fD?.aI?.name || "";
       const departureTime = new Date(flight.sI[0].dt).getHours();
-      const arrivalTime = new Date(flight.sI[flight.sI.length - 1].at).getHours();
+      const arrivalTime = new Date(
+        flight.sI[flight.sI.length - 1].at
+      ).getHours();
       const price = flight.totalPriceList[0].fd.ADULT.fC.TF;
 
       const isInTimeRange = (time, ranges) => {
         if (ranges.length === 0) return true;
-        return ranges.some(range => {
-          const [start, end] = range.split('-').map(Number);
+        return ranges.some((range) => {
+          const [start, end] = range.split("-").map(Number);
           return time >= start && time < end;
         });
       };
 
       return (
         price <= directionFilters.maxPrice &&
-        (directionFilters.stops.length === 0 || directionFilters.stops.includes(stops.toString())) &&
-        (directionFilters.airlines.length === 0 || directionFilters.airlines.includes(airline)) &&
+        (directionFilters.stops.length === 0 ||
+          directionFilters.stops.includes(stops.toString())) &&
+        (directionFilters.airlines.length === 0 ||
+          directionFilters.airlines.includes(airline)) &&
         isInTimeRange(departureTime, directionFilters.departureTime) &&
         isInTimeRange(arrivalTime, directionFilters.arrivalTime)
       );
@@ -432,23 +442,35 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
   };
 
   const applySpecialReturnFilter = (onwardFlights, returnFlights) => {
-    const specialReturnOnward = onwardFlights.filter(flight =>
-      flight.totalPriceList.some(price => price.fareIdentifier === 'SPECIAL_RETURN')
+    const specialReturnOnward = onwardFlights.filter((flight) =>
+      flight.totalPriceList.some(
+        (price) => price.fareIdentifier === "SPECIAL_RETURN"
+      )
     );
 
-    const specialReturnReturn = returnFlights.filter(flight =>
-      flight.totalPriceList.some(price => price.fareIdentifier === 'SPECIAL_RETURN')
+    const specialReturnReturn = returnFlights.filter((flight) =>
+      flight.totalPriceList.some(
+        (price) => price.fareIdentifier === "SPECIAL_RETURN"
+      )
     );
 
     const matchedPairs = [];
 
-    specialReturnOnward.forEach(onwardFlight => {
-      const onwardSri = onwardFlight.totalPriceList.find(price => price.fareIdentifier === 'SPECIAL_RETURN')?.sri;
-      const onwardMsri = onwardFlight.totalPriceList.find(price => price.fareIdentifier === 'SPECIAL_RETURN')?.msri;
+    specialReturnOnward.forEach((onwardFlight) => {
+      const onwardSri = onwardFlight.totalPriceList.find(
+        (price) => price.fareIdentifier === "SPECIAL_RETURN"
+      )?.sri;
+      const onwardMsri = onwardFlight.totalPriceList.find(
+        (price) => price.fareIdentifier === "SPECIAL_RETURN"
+      )?.msri;
 
-      specialReturnReturn.forEach(returnFlight => {
-        const returnSri = returnFlight.totalPriceList.find(price => price.fareIdentifier === 'SPECIAL_RETURN')?.sri;
-        const returnMsri = returnFlight.totalPriceList.find(price => price.fareIdentifier === 'SPECIAL_RETURN')?.msri;
+      specialReturnReturn.forEach((returnFlight) => {
+        const returnSri = returnFlight.totalPriceList.find(
+          (price) => price.fareIdentifier === "SPECIAL_RETURN"
+        )?.sri;
+        const returnMsri = returnFlight.totalPriceList.find(
+          (price) => price.fareIdentifier === "SPECIAL_RETURN"
+        )?.msri;
 
         if (
           (!onwardSri && !onwardMsri && !returnSri && !returnMsri) ||
@@ -468,29 +490,39 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
       setIsLoading(true);
       setError(null);
       try {
-        let filteredOnwardFlights = applyFilters(onwardProps, 'onward');
-        let filteredReturnFlights = applyFilters(returnProps, 'return');
-        
+        let filteredOnwardFlights = applyFilters(onwardProps, "onward");
+        let filteredReturnFlights = applyFilters(returnProps, "return");
+
         if (filters.specialReturn) {
-          const specialReturnPairs = applySpecialReturnFilter(filteredOnwardFlights, filteredReturnFlights);
-          filteredOnwardFlights = specialReturnPairs.map(pair => pair.onward);
-          filteredReturnFlights = specialReturnPairs.map(pair => pair.return);
+          const specialReturnPairs = applySpecialReturnFilter(
+            filteredOnwardFlights,
+            filteredReturnFlights
+          );
+          filteredOnwardFlights = specialReturnPairs.map((pair) => pair.onward);
+          filteredReturnFlights = specialReturnPairs.map((pair) => pair.return);
         }
-  
-        console.log(filteredOnwardFlights, "filtered onward flights", filteredReturnFlights, "filtered return flights");
-        
+
+        console.log(
+          filteredOnwardFlights,
+          "filtered onward flights",
+          filteredReturnFlights,
+          "filtered return flights"
+        );
+
         setFilteredOnward(filteredOnwardFlights);
         setFilteredReturn(filteredReturnFlights);
       } catch (err) {
-        console.error('Error filtering flights:', err);
-        setError('An error occurred while loading flight information. Please try again.');
+        console.error("Error filtering flights:", err);
+        setError(
+          "An error occurred while loading flight information. Please try again."
+        );
       } finally {
         setIsLoading(false);
-        setSelectedOnwardFlight(null); 
-        setSelectedReturnFlight(null); 
+        setSelectedOnwardFlight(null);
+        setSelectedReturnFlight(null);
       }
     };
-  
+
     fetchAndFilterFlights();
   }, [filters, onwardProps, returnProps]);
 
@@ -506,23 +538,31 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
     if (isLoading) {
       return <div>Loading flights...</div>;
     }
-  
+
     if (error) {
       return <div className="text-red-500">{error}</div>;
     }
-  
+
     if (!Array.isArray(flights) || flights.length === 0) {
       return <div>No flights available for the selected route.</div>;
     }
-  
+
     return (
       <div>
         {flights.map((flight, index) => (
-          <FlightDetailsCard 
-            key={index} 
-            flightDetails={flight} 
-            isSelected={direction === 'onward' ? selectedOnwardFlight?.sI === flight.sI : selectedReturnFlight?.sI === flight.sI} 
-            onSelect={(priceIndex) => direction === 'onward' ? handleSelectOnwardFlight(flight, priceIndex) : handleSelectReturnFlight(flight, priceIndex)} 
+          <FlightDetailsCard
+            key={index}
+            flightDetails={flight}
+            isSelected={
+              direction === "onward"
+                ? selectedOnwardFlight?.sI === flight.sI
+                : selectedReturnFlight?.sI === flight.sI
+            }
+            onSelect={(priceIndex) =>
+              direction === "onward"
+                ? handleSelectOnwardFlight(flight, priceIndex)
+                : handleSelectReturnFlight(flight, priceIndex)
+            }
           />
         ))}
       </div>
@@ -535,25 +575,50 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
       const arrivalCity = flights[0].sI[0].aa.city;
       return `${departureCity} - ${arrivalCity}`;
     }
-    return '';
+    return "";
   };
 
   const calculateTotalPrice = () => {
-    const onwardPrice = selectedOnwardFlight ? selectedOnwardFlight.totalPriceList[selectedOnwardFlight.selectedPriceIndex]?.fd?.ADULT.fC.TF : 0;
-    const returnPrice = selectedReturnFlight ? selectedReturnFlight.totalPriceList[selectedReturnFlight.selectedPriceIndex]?.fd?.ADULT.fC.TF : 0;
+    const onwardPrice = selectedOnwardFlight
+      ? selectedOnwardFlight.totalPriceList[
+          selectedOnwardFlight.selectedPriceIndex
+        ]?.fd?.ADULT.fC.TF
+      : 0;
+    const returnPrice = selectedReturnFlight
+      ? selectedReturnFlight.totalPriceList[
+          selectedReturnFlight.selectedPriceIndex
+        ]?.fd?.ADULT.fC.TF
+      : 0;
     return onwardPrice + returnPrice;
   };
 
-
   const handleBooking = () => {
-  
-    console.log(selectedReturnFlight.totalPriceList,selectedOnwardFlight)
-    const returnFlight=selectedReturnFlight?.totalPriceList[selectedReturnFlight.selectedPriceIndex].id
-    const onwardFlight=selectedOnwardFlight?.totalPriceList[selectedOnwardFlight.selectedPriceIndex].id
+    if (!selectedOnwardFlight || !selectedReturnFlight) {
+      ReactToast("Please select both onward and return flight");
+      return;
+    }
 
-    const data =[{return:selectedReturnFlight.sI,returnFlight},{onward:selectedReturnFlight.sI,onwardFlight}]
-  console.log(data)
-   
+    const returnFlight =
+      selectedReturnFlight.totalPriceList[
+        selectedReturnFlight.selectedPriceIndex
+      ].id;
+    const onwardFlight =
+      selectedOnwardFlight.totalPriceList[
+        selectedOnwardFlight.selectedPriceIndex
+      ].id;
+    const data = [
+      {
+        returnFlightDetails: selectedReturnFlight.sI,
+        priceId: returnFlight,
+      },
+      {
+        onwardFlightDetails: selectedOnwardFlight.sI,
+        priceId: onwardFlight,
+      },
+    ];
+    console.log(data);
+
+    navigate("/book-flight", { state: { bookings: data } });
   };
 
   return (
@@ -567,21 +632,33 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
         setActiveDirection={setActiveDirection}
       />
       <div className="flex flex-col md:p-4 md:w-3/4">
-        <div className='flex'>
-          <div className='w-1/2'> <h2 className="text-xl font-semibold mb-2">{getRoute(filteredOnward)}</h2></div>
-          <div className='w-1/2'> <h2 className="text-xl font-semibold mb-2">{getRoute(filteredReturn)}</h2></div>
+        <div className="flex">
+          <div className="w-1/2">
+            {" "}
+            <h2 className="text-sm text-center md:text-xl font-semibold mb-2">
+              {getRoute(filteredOnward)}
+            </h2>
+          </div>
+          <div className="w-1/2">
+            {" "}
+            <h2 className="text-sm text-center md:text-xl font-semibold mb-2">
+              {getRoute(filteredReturn)}
+            </h2>
+          </div>
         </div>
         <div className="flex h-[850px] overflow-y-auto no-scroll">
           <div className="w-1/2 md:pr-2">
-            {renderFlightSection(filteredOnward, 'onward')}
+            {renderFlightSection(filteredOnward, "onward")}
           </div>
           <div className="w-1/2 md:pl-2">
-            {renderFlightSection(filteredReturn, 'return')}
+            {renderFlightSection(filteredReturn, "return")}
           </div>
         </div>
       </div>
       <BookingCard
-        selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(Boolean)}
+        selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(
+          Boolean
+        )}
         totalPrice={calculateTotalPrice()}
         onBook={() => handleBooking()}
       />
@@ -590,4 +667,3 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
 };
 
 export default RoundTrip;
-

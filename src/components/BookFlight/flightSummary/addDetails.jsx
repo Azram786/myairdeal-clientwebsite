@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import TravellersDetails from "./travellers";
 import AddonsCard from "./addOns";
 import GstDetails from "./gstDetails";
-import { flightData } from "../Seats/dummy";
+// import { flightData } from "../Seats/dummy"
 
-const AddDetails = () => {
+import { useNavigate } from "react-router-dom";
+
+const AddDetails = ({bookingId,flightData}) => {
   const [passengers, setPassengers] = useState([]);
 
   const [gstDetails, setGstDetails] = useState({
@@ -77,11 +79,6 @@ const AddDetails = () => {
     }));
   };
 
-  const handleProceedToReview = () => {
-    console.log("Passenger data:", passengers);
-    console.log("GST details:", gstDetails);
-  };
-
   return (
     <div className="mx-auto p-2 border border-gray-300 rounded-lg font-poppins">
       <TravellersDetails
@@ -91,6 +88,7 @@ const AddDetails = () => {
         toggleCard={() => toggleCard("travellers")}
       />
       <AddonsCard
+      bookingId={bookingId}
         passengers={passengers}
         setPassengers={setPassengers}
         data={flightData}
@@ -105,7 +103,7 @@ const AddDetails = () => {
       />
       <div className="mt-9 max-w-lg mx-auto flex justify-center items-center">
         <button
-          onClick={handleProceedToReview}
+          onClick={""}
           className="bg-[#007ec4] w-full text-white px-4 py-2 rounded"
         >
           Proceed To Review

@@ -4,8 +4,13 @@ import SeatMap from "../Seats/seatsMaps";
 import { booking } from "../Seats/dummy";
 import { ApiData } from "../dummy-meal";
 
-const SeatSelection = ({ passengers, setPassengers, flightReviewData }) => {
-  console.log(setPassengers, "helo=====================");
+const SeatSelection = ({
+  passengers,
+  setPassengers,
+  flightReviewData,
+  seatMapData,
+}) => {
+  console.log(flightReviewData, "helo=====================");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const updateSeatSelection = (passengerIndex, seatInfo) => {
@@ -59,16 +64,20 @@ const SeatSelection = ({ passengers, setPassengers, flightReviewData }) => {
                   onClose={() => setIsModalOpen(false)}
                   title="Your booking is protected by MY AIR DEAL"
                 >
-                  <SeatMap
-                    setModalClose={setIsModalOpen}
-                    Passengers={passengers}
-                    flightData={flightReviewData}
-                    booking={booking}
-                    onSeatSelect={(index, seatInfo) =>
-                      updateSeatSelection(index, seatInfo)
-                    }
-                    flightId={flightReviewData?.tripInfos[0]?.sI[0]?.id}
-                  />
+                  {!seatMapData ? (
+                    <div>Seat Map Not avilable</div>
+                  ) : (
+                    <SeatMap
+                      setModalClose={setIsModalOpen}
+                      Passengers={passengers}
+                      flightData={flightReviewData}
+                      booking={seatMapData}
+                      onSeatSelect={(index, seatInfo) =>
+                        updateSeatSelection(index, seatInfo)
+                      }
+                      flightId={flightReviewData?.tripInfos[0]?.sI[0]?.id}
+                    />
+                  )}
                 </Modal>
               </div>
             </>

@@ -18,15 +18,9 @@ const FlightList = () => {
       },
       routeInfos: [
         {
-          fromCityOrAirport: { code: "BLR" },
-          toCityOrAirport: { code: "BOM" },
-          travelDate: "2024-07-29",
-        },
-
-        {
-          fromCityOrAirport: { code: "BOM" },
-          toCityOrAirport: { code: "DEL" },
-          travelDate: "2024-08-09",
+          fromCityOrAirport: { code: "DEL" },
+          toCityOrAirport: { code: "DXB" },
+          travelDate: "2024-08-10",
         },
       ],
       searchModifiers: {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import SubmitAmendment from "./SubmitAmendment";
 
@@ -7,58 +8,41 @@ const TicketLinks = ({ singleBookingData }) => {
   const links = [
     {
       title: "Raise a Ticket",
+      for: 'raise',
       description: "Further contact details can be found at",
     },
     {
       title: "Cancel Ticket",
+      for: 'cancel',
       description: "Further contact details can be found at",
     },
     {
       title: "Check refunds and refund status",
+      for: 'refund',
       description: "Further contact details can be found at",
     },
   ];
-  //state for modal
-  const [modalIsOpen, setModelIsOpen] = useState(false);
 
-  // modal
-  const openModalHandler = () => {
+  const [modalIsOpen, setModelIsOpen] = useState(false);
+  const [screenSize, setScreenSize] = useState();
+  const [selectedLink, setSelectedLink] = useState(null);
+
+  const navigate = useNavigate();
+
+  const openModalHandler = (link) => {
+    setSelectedLink(link);
     setModelIsOpen(true);
   };
-  const [screenSize, setScreenSize] = useState();
 
-  // style for modal
   const style = {
     content: {
-      top:
-        screenSize === "small"
-          ? "50%"
-          : screenSize === "medium"
-          ? "50%"
-          : "50%",
-      left:
-        screenSize === "small"
-          ? "50%"
-          : screenSize === "medium"
-          ? "50%"
-          : "50%",
+      top: "50%",
+      left: "50%",
       transform: "translate(-50%, -50%)",
-      width:
-        screenSize === "small"
-          ? "80vw"
-          : screenSize === "medium"
-          ? "80%"
-          : "80%",
-      height:
-        screenSize === "small"
-          ? "70vh"
-          : screenSize === "medium"
-          ? "60%"
-          : "60%",
-
+      width: screenSize === "small" ? "80vw" : "80%",
+      height: screenSize === "small" ? "70vh" : "60%",
       border: "1px solid gray",
       boxShadow: "0 4px 8px gray",
-      // padding: '20px',
       borderRadius: "10px",
     },
     overlay: {
@@ -66,7 +50,6 @@ const TicketLinks = ({ singleBookingData }) => {
     },
   };
 
-  //  updating screenSize state
   const updateScreenSize = () => {
     if (window.innerWidth < 640) {
       setScreenSize("small");
@@ -85,17 +68,26 @@ const TicketLinks = ({ singleBookingData }) => {
       window.removeEventListener("resize", updateScreenSize);
     };
   }, []);
+
+  const handleButtonClick = (link) => {
+    if (link.for === 'raise') {
+      navigate('/ticket-raising');
+    } else if (link.for === 'cancel') {
+      openModalHandler(link);
+    } else if (link.for === 'refund') {
+      // openModalHandler(link);
+      return null
+    }
+  };
+
   return (
-    <div className="mx-3 flex flex-col gap-4 my-4 ">
+    <div className="mx-3 flex flex-col gap-4 my-4">
       <div className="bg-[#007EC4] text-white font-bold p-4 rounded-md">
         Quick links
       </div>
       {links.map((link, index) => (
-        <div className="flex items-center justify-between bg-blue-100 border-t border-blue-200 rounded-r-lg">
-          <div
-            key={index}
-            className="flex items-center justify-between bg-blue-100 border-t border-blue-200  p-4"
-          >
+        <div key={index} className="flex items-center justify-between bg-blue-100 border-t border-blue-200 rounded-r-lg">
+          <div className="flex items-center justify-between bg-blue-100 border-t border-blue-200 p-4">
             <div>
               <h3 className="text-lg font-semibold">{link.title}</h3>
               <p className="text-sm text-gray-700">{link.description}</p>
@@ -103,7 +95,7 @@ const TicketLinks = ({ singleBookingData }) => {
           </div>
           <button
             className="bg-[#007EC4] h-full px-8 text-white rounded-r-lg"
-            onClick={openModalHandler}
+            onClick={() => handleButtonClick(link)}
           >
             <FaArrowRight className="text-xl" />
           </button>
@@ -122,3 +114,4 @@ const TicketLinks = ({ singleBookingData }) => {
 };
 
 export default TicketLinks;
+

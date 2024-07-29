@@ -13,18 +13,28 @@ import Review from "./Review";
 import AddDetails from "./flightSummary/addDetails";
 import { ApiData } from "./dummy-meal";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const FlightSummary = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState(null);
   const [Loading, setLoading] = useState(false);
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const location = useLocation();
+  const { bookings } = location.state || {};
+
+  console.log(bookings, "Helll y");
+  let bookingArray = [];
+
+  bookings.map((item) => {
+    bookingArray.push(item.priceId);
+  });
+
+  console.log(bookingArray);
 
   const [seatMapData, setSeatMapData] = useState(null); // For seat map API
-
-  // const handleSaveAndContinue = () => {
-  //   setCurrentStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
-  // };
 
   const handleStepClick = (step) => {
     if (step <= currentStep) {
@@ -34,106 +44,50 @@ const FlightSummary = () => {
 
   const getData = async () => {
     setLoading(true);
-    try {
-      const response = await axios.post(
-        `https://myairdeal-backend.onrender.com/booking/review-price`,
-        {
-          priceIds: ["12-15-2-10-5158976950_0DELDXBAI929~8686031097679862"],
-        }
-      );
-      setData(response.data);
-    } catch (error) {
-      console.error(error.response.data.errors);
-    } finally {
-      setIsSeatMapLoading(false);
-    }
+    await axios
+      .post(`https://myairdeal-backend.onrender.com/booking/review-price`, {
+        priceIds: bookingArray,
+      })
+      .then((res) => {
+        setLoading(false);
+        console.log(res.data, "response datattata");
+        setData(res.data);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
   };
 
-  const getSeatMapData = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.post(
-        `https://myairdeal-backend.onrender.com/booking/seat-map`,
-        {
-          // Add any required parameters here
-        }
-      );
-      setSeatMapData(response.data);
-    } catch (error) {
-      console.error(error.response.data.errors);
-    } finally {
-      setIsSeatMapLoading(false);
-    }
-  };
+  useEffect(() => {
+    getData();
+  }, []);
 
-  const handleSaveAndContinue = () => {
+  //  Seat Map API Call  //
+
+  const handleSaveAndContinue = async () => {
     setCurrentStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
-    getSeatMapData();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.post(
+        "https://myairdeal-backend.onrender.com/booking/seat-map",
+        {
+          bookingId: "TJS118801029248",
+        }
+      );
+
+      setSeatMapData(response.data);
+      console.log("Seat Map Data:", response.data);
+    } catch (error) {
+      setError(error.message);
+      console.error("SeatMapError:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // // Fetch data from API
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios('https://your-api-endpoint.com/flight-data');
-  //       const data = response.data;
-
-  //       const details = data.tripInfos.flatMap((trip) =>
-  //         trip.sI.map((segment) => ({
-  //           airline: segment.fD.aI.name,
-  //           flightNumber: `${segment.fD.aI.code}-${segment.fD.fN}`,
-  //           departure: segment.da.city,
-  //           arrival: segment.aa.city,
-  //           departureTime: new Date(segment.dt).toLocaleTimeString([], {
-  //             hour: "2-digit",
-  //             minute: "2-digit",
-  //             hour12: true,
-  //           }),
-  //           arrivalTime: new Date(segment.at).toLocaleTimeString([], {
-  //             hour: "2-digit",
-  //             minute: "2-digit",
-  //             hour12: true,
-  //           }),
-  //         }))
-  //       );
-  //       setFlightDetails(details);
-  //       setTaxesExpanded(data.tripInfos.map(() => false));
-  //       setAmountExpanded(data.tripInfos.map(() => false));
-  //     } catch (error) {
-  //       console.error("Error fetching flight data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  //   //Store The Data in Iternary File
-  //   useEffect(() => {
-  //     if (ApiData && ApiData.tripInfos) {
-  //       const details = ApiData.tripInfos.flatMap((trip) =>
-  //         trip.sI.map((segment) => ({
-  //           airline: segment.fD.aI.name,
-  //           flightNumber: `${segment.fD.aI.code}-${segment.fD.fN}`,
-  //           departure: segment.da.city,
-  //           arrival: segment.aa.city,
-  //           departureTime: new Date(segment.dt).toLocaleTimeString([], {
-  //             hour: "2-digit",
-  //             minute: "2-digit",
-  //             hour12: true,
-  //           }),
-  //           arrivalTime: new Date(segment.at).toLocaleTimeString([], {
-  //             hour: "2-digit",
-  //             minute: "2-digit",
-  //             hour12: true,
-  //           }),
-  //         }))
-  //       );
-  //       setFlightDetails(details);
-  //       console.log("Flight details set:", details);
-  //     }
-  //   }, []);
-
-  // const [flightDetails, setFlightDetails] = useState([]);
   //Price
 
   const [taxesExpanded, setTaxesExpanded] = useState(
@@ -195,7 +149,7 @@ const FlightSummary = () => {
   }
 
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen">
       {Loading ? (
         <div>Loading...</div>
       ) : (
@@ -390,7 +344,11 @@ const FlightSummary = () => {
                   </div>
                 </>
               ) : currentStep === 1 ? (
-                <AddDetails Step={handleSaveAndContinue} />
+                <AddDetails
+                  bookingId={data?.bookingId}
+                  Step={handleSaveAndContinue}
+                  flightData={data}
+                />
               ) : (
                 <Review />
               )}

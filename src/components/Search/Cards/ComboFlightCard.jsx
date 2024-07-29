@@ -100,6 +100,8 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 
+import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
+
 const ComboFlightCard = ({ logo, flightDetails, onBooking }) => {
   const [showAllPrices, setShowAllPrices] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState(0);
@@ -133,14 +135,11 @@ const ComboFlightCard = ({ logo, flightDetails, onBooking }) => {
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between py-4 border-b"
+                className="flex flex-col md:flex-row items-center justify-between py-4 border-b"
               >
                 <div className="flex items-center">
-                  <img
-                    src={logo}
-                    alt="Airline logo"
-                    className="w-10 h-10 mr-4"
-                  />
+                <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png` }  onError={(e) => e.currentTarget.src = defaultAirline} alt={segment?.fD?.aI?.code} className="w-10 h-10 mr-4" />
+
                   <div>
                     <div className="font-bold">
                       {segment.fD.aI.name} {segment.fD.fN}
@@ -292,11 +291,7 @@ const ComboFlightCard = ({ logo, flightDetails, onBooking }) => {
               <React.Fragment key={flight.id}>
                 <div className="flex justify-between">
                   <div className="flex items-center mb-4 md:mb-0">
-                    <img
-                      src={logo}
-                      alt="Airline Logo"
-                      className="w-16 h-16 mr-6"
-                    />
+                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${flight.fD.aI.code}.png` }  onError={(e) => e.currentTarget.src = defaultAirline} alt={flight?.fD?.aI?.code} className="w-10 h-10 mr-4" />
                     <div>
                       <h1 className="text-lg font-bold">{flight.da.code}</h1>
                       <h1 className="text-sm text-gray-500">
@@ -396,7 +391,7 @@ const ComboFlightCard = ({ logo, flightDetails, onBooking }) => {
         </div>
         <div>
           {showDetails && (
-            <div className="mt-4 border-t border-gray-200 pt-4">
+            <div className="mt-4 border-t overflow-x-auto border-gray-200 pt-4">
               <div className="mb-2 flex">
                 {[
                   "Flight Details",

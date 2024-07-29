@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import BagAndMeal from "./bagAndMeal";
 import SeatSelection from "./seatSelection";
+import axios from "axios";
 
 const AddonsCard = ({
   passengers,
@@ -9,8 +10,36 @@ const AddonsCard = ({
   expanded,
   toggleCard,
   data,
+  bookingId,
 }) => {
   const [activeButton, setActiveButton] = useState("");
+  const [seatMapData, setSeatMapData] = useState(null);
+  const [checkLoading, setCheckLoading] = useState(false);
+  const [Errors, setErrors] = useState(null);
+
+  console.log(data, "Hello");
+
+  const checkSeatSelection = async () => {
+    setCheckLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://myairdeal-backend.onrender.com/booking/seat-map",
+        {
+          bookingId,
+        }
+      );
+      if (response.status == 200) {
+        setSeatMapData(response.data);
+      }
+      console.log("Seat Map Data:", response);
+      setCheckLoading(false);
+    } catch (error) {
+      console.error("SeatMapError:", error);
+      setCheckLoading(false);
+      setErrors(error?.response?.data?.errors);
+    }
+  };
 
   console.log(passengers, "admones===");
   return (
@@ -46,6 +75,9 @@ const AddonsCard = ({
             >
               Seat Selection
             </button>
+            <button onClick={checkSeatSelection} disabled={checkLoading}>
+              {checkLoading ? "Checking..." : "Check Seat Availability"}
+            </button>
             <button
               onClick={() => setActiveButton("addBagAndMeal")}
               className={`px-4 py-2 rounded ${
@@ -57,8 +89,15 @@ const AddonsCard = ({
               Add Bag and Meal
             </button>
           </div>
+          <div>
+            {Errors?.map((item) => (
+              <div>Message : {item?.message}</div>
+            ))}
+            <div></div>
+          </div>
           {activeButton === "seatSelection" && (
             <SeatSelection
+              seatMapData={seatMapData}
               passengers={passengers}
               setPassengers={setPassengers}
               flightReviewData={data}

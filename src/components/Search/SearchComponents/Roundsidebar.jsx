@@ -199,25 +199,28 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
 
   return (
     <div className="flex flex-row  md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
-      <div className="p-4 grid  gap-2 grid-cols-2 w-full md:grid-cols-1 ">
-        <div className="mb-6 border-b border-gray-300 pb-4">
-          <div className="flex flex-col md:flex-row justify-center items-center mb-4">
-            <button
-              className={`px-4 py-2 ${activeDirection === "onward" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-              onClick={() => setActiveDirection("onward")}
-            >
-              {onwardData[0]?.sI[0]?.da?.code} - {onwardData[0]?.sI[0]?.aa?.code}
-            </button>
-            <button
-              className={`px-4 py-2 ${activeDirection === "return" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-              onClick={() => setActiveDirection("return")}
-            >
-              {returnData[0]?.sI[0]?.da?.code} - {returnData[0]?.sI[0]?.aa?.code}
-            </button>
+      <div className="p-4 grid  gap-2 grid-cols-1 w-full md:grid-cols-1 ">
+        <div className='flex flex-col'>
+          <div className="mb-6 border-b border-gray-300 pb-4">
+            <div className="flex flex-col md:flex-row justify-center items-center mb-4">
+              <button
+                className={`px-4 py-2 ${activeDirection === "onward" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                onClick={() => setActiveDirection("onward")}
+              >
+                {onwardData[0]?.sI[0]?.da?.code} - {onwardData[0]?.sI[0]?.aa?.code}
+              </button>
+              <button
+                className={`px-4 py-2 ${activeDirection === "return" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                onClick={() => setActiveDirection("return")}
+              >
+                {returnData[0]?.sI[0]?.da?.code} - {returnData[0]?.sI[0]?.aa?.code}
+              </button>
+            </div>
           </div>
+          {renderPriceSection()}
         </div>
 
-        {renderPriceSection()}
+
         {renderStopsSection()}
         {renderTimeSection('departureTime', 'Departure Time')}
         {renderTimeSection('arrivalTime', 'Arrival Time')}

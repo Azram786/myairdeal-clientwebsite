@@ -589,8 +589,11 @@
 // export default FlightDetailsCard;
 
 
+
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { FaPlane, FaChevronDown, FaChevronUp, FaInfoCircle } from "react-icons/fa";
+import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
 
 const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex, onSelect }) => {
   const [showAllPrices, setShowAllPrices] = useState(false);
@@ -606,6 +609,10 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
 
   let data;
   let priceList = [];
+
+ 
+
+  
 
   if (!flightDetails) {
     return <div>Loading flights...</div>;
@@ -671,9 +678,9 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
         return (
           <div className="w-full">
             {data.map((segment, index) => (
-              <div key={index} className="flex items-center justify-between py-4 border-b">
+              <div key={index} className=" flex flex-col md:flex-row items-center justify-between py-4 border-b">
                 <div className="flex items-center">
-                  <img src={logo} alt="Airline logo" className="w-10 h-10 mr-4" />
+                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png` }  onError={(e) => e.currentTarget.src = defaultAirline} alt={segment?.fD?.aI?.code} className="w-10 h-10 mr-4" />
                   <div>
                     <div className="font-bold">{segment.fD.aI.name} {segment.fD.fN}</div>
                     <div className="text-sm text-gray-500">
@@ -769,9 +776,15 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
 
   return (
     <div className="border flex flex-col p-4 rounded-lg m-4 bg-white shadow-md">
+      {console.log(startSegment.fD.aI.code,"star")}
       <div className="flex flex-col md:flex-row justify-between items-center mb-2">
         <div className="flex items-center mb-4 md:mb-0">
-          {logo && <img src={logo} alt="Airline logo" className="w-16 h-16 mr-6" />}
+        <img
+  src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+  onError={(e) => e.currentTarget.src = defaultAirline}
+  alt={startSegment?.fD?.aI?.code}
+  className="w-16 h-16 mr-6"
+/>
           <div>
             <h1 className="text-lg font-bold">{startSegment?.da?.code}</h1>
             <h1 className="text-sm text-gray-500">{startSegment?.da?.city}</h1>
@@ -779,34 +792,34 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
           </div>
         </div>
         <div className="flex items-center mb-4 md:mb-0">
-          <div className="border-t border-dashed border-gray-400 w-10 md:w-28"></div>
+          <div className="border-t hidden md:flex border-dashed border-gray-400 w-10 md:w-28"></div>
           <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
             <span>{convertToHoursMinutes(totalDuration)}</span>
             <FaPlane className="mx-2 text-blue-800 text-3xl" />
             <div className="flex items-center">
                {startSegment.stops > 0 ? (
               <span>
-                {startSegment.stops} stop{startSegment.stops > 1 ? 's' : ''}
-                {startSegment.so && startSegment.so[0] && ` via ${startSegment.so[0].city}`}
+                {startSegment?.stops} stop{startSegment?.stops > 1 ? 's' : ''}
+                {startSegment?.so && startSegment?.so[0] && ` via ${startSegment?.so[0].city}`}
               </span>
             ) : (
               <span>Non-stop flight</span>
             )}
             </div>
           </div>
-          <div className="border-t border-dashed border-gray-400 w-10 md:w-28"></div>
+          <div className="border-t hidden md:flex border-dashed border-gray-400 w-10 md:w-28"></div>
         </div>
         <div className="flex items-center mb-4 md:mb-0">
           <div>
-            <h1 className="text-lg font-bold">{endSegment.aa.code}</h1>
-            <h1 className="text-sm text-gray-500">{endSegment.aa.city}</h1>
+            <h1 className="text-lg font-bold">{endSegment?.aa?.code}</h1>
+            <h1 className="text-sm text-gray-500">{endSegment?.aa?.city}</h1>
             <h1 className="text-sm">{arrivalTime}</h1>
           </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row mt-2 justify-between items-center text-center">
         <div className="flex flex-col justify-center items-start">
-        {displayedPrices.map((price, index) => (
+        {displayedPrices?.map((price, index) => (
             <div 
               key={index}
               onClick={() => handlePriceSelection(index)}
@@ -834,7 +847,7 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
               </div>
             </div>
           ))}
-          {priceList.length > 1 && (
+          {priceList?.length > 1 && (
             <button
               onClick={() => setShowAllPrices(!showAllPrices)}
               className="text-blue-500 text-sm mt-2 flex items-center"
@@ -868,7 +881,7 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
       </div>
 
       {showDetails && (
-        <div className="mt-4 border-t border-gray-200 pt-4">
+        <div className="mt-4 border-t overflow-x-auto border-gray-200 pt-4">
           <div className="mb-2 flex">
             {["Flight Details", "Fare Details", "Fare Rules", "Baggage Information"].map(
               (tab) => (

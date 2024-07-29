@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import PassportDetails from "./passportDetails";
@@ -16,21 +16,26 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
     trigger,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
     defaultValues: formData,
   });
 
+  // Reset form when passenger data changes
+  useEffect(() => {
+    reset(formData);
+  }, [passenger, reset, formData]);
+
   const departureDate = "2024-08-22T17:10";
 
   const handleInputChange = async (name, value) => {
-    console.log(name, value, "heoo");
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    setValue(name, value);
-    await trigger(name);
-    updatePassenger(index, name, value);
+    setValue(name, value); // Update form value
+    await trigger(name); // Validate field
+    updatePassenger(index, name, value); // Notify parent of change
   };
 
   const calculateDate = (years) => {
@@ -40,23 +45,15 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
   };
 
   const getMaxDate = (passengerType) => {
-    if (passengerType === "ADULT") {
-      return calculateDate(12);
-    } else if (passengerType === "CHILD") {
-      return calculateDate(2);
-    } else if (passengerType === "INFANT") {
-      return calculateDate(0);
-    }
+    if (passengerType === "ADULT") return calculateDate(12);
+    if (passengerType === "CHILD") return calculateDate(2);
+    if (passengerType === "INFANT") return calculateDate(0);
   };
 
   const getMinDate = (passengerType) => {
-    if (passengerType === "ADULT") {
-      return calculateDate(60);
-    } else if (passengerType === "CHILD") {
-      return calculateDate(12);
-    } else if (passengerType === "INFANT") {
-      return calculateDate(2);
-    }
+    if (passengerType === "ADULT") return calculateDate(60);
+    if (passengerType === "CHILD") return calculateDate(12);
+    if (passengerType === "INFANT") return calculateDate(2);
   };
 
   return (
@@ -195,7 +192,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                 value={formData.dob}
                 className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
               />
-              <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 pointer-events-none">
+              <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
                 Date of Birth
               </label>
               {errors.dob && (
@@ -206,24 +203,11 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
             </div>
           </div>
         </div>
-
-        {/* passport information */}
-        <div>
-          <PassportDetails
-            passenger={passenger}
-            index={index}
-            updatePassenger={updatePassenger}
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center">
-        <button
-          type="button"
-          className="bg-blue-500 text-white text-xs py-2 px-4 rounded-md w-1/2 h-10"
-        >
-          Select from history
-        </button>
+        <PassportDetails
+          passenger={passenger}
+          index={index}
+          updatePassenger={updatePassenger}
+        />
       </div>
     </div>
   );
