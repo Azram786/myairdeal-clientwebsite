@@ -3,6 +3,7 @@ import { FaTimes } from "react-icons/fa";
 import ReactToast from "../util/ReactToast";
 
 const PassengerSelector = ({ onClose, formData, setFormData }) => {
+  console.log({ formData, index: 1 })
   const handleCountChange = (type, count) => {
     if (type === "adult") {
       if (formData.CHILD + count <= 9 && formData.INFANT <= count)
@@ -15,8 +16,8 @@ const PassengerSelector = ({ onClose, formData, setFormData }) => {
           "you can only book 9 seats and number of infant must be lower than adult"
         );
     }
-    console.log(type, "type", count, formData.ADULT);
-    if (type === "children") {
+
+    if (type === "children" && formData.pft === "REGULAR") {
       if (Number(formData.ADULT) + count <= 9)
         setFormData((prev) => ({
           ...prev,
@@ -24,8 +25,8 @@ const PassengerSelector = ({ onClose, formData, setFormData }) => {
         }));
       else ReactToast(" you can only book 9 seats");
     }
-    if (type === "infant") {
-      console.log("nithin");
+    if (type === "infant" && formData.pft === "REGULAR") {
+
       if (count <= formData.ADULT)
         setFormData((prev) => ({
           ...prev,
@@ -50,11 +51,10 @@ const PassengerSelector = ({ onClose, formData, setFormData }) => {
           <button
             key={index + start}
             onClick={() => handleCountChange(type, index + start)}
-            className={`${
-              count == index + start
-                ? "bg-[#1F61BC] text-white"
-                : "bg-gray-200 text-black"
-            } rounded p-1 w-8`}
+            className={`${count == index + start
+              ? "bg-[#1F61BC] text-white"
+              : "bg-gray-200 text-black"
+              } rounded p-1 w-8`}
           >
             {index + start}
           </button>
@@ -102,11 +102,10 @@ const PassengerSelector = ({ onClose, formData, setFormData }) => {
                 >
                   <span className="text-[.8rem]">{classType}</span>
                   <span
-                    className={`${
-                      formData.cabinClass === classType
-                        ? "bg-[#1F61BC] border-black border"
-                        : "border-black border"
-                    } w-5 h-5 rounded-full flex items-center justify-center`}
+                    className={`${formData.cabinClass === classType
+                      ? "bg-[#1F61BC] border-black border"
+                      : "border-black border"
+                      } w-5 h-5 rounded-full flex items-center justify-center`}
                   >
                     {formData.cabinClass === classType && (
                       <div className="w-3 h-3 rounded-full"></div>

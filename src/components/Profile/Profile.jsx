@@ -3,8 +3,12 @@ import world from '../../assets/auth/world.png';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import ReactFlagsSelect from 'react-flags-select';
+import Header from '../Home/Header';
+import Footer from '../Home/Footer';
+import { useNavigate } from 'react-router-dom';
+import Spinner from './Spinner';
 // import 'react-flags-select/css/react-flags-select.css';
-
+import { motion } from 'framer-motion';
 // Create a list of countries with their dial codes and country codes.
 const countries = [
     { countryCode: 'AF', dialCode: '93', countryName: 'Afghanistan' },
@@ -244,8 +248,20 @@ const countries = [
     { countryCode: 'ZW', dialCode: '263', countryName: 'Zimbabwe' },
 ];
 
+const spinnerVariants = {
+    animate: {
+        rotate: [0, 360],
+        transition: {
+            repeat: Infinity,
+            duration: 1,
+            ease: 'linear'
+        }
+    }
+};
 
 const UserProfile = () => {
+    const [loading, setLoading] = useState(true)
+    const [savingLoading, setSavingLoading] = useState(false)
     const { token } = useSelector((state) => state.auth);
 
     const [userData, setUserData] = useState({
@@ -259,7 +275,7 @@ const UserProfile = () => {
             countryName: ''
         },
     });
-
+    const navigate = useNavigate()
     const [isEditing, setIsEditing] = useState(false);
 
     const handleEdit = () => {
@@ -287,7 +303,7 @@ const UserProfile = () => {
 
     const handleSave = async () => {
         try {
-            setIsEditing(false);
+            setSavingLoading(true)
             const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
                 firstName: userData.firstName,
                 lastName: userData.lastName,
@@ -304,13 +320,17 @@ const UserProfile = () => {
             });
 
             console.log(response);
+            setSavingLoading(false)
+            setIsEditing(false);
         } catch (error) {
+            setSavingLoading(false)
             console.log(error.message);
         }
     };
 
     const getProfileData = async () => {
         try {
+            setLoading(true)
             const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -329,8 +349,10 @@ const UserProfile = () => {
                 },
             };
             setUserData(profileData);
+            setLoading(false)
         } catch (error) {
             console.log(error.message);
+            setLoading(false)
         }
     };
 
@@ -338,107 +360,143 @@ const UserProfile = () => {
         getProfileData();
     }, []);
 
+
     return (
-        <div className="px-[6vw]">
-            <div className='flex flex-col border px-[2vw] shadow-lg'>
-                <div className='font-bold h-[10vh] flex items-center text-[1.3rem]'>
-                    My Account
-                </div>
-                <div className="bg-[#284E82] text-white p-6 rounded-lg text-center"
-                    style={{
-                        backgroundImage: `url(${world})`,
-                        backgroundSize: "cover",
-                    }}>
-                    <div className="rounded-full mx-auto mb-4 w-24 h-24 bg-white flex items-center justify-center text-blue-500 text-3xl font-bold">
-                        {userData.firstName.charAt(0)}
-                    </div>
-                    <h1 className="text-2xl font-bold">{userData.firstName} {userData.lastName}</h1>
-                    <p>{userData.phone}</p>
-                </div>
-                <div className="p-6 rounded-b-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-4">Profile</h2>
-                    <div className="flex flex-col gap-4">
-                        <div className='flex'>
-                            <div className="w-1/2 flex flex-col gap-2 h-full">
-                                <label className="text-gray-700 text-sm">First Name</label>
-                                {isEditing ? (
-                                    <input
-                                        type="text"
-                                        value={userData.firstName}
-                                        onChange={(e) => handleChange('firstName', e.target.value)}
-                                        className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
-                                    />
-                                ) : (
-                                    <p className="mt-1 p-2 text-xl font-semibold">{userData.firstName}</p>
-                                )}
+        <>
+            <Header />
+            {loading ? <div className='h-[85vh] w-full flex justify-center items-center '>
+                <Spinner />
+            </div> : <>
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <div className="px-[6vw] my-9">
+                        <div className='flex flex-col border px-[2vw] shadow-lg py-6'>
+
+
+                            <div className='font-bold h-[10vh] flex items-center text-[1.3rem]'>
+                                My Account
                             </div>
-                            <div className="w-1/2 flex flex-col gap-2 h-full">
-                                <label className="text-gray-700 text-sm">Last Name</label>
-                                {isEditing ? (
-                                    <input
-                                        type="text"
-                                        value={userData.lastName}
-                                        onChange={(e) => handleChange('lastName', e.target.value)}
-                                        className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
-                                    />
-                                ) : (
-                                    <p className="mt-1 p-2 text-xl font-semibold">{userData.lastName}</p>
-                                )}
+                            <div className="bg-[#284E82] text-white p-6 rounded-lg text-center"
+                                style={{
+                                    backgroundImage: `url(${world})`,
+                                    backgroundSize: "cover",
+                                }}>
+                                <div className="rounded-full mx-auto mb-4 w-24 h-24 bg-white flex items-center justify-center text-blue-500 text-3xl font-bold uppercase">
+                                    {userData.firstName.charAt(0)}
+                                </div>
+                                <h1 className="text-2xl font-bold uppercase">{userData.firstName} {userData.lastName}</h1>
+                                <p className='font-bold text-xl'>{userData.phone}</p>
                             </div>
+                            <div className='flex justify-center items-center'>
+
+                                <div className="p-6 rounded-b-lg   w-1/2">
+
+                                    <div className="flex  w-full  gap-4     ">
+
+
+                                        <div className='flex w-1/2 items-end flex-col '>
+                                            <div className='flex flex-col w-3/4'>
+                                                <div className=" flex flex-col gap-2 h-full ">
+                                                    <label className="text-gray-700 text-sm">First Name</label>
+                                                    {isEditing ? (
+                                                        <input
+                                                            type="text"
+                                                            value={userData.firstName}
+                                                            onChange={(e) => handleChange('firstName', e.target.value)}
+                                                            className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
+                                                        />
+                                                    ) : (
+                                                        <p className="mt-1 p-2  w-3/4 text-xl font-semibold text-[#1F61BC] uppercase">{userData.firstName}</p>
+                                                    )}
+                                                </div>
+                                                <div className="- flex flex-col gap-2 h-full">
+                                                    <label className="text-gray-700 text-sm">Last Name</label>
+                                                    {isEditing ? (
+                                                        <input
+                                                            type="text"
+                                                            value={userData.lastName}
+                                                            onChange={(e) => handleChange('lastName', e.target.value)}
+                                                            className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
+                                                        />
+                                                    ) : (
+                                                        <p className="mt-1 p-2 w-3/4 text-xl font-semibold text-[#1F61BC] uppercase">{userData.lastName}</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='flex w-1/2 items-end flex-col '>
+                                            <div className='w-3/4  flex flex-col'>
+                                                <div className=" flex flex-col gap-2 h-full">
+                                                    <label className="text-gray-700 text-sm">Country</label>
+                                                    {isEditing ? (
+                                                        <ReactFlagsSelect
+                                                            selected={userData.country.countryCode}
+                                                            onSelect={handleCountryChange}
+                                                            className="w-3/4"
+                                                        />
+                                                    ) : (
+                                                        <p className="mt-1 p-2 w-3/4 text-xl font-semibold text-[#1F61BC] uppercase">{userData.country.countryName} ("+{userData.country.dialCode})</p>
+                                                    )}
+                                                </div>
+                                                <div className=" flex flex-col gap-2 h-full">
+                                                    <label className="text-gray-700 text-sm">Email</label>
+                                                    {isEditing ? (
+                                                        <input
+                                                            type="text"
+                                                            value={userData.email}
+                                                            onChange={(e) => handleChange('email', e.target.value)}
+                                                            className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
+                                                        />
+                                                    ) : (
+                                                        <p className="mt-1 w-3/4 p-2 text-xl font-semibold text-[#1F61BC] uppercase">{userData.email}</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {savingLoading ? <div className='flex justify-center items-center h-full w-full p-4'><motion.div
+                                        className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                                        variants={spinnerVariants}
+                                        animate="animate"
+                                    /></div> : <div className="flex justify-center items-center ">
+                                        {isEditing ? (
+                                            <button
+                                                onClick={handleSave}
+                                                disabled={savingLoading}
+                                                className="bg-white border border-[#284E82] text-[#284E82] px-4 py-2 rounded mt-4"
+                                            >
+                                                Save
+
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={handleEdit}
+                                                className="bg-[white] text-[#284E82] border border-[#284E82] px-4 py-2 rounded mt-4"
+                                            >
+                                                Edit Profile
+                                            </button>
+                                        )}
+                                        <button
+                                            className="bg-white border border-[#284E82] text-[#284E82] px-4 py-2 rounded mt-4 ml-4"
+                                            onClick={() => navigate("/view-booking")}
+                                        >
+                                            View Booking Details
+                                        </button>
+                                    </div>}
+
+                                </div>
+                            </div>
+
                         </div>
-                        <div className='flex'>
-                            <div className="w-1/2 flex flex-col gap-2 h-full">
-                                <label className="text-gray-700 text-sm">Country</label>
-                                {isEditing ? (
-                                    <ReactFlagsSelect
-                                        selected={userData.country.countryCode}
-                                        onSelect={handleCountryChange}
-                                        className="w-3/4"
-                                    />
-                                ) : (
-                                    <p className="mt-1 p-2 text-xl font-semibold">{userData.country.countryName} ({userData.country.dialCode})</p>
-                                )}
-                            </div>
-                            <div className="w-1/2 flex flex-col gap-2 h-full">
-                                <label className="text-gray-700 text-sm">Email</label>
-                                {isEditing ? (
-                                    <input
-                                        type="text"
-                                        value={userData.email}
-                                        onChange={(e) => handleChange('email', e.target.value)}
-                                        className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
-                                    />
-                                ) : (
-                                    <p className="mt-1 p-2 text-xl font-semibold">{userData.email}</p>
-                                )}
-                            </div>
-                        </div>
                     </div>
-                    <div className="flex justify-center items-center">
-                        {isEditing ? (
-                            <button
-                                onClick={handleSave}
-                                className="bg-white border border-[#284E82] text-[#284E82] px-4 py-2 rounded mt-4"
-                            >
-                                Save
-                            </button>
-                        ) : (
-                            <button
-                                onClick={handleEdit}
-                                className="bg-[white] text-[#284E82] border border-[#284E82] px-4 py-2 rounded mt-4"
-                            >
-                                Edit Profile
-                            </button>
-                        )}
-                        <button
-                            className="bg-white border border-[#284E82] text-[#284E82] px-4 py-2 rounded mt-4 ml-4"
-                        >
-                            View Booking Details
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </motion.div>
+
+                <Footer /></>}
+
+        </>
     );
 };
 
