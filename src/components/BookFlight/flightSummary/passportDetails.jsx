@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 const PassportDetails = ({ passenger, index, updatePassenger }) => {
@@ -7,6 +7,7 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
     trigger,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
     defaultValues: {
       passportNumber: passenger?.passportNumber || "",
@@ -16,9 +17,19 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
     },
   });
 
+  // Update form values if passenger prop changes
+  useEffect(() => {
+    reset({
+      passportNumber: passenger?.passportNumber || "",
+      issueDate: passenger?.issueDate || "",
+      expiryDate: passenger?.expiryDate || "",
+      nationality: passenger?.nationality || "",
+    });
+  }, [passenger, reset]);
+
   const handleInputChange = async (name, value) => {
     setValue(name, value);
-    await trigger(name);
+    trigger(name); // Simplify by not awaiting trigger
     updatePassenger(index, name, value);
   };
 
@@ -79,6 +90,7 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
             </span>
           )}
         </div>
+
         <div className="relative p-2">
           <input
             type="date"
@@ -97,6 +109,7 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
             </span>
           )}
         </div>
+
         <div className="relative p-2">
           <input
             type="date"

@@ -7,8 +7,9 @@ import ViewDetailedBooking from "./components/Booking/Pages/ViewDetailedBooking"
 import FlightList from "./components/Search/FlightList";
 import FlightSummaryPage from "./components/BookFlight/FlightSummaryPage";
 import { useSelector } from "react-redux";
-import Profile from './components/Profile/Profile'
-import TicketRaising from "./components/Booking/viewDetailedBooking/TicketRaising";
+import Profile from "./components/Profile/Profile";
+import TicketRaising from "./components/Booking/Pages/TicketRaising";
+import Review from "./components/BookFlight/Review";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -30,7 +31,11 @@ function App() {
           <Route path="/search" element={<FlightList />} />
           <Route path="book-flight" element={<FlightSummaryPage />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/ticket-raising" element={token ?<TicketRaising />: <Login />} />
+          <Route
+            path="/ticket-raising"
+            element={token ? <TicketRaising /> : <Login />}
+          />
+          <Route path="/review" component={Review} />
         </Routes>
       </BrowserRouter>
     </>
