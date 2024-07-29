@@ -19,6 +19,7 @@ import ReactToast from "../util/ReactToast";
 import "react-datepicker/dist/react-datepicker.css";
 
 import formatDate from "../util/DateFormatChanger";
+import { useNavigate } from "react-router-dom";
 const FilterSection = () => {
   const [formData, setFormData] = useState({
     cabinClass: "ECONOMY",
@@ -40,6 +41,8 @@ const FilterSection = () => {
     isConnectingFlight: true,
     pft: "REGULAR",
   });
+
+  const navigate = useNavigate()
 
   // State for dynamically rendering form elements
   const [dynamicFormData, setDynamicFormData] = useState([
@@ -259,17 +262,19 @@ const FilterSection = () => {
         };
       }
       console.log("query", query);
+
       setLoading(true);
-      const data = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}search/flight`,
-        query,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // const data = await axios.post(
+      //   `${import.meta.env.VITE_SERVER_URL}search/flight`,
+      //   query,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
       setLoading(false);
+      navigate(`/search`, { state: { query } })
     } catch (error) {
       setLoading(false);
       console.log(error.message);
