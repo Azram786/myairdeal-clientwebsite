@@ -48,21 +48,21 @@ const ComboSideBar = ({ flights, filters, setFilters,maxPrice }) => {
   };
 
   return (
-    <div className="flex-none w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex-none md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
     <div className="p-4">
       <div className="mb-6 border-b border-gray-300 pb-4">
         <h3 className="text-lg font-semibold mb-2">Price</h3>
         <div className="flex justify-between gap-2">
-          <span>$50</span>
+          <span>₹100</span>
           <input
             type="range"
-            min="50"
+            min="100"
             max={maxPrice}
             value={filters?.maxPrice}
             onChange={handlePriceChange}
             className="flex-1 mr-4 range-slider"
           />
-          <span>${filters?.maxPrice}</span>
+          <span>₹{filters?.maxPrice}</span>
         </div>
       </div>
 

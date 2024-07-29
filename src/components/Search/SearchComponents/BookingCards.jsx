@@ -24,25 +24,56 @@
 //     </div>
 //   );
 
+// import React from "react";
+
+// const BookingCard = ({ selectedFlights, totalPrice, onBook }) => {
+//   return (
+
+//     <div className="fixed grid grid-cols-2 bg-white bottom-0 w-full ">
+//       <h2 className="text-xl font-bold mb-4">Booking Summary</h2>
+//       {selectedFlights.map((flight, index) => (
+//         <div key={index} className="mb-4 flex">
+//           <div className="font-bold mb-2">
+//             {flight.sI[0].da.city} → {flight.sI[0].aa.city}
+//           </div>
+//           <div className="text-sm">
+//             <div>Flight: {flight.sI[0].fD.aI.name} {flight.sI[0].fD.fN}</div>
+//             <div>Price: ${flight.totalPriceList[flight.selectedPriceIndex].fd.ADULT.fC.TF}</div>
+//           </div>
+//         </div>
+//       ))}
+//       <div className="font-bold text-lg mb-4">Total Price: ${totalPrice}</div>
+//       <button onClick={onBook} className="btn btn-primary w-full">Book Now</button>
+//     </div>
+//   );
+// };
+
+// export default BookingCard;
+
 import React from "react";
 
 const BookingCard = ({ selectedFlights, totalPrice, onBook }) => {
   return (
-    <div className="booking-card p-4 border-l">
-      <h2 className="text-xl font-bold mb-4">Booking Summary</h2>
-      {selectedFlights.map((flight, index) => (
-        <div key={index} className="mb-4">
-          <div className="font-bold mb-2">
-            {flight.sI[0].da.city} → {flight.sI[0].aa.city}
+    <div className="fixed items-center md:justify-around flex left-0 px-10 flex-col md:flex-row gap-2 border-t bg-gray-100 bottom-0 w-full p-2 shadow-md">
+      <div className="grid grid-cols-2  md:grid-cols-6 w-[70%] overflow-x-auto no-scroll  gap-2 ">
+        {selectedFlights.map((flight, index) => (
+        
+          <div key={index} className="mb-4 p-1 rounded-md flex border flex-col">
+            <div className="font-bold mb-2">
+              {flight?.sI[0]?.da?.code} → {flight?.sI[0]?.aa?.code}
+            </div>
+            <div className="text-sm">
+              <div>Flight: {flight.sI[0].fD.aI.name} {flight.sI[0]?.fD?.fN}</div>
+            
+              <div>Price: ₹ {flight?.totalPriceList[flight?.selectedPriceIndex]?.fd?.ADULT.fC.TF}</div>
+            </div>
           </div>
-          <div className="text-sm">
-            <div>Flight: {flight.sI[0].fD.aI.name} {flight.sI[0].fD.fN}</div>
-            <div>Price: ${flight.totalPriceList[flight.selectedPriceIndex].fd.ADULT.fC.TF}</div>
-          </div>
-        </div>
-      ))}
-      <div className="font-bold text-lg mb-4">Total Price: ${totalPrice}</div>
-      <button onClick={onBook} className="btn btn-primary w-full">Book Now</button>
+        ))}
+      </div>
+      <div className="">
+        <div className="font-bold text-lg mb-4 col-span-2">Total Price: ₹ {totalPrice}</div>
+        <button onClick={onBook} className="bg-green-500 text-white p-2 rounded-md  col-span-2">Book Now</button>
+      </div>
     </div>
   );
 };
