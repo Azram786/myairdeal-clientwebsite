@@ -30,19 +30,22 @@ const FlightTicket = ({ booking, index, bookingID }) => {
   };
 
   return (
-    <div className="flex justify-between items-end p-4 border rounded-lg shadow-md flex-row  w-full">
-      <div className="w-[75%] justify-between flex flex-col gap-2 b ">
+    <div className="flex justify-between items-end p-6 border rounded-lg  flex-row ">
+      <div className="w-[75%] justify-between flex flex-col gap-2   ">
         {booking?.data?.itemInfos?.AIR?.tripInfos?.map((trip, index) => (
-          <div className="flex justify-between items-center border p-3  w-full border-slate-400  gap-2">
-            <div className="flex w-[70%] ">
-              <img
-                src={FlightLogo}
-                className="h-16 w-16 rounded-lg p-1 object-contain mr-4 border border-blue-700"
-              />
+          <div className="flex   items-center border p-5     gap-2">
+            <div className="flex w-[70%]  ">
+              <div className="">
 
-              <div className=" flex  w-full gap-3 items-center ">
-                <div className="flex justify-center items-center gap-1 w-[60%]  ">
-                  <div>
+                <img
+                  src={FlightLogo}
+                  className="h-16 w-16 rounded-lg p-1 object-contain mr-4 border border-blue-700"
+                />
+              </div>
+
+              <div className=" flex  w-full gap-3  justify-between items-center ">
+                <div className="flex justify-center  items-center gap-1 w-[60%]  ">
+                  <div className="w-full">
                     <div className="text-lg font-semibold flex ">
                       {trip.sI[0].da.code}-{" "}
                       <span className="text-[1rem]">{trip.sI[0].da.name}</span>
@@ -78,7 +81,7 @@ const FlightTicket = ({ booking, index, bookingID }) => {
               </div>
             </div>
 
-            <div className="flex items-center w-[30%]   space-x-6 ">
+            <div className="flex items-center  w-[30%]   space-x-6 ">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-1">
                   <div className="text-[1.5rem] text-sky-600 bg-slate-300 p-1 rounded-md">
