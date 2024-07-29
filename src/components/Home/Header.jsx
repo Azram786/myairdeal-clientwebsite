@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FiMenu, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../store/slices/aut.slice";
+import { logout, setUser } from "../../store/slices/aut.slice";
 import main_logo from "../../assets/home/logo/main_logo.png";
 import axios from "axios";
 import { IoPersonCircleOutline } from "react-icons/io5";
@@ -15,6 +15,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
+
   const [userData, setUserData] = useState({
     firstName: '',
     lastName: '',
@@ -60,6 +61,7 @@ const Header = () => {
         },
       };
       setUserData(profileData);
+      dispatch(setUser(profileData))
     } catch (error) {
       console.log(error.message);
     }

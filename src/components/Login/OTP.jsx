@@ -3,7 +3,7 @@ import ReactToast from "../util/ReactToast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../store/slices/aut.slice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const OTPInput = ({ value }) => {
   const navigate = useNavigate();
