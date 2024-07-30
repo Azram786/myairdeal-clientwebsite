@@ -33,6 +33,8 @@ const MultiCityForm = ({
     });
   };
 
+  console.log({ dynamicFormData })
+
   const removeLastFormHandler = () => {
     if (dynamicFormData.length > 1) {
       setDynamicFormData((prev) => prev.slice(0, -1));

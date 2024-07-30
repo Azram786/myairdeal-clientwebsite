@@ -276,7 +276,15 @@ const FilterSection = () => {
               CHILD: formData.CHILD,
               INFANT: formData.INFANT,
             },
-            routeInfos: dynamic,
+            routeInfos: [{
+              fromCityOrAirport: {
+                code: formData.fromCityOrAirport,
+              },
+              toCityOrAirport: {
+                code: formData.toCityOrAirport,
+              },
+              travelDate: formatDate(formData.travelDate),
+            }, ...dynamic],
             searchModifiers: {
               isDirectFlight: formData.isDirectFlight,
               isConnectingFlight: formData.isConnectingFlight,

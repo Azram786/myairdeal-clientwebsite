@@ -140,9 +140,7 @@ const Login = () => {
     }
   };
 
-  const handleResendOTP = () => {
-    handleSendOTP();
-  };
+ 
 
   const handleSubmit = () => {
     handleSendOTP();
@@ -198,20 +196,8 @@ const Login = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <OTPInput value={country} />
-                    <div className="mt-2 text-center">
-                      {timer > 0 ? (
-                        <p>Resend OTP in {timer} seconds</p>
-                      ) : (
-                        <button
-                          onClick={handleResendOTP}
-                          className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-full"
-                          disabled={loading}
-                        >
-                          {loading ? "Loading..." : "Resend OTP"}
-                        </button>
-                      )}
-                    </div>
+                    <OTPInput value={country} timer={timer} secondLoading={loading} handleSendOTP={handleSendOTP} />
+
                   </motion.div>
                 )}
               </AnimatePresence>
