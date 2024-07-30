@@ -149,7 +149,7 @@ const FlightSummary = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 sm:text-sm md:text-lg p-2">
       {Loading ? (
         <div>Loading...</div>
       ) : (
@@ -162,7 +162,7 @@ const FlightSummary = () => {
           <div className="flex flex-col md:flex-row gap-4 p-2 ">
             {/* Left section */}
 
-            <div className="w-full rounded-lg  bg-white p-2 space-y-4">
+            <div className="w-full md:w-[70%] rounded-lg bg-white p-2 space-y-4">
               {currentStep === 0 ? (
                 <>
                   <div className="border-b border-gray-300 pb-4 ">
@@ -330,13 +330,13 @@ const FlightSummary = () => {
                     ))}
                   </div>
 
-                  <div className="flex justify-center mt-6">
+                  <div className="flex justify-center mt-6 px-4">
                     <button
-                      className="w-full sm:w-auto h-12 p-2 px-6 font-poppins bg-blue-500 text-white rounded-md text-lg"
+                      className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-blue-500 text-white rounded-md text-sm sm:text-base flex items-center justify-center"
                       onClick={handleSaveAndContinue}
                     >
                       {isSeatMapLoading ? (
-                        <FaSpinner className="animate-spin" />
+                        <FaSpinner className="animate-spin mr-2 text-xs sm:text-base" />
                       ) : (
                         "Save and Continue"
                       )}
@@ -355,26 +355,28 @@ const FlightSummary = () => {
             </div>
 
             {/* Right Section */}
-            <div className="md:w-2/5 lg:w-1/3 xl:w-3/10 mt-4 md:mt-0 font-poppins">
-              <div className="w-full rounded-lg border border-gray-300 bg-white p-6 shadow-md">
-                <div className="flex items-center justify-between border-b border-gray-300 pb-4">
+            <div className="w-full md:w-[30%] rounded-lg bg-white p-2 space-y-4">
+              <div className="w-full max-w-full rounded-lg border border-gray-300 bg-white p-3 sm:p-4 md:p-5 lg:p-6 shadow-md">
+                <div className="flex items-center justify-between border-b border-gray-300 pb-3 sm:pb-4">
                   <div>
-                    <span className="font-bold text-2xl">FARE SUMMARY</span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl lg:text-2xl">
+                      FARE SUMMARY
+                    </span>
                   </div>
                 </div>
 
-                <div className="text-gray-700 mt-6 space-y-6">
+                <div className="text-gray-700 mt-3 sm:mt-4 md:mt-5 lg:mt-6 space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6">
                   <div className="border-t border-gray-200 pt-3">
-                    <div className="flex justify-between text-base font-medium">
+                    <div className="flex justify-between text-xs sm:text-sm md:text-base font-medium">
                       <span>Base fare</span>
                       <span>
                         {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
                       </span>
                     </div>
 
-                    <div className="mt-2">
+                    <div className="mt-2 sm:mt-3">
                       <div
-                        className="flex justify-between text-base font-medium cursor-pointer"
+                        className="flex justify-between text-xs sm:text-sm md:text-base font-medium cursor-pointer"
                         onClick={() => toggleTaxes()}
                       >
                         <span>Taxes and fees</span>
@@ -383,14 +385,14 @@ const FlightSummary = () => {
                             {data?.totalPriceInfo?.totalFareDetail?.fC?.TAF}
                           </span>
                           {taxesExpanded ? (
-                            <FaChevronUp className="ml-2" />
+                            <FaChevronUp className="ml-1 sm:ml-2 text-xs sm:text-sm md:text-base" />
                           ) : (
-                            <FaChevronDown className="ml-2" />
+                            <FaChevronDown className="ml-1 sm:ml-2 text-xs sm:text-sm md:text-base" />
                           )}
                         </div>
                       </div>
                       {taxesExpanded && (
-                        <div className="text-sm text-gray-500 mt-2 space-y-1">
+                        <div className="text-xs sm:text-sm md:text-base text-gray-500 mt-2 space-y-1 sm:space-y-2">
                           <div className="flex justify-between">
                             <span>Airline GST</span>
                             <span>
@@ -422,9 +424,9 @@ const FlightSummary = () => {
                       )}
                     </div>
 
-                    <div className="mt-2">
+                    <div className="mt-2 sm:mt-3">
                       <div
-                        className="flex justify-between text-base font-bold cursor-pointer"
+                        className="flex justify-between text-xs sm:text-sm md:text-base font-bold cursor-pointer"
                         onClick={() => toggleAmount()}
                       >
                         <span>Amount to Pay</span>
@@ -433,14 +435,14 @@ const FlightSummary = () => {
                             {data?.totalPriceInfo?.totalFareDetail?.fC?.TF}
                           </span>
                           {amountExpanded ? (
-                            <FaChevronUp className="ml-2" />
+                            <FaChevronUp className="ml-1 sm:ml-2 text-xs sm:text-sm md:text-base" />
                           ) : (
-                            <FaChevronDown className="ml-2" />
+                            <FaChevronDown className="ml-1 sm:ml-2 text-xs sm:text-sm md:text-base" />
                           )}
                         </div>
                       </div>
                       {amountExpanded && (
-                        <div className="text-sm text-gray-500 mt-2 space-y-1">
+                        <div className="text-xs sm:text-sm md:text-base text-gray-500 mt-2 space-y-1 sm:space-y-2">
                           <div className="flex justify-between">
                             <span>Commission</span>
                             <span>N/A</span>
