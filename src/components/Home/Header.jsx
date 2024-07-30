@@ -16,18 +16,19 @@ const Header = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const location = useLocation();
+  const {user}= useSelector((state)=>state.auth)
 
-  const [userData, setUserData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: "",
-    country: {
-      dialCode: '',
-      countryCode: '',
-      countryName: ''
-    },
-  });
+  // const [user, setUserData] = useState({
+  //   firstName: '',
+  //   lastName: '',
+  //   email: '',
+  //   phone: "",
+  //   country: {
+  //     dialCode: '',
+  //     countryCode: '',
+  //     countryName: ''
+  //   },
+  // });
 
   const handleNavigate = (path) => {
     setMenuOpen(false);
@@ -43,34 +44,34 @@ const Header = () => {
     navigate("/sign-in");
   };
 
-  const getProfileData = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      const profileData = {
-        firstName: response.data.firstName,
-        lastName: response.data.lastName,
-        email: response.data.email,
-        phone: ` ${response.data.phone}`,
-        country: {
-          dialCode: response.data.country.dialCode,
-          countryCode: response.data.country.countryCode,
-          countryName: response.data.country.countryName
-        },
-      };
-      setUserData(profileData);
-      dispatch(setUser(profileData))
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const getProfileData = async () => {
+  //   try {
+  //     const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     });
+  //     const profileData = {
+  //       firstName: response.data.firstName,
+  //       lastName: response.data.lastName,
+  //       email: response.data.email,
+  //       phone: ` ${response.data.phone}`,
+  //       country: {
+  //         dialCode: response.data.country.dialCode,
+  //         countryCode: response.data.country.countryCode,
+  //         countryName: response.data.country.countryName
+  //       },
+  //     };
+  //     setUserData(profileData);
+  //     dispatch(setUser(profileData))
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
-  useEffect(() => {
-    getProfileData();
-  }, []);
+  // useEffect(() => {
+  //   getProfileData();
+  // }, []);
 
   return (
     <div className="bg-[#ffffff] min-w-[250px]">
@@ -110,7 +111,7 @@ const Header = () => {
                   <div
                     className={`w-12 h-12 flex items-center justify-center rounded-full text-xl bg-gray-200 uppercase font-bold ${location.pathname === '/profile' ? 'border-2 border-[#1F61BC]' : ''}`}
                   >
-                    {userData.firstName.charAt(0)}
+                    {user?.firstName.charAt(0)}
                   </div>
                   {dropdownOpen ? <FiChevronUp className="ml-2 font-extrabold" /> : <FiChevronDown className="ml-2 font-extrabold" />}
                 </div>

@@ -1,15 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import world from '../../assets/auth/world.png';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import ReactFlagsSelect from 'react-flags-select';
-import Header from '../Home/Header';
-import Footer from '../Home/Footer';
-import { useNavigate } from 'react-router-dom';
-import Spinner from './Spinner';
-// import 'react-flags-select/css/react-flags-select.css';
-import { motion } from 'framer-motion';
-// Create a list of countries with their dial codes and country codes.
 const countries = [
     { countryCode: 'AF', dialCode: '93', countryName: 'Afghanistan' },
     { countryCode: 'AL', dialCode: '355', countryName: 'Albania' },
@@ -247,6 +236,18 @@ const countries = [
     { countryCode: 'ZM', dialCode: '260', countryName: 'Zambia' },
     { countryCode: 'ZW', dialCode: '263', countryName: 'Zimbabwe' },
 ];
+import world from '../../assets/auth/world.png';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import ReactFlagsSelect from 'react-flags-select';
+import Header from '../Home/Header';
+import Footer from '../Home/Footer';
+import { useNavigate } from 'react-router-dom';
+import Spinner from './Spinner';
+// import 'react-flags-select/css/react-flags-select.css';
+import { motion } from 'framer-motion';
+import { setUser } from '../../store/slices/aut.slice';
+// Create a list of countries with their dial codes and country codes.
 
 const spinnerVariants = {
     animate: {
@@ -259,10 +260,17 @@ const spinnerVariants = {
     }
 };
 
+
+
 const UserProfile = () => {
-    const [loading, setLoading] = useState(true)
-    const [savingLoading, setSavingLoading] = useState(false)
+    const [loading, setLoading] = useState(true);
+    const [savingLoading, setSavingLoading] = useState(false);
     const { token } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+    const [isEditing, setIsEditing] = useState(false);
+
+    const { user } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
 
     const [userData, setUserData] = useState({
         firstName: '',
@@ -275,11 +283,48 @@ const UserProfile = () => {
             countryName: ''
         },
     });
-    const navigate = useNavigate()
-    const [isEditing, setIsEditing] = useState(false);
+
+    const [errors, setErrors] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+    });
+
+    const validate = () => {
+        let valid = true;
+        let newErrors = {
+            firstName: '',
+            lastName: '',
+            email: '',
+        };
+
+        if (!userData.firstName) {
+            newErrors.firstName = 'First Name is required';
+            valid = false;
+        }
+        if (!userData.lastName) {
+            newErrors.lastName = 'Last Name is required';
+            valid = false;
+        }
+        if (!userData.email) {
+            newErrors.email = 'Email is required';
+            valid = false;
+        } else if (!/\S+@\S+\.\S+/.test(userData.email)) {
+            newErrors.email = 'Email is invalid';
+            valid = false;
+        }
+
+        setErrors(newErrors);
+        return valid;
+    };
 
     const handleEdit = () => {
         setIsEditing(true);
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+        // getProfileData();
     };
 
     const handleChange = (field, value) => {
@@ -289,7 +334,6 @@ const UserProfile = () => {
     const handleCountryChange = (countryCode) => {
         const selectedCountry = countries.find(country => country.countryCode === countryCode);
         if (selectedCountry) {
-
             setUserData({
                 ...userData,
                 country: {
@@ -302,35 +346,38 @@ const UserProfile = () => {
     };
 
     const handleSave = async () => {
-        try {
-            setSavingLoading(true)
-            const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
-                firstName: userData.firstName,
-                lastName: userData.lastName,
-                email: userData.email,
-                country: {
-                    dialCode: userData.country.dialCode,
-                    countryCode: userData.country.countryCode,
-                    countryName: userData.country.countryName
-                }
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+        if (validate()) {
+            try {
+                setSavingLoading(true);
+                const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    email: userData.email,
+                    country: {
+                        dialCode: userData.country.dialCode,
+                        countryCode: userData.country.countryCode,
+                        countryName: userData.country.countryName
+                    }
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
 
-            console.log(response);
-            setSavingLoading(false)
-            setIsEditing(false);
-        } catch (error) {
-            setSavingLoading(false)
-            console.log(error.message);
+                console.log(response);
+                setSavingLoading(false);
+                setIsEditing(false);
+                getProfileData()
+            } catch (error) {
+                setSavingLoading(false);
+                console.log(error.message);
+            }
         }
     };
 
     const getProfileData = async () => {
         try {
-            setLoading(true)
+            setLoading(true);
             const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -348,18 +395,18 @@ const UserProfile = () => {
                     countryName: response.data.country.countryName
                 },
             };
+            dispatch(setUser(profileData))
             setUserData(profileData);
-            setLoading(false)
+            setLoading(false);
         } catch (error) {
             console.log(error.message);
-            setLoading(false)
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         getProfileData();
     }, []);
-
 
     return (
         <>
@@ -374,8 +421,6 @@ const UserProfile = () => {
                 >
                     <div className="px-[6vw] my-9">
                         <div className='flex flex-col border px-[2vw] shadow-lg py-6'>
-
-
                             <div className='font-bold h-[10vh] flex items-center text-[1.3rem]'>
                                 My Account
                             </div>
@@ -385,42 +430,44 @@ const UserProfile = () => {
                                     backgroundSize: "cover",
                                 }}>
                                 <div className="rounded-full mx-auto mb-4 w-24 h-24 bg-white flex items-center justify-center text-blue-500 text-3xl font-bold uppercase">
-                                    {userData.firstName.charAt(0)}
+                                    {user.firstName.charAt(0)}
                                 </div>
-                                <h1 className="text-2xl font-bold uppercase">{userData.firstName} {userData.lastName}</h1>
-                                <p className='font-bold text-xl'>{userData.phone}</p>
+                                <h1 className="text-2xl font-bold uppercase">{user.firstName} {user.lastName}</h1>
+                                <p className='font-bold text-xl'>{user.phone}</p>
                             </div>
                             <div className='flex justify-center items-center'>
-
                                 <div className="p-6 rounded-b-lg   w-1/2">
-
-                                    <div className="flex  w-full  gap-4     ">
-
-
+                                    <div className="flex  w-full  gap-4">
                                         <div className='flex w-1/2 items-end flex-col '>
                                             <div className='flex flex-col w-3/4'>
                                                 <div className=" flex flex-col gap-2 h-full ">
                                                     <label className="text-gray-700 text-sm">First Name</label>
                                                     {isEditing ? (
-                                                        <input
-                                                            type="text"
-                                                            value={userData.firstName}
-                                                            onChange={(e) => handleChange('firstName', e.target.value)}
-                                                            className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
-                                                        />
+                                                        <>
+                                                            <input
+                                                                type="text"
+                                                                value={userData.firstName}
+                                                                onChange={(e) => handleChange('firstName', e.target.value)}
+                                                                className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
+                                                            />
+                                                            {errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>}
+                                                        </>
                                                     ) : (
                                                         <p className="mt-1 p-2  w-3/4 text-xl font-semibold text-[#1F61BC] uppercase">{userData.firstName}</p>
                                                     )}
                                                 </div>
-                                                <div className="- flex flex-col gap-2 h-full">
+                                                <div className="flex flex-col gap-2 h-full">
                                                     <label className="text-gray-700 text-sm">Last Name</label>
                                                     {isEditing ? (
-                                                        <input
-                                                            type="text"
-                                                            value={userData.lastName}
-                                                            onChange={(e) => handleChange('lastName', e.target.value)}
-                                                            className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
-                                                        />
+                                                        <>
+                                                            <input
+                                                                type="text"
+                                                                value={userData.lastName}
+                                                                onChange={(e) => handleChange('lastName', e.target.value)}
+                                                                className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
+                                                            />
+                                                            {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
+                                                        </>
                                                     ) : (
                                                         <p className="mt-1 p-2 w-3/4 text-xl font-semibold text-[#1F61BC] uppercase">{userData.lastName}</p>
                                                     )}
@@ -444,12 +491,15 @@ const UserProfile = () => {
                                                 <div className=" flex flex-col gap-2 h-full">
                                                     <label className="text-gray-700 text-sm">Email</label>
                                                     {isEditing ? (
-                                                        <input
-                                                            type="text"
-                                                            value={userData.email}
-                                                            onChange={(e) => handleChange('email', e.target.value)}
-                                                            className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
-                                                        />
+                                                        <>
+                                                            <input
+                                                                type="text"
+                                                                value={userData.email}
+                                                                onChange={(e) => handleChange('email', e.target.value)}
+                                                                className="w-3/4 rounded-md border border-gray-300 shadow-sm p-2 text-xl"
+                                                            />
+                                                            {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+                                                        </>
                                                     ) : (
                                                         <p className="mt-1 w-3/4 p-2 text-xl font-semibold text-[#1F61BC] uppercase">{userData.email}</p>
                                                     )}
@@ -463,14 +513,21 @@ const UserProfile = () => {
                                         animate="animate"
                                     /></div> : <div className="flex justify-center items-center ">
                                         {isEditing ? (
-                                            <button
-                                                onClick={handleSave}
-                                                disabled={savingLoading}
-                                                className="bg-white border border-[#284E82] text-[#284E82] px-4 py-2 rounded mt-4"
-                                            >
-                                                Save
-
-                                            </button>
+                                            <>
+                                                <button
+                                                    onClick={handleSave}
+                                                    disabled={savingLoading}
+                                                    className="bg-white border border-[#284E82] text-[#284E82] px-4 py-2 rounded mt-4"
+                                                >
+                                                    Save
+                                                </button>
+                                                <button
+                                                    onClick={handleCancel}
+                                                    className="bg-white border border-[#284E82] text-[#284E82] px-4 py-2 rounded mt-4 ml-4"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </>
                                         ) : (
                                             <button
                                                 onClick={handleEdit}
@@ -486,16 +543,13 @@ const UserProfile = () => {
                                             View Booking Details
                                         </button>
                                     </div>}
-
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </motion.div>
-
-                <Footer /></>}
-
+                <Footer />
+            </>}
         </>
     );
 };

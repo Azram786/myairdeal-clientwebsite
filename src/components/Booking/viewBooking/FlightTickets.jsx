@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const FlightTicket = ({ booking, index, bookingID }) => {
+const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
   // Utility function to format the date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -27,14 +27,14 @@ const FlightTicket = ({ booking, index, bookingID }) => {
   };
   const getSingleTripDetailHandler = async () => {
     try {
-      navigate(`/view-detailed-booking?bookingId=${bookingID}`);
+      navigate(`/view-detailed-booking?bookingId=${bookingID}&bookingFilter=${bookingFilter}`);
     } catch (error) {
       console.log(error.message);
     }
   };
   const DownloadInvoice = async () => {
     try {
-      console.log("downloading.......................")
+
 
       await axios
         .post(
@@ -67,7 +67,7 @@ const FlightTicket = ({ booking, index, bookingID }) => {
   };
 
   return (
-    <div className="flex justify-between items-end p-6 border rounded-lg  flex-row ">
+    <div className="flex justify-between items-end p-6 border rounded-lg">
       <div className="w-[75%] justify-between flex flex-col gap-2   ">
         {booking?.data?.itemInfos?.AIR?.tripInfos?.map((trip, index) => (
           <div className="flex   items-center border p-5     gap-2">

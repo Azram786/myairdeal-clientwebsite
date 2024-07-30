@@ -45,6 +45,7 @@ const OfferSection = () => {
       >
         {offers.map((value, index) => (
           <div
+          key={index}
             style={{
               backgroundImage: `url(${Offer2})`,
               backgroundRepeat: "no-repeat",

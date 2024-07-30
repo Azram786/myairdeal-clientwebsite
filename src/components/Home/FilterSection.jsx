@@ -568,9 +568,11 @@ const FilterSection = () => {
             className="flex justify-center relative  items-center p-2 w-full  outline-none sm:w-1/2 sm:mx-auto rounded-lg border border-blue-500 mt-1 font-roboto text-center font-light  bg-white md:w-3/4 2xl:w-3/4 2xl:p-4"
             name=""
             id=""
+            // selected={}
+            defaultValue={"i"}
           >
-            <option value="Nithin">International</option>
-            <option value="Nithin">Domestic</option>
+            <option value="i">International</option>
+            <option value="d">Domestic</option>
           </select>
         </div>
       </div>

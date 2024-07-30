@@ -4,14 +4,23 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../store/slices/aut.slice";
 import { useDispatch, useSelector } from "react-redux";
-
-const OTPInput = ({ value, timer, secondLoading,handleSendOTP }) => {
+import { motion, AnimatePresence } from "framer-motion";
+const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const spinnerVariants = {
+    animate: {
+      rotate: [0, 360],
+      transition: {
+        repeat: Infinity,
+        duration: 1,
+        ease: "linear",
+      },
+    },
+  };
   const handleChange = (e, index) => {
     const value = e.target.value;
 
@@ -102,31 +111,46 @@ const OTPInput = ({ value, timer, secondLoading,handleSendOTP }) => {
           />
         ))}
       </div>
-      <div className="flex w-full items-center">
+      <div className="flex w-full items-center gap-1">
 
-        {secondLoading ? (
-          <button className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-1/2">
-            Verifying...
-          </button>
+        {loading ? (
+          <motion.button
+            whileTap={{ scale: 0.85 }} className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-1/2">
+            <div className="flex justify-center items-center">
+              <motion.div
+                className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                variants={spinnerVariants}
+                animate="animate"
+              />
+            </div>
+          </motion.button>
         ) : (
-          <button
+          <motion.button
+            whileTap={{ scale: 0.85 }}
             onClick={onSubmit}
             className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-1/2"
           >
             Verify OTP
-          </button>
+          </motion.button>
         )}
-        <div className="mt-2 text-center w-1/2">
+        <div className="text-center h-full w-1/2 flex justify-center items-center ">
           {timer > 0 ? (
-            <p>Resend OTP in {timer} seconds</p>
+            <p >Resend OTP in {timer} seconds</p>
           ) : (
-            <button
+            <motion.button
+              whileTap={{ scale: 0.85 }}
               onClick={handleResendOTP}
-              className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-full"
-              disabled={loading}
+              className="text-[#007EC4] border border-[#007EC4] bg-white h-[45px] rounded-md mt-5 w-full"
+              disabled={secondLoading}
             >
-              {loading ? "Loading..." : "Resend OTP"}
-            </button>
+              {secondLoading ? <div className="flex justify-center items-center">
+                <motion.div
+                  className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                  variants={spinnerVariants}
+                  animate="animate"
+                />
+              </div> : "Resend OTP"}
+            </motion.button>
           )}
         </div>
       </div>

@@ -140,7 +140,7 @@ const Login = () => {
     }
   };
 
- 
+
 
   const handleSubmit = () => {
     handleSendOTP();
@@ -226,7 +226,7 @@ const Login = () => {
             )}
             {step !== "sent-otp" && (
               <div className="flex flex-row items-center w-full justify-center">
-                <h2 className="flex items-center underline text-red-600">
+                <h2 className="flex items-center  uppercase text-red-600">
                   <a href="/sign-in">Change number</a>
                 </h2>
               </div>

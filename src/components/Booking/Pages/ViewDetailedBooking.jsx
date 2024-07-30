@@ -22,7 +22,7 @@ const ViewDetailedBooking = () => {
   const [singleBookingData, setSingleBookingData] = useState(null);
   console.log({ singleBookingData })
   const queryParams = getQueryParams(location.search);
-  const { bookingId } = queryParams;
+  const { bookingId, bookingFiler } = queryParams;
   const [loading, setLoading] = useState(true)
   const getSingleTicketDetailHandler = async () => {
     try {
@@ -36,7 +36,7 @@ const ViewDetailedBooking = () => {
           },
         }
       );
-
+      console.log(response.data)
       setSearchQuery(response.data.searchQuery)
       setSingleBookingData(response.data.data);
       setLoading(false)
@@ -119,7 +119,7 @@ const ViewDetailedBooking = () => {
             >
               <ViewDetailedBookingCard singleBookingData={singleBookingData} searchQuery={searchQuery} />
             </motion.div>
-            <TicketLinks singleBookingData={singleBookingData} />
+            <TicketLinks singleBookingData={singleBookingData} bookingFiler={bookingFiler} />
             <TermsAndConditions />
           </div>
           <div className="w-[25%] flex flex-col gap-3  p-5 rounded-lg shadow-lg  border">
