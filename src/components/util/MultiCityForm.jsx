@@ -1,6 +1,7 @@
 import DynamicForm from "./DynamicForm";
 import ReactToast from "./ReactToast";
 import { MdOutlineClear } from "react-icons/md";
+
 const MultiCityForm = ({
   getCountriesHandlerOne,
   getCountriesHandlerTwo,
@@ -9,20 +10,16 @@ const MultiCityForm = ({
   setDynamicFormData,
   formData,
 }) => {
-  const dynamicFormIncreseHandler = () => {
+  const dynamicFormIncreaseHandler = () => {
     if (dynamicFormData.length < 5) {
-      setDynamicFormData((prev) => {
-        // let travelDate = new Date();
-
-        return [
-          ...prev,
-          {
-            fromCity: "",
-            toCity: "",
-            travelDate: formData.travelDate,
-          },
-        ];
-      });
+      setDynamicFormData((prev) => [
+        ...prev,
+        {
+          fromCity: "",
+          toCity: "",
+          travelDate: formData.travelDate,
+        },
+      ]);
     } else {
       ReactToast("Maximum of 5 forms allowed");
     }
@@ -43,15 +40,14 @@ const MultiCityForm = ({
       ReactToast("At least one form is required");
     }
   };
+
   return (
     <div className="flex bg-[#ffffff] flex-col lg:flex-row w-full gap-2">
       <div className="lg:w-[75%] flex flex-col gap-3">
         {dynamicFormData.map((form, index) => (
           <DynamicForm
             dateDynamic={
-              index === 0
-                ? formData.travelDate
-                : dynamicFormData[index - 1].travelDate
+              index === 0 ? formData.travelDate : dynamicFormData[index - 1].travelDate
             }
             key={index}
             dynamicFormData={dynamicFormData}
@@ -74,7 +70,7 @@ const MultiCityForm = ({
         </button>
         <button
           className="bg-[#1F61BC] p-3 rounded text-white"
-          onClick={() => dynamicFormIncreseHandler()}
+          onClick={dynamicFormIncreaseHandler}
         >
           ADD ONE MORE.
         </button>

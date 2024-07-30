@@ -6,36 +6,46 @@ import Combo from "./SearchComponents/Combo";
 import Loader from "./Loader";
 import MultiCity from "./SearchComponents/MultiCity";
 import FilterSection from "../Home/FilterSection";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const FlightList = () => {
-  const [data, setData] = useState({
-    searchQuery: {
-      cabinClass: "ECONOMY",
-      paxInfo: {
-        ADULT: "2",
-        CHILD: "0",
-        INFANT: "0",
-      },
-      routeInfos: [
-        {
-          fromCityOrAirport: { code: "BLR" },
-          toCityOrAirport: { code: "BOM" },
-          travelDate: "2024-07-29",
-        },
+  // const [data, setData] = useState({
+  //   searchQuery: {
+  //     cabinClass: "ECONOMY",
+  //     paxInfo: {
+  //       ADULT: "2",
+  //       CHILD: "0",
+  //       INFANT: "0",
+  //     },
+  //     routeInfos: [
+  //       {
+  //         fromCityOrAirport: { code: "BLR" },
+  //         toCityOrAirport: { code: "BOM" },
+  //         travelDate: "2024-07-29",
+  //       },
 
-        {
-          fromCityOrAirport: { code: "BOM" },
-          toCityOrAirport: { code: "DEL" },
-          travelDate: "2024-08-09",
-        },
-      ],
-      searchModifiers: {
-        isDirectFlight: true,
-        isConnectingFlight: false,
-      },
-    },
-  });
+  //       {
+  //         fromCityOrAirport: { code: "BOM" },
+  //         toCityOrAirport: { code: "DEL" },
+  //         travelDate: "2024-08-09",
+  //       },
+  //     ],
+  //     searchModifiers: {
+  //       isDirectFlight: true,
+  //       isConnectingFlight: false,
+  //     },
+  //   },
+  // });
+  const location = useLocation();
+  const { query } = location.state || {};
 
+  const [data, setData] = useState(query);
+  console.log(query, "query")
+
+  const navigate = useNavigate()
+  if (!query || !data) {
+    navigate('/')
+  }
   const [tripType, setTripType] = useState("");
   const [oneway, setOneWay] = useState([]);
   const [roundWay, setRoundWay] = useState([]);

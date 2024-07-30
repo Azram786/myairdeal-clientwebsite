@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-// icons
 import { RiFlightLandLine, RiFlightTakeoffFill } from "react-icons/ri";
 import { MdOutlineDateRange } from "react-icons/md";
-// libraries
 import DatePicker from "react-datepicker";
-// custom components
 import CustomInput from "./DatePickerCustom";
 import CustomSelect from "./CustomSelect";
 
@@ -38,11 +35,9 @@ const DynamicForm = ({
           <CustomSelect
             loadOptions={getCountriesHandlerOne}
             defaultOptions={defaultOptions}
-            placeholder="Where From ?"
+            placeholder="Where From?"
             icon={<RiFlightTakeoffFill />}
-            setFormData={(value) =>
-              setForm((prevState) => ({ ...prevState, fromCity: value }))
-            }
+            setFormData={(value) => setForm({ fromCity: value })}
           />
         </div>
       </div>
@@ -55,10 +50,8 @@ const DynamicForm = ({
           <CustomSelect
             loadOptions={getCountriesHandlerTwo}
             defaultOptions={defaultOptions}
-            placeholder="Where To ?"
-            setFormData={(value) =>
-              setForm((prevState) => ({ ...prevState, toCity: value }))
-            }
+            placeholder="Where To?"
+            setFormData={(value) => setForm({ toCity: value })}
           />
         </div>
       </div>
@@ -67,7 +60,6 @@ const DynamicForm = ({
         <div className="rounded flex items-center border w-full">
           <div className="flex items-center justify-between w-full">
             <DatePicker
-              // minDate={dateDynamic}
               minDate={formData.travelDate}
               selected={startDate}
               onChange={(date) => setStartDate(date)}

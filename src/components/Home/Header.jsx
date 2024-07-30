@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiMenu, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { logout, setUser } from "../../store/slices/aut.slice";
 import main_logo from "../../assets/home/logo/main_logo.png";
 import axios from "axios";
@@ -15,6 +15,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
+  const location = useLocation();
 
   const [userData, setUserData] = useState({
     firstName: '',
@@ -86,12 +87,18 @@ const Header = () => {
         </div>
         <div className="hidden md:flex gap-6 font-semibold 2xl:text-[1.2rem]">
           {token ? (
-            <div className="flex gap-2  justify-center items-center text-gray-300">
-              <div className="text-[#1F61BC] cursor-pointer">
+            <div className="flex gap-2 justify-center items-center text-gray-300">
+              <div
+                className={`text-[#1F61BC] cursor-pointer font-bold ${location.pathname === '/' ? ' underline' : ''}`}
+                onClick={() => handleNavigate("/")}
+              >
                 Home
               </div>
               |
-              <div className="text-[#1F61BC] cursor-pointer">
+              <div
+                className={`text-[#1F61BC] cursor-pointer font-bold ${location.pathname === '/view-booking' ? ' underline' : ''}`}
+                onClick={() => handleNavigate("/view-booking")}
+              >
                 My Bookings
               </div>
               |
@@ -100,10 +107,12 @@ const Header = () => {
                   className="flex items-center justify-center cursor-pointer"
                   onClick={handleDropdownToggle}
                 >
-                  <div className="w-12 h-12 flex items-center justify-center rounded-full text-xl bg-gray-200 uppercase  font-bold">
+                  <div
+                    className={`w-12 h-12 flex items-center justify-center rounded-full text-xl bg-gray-200 uppercase font-bold ${location.pathname === '/profile' ? 'border-2 border-[#1F61BC]' : ''}`}
+                  >
                     {userData.firstName.charAt(0)}
                   </div>
-                  {dropdownOpen ? <FiChevronUp className="ml-2 font-extrabold" /> : <FiChevronDown className="ml-2  font-extrabold" />}
+                  {dropdownOpen ? <FiChevronUp className="ml-2 font-extrabold" /> : <FiChevronDown className="ml-2 font-extrabold" />}
                 </div>
                 <AnimatePresence>
                   {dropdownOpen && (
@@ -114,7 +123,7 @@ const Header = () => {
                       className="absolute right-0 rounded-lg shadow-lg mt-2 bg-white border w-40 z-10"
                     >
                       <div
-                        className="px-4 py-2 cursor-pointer hover:bg-gray-200 flex items-center justify-between"
+                        className={`px-4 py-2 cursor-pointer hover:bg-gray-200 flex items-center justify-between ${location.pathname === '/profile' ? 'bg-gray-200' : ''}`}
                         onClick={() => handleNavigate("/profile")}
                       >
                         <div>
