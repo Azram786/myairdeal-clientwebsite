@@ -595,7 +595,7 @@ import React, { useState, useEffect } from "react";
 import { FaPlane, FaChevronDown, FaChevronUp, FaInfoCircle } from "react-icons/fa";
 import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
 
-const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex, onSelect }) => {
+const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex, onSelect, passenger }) => {
   const [showAllPrices, setShowAllPrices] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [activeTab, setActiveTab] = useState("Flight Details");
@@ -610,9 +610,16 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
   let data;
   let priceList = [];
 
- 
-
+  const calculateTotalPrice = (priceIndex) => {
+    const selectedPrice = priceList[priceIndex];
+    if (!selectedPrice) return 0;
   
+    return Object.entries(selectedPrice.fd).reduce((total, [passengerType, details]) => {
+      return total + (details.fC.TF * (passenger[passengerType] || 0));
+    }, 0);
+  };
+  
+  const totalPrice = calculateTotalPrice(localSelectedPriceIndex);
 
   if (!flightDetails) {
     return <div>Loading flights...</div>;
@@ -680,7 +687,7 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
             {data.map((segment, index) => (
               <div key={index} className=" flex flex-col md:flex-row items-center justify-between py-4 border-b">
                 <div className="flex items-center">
-                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png` }  onError={(e) => e.currentTarget.src = defaultAirline} alt={segment?.fD?.aI?.code} className="w-10 h-10 mr-4" />
+                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}  onError={(e) => e.currentTarget.src = defaultAirline} alt={segment?.fD?.aI?.code} className="w-10 h-10 mr-4" />
                   <div>
                     <div className="font-bold">{segment.fD.aI.name} {segment.fD.fN}</div>
                     <div className="text-sm text-gray-500">
@@ -711,42 +718,50 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
             ))}
           </div>
         );
-      case "Fare Details":
-        return (
-          <div className="w-full">
-            <div className="grid grid-cols-3 w-full border-b pb-2 mb-2">
-              <div className="font-bold">TYPE</div>
-              <div className="font-bold">Fare</div>
-              <div className="font-bold">Total</div>
-            </div>
-            {priceList.map((item, index) => (
-              <div key={index} className="mb-4">
-                <div className="grid grid-cols-3 w-full text-gray-600 mb-2">
-                  <div>Fare Details for Adult (CB: {item.fd.ADULT.cc})</div>
-                  <div></div>
-                  <div></div>
-                </div>
-                <div className="grid grid-cols-3 w-full mb-1">
-                  <div>Base Price</div>
-                  <div>₹{item.fd.ADULT.fC.BF.toFixed(2)} x 1</div>
-                  <div>₹{item.fd.ADULT.fC.BF.toFixed(2)}</div>
-                </div>
-                <div className="grid grid-cols-3 w-full mb-1">
-                  <div className="flex items-center">
-                    Taxes and fees <FaInfoCircle className="ml-1 text-gray-500" />
-                  </div>
-                  <div>₹{item.fd.ADULT.fC.TAF.toFixed(2)} x 1</div>
-                  <div>₹{item.fd.ADULT.fC.TAF.toFixed(2)}</div>
-                </div>
-                <div className="grid grid-cols-3 w-full font-bold">
-                  <div>Total</div>
-                  <div></div>
-                  <div>₹{item.fd.ADULT.fC.TF.toFixed(2)}</div>
-                </div>
+        case "Fare Details":
+          return (
+            <div className="w-full">
+              <div className="grid grid-cols-3 w-full border-b pb-2 mb-2">
+                <div className="font-bold">TYPE</div>
+                <div className="font-bold">Fare</div>
+                <div className="font-bold">Total</div>
               </div>
-            ))}
-          </div>
-        );
+              {Object.entries(passenger).map(([passengerType, count]) => {
+                if (count > 0) {
+                  const details = priceList[localSelectedPriceIndex]?.fd[passengerType];
+                  if (details) {
+                    return (
+                      <div key={passengerType} className="mb-4">
+                        <div className="grid grid-cols-3 w-full text-gray-600 mb-2">
+                          <div>Fare Details for {passengerType} (CB: {details.cB})</div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                        <div className="grid grid-cols-3 w-full mb-1">
+                          <div>Base Price</div>
+                          <div>₹{details.fC.BF.toFixed(2)} x {count}</div>
+                          <div>₹{(details.fC.BF * count).toFixed(2)}</div>
+                        </div>
+                        <div className="grid grid-cols-3 w-full mb-1">
+                          <div className="flex items-center">
+                            Taxes and fees <FaInfoCircle className="ml-1 text-gray-500" />
+                          </div>
+                          <div>₹{details.fC.TAF.toFixed(2)} x {count}</div>
+                          <div>₹{(details.fC.TAF * count).toFixed(2)}</div>
+                        </div>
+                      </div>
+                    );
+                  }
+                }
+                return null;
+              })}
+              <div className="grid grid-cols-3 w-full font-bold border-t pt-2">
+                <div>Total</div>
+                <div></div>
+                <div>₹{calculateTotalPrice(localSelectedPriceIndex).toFixed(2)}</div>
+              </div>
+            </div>
+          );
       case "Fare Rules":
         return (
           <div>
@@ -776,15 +791,14 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
 
   return (
     <div className="border flex flex-col p-4 rounded-lg m-4 bg-white shadow-md">
-      {console.log(startSegment.fD.aI.code,"star")}
       <div className="flex flex-col md:flex-row justify-between items-center mb-2">
         <div className="flex items-center mb-4 md:mb-0">
-        <img
-  src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-  onError={(e) => e.currentTarget.src = defaultAirline}
-  alt={startSegment?.fD?.aI?.code}
-  className="w-16 h-16 mr-6"
-/>
+          <img
+            src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+            onError={(e) => e.currentTarget.src = defaultAirline}
+            alt={startSegment?.fD?.aI?.code}
+            className="w-16 h-16 mr-6"
+          />
           <div>
             <h1 className="text-lg font-bold">{startSegment?.da?.code}</h1>
             <h1 className="text-sm text-gray-500">{startSegment?.da?.city}</h1>
@@ -798,13 +812,13 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
             <FaPlane className="mx-2 text-blue-800 text-3xl" />
             <div className="flex items-center">
                {startSegment.stops > 0 ? (
-              <span>
-                {startSegment?.stops} stop{startSegment?.stops > 1 ? 's' : ''}
-                {startSegment?.so && startSegment?.so[0] && ` via ${startSegment?.so[0].city}`}
-              </span>
-            ) : (
-              <span>Non-stop flight</span>
-            )}
+                <span>
+                  {startSegment?.stops} stop{startSegment?.stops > 1 ? 's' : ''}
+                  {startSegment?.so && startSegment?.so[0] && ` via ${startSegment?.so[0].city}`}
+                </span>
+              ) : (
+                <span>Non-stop flight</span>
+              )}
             </div>
           </div>
           <div className="border-t hidden md:flex border-dashed border-gray-400 w-10 md:w-28"></div>
@@ -819,7 +833,7 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
       </div>
       <div className="flex flex-col md:flex-row mt-2 justify-between items-center text-center">
         <div className="flex flex-col justify-center items-start">
-        {displayedPrices?.map((price, index) => (
+          {displayedPrices?.map((price, index) => (
             <div 
               key={index}
               onClick={() => handlePriceSelection(index)}
@@ -827,26 +841,25 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
                 text-xs text-start space-y-2 flex items-center w-full md:w-auto
                 p-1 mb-2 cursor-pointer transition-all duration-200 ease-in-out
                 ${localSelectedPriceIndex === index 
-                  ? 'border border-blue-500  rounded-md' 
+                  ? 'border border-blue-500 rounded-md' 
                   : 'border border-gray-200 hover:border-blue-300 rounded-md'}
               `}
             >
               <div className="flex flex-col w-full">
-                <p className="font-semibold">₹ {price?.fd?.ADULT?.fC?.TF}</p>
+                <p className="font-semibold">₹ {calculateTotalPrice(index).toFixed(2)}</p>
                 <p className="text-[10px]">
                   <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700">
                     {price?.fareIdentifier}
                   </span>{" "}
                   {price?.fd?.ADULT?.cc}
                 </p>
-                {localSelectedPriceIndex === index && (
-                  <p className="text-red-600 text-[10px]">
-                    Seats left: {price?.fd?.ADULT?.sR}
-                  </p>
-                )}
+                <p className="text-red-600 text-[10px]">
+                  Seats left: {price?.fd?.ADULT?.sR}
+                </p>
               </div>
             </div>
           ))}
+  
           {priceList?.length > 1 && (
             <button
               onClick={() => setShowAllPrices(!showAllPrices)}

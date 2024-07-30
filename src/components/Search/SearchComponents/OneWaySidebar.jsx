@@ -1,24 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { IoIosMoon, IoIosSunny } from 'react-icons/io';
 import { PiMountains } from 'react-icons/pi';
 import { TbSunset2 } from 'react-icons/tb';
 
-const OneWaySideBar = ({ flights, filters, setFilters }) => {
-  const [stops, setStops] = useState(["0", "1", "2", "3+"]);
+const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotalPrice }) => {
+  const [stops] = useState(["0", "1", "2", "3+"]);
+  const [maxPrice, setMaxPrice] = useState(100000);
 
-  // Calculate airline counts
-  const flightCountMap = flights.reduce((acc, flight) => {
-    const key = flight.sI[0].fD.aI.name;
-    if (!acc[key]) {
-      acc[key] = 0;
-    }
-    acc[key]++;
-    return acc;
-  }, {});
+  const flightCountMap = useMemo(() => {
+    return flights.reduce((acc, flight) => {
+      const key = flight.sI[0].fD.aI.name;
+      if (!acc[key]) {
+        acc[key] = 0;
+      }
+      acc[key]++;
+      return acc;
+    }, {});
+  }, [flights]);
+
+  useEffect(() => {
+    const highestPrice = Math.max(...flights.map(calculateTotalPrice));
+    setMaxPrice(highestPrice);
+    setFilters(prev => ({ ...prev, maxPrice: highestPrice }));
+  }, [flights, calculateTotalPrice, setFilters]);
 
   const handlePriceChange = (e) => {
-    console.log("Price changed to:", e.target.value);
-    setFilters(prev => ({ ...prev, maxPrice: parseInt(e.target.value) }));
+    const newMaxPrice = parseInt(e.target.value);
+    console.log("Price changed to:", newMaxPrice);
+    setFilters(prev => ({ ...prev, maxPrice: newMaxPrice }));
   };
 
   const handleStopsChange = (stop) => {
@@ -58,12 +67,12 @@ const OneWaySideBar = ({ flights, filters, setFilters }) => {
             <input
               type="range"
               min="100"
-              max={filters?.maxPrice}
+              max={maxPrice}
               value={filters.maxPrice}
               onChange={handlePriceChange}
               className="flex-1 mr-4 range-slider"
             />
-            <span>₹{filters?.maxPrice}</span>
+            <span>₹{filters.maxPrice}</span>
           </div>
         </div>
 
@@ -71,22 +80,22 @@ const OneWaySideBar = ({ flights, filters, setFilters }) => {
           <h3 className="text-lg font-semibold mb-2">Stops</h3>
           <div className="grid w-full grid-cols-4 ">
             {stops.map((stop, index) => (
-            <label
-            key={stop}
-            htmlFor={`stop-${stop}`}
-            className={`mb-1 border flex justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
-              filters.stops.includes(stop) ? 'bg-blue-200' : ''
-            }`}
-          >
-            <input
-              type="checkbox"
-              id={`stop-${stop}`}
-              checked={filters.stops.includes(stop)}
-              onChange={() => handleStopsChange(stop)}
-              className="mr-2 hidden"
-            />
-            {stop}
-          </label>
+              <label
+                key={stop}
+                htmlFor={`stop-${stop}`}
+                className={`mb-1 border flex justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
+                  filters.stops.includes(stop) ? 'bg-blue-200' : ''
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  id={`stop-${stop}`}
+                  checked={filters.stops.includes(stop)}
+                  onChange={() => handleStopsChange(stop)}
+                  className="mr-2 hidden"
+                />
+                {stop}
+              </label>
             ))}
           </div>
         </div>

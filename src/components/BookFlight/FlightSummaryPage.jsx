@@ -75,25 +75,25 @@ const FlightSummary = () => {
 
   const handleSaveAndContinue = async () => {
     setCurrentStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
-    setLoading(true);
-    setError(null);
+    // setLoading(true);
+    // setError(null);
 
-    try {
-      const response = await axios.post(
-        "https://myairdeal-backend.onrender.com/booking/seat-map",
-        {
-          bookingId: "TJS118801029248",
-        }
-      );
+    // try {
+    //   const response = await axios.post(
+    //     "https://myairdeal-backend.onrender.com/booking/seat-map",
+    //     {
+    //       bookingId: "TJS118801029248",
+    //     }
+    //   );
 
-      setSeatMapData(response.data);
-      console.log("Seat Map Data:", response.data);
-    } catch (error) {
-      setError(error.message);
-      console.error("SeatMapError:", error);
-    } finally {
-      setLoading(false);
-    }
+    //   setSeatMapData(response.data);
+    //   console.log("Seat Map Data:", response.data);
+    // } catch (error) {
+    //   setError(error.message);
+    //   console.error("SeatMapError:", error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   //Price

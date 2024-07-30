@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Oneway from "./SearchComponents/Oneway";
@@ -9,38 +9,47 @@ import MultiCity from "./SearchComponents/MultiCity";
 import FilterSection from "../Home/FilterSection";
 
 const FlightList = () => {
-  // const [data, setData] = useState({
-  //   searchQuery: {
-  //     cabinClass: "ECONOMY",
-  //     paxInfo: {
-  //       ADULT: "2",
-  //       CHILD: "0",
-  //       INFANT: "0",
-  //     },
-  //     routeInfos: [
-  //       {
-  //         fromCityOrAirport: { code: "BLR" },
-  //         toCityOrAirport: { code: "DEL" },
-  //         travelDate: "2024-07-31",
-  //       },
+  const [data, setData] = useState({
+    searchQuery: {
+      cabinClass: "ECONOMY",
+      paxInfo: {
+        ADULT: "1",
+        CHILD: "0",
+        INFANT: "0",
+      },
+      routeInfos: [
+        {
+          fromCityOrAirport: { code: "COK" },
+          toCityOrAirport: { code: "BLR" },
+          travelDate: "2024-08-06",
+        },
+        {
+          fromCityOrAirport: { code: "BLR" },
+          toCityOrAirport: { code: "BOM" },
+          travelDate: "2024-08-08",
+        },
+        // {
+        //   fromCityOrAirport: { code: "BOM" },
+        //   toCityOrAirport: { code: "DEL" },
+        //   travelDate: "2024-08-12",
+        // }
+      ],
+      searchModifiers: {
+        isDirectFlight: false,
+        isConnectingFlight: false,
+      },
+    },
+  });
+  // const location=useLocation();
+  // const { query } = location.state || {};
 
-  //       {
-  //         fromCityOrAirport: { code: "DEL" },
-  //         toCityOrAirport: { code: "DXB" },
-  //         travelDate: "2024-08-09",
-  //       },
-  //     ],
-  //     searchModifiers: {
-  //       isDirectFlight: true,
-  //       isConnectingFlight: false,
-  //     },
-  //   },
-  // });
-  const location=useLocation();
-  const { query } = location.state || {};
+  // const [data, setData] = useState(query);
+  // console.log(query, "query")
 
-  const [data, setData] = useState(query);
-  console.log(query, "query")
+  // const navigate = useNavigate()
+  // if(!query || !data){
+  //   navigate('/')
+  // }
 
   const [tripType, setTripType] = useState("");
   const [oneway, setOneWay] = useState([]);
@@ -57,6 +66,8 @@ const FlightList = () => {
         `https://myairdeal-backend.onrender.com/search/flight`,
         data
       );
+
+      console.log(res.data, "tripInfos-----------------------------------------");
       const tripInfos = res.data.searchResult.tripInfos;
 
       console.log(tripInfos, "tripInfos");
@@ -94,12 +105,12 @@ const FlightList = () => {
   return (
     <>
       <div className=" min-h-screen border p-4 bg-gray-50 gap-4 shadow-sm rounded-md flex flex-col">
-        {tripType === "oneway" && <Oneway flightProps={oneway} />}
+        {tripType === "oneway" && <Oneway flightProps={oneway} passenger={data.searchQuery.paxInfo} />}
         {tripType === "roundtrip" && (
-          <Roundtrip onwardProps={oneway} returnProps={roundWay} />
+          <Roundtrip onwardProps={oneway} returnProps={roundWay} passenger={data.searchQuery.paxInfo} />
         )}
-        {tripType === "combo" && <Combo flightprops={combo} />}
-        {tripType === "multicity" && <MultiCity flightProps={multicity} />}
+        {tripType === "combo" && <Combo flightprops={combo} passenger={data.searchQuery.paxInfo} />}
+        {tripType === "multicity" && <MultiCity flightProps={multicity} passenger={data.searchQuery.paxInfo} />}
       </div>
     </>
   );

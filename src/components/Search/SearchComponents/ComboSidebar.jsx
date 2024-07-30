@@ -1,23 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { IoIosMoon, IoIosSunny } from 'react-icons/io';
 import { PiMountains } from 'react-icons/pi';
 import { TbSunset2 } from 'react-icons/tb';
 
-const ComboSideBar = ({ flights, filters, setFilters,maxPrice }) => {
-  const [stops, setStops] = useState(["0", "1", "2", "3+"]);
+const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
+  const [stops] = useState(["0", "1", "2", "3+"]);
+  const [maxPrice, setMaxPrice] = useState(100000);
 
-  // Calculate airline counts
-  const flightCountMap = flights.reduce((acc, flight) => {
-    const key = flight.sI[0].fD.aI.name;
-    if (!acc[key]) {
-      acc[key] = 0;
+  const calculateTotalPrice = useMemo(() => (flight) => {
+    let total = 0;
+    const priceList = flight.totalPriceList[0].fd;
+    for (const passengerType in passenger) {
+      if (priceList[passengerType]) {
+        total += priceList[passengerType].fC.TF * passenger[passengerType];
+      }
     }
-    acc[key]++;
-    return acc;
-  }, {});
+    return total;
+  }, [passenger]);
+
+  useEffect(() => {
+    const highestPrice = Math.max(...flights.map(calculateTotalPrice));
+    setMaxPrice(highestPrice);
+    setFilters(prev => ({ ...prev, maxPrice: highestPrice }));
+  }, [flights, calculateTotalPrice, setFilters]);
+
+  const flightCountMap = useMemo(() => {
+    return flights.reduce((acc, flight) => {
+      const key = flight.sI[0].fD.aI.name;
+      if (!acc[key]) {
+        acc[key] = 0;
+      }
+      acc[key]++;
+      return acc;
+    }, {});
+  }, [flights]);
 
   const handlePriceChange = (e) => {
-    setFilters(prev => ({ ...prev, maxPrice: parseInt(e.target.value) }));
+    const newMaxPrice = parseInt(e.target.value);
+    setFilters(prev => ({ ...prev, maxPrice: newMaxPrice }));
   };
 
   const handleStopsChange = (stop) => {
@@ -49,22 +69,22 @@ const ComboSideBar = ({ flights, filters, setFilters,maxPrice }) => {
 
   return (
     <div className="flex-none md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
-    <div className="p-4">
-      <div className="mb-6 border-b border-gray-300 pb-4">
-        <h3 className="text-lg font-semibold mb-2">Price</h3>
-        <div className="flex justify-between gap-2">
-          <span>₹100</span>
-          <input
-            type="range"
-            min="100"
-            max={maxPrice}
-            value={filters?.maxPrice}
-            onChange={handlePriceChange}
-            className="flex-1 mr-4 range-slider"
-          />
-          <span>₹{filters?.maxPrice}</span>
+      <div className="p-4">
+        <div className="mb-6 border-b border-gray-300 pb-4">
+          <h3 className="text-lg font-semibold mb-2">Price</h3>
+          <div className="flex justify-between gap-2">
+            <span>₹100</span>
+            <input
+              type="range"
+              min="100"
+              max={maxPrice}
+              value={filters.maxPrice}
+              onChange={handlePriceChange}
+              className="flex-1 mr-4 range-slider"
+            />
+            <span>₹{filters.maxPrice}</span>
+          </div>
         </div>
-      </div>
 
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-lg font-semibold mb-2">Stops</h3>

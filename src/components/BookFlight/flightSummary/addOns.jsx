@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import BagAndMeal from "./bagAndMeal";
 import SeatSelection from "./seatSelection";
 import axios from "axios";
-import {booking, flightData} from '../../BookFlight/Seats/dummy'
+// import {test, flightData, booking} from '../../BookFlight/Seats/dummy'
 import { useSelector } from "react-redux";
 
 const AddonsCard = ({
@@ -21,7 +21,8 @@ const AddonsCard = ({
   const token = useSelector((state) => state.auth.token);
 
 
-  console.log(data, "Hello");
+  console.log(passengers, "Hello");
+  console.log(bookingId, "bookingId");
 
   const checkSeatSelection = async () => {
     setCheckLoading(true);
@@ -38,9 +39,8 @@ const AddonsCard = ({
       }
       );
 
-      console.log(response,"response-data")
       if (response.status == 200) {
-        setSeatMapData(response.data);
+        setSeatMapData(response?.data);
       }
       console.log("Seat Map Data:", response);
       setCheckLoading(false);
@@ -51,7 +51,12 @@ const AddonsCard = ({
     }
   };
 
-  console.log(passengers, "admones===");
+  const [isSeatMapAvailable,setIsMapAvailable]=useState(data?.conditions?.isa)
+
+
+  useEffect(()=>{
+    checkSeatSelection()
+  },[])
   return (
     <div>
       <div
@@ -107,10 +112,11 @@ const AddonsCard = ({
           </div>
           {activeButton === "seatSelection" && (
             <SeatSelection
-              seatMapData={null}
+              seatMapData={seatMapData}
               passengers={passengers}
               setPassengers={setPassengers}
-              flightReviewData={flightData}
+              flightReviewData={data}
+              isSeatMapAvailable={isSeatMapAvailable}
             />
           )}
           {activeButton === "addBagAndMeal" && (
