@@ -254,7 +254,7 @@ import { IoIosMoon, IoIosSunny } from 'react-icons/io';
 import { PiMountains } from 'react-icons/pi';
 import { TbSunset2 } from 'react-icons/tb';
 
-const SideBar = ({ flights, filters, setFilters, activeTabIndex }) => {
+const SideBar = ({ flights, filters, setFilters, activeTabIndex,passenger }) => {
   const [stops, setStops] = useState(["0", "1", "2", "3+"]);
 
   // Calculate airline counts for the active tab
@@ -267,6 +267,30 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex }) => {
     return acc;
   }, {});
 
+  // Calculate total price based on passenger count
+  const calculateTotalPrice = (flight) => {
+    let total = 0;
+    const priceList = flight.totalPriceList[0].fd;
+    for (const passengerType in passenger) {
+      if (priceList[passengerType]) {
+        total += priceList[passengerType].fC.TF * passenger[passengerType];
+      }
+    }
+    return total;
+  };
+
+  useEffect(() => {
+    const maxPrice = Math.max(...flights[activeTabIndex].map(calculateTotalPrice));
+    setFilters(prev => {
+      const newFilters = [...prev];
+      newFilters[activeTabIndex] = {
+        ...newFilters[activeTabIndex],
+        maxPrice: maxPrice
+      };
+      return newFilters;
+    });
+  }, [flights, activeTabIndex, passenger, setFilters]);
+
   const handlePriceChange = (e) => {
     const newFilters = [...filters];
     newFilters[activeTabIndex] = {
@@ -275,6 +299,15 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex }) => {
     };
     setFilters(newFilters);
   };
+
+  // const handlePriceChange = (e) => {
+  //   const newFilters = [...filters];
+  //   newFilters[activeTabIndex] = {
+  //     ...newFilters[activeTabIndex],
+  //     maxPrice: parseInt(e.target.value)
+  //   };
+  //   setFilters(newFilters);
+  // };
 
   const handleStopsChange = (stop) => {
     const newFilters = [...filters];
@@ -319,7 +352,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex }) => {
   ));
 
   return (
-    <div className=" w-full md:w-1/4 border p-2 md:p-4 md:m-2 shadow-md rounded-md md:h-screen">
+    <div className="flex flex-row  md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
       <div className=" grid  gap-2  w-full grid-cols-1">
         {/* Price slider */}
         <div className="mb-6 border-b border-gray-300 pb-4">
@@ -328,8 +361,8 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex }) => {
             <span>₹100</span>
             <input
               type="range"
-              min="0"
-              max={maxPrice}
+              min="100"
+              max={filters[activeTabIndex].maxPrice}
               value={filters[activeTabIndex].maxPrice}
               onChange={handlePriceChange}
               className="flex-1 mr-4 range-slider"
@@ -337,7 +370,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex }) => {
             <span>₹{filters[activeTabIndex].maxPrice}</span>
           </div>
         </div>
-
+        
         {/* Stops */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-lg font-semibold mb-2">Stops</h3>
