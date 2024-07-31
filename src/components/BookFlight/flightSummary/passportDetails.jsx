@@ -36,8 +36,9 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
   }, [passenger, reset, watch]);
 
   const handleInputChange = (name, value) => {
-    setValue(name, value, { shouldValidate: true });
-    // updatePassenger(index, name, value);
+    setValue(name, value);
+    trigger(name)
+    updatePassenger(index, name, value);
   };
 
   return (
@@ -51,7 +52,7 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
               minLength: { value: 2, message: "Minimum 2 characters" },
               maxLength: { value: 50, message: "Maximum 50 characters" },
             })}
-            onChange={(e) => handleInputChange("nationality", e.target.value)}
+            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             value={watch("nationality")}
             className="peer w-full h-10 border border-gray-300 rounded-lg  px-2 py-1 text-sm focus:outline-none"
             aria-label="Nationality"
@@ -87,7 +88,7 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
               maxLength: { value: 15, message: "Maximum 15 characters" },
             })}
             onChange={(e) =>
-              handleInputChange("passportNumber", e.target.value)
+              handleInputChange(e.target.name, e.target.value)
             }
             value={watch("passportNumber")}
             className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
@@ -109,7 +110,7 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
             {...register("issueDate", {
               required: "Issue Date is required",
             })}
-            onChange={(e) => handleInputChange("issueDate", e.target.value)}
+            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             value={watch("issueDate")}
             className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-gray-400"
             placeholder="YYYY-MM-DD"
@@ -131,7 +132,7 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
             {...register("expiryDate", {
               required: "Expiry Date is required",
             })}
-            onChange={(e) => handleInputChange("expiryDate", e.target.value)}
+            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             value={watch("expiryDate")}
             className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-gray-400"
             placeholder="YYYY-MM-DD"

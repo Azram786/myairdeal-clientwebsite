@@ -32,7 +32,7 @@ function App() {
           <Route path="book-flight" element={<FlightSummaryPage />} />
           <Route path="/profile" element={<Profile />} />
 
-          <Route path="/review" element={<Review />} />
+          {/* <Route path="/review" element={<Review />} /> */}
 
         </Routes>
       </BrowserRouter>

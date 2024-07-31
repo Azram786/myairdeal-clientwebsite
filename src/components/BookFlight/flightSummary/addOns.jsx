@@ -13,13 +13,12 @@ const AddonsCard = ({
   toggleCard,
   data,
   bookingId,
-  }) => {
+}) => {
   const [activeButton, setActiveButton] = useState("");
   const [seatMapData, setSeatMapData] = useState(null);
   const [checkLoading, setCheckLoading] = useState(false);
   const [Errors, setErrors] = useState(null);
   const token = useSelector((state) => state.auth.token);
-
 
   console.log(passengers, "Hello");
   console.log(bookingId, "bookingId");
@@ -32,11 +31,12 @@ const AddonsCard = ({
         "https://myairdeal-backend.onrender.com/booking/seat-map",
         {
           bookingId,
-        },{
+        },
+        {
           headers: {
-              Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
-      }
+        }
       );
 
       if (response.status == 200) {
@@ -51,14 +51,15 @@ const AddonsCard = ({
     }
   };
 
-  const [isSeatMapAvailable,setIsMapAvailable]=useState(data?.conditions?.isa)
+  const [isSeatMapAvailable, setIsMapAvailable] = useState(
+    data?.conditions?.isa
+  );
 
-
-  useEffect(()=>{
-    checkSeatSelection()
-  },[])
+  useEffect(() => {
+    checkSeatSelection();
+  }, []);
   return (
-    <div className="bg-red-500">
+    <div className="">
       <div
         className="p-4 border-b border-gray-300 cursor-pointer flex justify-between items-center"
         onClick={toggleCard}
@@ -112,7 +113,7 @@ const AddonsCard = ({
           </div>
           {activeButton === "seatSelection" && (
             <SeatSelection
-              seatMapData={booking}
+              seatMapData={seatMapData}
               passengers={passengers}
               setPassengers={setPassengers}
               flightReviewData={data}

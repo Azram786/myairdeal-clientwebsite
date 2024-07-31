@@ -4,13 +4,13 @@ import AddonsCard from "./addOns";
 import GstDetails from "./gstDetails";
 import { useNavigate } from "react-router-dom";
 
-const AddDetails = ({ bookingId, flightData }) => {
+const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
   const navigate = useNavigate();
   const [passengers, setPassengers] = useState([]);
   const [gstDetails, setGstDetails] = useState({
     gstNumber: "",
     companyName: "",
-    companyAddress: "",
+    address: "",
     email: "",
     phone: "",
   });
@@ -20,9 +20,15 @@ const AddDetails = ({ bookingId, flightData }) => {
     gst: false,
   });
 
-  const [numAdults, setNumAdults] = useState(1);
-  const [numChildren, setNumChildren] = useState(0);
-  const [numInfants, setNumInfants] = useState(0);
+  const [numAdults, setNumAdults] = useState(
+    flightData?.searchQuery?.paxInfo?.ADULT
+  );
+  const [numChildren, setNumChildren] = useState(
+    flightData?.searchQuery?.paxInfo?.CHILD
+  );
+  const [numInfants, setNumInfants] = useState(
+    flightData?.searchQuery?.paxInfo?.INFANT
+  );
 
   const createPassenger = useCallback(
     (type, count) => ({
@@ -36,12 +42,10 @@ const AddDetails = ({ bookingId, flightData }) => {
       SelectedSeat: [],
       selectedBaggage: [],
       selectedMeal: [],
-      passport: {
-        passportNumber: "",
-        nationality: "",
-        issueDate: "",
-        expiryDate: "",
-      },
+      passportNumber: "",
+      nationality: "",
+      issueDate: "",
+      expiryDate: "",
       typeCount: count,
     }),
     []
@@ -69,6 +73,8 @@ const AddDetails = ({ bookingId, flightData }) => {
     [createPassenger]
   );
 
+  console.log(passengers, "passengers");
+
   useEffect(() => {
     const newPassengers = generatePassengers(
       numAdults,
@@ -95,42 +101,39 @@ const AddDetails = ({ bookingId, flightData }) => {
     // Check if GST details are valid (if required)
     const isGstValid =
       !expandedCard.gst ||
-      (gstDetails.gstNumber &&
-        gstDetails.companyName &&
-        gstDetails.companyAddress);
+      (gstDetails.gstNumber && gstDetails.companyName && gstDetails.address);
     // Add more GST field validations as needed
 
     return isPassengersValid && isGstValid;
   };
 
   const handleProceedToReview = useCallback(() => {
-    // Validate the form data
-    // const isValid = validateFormData(passengers, gstDetails);
+    const isValid = validateFormData(passengers, gstDetails);
 
-    // if (isValid) {
-    // Navigate to the review page with the form data
-    navigate("/review", {
-      state: {
-        passengers,
-        gstDetails,
-        bookingId,
-        flightData,
-      },
-    });
-    // } else {
-    //   // Show an error message or highlight invalid fields
-    //   alert(
-    //     "Please fill out all required fields correctly before proceeding to review."
-    //   );
-    // }
-  }, [
-    navigate,
-    passengers,
-    gstDetails,
-    bookingId,
-    flightData,
-    expandedCard.gst,
-  ]);
+    if (isValid) {
+      // Update progress bar state
+      // Adjust based on your progress bar setup
+
+      // Navigate to the review page with the form data
+
+      onData(passengers);
+
+      // navigate("/review", {
+      //   state: {
+      //     passengers,
+      //     gstDetails,
+      //     bookingId,
+      //     flightData,
+      //   },
+      // });
+    } else {
+      alert(
+        "Please fill out all required fields correctly before proceeding to review."
+      );
+    }
+
+    setCurrentStep((p) => p + 1);
+  }, [navigate, passengers, gstDetails, bookingId, flightData]);
 
   return (
     <div className="mx-auto p-4 sm:p-6 lg:p-8 border border-gray-300 rounded-lg font-poppins max-w-full overflow-x-hidden">

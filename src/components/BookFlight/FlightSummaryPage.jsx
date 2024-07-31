@@ -15,17 +15,22 @@ import { ApiData } from "./dummy-meal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import defaultAirline from "../../assets/home/logo/defaultAirline.png";
+import { set } from "react-hook-form";
 
-const FlightSummary = ({flightData,passengerDetails}) => {
+const FlightSummary = ({ flightData, passenger }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState(null);
+  const [passengersData, setPassengerData] = useState([]);
   const [Loading, setLoading] = useState(false);
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
+  // const [Passenger, setPassenger] = useState(null);
 
   const location = useLocation();
+  const [seatMapData, setSeatMapData] = useState(null); // For seat map API
   const { bookings } = location.state || {};
 
   console.log(bookings, "Helll y");
@@ -36,8 +41,7 @@ const FlightSummary = ({flightData,passengerDetails}) => {
   });
 
   console.log(bookingArray);
-
-  const [seatMapData, setSeatMapData] = useState(null); // For seat map API
+  console.log("hehe");
 
   const handleStepClick = (step) => {
     if (step <= currentStep) {
@@ -45,23 +49,32 @@ const FlightSummary = ({flightData,passengerDetails}) => {
     }
   };
 
+  const handleDataFromChild = (data) => {
+    console.log("first", data);
+    setPassengerData(data);
+  };
+
   const getData = async () => {
     setLoading(true);
     await axios
-      .post(`https://myairdeal-backend.onrender.com/booking/review-price`, {
-        priceIds: bookingArray
-      },{
-        headers: {
-            Authorization: `Bearer ${token}`,
+      .post(
+        `https://myairdeal-backend.onrender.com/booking/review-price`,
+        {
+          priceIds: bookingArray,
         },
-    })
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((res) => {
         setLoading(false);
         console.log(res.data, "response datattata");
         setData(res.data);
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         setLoading(false);
         console.log(error);
       });
@@ -75,24 +88,8 @@ const FlightSummary = ({flightData,passengerDetails}) => {
 
   const handleSaveAndContinue = async () => {
     setCurrentStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
-    // setLoading(true);
-    // setError(null);
-
-    // try {
-    //   const response = await axios.post(
-    //     "https://myairdeal-backend.onrender.com/booking/seat-map",
-    //     {
-    //       bookingId: "TJS118801029248",
-    //     }
-    //   );
-
-    //   setSeatMapData(response.data);
-    //   console.log("Seat Map Data:", response.data);
-    // } catch (error) {
-    //   setError(error.message);
-    //   console.error("SeatMapError:", error);
-    // } finally {
-    //   setLoading(false);
+    // if (data) {
+    //   setPassenger(data);
     // }
   };
 
@@ -210,11 +207,20 @@ const FlightSummary = ({flightData,passengerDetails}) => {
                                   <div className="w-full">
                                     <div className="mb-2">
                                       <div className="font-semibold text-xs border rounded-md inline-flex items-center shadow-md p-1 space-x-2">
-                                        <div className="w-5 h-5">
-                                          <img
+                                        <div className="w-8 h-8">
+                                          {/* <img
                                             src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
                                             alt="Airline Logo"
                                             className="w-full h-full object-contain"
+                                          /> */}
+                                          <img
+                                            src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                                            onError={(e) =>
+                                              (e.currentTarget.src =
+                                                defaultAirline)
+                                            }
+                                            alt={segment?.fD?.aI?.code}
+                                            className="w-full h-full object-contain "
                                           />
                                         </div>
                                         <div>
@@ -356,15 +362,21 @@ const FlightSummary = ({flightData,passengerDetails}) => {
                   bookingId={data?.bookingId}
                   Step={handleSaveAndContinue}
                   flightData={data}
+                  onData={handleDataFromChild}
+                  setCurrentStep={setCurrentStep}
                 />
               ) : (
-                <Review 
-                setCurrentStep={setCurrentStep}
-                flightData={data}
-                passengerDetails={passengerDetails}
-                updatePssenger={updatePssenger}
-              />
-              
+                currentStep === 2 && (
+                  <>
+                    {console.log("hehe")}
+                    <Review
+                      setCurrentStep={setCurrentStep}
+                      data={data}
+                      passengersData={passengersData}
+                      // updatePssenger={updatePssenger}
+                    />
+                  </>
+                )
               )}
             </div>
 
