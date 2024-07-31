@@ -7,6 +7,7 @@ const SeatSelection = ({
   setPassengers,
   flightReviewData,
   seatMapData,
+  isSeatMapAvailable
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFlightId, setCurrentFlightId] = useState(null);
@@ -31,11 +32,9 @@ const SeatSelection = ({
     setIsModalOpen(true);
   };
 
-  const isSeatMapAvailable = (flightId) => {
-    return seatMapData && seatMapData.tripSeatMap && seatMapData.tripSeatMap.tripSeat && seatMapData.tripSeatMap.tripSeat[flightId];
-  };
+  console.log("seatMapData", seatMapData);
 
-
+ 
   return (
     <div className="grid grid-cols-2 p-3">
       <div>
@@ -47,16 +46,16 @@ const SeatSelection = ({
                 return (
                   <div key={segIndex} className="flex flex-col space-y-2">
                     <div className="flex items-center space-x-3">
-                      <span className="font-medium">{segment.da.city}</span>
+                      <span className="font-medium">{segment?.da.city}</span>
                       <span className="text-lg">→</span>
-                      <span className="font-medium">{segment.aa.city}</span>
+                      <span className="font-medium">{segment?.aa.city}</span>
                     </div>
                     <button
                   onClick={() => handleShowSeatMap(flightId)}
-                  className={`bg-[#007ec4] text-white ${!isSeatMapAvailable(flightId)?"bg-gray-500 cursor-not-allowed":''} px-4 py-2 rounded`}
-                  disabled={!isSeatMapAvailable(flightId)}
+                  className={`bg-[#007ec4] text-white px-4 py-2 rounded ${!isSeatMapAvailable?'bg-gray-500 cursor-not-allowed':''}`}
+                  disabled={!isSeatMapAvailable}
                 >
-                  Show Seat Map 
+                  Show Seat Map
                 </button>
                   </div>
                 );
@@ -69,16 +68,23 @@ const SeatSelection = ({
           onClose={() => setIsModalOpen(false)}
           title="Your booking is protected by MY AIR DEAL"
         >
-           {isSeatMapAvailable(currentFlightId) && (
-          <SeatMap
-            seatMapData={seatMapData.tripSeatMap.tripSeat[currentFlightId]}
-            passengers={passengers}
-            onSeatSelect={(seatInfo) => {
-              updateSeatSelection(0, seatInfo); 
-            }}
-            flightId={currentFlightId}
-          />
-        )}
+          
+            <SeatMap
+              setModalClose={setIsModalOpen}
+              Passengers={passengers}
+              flightData={flightReviewData}
+              booking={{
+                tripSeatMap: {
+                  tripSeat: {
+                    [currentFlightId]: seatMapData?.tripSeatMap?.tripSeat[currentFlightId]
+                  }
+                }
+              }}
+              onSeatSelect={(index, seatInfo) =>
+                updateSeatSelection(index, seatInfo)
+              }
+              flightId={currentFlightId}
+            />
         
         </Modal>
       </div>

@@ -21,7 +21,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
     setOpenConnectionIndex(openConnectionIndex === index ? null : index);
   };
   console.log({ searchQuery })
- 
+
   return (
     <div className="mt-4 border-l-0">
       <div className="mx-auto rounded-lg p-7">
@@ -33,7 +33,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
               {user.firstName.charAt(0).toUpperCase()}
             </div>
             <div>
-              <div className="text-xl font-bold">
+              <div className="text-xl font-bold uppercase ">
                 {user.firstName} {user.lastName}
               </div>
               <div className="text-sm font-bold flex">
@@ -142,7 +142,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                     <h1 className="text-2xl font-bold text-gray-800">
                       Total Duration
                     </h1>
-                    <h1 className="text-2xl font-bold text-gray-500">{value.sI.length === 1 ? calculateDuration(value.sI[0].dt, value.sI[0].at) : calculateDuration(value.sI[0].dt, value.sI[value.sI.length - 1].at)}</h1>
+                    <h1 className="text-2xl font-bold text-gray-500 uppercase">{value.sI.length === 1 ? calculateDuration(value.sI[0].dt, value.sI[0].at) : calculateDuration(value.sI[0].dt, value.sI[value.sI.length - 1].at)}</h1>
                   </div>
                   <div className="flex justify-between mb-2 w-full">
                     <div className="flex gap-1 items-center w-1/3">

@@ -369,7 +369,7 @@ import BookingCard from "./BookingCards";
 import ReactToast from "../../util/ReactToast";
 import { useNavigate } from "react-router-dom";
 
-const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
+const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
   const [filteredOnward, setFilteredOnward] = useState([]);
   const [filteredReturn, setFilteredReturn] = useState([]);
   const [activeDirection, setActiveDirection] = useState("onward");
@@ -378,24 +378,27 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
   const [selectedOnwardFlight, setSelectedOnwardFlight] = useState(null);
   const [selectedReturnFlight, setSelectedReturnFlight] = useState(null);
 
+  const calculateTotalPrice = (flight) => {
+    let total = 0;
+    const priceList = flight.totalPriceList[0].fd;
+    for (const passengerType in passenger) {
+      if (priceList[passengerType]) {
+        total += priceList[passengerType].fC.TF * passenger[passengerType];
+      }
+    }
+    return total;
+  };
+
   const [filters, setFilters] = useState({
     onward: {
-      maxPrice: Math.max(
-        ...onwardProps.flatMap((flight) =>
-          flight.totalPriceList.map((price) => price.fd.ADULT.fC.TF)
-        )
-      ),
+      maxPrice: Math.max(...onwardProps.map(calculateTotalPrice)),
       stops: [],
       departureTime: [],
       arrivalTime: [],
       airlines: [],
     },
     return: {
-      maxPrice: Math.max(
-        ...returnProps.flatMap((flight) =>
-          flight.totalPriceList.map((price) => price.fd.ADULT.fC.TF)
-        )
-      ),
+      maxPrice: Math.max(...returnProps.map(calculateTotalPrice)),
       stops: [],
       departureTime: [],
       arrivalTime: [],
@@ -405,6 +408,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
   });
 
   const navigate = useNavigate();
+
   const applyFilters = (flights, direction) => {
     return flights.filter((flight) => {
       if (!flight.sI || flight.sI.length === 0) {
@@ -416,10 +420,8 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
       const stops = flight.sI.length - 1;
       const airline = flight.sI[0]?.fD?.aI?.name || "";
       const departureTime = new Date(flight.sI[0].dt).getHours();
-      const arrivalTime = new Date(
-        flight.sI[flight.sI.length - 1].at
-      ).getHours();
-      const price = flight.totalPriceList[0].fd.ADULT.fC.TF;
+      const arrivalTime = new Date(flight.sI[flight.sI.length - 1].at).getHours();
+      const price = calculateTotalPrice(flight);
 
       const isInTimeRange = (time, ranges) => {
         if (ranges.length === 0) return true;
@@ -563,6 +565,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
                 ? handleSelectOnwardFlight(flight, priceIndex)
                 : handleSelectReturnFlight(flight, priceIndex)
             }
+            passenger={passenger}
           />
         ))}
       </div>
@@ -578,16 +581,12 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
     return "";
   };
 
-  const calculateTotalPrice = () => {
+  const calculateTotalBookingPrice = () => {
     const onwardPrice = selectedOnwardFlight
-      ? selectedOnwardFlight.totalPriceList[
-          selectedOnwardFlight.selectedPriceIndex
-        ]?.fd?.ADULT.fC.TF
+      ? calculateTotalPrice(selectedOnwardFlight)
       : 0;
     const returnPrice = selectedReturnFlight
-      ? selectedReturnFlight.totalPriceList[
-          selectedReturnFlight.selectedPriceIndex
-        ]?.fd?.ADULT.fC.TF
+      ? calculateTotalPrice(selectedReturnFlight)
       : 0;
     return onwardPrice + returnPrice;
   };
@@ -624,23 +623,23 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
   return (
     <div className="flex flex-col md:flex-row mb-24">
       <RoundSideBar
+        passenger={passenger}
         filters={filters}
         setFilters={setFilters}
         onwardData={onwardProps}
         returnData={returnProps}
         activeDirection={activeDirection}
         setActiveDirection={setActiveDirection}
+        calculateTotalPrice={calculateTotalPrice}
       />
       <div className="flex flex-col md:p-4 md:w-3/4">
         <div className="flex">
           <div className="w-1/2">
-            {" "}
             <h2 className="text-sm text-center md:text-xl font-semibold mb-2">
               {getRoute(filteredOnward)}
             </h2>
           </div>
           <div className="w-1/2">
-            {" "}
             <h2 className="text-sm text-center md:text-xl font-semibold mb-2">
               {getRoute(filteredReturn)}
             </h2>
@@ -659,7 +658,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [] }) => {
         selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(
           Boolean
         )}
-        totalPrice={calculateTotalPrice()}
+        totalPrice={calculateTotalBookingPrice()}
         onBook={() => handleBooking()}
       />
     </div>
