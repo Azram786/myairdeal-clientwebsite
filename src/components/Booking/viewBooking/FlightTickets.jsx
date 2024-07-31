@@ -9,6 +9,8 @@ import { MdAirlineStops } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
+
 
 const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
   // Utility function to format the date
@@ -74,26 +76,33 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
           <div className="flex  lg:flex-row  items-center flex-col border   p-5 gap-2">
             <div className="flex flex-col items-center xs:flex-row xs:item-start sm:flex-row md:flex-row lg:flex-row xl:flex-row    w-full   lg:w-[80%] xl:w-[70%]">
               <div className="flex   p-2">
-                <img
+
+                {/* <img
                   src={FlightLogo}
                   className="h-16 w-16 rounded-lg p-1 object-contain mr-4 border border-blue-700"
-                />
+                /> */}
+                <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${trip.sI[0].fD.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={trip?.sI[0].fD?.aI?.code} className="w-10 h-10 mr-4" />
+
+
               </div>
 
-              <div className="flex    w-full  sm:flex-row md:flex-row  gap-3 sm:justify-between   justify-between items-center ">
+              <div className="flex  rounded-lg    w-full  sm:flex-row md:flex-row  gap-3 justify-around   items-center ">
 
                 <div className="flex gap-4 md:gap-1  flex-col  ">
-                  <div className="xl:text-lg font-semibold flex">
-                    {trip.sI[0].da.code}-{" "}
-                    <span className="text-[1rem]">{trip.sI[0].da.name}</span>
+
+                  <div className=" text-lg font-semibold flex">
+                    <span className="md:hidden tracking-widest"> {trip.sI[0].da.code}{" "}</span>
+                    <span className=" hidden md:block md:text-xl text-[.9rem]">{trip.sI[0].da.name}</span>
                   </div>
 
-                  <div className=" xl:text-lg font-semibold flex">
-                    {trip.sI.length === 1
-                      ? trip.sI[0].aa.code
-                      : trip.sI[trip.sI.length - 1].aa.code}{" "}
-                    -
-                    <span className="text-[1rem]">
+                  <div className="text-lg font-semibold flex">
+                    <span className="md:hidden tracking-widest">
+                      {trip.sI.length === 1
+                        ? trip.sI[0].aa.code
+                        : trip.sI[trip.sI.length - 1].aa.code}{" "}
+                    </span>
+
+                    <span className="hidden  md:block md:text-xl text-[1rem]">
                       {trip.sI.length === 1
                         ? trip.sI[0].aa.name
                         : trip.sI[trip.sI.length - 1].aa.name}
@@ -104,11 +113,11 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
                 <div className="flex     space-x-4 ">
                   <div className="flex flex-col w-full items-center gap-4 ">
-                    <div className="  text-sm xs:text-xl  md:text-lg lg:text-xl font-bold">
+                    <div className="  text-lg font-bold">
                       {formatTime(trip.sI[0].dt)}
                     </div>
 
-                    <div className=" text-sm  xs:text-xl md:text-lg lg:text-xl font-bold">
+                    <div className="text-lg font-bold">
                       {trip.sI.length === 1
                         ? formatTime(trip.sI[0].at)
                         : formatTime(trip.sI[trip.sI.length - 1].at)}
@@ -119,7 +128,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
             </div>
 
-            <div className="flex justify-center  flex-row items-left   w-full gap-5  lg:w-[50%]   ">
+            <div className="flex   justify-around lg:w-1/2    w-full gap-5   ">
               <div className="flex flex-col justify-evenly sm:flex-row lg:flex-col gap-3  md:w-1/2">
                 <div className="flex items-center gap-1">
                   <div className="text-[1.5rem] text-sky-600 bg-slate-300 p-1 rounded-md">
@@ -144,7 +153,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row lg:flex-col justify-evenly  md:w-1/2 gap-3">
+              <div className="flex flex-col sm:flex-row lg:flex-col justify-evenly   md:w-1/2 gap-3">
                 <div className="flex items-center gap-1">
                   <div className="text-[1.5rem] text-sky-600 bg-slate-300 p-1 rounded-md">
                     <BsDoorClosedFill />

@@ -674,6 +674,8 @@ import timeFormatChanger from "../../util/timeFormatChanger";
 import dateDateFormatChanger from "../../util/dateDateFormatChanger";
 import calculateDuration from "../../util/calculateDuration";
 import { useSelector } from "react-redux";
+import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
+
 
 
 const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
@@ -728,6 +730,8 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
 
         </div>
         {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
+
+          console.log( value.sI )
           return (
             <div key={index}>
               <div className=" flex flex-wrap gap-2 w-full py-2">
@@ -735,18 +739,21 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                   <div className="w-full">
                     <div className="gap-4 flex">
                       <div>
-                        <img className="h-[60px]" src={paymentFlight} alt="" />
+                        {/* <img className="h-[60px]" src={paymentFlight} alt="" /> */}
+                        <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={value?.sI[0].fD?.aI?.code} className="w-10 h-10 mr-4" />
+
                       </div>
                       <div className="py-2 flex flex-col justify-between">
                         <div className="flex flex-col gap-1">
                           <div className="text-slate-400">{searchQuery?.cabinClass}</div>
                           <div className="font-semibold text-[1.2rem]">
-                            Emirates A380 Airbus
+                            {value?.sI[0].fD?.aI.name}
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
                   <div className="flex w-full h-full  justify-between items-center">
                     <div className="w-1/3 flex text-center flex-col gap-1 h-full">
                       <div className="font-bold text-md">
@@ -811,8 +818,8 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                   </div>
                 </div>
                 <div className="w-full flex flex-col  justify-center">
-                  <div className="justify-center p-2 bg-white w-ma rounded-lg flex items-center gap-3">
-                    <h1 className=" md:text-xl lg:text-2xl font-semibold text-gray-800">
+                  <div className="justify-center p-2 bg-[#D0E7F4]  rounded-lg flex items-center gap-3">
+                    <h1 className=" md:text-xl lg:text-2xl font-semibold text-gray-800 ">
                       Total Duration
                     </h1>
                     <h1 className="text-base md:text-xl lg:text-2xl font-bold text-gray-500 uppercase">{value.sI.length === 1 ? calculateDuration(value.sI[0].dt, value.sI[0].at) : calculateDuration(value.sI[0].dt, value.sI[value.sI.length - 1].at)}</h1>
