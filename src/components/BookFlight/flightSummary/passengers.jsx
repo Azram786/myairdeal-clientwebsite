@@ -375,6 +375,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
 
   const handleInputChange = async (name, value) => {
     console.log(name, value);
+    console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,

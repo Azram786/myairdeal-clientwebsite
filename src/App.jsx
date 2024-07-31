@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import Profile from "./components/Profile/Profile";
 
 import Review from "./components/BookFlight/Review";
+import Signup from "./components/Login/Signup";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -32,8 +33,8 @@ function App() {
           <Route path="book-flight" element={<FlightSummaryPage />} />
           <Route path="/profile" element={<Profile />} />
 
-          {/* <Route path="/review" element={<Review />} /> */}
-
+          <Route path="/review" element={<Review />} />
+<Route path="/enter-detail" element={<Signup/>}/>
         </Routes>
       </BrowserRouter>
     </>

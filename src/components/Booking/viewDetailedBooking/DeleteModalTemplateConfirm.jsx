@@ -13,6 +13,7 @@ const DeleteModalTemplateConfirm = ({
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0,0.5)",
+      zIndex: 3001,
     },
     content: {
       height: "150px",
@@ -54,6 +55,8 @@ const DeleteModalTemplateConfirm = ({
     await handleDelete();
     setLoading(false);
   };
+
+  console.log("nithintoahliuwuegrouiqwgruiweiuhjfdkjahkjfa")
 
   return (
     <Modal

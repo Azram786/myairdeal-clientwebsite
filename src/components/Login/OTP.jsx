@@ -96,7 +96,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
 
   return (
     <div>
-      <div className="flex gap-2 w-full justify-evenly">
+      <div className="flex gap-7  md:gap-2 w-full justify-center md:justify-evenly">
         {otp.map((digit, index) => (
           <input
             key={index}
@@ -111,7 +111,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
           />
         ))}
       </div>
-      <div className="flex w-full items-center gap-1">
+      <div className="flex w-full flex-col md:flex-row  items-center gap-1">
 
         {loading ? (
           <motion.button

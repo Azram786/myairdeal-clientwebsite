@@ -145,25 +145,25 @@ const SubmitAmendment = ({ singleBookingData }) => {
       return tripDetails;
     });
 
-    const requestData = {
-      bookingId,
-      type: "CANCELLATION",
-      remarks: Remarks,
-    };
+
 
     if (finalTripList.length > 0) {
       requestData.trips = finalTripList;
     }
 
-    console.log(requestData);
 
     setLoading(true);
     await axios
-      .post(`${apiURLbooking}submit-amendment`, {
-        headers: {
-          authorization: ` Bearer ${token}`,
-        },
-      })
+      .post(`${import.meta.env.VITE_SERVER_URL}booking/submit-amendment`, {
+        bookingId,
+        type: "CANCELLATION",
+        remarks: Remarks
+      },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        })
       .then((res) => {
         setLoading(false);
         console.log(res.data);
