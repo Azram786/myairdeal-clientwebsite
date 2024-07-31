@@ -10,6 +10,7 @@ import { RiHome7Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import "./CustomPhoneInput.css";
+import ReactToast from "../util/ReactToast";
 
 const spinnerVariants = {
   animate: {
@@ -136,6 +137,7 @@ const Login = () => {
       }
     } catch (error) {
       setLoading(false);
+      ReactToast("Try again")
       console.log(error.message);
     }
   };

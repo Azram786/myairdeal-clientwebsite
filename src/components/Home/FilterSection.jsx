@@ -309,11 +309,11 @@ const FilterSection = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-evenly  w-full relative max-w-[1900px] min-w-[210px] ">
-      <div className="     rounded-xl  shadow-md border border-gray-200 bg-white flex flex-col justify-center px-5 gap-4  py-5 md:w-[85%]  xs:w-[90%] relative top-[-100px]   ">
+    <div className="flex flex-col items-center justify-between md:justify-evenly  relative0">
+      <div className="     md:rounded-xl w-[90%]   shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4  md:py-5 md:w-[85%] relative  md:top-[-100px]   ">
         {/* type of travel selecting section */}
 
-        <div className="flex justify-center md:justify-stretch w-full text-white ">
+        <div className="flex justify-center md:justify-stretch  text-white ">
           <button
             className={`bg-[#007EC4] rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "border-red-500"
               }`}
@@ -443,7 +443,7 @@ const FilterSection = () => {
                 //click handler
 
                 onClick={openModalHandler}
-                className="    flex items-center border rounded-md md:w-1/2  p-3 md:p-0 min-w-[230px] "
+                className="    flex items-center border rounded-md md:w-1/2  p-3 md:p-0  "
               >
                 <div className=" text-[2rem]  ">
                   <MdAirlineSeatReclineExtra />
@@ -476,12 +476,12 @@ const FilterSection = () => {
         </div>
 
         {/* fare type with submit button section  */}
-        <div className="w-full md:items-center flex flex-col md:flex-row    h-full  ">
+        <div className=" md:items-center  flex flex-col md:flex-row mt-3   ">
           <div className="    flex  flex-col md:flex-row  md:w-3/4 gap-2 md:gap-0">
-            <div className="md:w-1/3 ">
+            <div className=" w-full md:w-1/3 ">
               <select
                 id="fare-type"
-                className="h-full outline-none border rounded-md w-full md:w-auto p-2 md:p-1  bg-white"
+                className=" outline-none border rounded-md md:w-auto p-2 w-3/4 md:p-1  bg-white"
                 name="fare_type"
                 value={formData.pft}
                 onChange={(e) =>
@@ -502,7 +502,7 @@ const FilterSection = () => {
             <div className="lg:w-1/3">
               <select
                 name=""
-                className="border w-full md:w-auto rounded-md h-full p-2 md:p-1    bg-white"
+                className="border w-3/4  md:w-auto rounded-md l p-2 md:p-1    bg-white"
                 id=""
               >
                 <option value="" disabled selected>
@@ -527,7 +527,7 @@ const FilterSection = () => {
               />
             </div>
           </div>
-          <div className="w-full md:w-1/4 items-start  flex  md:justify-center ">
+          <div className="  md:w-1/4 items-center  flex  justify-center ">
             <button
               disabled={Loading}
               // form submition
@@ -542,16 +542,11 @@ const FilterSection = () => {
 
         {/* {custom-modal} */}
 
-        <Modal
-          formData={formData}
-          setFormData={setFormData}
-          modalIsOpen={modalIsOpen}
-          setModelIsOpen={setModelIsOpen}
-        />
+
       </div>
       <div
-        className="lg:h-[15vh] px-4 flex flex-col md:flex-row
-       md:flex leading-[1]   justify-between lg:px-24 max-w-[1900px] mx-auto mb-2 w-[90%]   relative top-[-50px]"
+        className="  flex flex-col md:flex-row
+       justify-between     md:w-[90%]  md:mt-[-5%]"
       >
         <div className="flex flex-col items-start gap-4 2xl:gap-6 ">
           <h2 className="font-semibold text-[1.3rem]  md:text-4xl 2xl:text-[2.2rem] ">
@@ -576,6 +571,12 @@ const FilterSection = () => {
           </select>
         </div>
       </div>
+      <Modal
+        formData={formData}
+        setFormData={setFormData}
+        modalIsOpen={modalIsOpen}
+        setModelIsOpen={setModelIsOpen}
+      />
     </div>
   );
 };

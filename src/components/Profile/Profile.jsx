@@ -435,9 +435,9 @@ const UserProfile = () => {
                                 <h1 className="text-2xl font-bold uppercase">{user.firstName} {user.lastName}</h1>
                                 <p className='font-bold text-xl'>{user.phone}</p>
                             </div>
-                            <div className='flex lg:justify-center lg:items-center w-full bg-red-500 '>
-                                <div className="md:p-6 pl-2 md:pl-0 rounded-b-lg bg-green-200 flex flex-col  justify-center items-center  w-full  lg:w-1/2">
-                                    <div className="flex flex-col md:flex-row  w-full bg-yellow-200   md:gap-4">
+                            <div className='flex  item-center justify-center px-10 '>
+                                <div className="md:p-6 pl-2 md:pl-0  flex flex-col w-full  justify-center items-center   py-2    lg:w-1/2">
+                                    <div className="flex flex-col md:flex-row  w-full md:gap-4">
                                         <div className='flex w-full lg:w-1/2 lg:items-end flex-col  '>
                                             <div className='flex flex-col w-3/4'>
                                                 <div className=" flex flex-col gap-2 h-full ">
@@ -448,7 +448,7 @@ const UserProfile = () => {
                                                                 type="text"
                                                                 value={userData.firstName}
                                                                 onChange={(e) => handleChange('firstName', e.target.value)}
-                                                                className="w-3/4 rounded-lg border border-gray-300 shadow-sm p-2 text-xl"
+                                                                className="md:w-3/4 w-full rounded-lg border border-gray-300 shadow-sm p-2 md:text-xl"
                                                             />
                                                             {errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>}
                                                         </>
@@ -464,7 +464,7 @@ const UserProfile = () => {
                                                                 type="text"
                                                                 value={userData.lastName}
                                                                 onChange={(e) => handleChange('lastName', e.target.value)}
-                                                                className="w-3/4 rounded-lg border border-gray-300 shadow-sm p-2 text-xl"
+                                                                className=" w-full md:w-3/4  rounded-lg border border-gray-300 shadow-sm p-2 md:text-xl"
                                                             />
                                                             {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
                                                         </>
@@ -476,19 +476,19 @@ const UserProfile = () => {
                                         </div>
                                         <div className='flex w-full  lg:w-1/2 lg:items-end  flex-col '>
                                             <div className='w-3/4  flex flex-col'>
-                                                <div className=" flex flex-col gap-2 h-full">
+                                                <div className=" flex flex-col md:gap-2 h-full">
                                                     <label className="text-gray-700 text-sm">Country</label>
                                                     {isEditing ? (
                                                         <ReactFlagsSelect
                                                             selected={userData.country.countryCode}
                                                             onSelect={handleCountryChange}
-                                                            className="w-3/4"
+                                                            className="w-full md:w-3/4"
                                                         />
                                                     ) : (
                                                         <p className="mt-1 p-2 w-3/4 md:text-xl font-semibold text-[#1F61BC] uppercase">{userData.country.countryName} (+{userData.country.dialCode})</p>
                                                     )}
                                                 </div>
-                                                <div className=" flex flex-col gap-2 h-full">
+                                                <div className=" flex flex-col gap-2 h-full ">
                                                     <label className="text-gray-700 text-sm">Email</label>
                                                     {isEditing ? (
                                                         <>
@@ -496,7 +496,7 @@ const UserProfile = () => {
                                                                 type="text"
                                                                 value={userData.email}
                                                                 onChange={(e) => handleChange('email', e.target.value)}
-                                                                className="w-3/4 rounded-lg border border-gray-300 shadow-sm p-2 text-xl"
+                                                                className="w-full md:w-3/4 rounded-lg border border-gray-300 shadow-sm p-2 md:text-xl"
                                                             />
                                                             {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
                                                         </>
@@ -511,13 +511,13 @@ const UserProfile = () => {
                                         className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
                                         variants={spinnerVariants}
                                         animate="animate"
-                                    /></div> : <div className="flex  gap-2 flex-col lg:flex-row w-full ">
+                                    /></div> : <div className="flex   md:flex-col lg:flex-row gap-1 ">
                                         {isEditing ? (
                                             <>
                                                 <button
                                                     onClick={handleSave}
                                                     disabled={savingLoading}
-                                                    className="bg-white border border-[#284E82] text-[#284E82] px-4 w-1/2 py-2 rounded mt-4"
+                                                    className="bg-white border border-[#284E82] text-[#284E82] px-4  py-2 rounded mt-4"
                                                 >
                                                     Save
                                                 </button>
@@ -531,17 +531,12 @@ const UserProfile = () => {
                                         ) : (
                                             <button
                                                 onClick={handleEdit}
-                                                className="bg-[white] text-[#284E82] border border-[#284E82]  w-1/2 px-4 py-2 rounded mt-4"
+                                                className="bg-[white] text-[#284E82] border border-[#284E82]   px-4 py-2 rounded mt-4"
                                             >
                                                 Edit Profile
                                             </button>
                                         )}
-                                        <button
-                                            className="bg-[white] text-[#284E82] border border-[#284E82]  w-1/2 px-4 py-2 rounded mt-4"
-                                            onClick={() => navigate("/view-booking")}
-                                        >
-                                            View Booking Details
-                                        </button>
+
                                     </div>}
                                 </div>
                             </div>

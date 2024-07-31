@@ -688,41 +688,41 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
   console.log({ searchQuery })
 
   return (
-    <div className="w-full border-l-0">
-      <div className="w-full rounded-lg my-2">
+    <div className=" border-l-0 w-full md:w-[72%]">
+      <div className="rounded-lg my-2">
         <div className="flex justify-between items-center bg-[#007EC4] flex-wrap p-4 rounded-t-xl text-white">
-          <div className="flex w-full items-center">
+          <div className="flex w-full  flex-col md:flex-row justify-end ">
             <div
               className="h-16 w-16 flex items-center justify-center bg-white text-blue-500 font-bold text-xl rounded-full mr-4"
             >
               {user?.firstName.charAt(0).toUpperCase()}
             </div>
-            <div  className="w-full ">
+            <div className="w-full  ">
 
               <div className="text-xl font-bold uppercase ">
                 {user?.firstName} {user?.lastName}
               </div>
-              <div className="text-lg  lg:text-xl font-semibold flex w-full justify-between">
+              <div className="text-lg  lg:text-xl  flex-col md:flex-row font-semibold flex w-full justify-between">
                 <div className=" flex ">
                   <p className="text-white">ID:</p>
                   <span className="text-slate-200 px-2">{singleBookingData?.order.bookingId}</span>
                 </div>
                 <div className="text-semibold flex ">
-              <div className="text-xl lg:text-2xl ">Price:</div>
-              <div className="text-xl lg:text-2xl flex flex-wrap">
-                ₹{" "}
-                <span className="">
-                  {
-                    singleBookingData?.itemInfos?.AIR.totalPriceInfo.totalFareDetail
-                      .fC.TF
-                  }
-                  /-
-                </span>
+                  <div className="text-xl lg:text-2xl ">Price:</div>
+                  <div className="text-xl lg:text-2xl flex flex-wrap">
+                    ₹{" "}
+                    <span className="">
+                      {
+                        singleBookingData?.itemInfos?.AIR.totalPriceInfo.totalFareDetail
+                          .fC.TF
+                      }
+                      /-
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-              </div>
-            </div>
-            
+
 
           </div>
 
@@ -747,7 +747,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex w-full h-full justify-between items-center">
+                  <div className="flex w-full h-full  justify-between items-center">
                     <div className="w-1/3 flex text-center flex-col gap-1 h-full">
                       <div className="font-bold text-md">
                         <span>{value.sI[0].da.code}</span>
@@ -810,95 +810,102 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                     </div>
                   </div>
                 </div>
-                <div className="w-full flex flex-col justify-center pl-4">
-                  <div className="justify-center p-2 bg-white w-max  rounded-lg flex items-center gap-3">
-                    <h1 className=" text-xl lg:text-2xl font-semibold text-gray-800">
+                <div className="w-full flex flex-col  justify-center">
+                  <div className="justify-center p-2 bg-white w-ma rounded-lg flex items-center gap-3">
+                    <h1 className=" md:text-xl lg:text-2xl font-semibold text-gray-800">
                       Total Duration
                     </h1>
                     <h1 className="text-base md:text-xl lg:text-2xl font-bold text-gray-500 uppercase">{value.sI.length === 1 ? calculateDuration(value.sI[0].dt, value.sI[0].at) : calculateDuration(value.sI[0].dt, value.sI[value.sI.length - 1].at)}</h1>
                   </div>
-                  <div className="flex flex-wrap justify-between mb-2 w-full">
-                    <div className="flex flex-wrap gap-1 items-center w-1/3">
-                      <div className="text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
-                        <MdDateRange />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] text-sm md:text-base font-semibold">
-                          Departure Date
+                  <div className="flex md:flex-col justify-center px-1 ">
+
+                    <div className="flex flex-wrap md:justify-between mb-2 flex-col md:flex-row w-full  justify-center md:items-center">
+                      <div className="flex  gap-1 items-center  md:w-1/3">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
+                          <MdDateRange />
                         </div>
-                        <div className="font-semibold">
-                          {dateDateFormatChanger(value.sI[0].dt)}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-1 items-center w-1/3">
-                      <div className="text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
-                        <IoIosTime />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] text-sm md:text-base font-semibold">
-                          Departure Time
-                        </div>
-                        <div className="font-semibold">
-                          {timeFormatChanger(value.sI[0].dt)}
+                        <div>
+                          <div className="text-[#495049] text-sm  md:text-base font-semibold">
+                            Departure Date
+                          </div>
+                          <div className="font-semibold text-sm md:text-lg">
+                            {dateDateFormatChanger(value.sI[0].dt)}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex flex-wrap gap-1 items-center w-1/3">
-                      <div className="text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
-                        <IoIosTime />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] text-sm md:text-base font-semibold">
-                          Arrival time
+                      <div className="flex  gap-1 items-center  md:w-1/3">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
+                          <IoIosTime />
                         </div>
-                        <div className="font-semibold">
-                          {value.sI.length === 1
-                            ? timeFormatChanger(value.sI[0].at)
-                            : timeFormatChanger(value.sI[value.sI.length - 1].at)}
+                        <div>
+                          <div className="text-[#495049] text-sm md:text-base font-semibold">
+                            Departure Time
+                          </div>
+                          <div className="font-semibold text-sm md:text-lg">
+                            {timeFormatChanger(value.sI[0].dt)}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap justify-between w-full">
-                    <div className="flex flex-wrap gap-1 items-center w-1/3">
-                      <div className="text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
-                        <BsDoorClosedFill />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] text-sm md:text-base font-semibold">
-                          Terminal
+                      <div className="flex  gap-1 items-center  md:w-1/3 ">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg ">
+                          <IoIosTime />
                         </div>
-                        <div className="font-semibold">
-                          {value.sI[0].da.terminal
-                            ? value.sI[0].da.terminal
-                            : "NA"}
+                        <div>
+                          <div className="text-[#495049] text-sm md:text-base font-semibold">
+                            Arrival time
+                          </div>
+                          <div className="font-semibold text-sm md:text-lg">
+                            {value.sI.length === 1
+                              ? timeFormatChanger(value.sI[0].at)
+                              : timeFormatChanger(value.sI[value.sI.length - 1].at)}
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-1 items-center w-1/3 ">
-                      <div className="text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
-                        <BsDoorClosedFill />
-                      </div>
-                      <div className="">
-                        <div className="text-[#495049] text-sm md:text-base font-semibold">
-                          {" "}
-                          Stops
+                    <div className="flex flex-wrap md:justify-between mb-2 flex-col md:flex-row w-full  justify-center md:items-center">
+                      <div className="flex  gap-1 items-center md:w-1/3 ">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
+                          <BsDoorClosedFill />
                         </div>
-                        <div className="font-semibold">{value.sI.length - 1}</div>
+                        <div>
+                          <div className="text-[#495049] text-sm  md:text-base font-semibold">
+                            Terminal
+                          </div>
+                          <div className="font-semibold text-sm md:text-lg">
+                            {value.sI[0].da.terminal
+                              ? value.sI[0].da.terminal
+                              : "NA"}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex gap-1 items-center md:w-1/3 ">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
+                          <BsDoorClosedFill />
+                        </div>
+                        <div>
+                          <div className="text-[#495049] text-sm md:text-base font-semibold">
+                            Stops
+                          </div>
+                          <div className="font-semibold text-sm md:text-lg">
+                            {value.sI.length - 1}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex gap-1 items-center md:w-1/3 ">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg ">
+                          <MdOutlineAirlineSeatReclineExtra />
+                        </div>
+                        <div>
+                          <div className="text-[#495049] text-sm md:text-base font-semibold">
+                            Seat Class
+                          </div>
+                          <div className="font-semibold text-sm md:text-lg">
+                            {searchQuery.cabinClass}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-1 items-center w-1/3">
-                      <div className="text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
-                        <MdOutlineAirlineSeatReclineExtra />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] text-sm md:text-base font-semibold">
-                          Seat Class
-                        </div>
-                        <div className="font-semibold">{searchQuery.cabinClass}</div>
-                      </div>
-                    </div>
+                   
                   </div>
                 </div>
               </div>
