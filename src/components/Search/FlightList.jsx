@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Oneway from "./SearchComponents/Oneway";
@@ -11,6 +11,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const FlightList = () => {
 
+  const location=useLocation()
+  const {query}=location.state
 
   const [data, setData] = useState(query);
   console.log(query, "query")
