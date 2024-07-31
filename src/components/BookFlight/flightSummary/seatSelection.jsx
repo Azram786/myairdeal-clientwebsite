@@ -42,13 +42,13 @@ const SeatSelection = ({
           {flightReviewData.tripInfos.map((trip, tripIndex) => (
             <div key={tripIndex} className="flex flex-col space-y-2 p-4 border rounded-lg shadow-lg">
               {trip.sI.map((segment, segIndex) => {
-                const flightId = segment.id;
+                const flightId = segment?.id;
                 return (
                   <div key={segIndex} className="flex flex-col space-y-2">
                     <div className="flex items-center space-x-3">
-                      <span className="font-medium">{segment?.da.city}</span>
+                      <span className="font-medium">{segment?.da?.city}</span>
                       <span className="text-lg">→</span>
-                      <span className="font-medium">{segment?.aa.city}</span>
+                      <span className="font-medium">{segment?.aa?.city}</span>
                     </div>
                     <button
                   onClick={() => handleShowSeatMap(flightId)}

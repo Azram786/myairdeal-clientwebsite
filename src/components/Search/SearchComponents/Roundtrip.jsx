@@ -654,12 +654,15 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
           </div>
         </div>
       </div>
+
+      {console.log(selectedOnwardFlight, selectedReturnFlight, "selected flights")}
       <BookingCard
         selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(
           Boolean
         )}
         totalPrice={calculateTotalBookingPrice()}
         onBook={() => handleBooking()}
+        passenger={passenger}
       />
     </div>
   );

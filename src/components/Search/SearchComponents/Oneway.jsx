@@ -99,20 +99,22 @@ const Oneway = ({ flightProps, passenger }) => {
     return total;
   }, [passenger]);
 
-  
+  const getStopsCount = (flight) => {
+    return flight.sI.length - 1;
+  };
 
   useEffect(() => {
     console.log("Filters changed:", filters);
     const newFilteredFlights = flightProps.filter(flight => {
       console.log("Processing flight:", flight);
       const price = calculateTotalPrice(flight);
-      const stops = flight.sI[0].stops;
+      const stops = getStopsCount(flight);
       const departureHour = new Date(flight.sI[0].dt).getHours();
-      const arrivalHour = new Date(flight.sI[0].at).getHours();
+      const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
       const airline = flight.sI[0].fD.aI.name;
 
       const priceMatch = price <= filters.maxPrice;
-      const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString());
+      const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString()) || (stops >= 3 && filters.stops.includes("3+"));
       const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
         const [start, end] = range.split('-').map(Number);
         return departureHour >= start && departureHour < end;
@@ -199,9 +201,8 @@ const Oneway = ({ flightProps, passenger }) => {
       </div>
       {selectedFlight.length > 0 && (
         <BookingCard
-
-        passenger={passenger}
-        selectedPriceIndex={selectedFlight}
+          passenger={passenger}
+          selectedPriceIndex={selectedFlight}
           selectedFlights={selectedFlight.map(selected => filteredFlights[selected.flightIndex])}
           totalPrice={getTotalPrice()}
           onBook={handleBooking}
