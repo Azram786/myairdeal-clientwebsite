@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import TravellersDetails from "./travellers";
 import AddonsCard from "./addOns";
 import GstDetails from "./gstDetails";
-import { flightData } from "../Seats/dummy";
+import { useNavigate } from "react-router-dom";
 
-const AddDetails = () => {
+const AddDetails = ({ bookingId, flightData }) => {
   const [passengers, setPassengers] = useState([]);
 
   const [gstDetails, setGstDetails] = useState({
@@ -78,35 +78,39 @@ const AddDetails = () => {
   };
 
   const handleProceedToReview = () => {
-    console.log("Passenger data:", passengers);
-    console.log("GST details:", gstDetails);
+    // Logic for handling proceed to review
+    // Navigate to review page
+    useNavigate(`/review/${bookingId}`);
   };
 
   return (
-    <div className="mx-auto p-2 border border-gray-300 rounded-lg font-poppins">
-      <TravellersDetails
-        passengers={passengers}
-        setPassengers={setPassengers}
-        expanded={expandedCard.travellers}
-        toggleCard={() => toggleCard("travellers")}
-      />
-      <AddonsCard
-        passengers={passengers}
-        setPassengers={setPassengers}
-        data={flightData}
-        expanded={expandedCard.addons}
-        toggleCard={() => toggleCard("addons")}
-      />
-      <GstDetails
-        gstDetails={gstDetails}
-        setGstDetails={setGstDetails}
-        expanded={expandedCard.gst}
-        toggleCard={() => toggleCard("gst")}
-      />
-      <div className="mt-9 max-w-lg mx-auto flex justify-center items-center">
+    <div className="mx-auto p-4 sm:p-6 lg:p-8 border border-gray-300 rounded-lg font-poppins max-w-full overflow-x-hidden">
+      <div className="flex flex-col gap-4">
+        <TravellersDetails
+          passengers={passengers}
+          setPassengers={setPassengers}
+          expanded={expandedCard.travellers}
+          toggleCard={() => toggleCard("travellers")}
+        />
+        <AddonsCard
+          bookingId={bookingId}
+          passengers={passengers}
+          setPassengers={setPassengers}
+          data={flightData}
+          expanded={expandedCard.addons}
+          toggleCard={() => toggleCard("addons")}
+        />
+        <GstDetails
+          gstDetails={gstDetails}
+          setGstDetails={setGstDetails}
+          expanded={expandedCard.gst}
+          toggleCard={() => toggleCard("gst")}
+        />
+      </div>
+      <div className="mt-6 max-w-full mx-auto flex justify-center items-center px-4">
         <button
           onClick={handleProceedToReview}
-          className="bg-[#007ec4] w-full text-white px-4 py-2 rounded"
+          className="bg-[#007ec4] w-full sm:w-auto text-white px-4 py-2 rounded text-base sm:text-lg"
         >
           Proceed To Review
         </button>

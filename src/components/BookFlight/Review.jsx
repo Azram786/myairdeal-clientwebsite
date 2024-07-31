@@ -12,11 +12,7 @@ const Review = ({ setCurrentStep }) => {
         {/* Plane Information Section */}
         <div className="md:w-1/2 mb-4 md:mb-0">
           <div className="flex items-center border-b pb-4 mb-4">
-            <img
-              src={EmiratesPlanes}
-              alt="Plane"
-              className="w-24 h-24 rounded-lg"
-            />
+            <img src={""} alt="Plane" className="w-24 h-24 rounded-lg" />
             <div className="ml-4">
               <h2 className="text-lg font-bold">Emirates A380 Airbus</h2>
               <p>Economy</p>

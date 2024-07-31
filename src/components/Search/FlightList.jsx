@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Oneway from "./SearchComponents/Oneway";
@@ -9,35 +10,7 @@ import FilterSection from "../Home/FilterSection";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const FlightList = () => {
-  // const [data, setData] = useState({
-  //   searchQuery: {
-  //     cabinClass: "ECONOMY",
-  //     paxInfo: {
-  //       ADULT: "2",
-  //       CHILD: "0",
-  //       INFANT: "0",
-  //     },
-  //     routeInfos: [
-  //       {
-  //         fromCityOrAirport: { code: "BLR" },
-  //         toCityOrAirport: { code: "BOM" },
-  //         travelDate: "2024-07-29",
-  //       },
 
-  //       {
-  //         fromCityOrAirport: { code: "BOM" },
-  //         toCityOrAirport: { code: "DEL" },
-  //         travelDate: "2024-08-09",
-  //       },
-  //     ],
-  //     searchModifiers: {
-  //       isDirectFlight: true,
-  //       isConnectingFlight: false,
-  //     },
-  //   },
-  // });
-  const location = useLocation();
-  const { query } = location.state || {};
 
   const [data, setData] = useState(query);
   console.log(query, "query")
@@ -52,6 +25,8 @@ const FlightList = () => {
   const [multicity, setMulticity] = useState([]);
   const [combo, setCombo] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+
 
   const getData = async () => {
     try {
@@ -59,6 +34,8 @@ const FlightList = () => {
         `https://myairdeal-backend.onrender.com/search/flight`,
         data
       );
+
+      console.log(res.data, "tripInfos-----------------------------------------");
       const tripInfos = res.data.searchResult.tripInfos;
 
       console.log(tripInfos, "tripInfos");
@@ -85,6 +62,7 @@ const FlightList = () => {
   };
 
   useEffect(() => {
+
     getData();
   }, []);
 
@@ -95,12 +73,12 @@ const FlightList = () => {
   return (
     <>
       <div className=" min-h-screen border p-4 bg-gray-50 gap-4 shadow-sm rounded-md flex flex-col">
-        {tripType === "oneway" && <Oneway flightProps={oneway} />}
+        {tripType === "oneway" && <Oneway flightProps={oneway} passenger={data.searchQuery.paxInfo} />}
         {tripType === "roundtrip" && (
-          <Roundtrip onwardProps={oneway} returnProps={roundWay} />
+          <Roundtrip onwardProps={oneway} returnProps={roundWay} passenger={data.searchQuery.paxInfo} />
         )}
-        {tripType === "combo" && <Combo flightprops={combo} />}
-        {tripType === "multicity" && <MultiCity flightProps={multicity} />}
+        {tripType === "combo" && <Combo flightprops={combo} passenger={data.searchQuery.paxInfo} />}
+        {tripType === "multicity" && <MultiCity flightProps={multicity} passenger={data.searchQuery.paxInfo} />}
       </div>
     </>
   );

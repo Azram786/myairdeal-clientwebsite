@@ -1,5 +1,5 @@
 import React from "react";
-import { FaUser } from "react-icons/fa"; 
+import { FaUser } from "react-icons/fa";
 import { VscPreview } from "react-icons/vsc";
 import { MdPayment } from "react-icons/md";
 import { GoChecklist } from "react-icons/go";

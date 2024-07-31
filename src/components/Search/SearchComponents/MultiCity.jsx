@@ -168,6 +168,178 @@
 
 
 
+// import React, { useState, useEffect } from "react";
+// import { Tabs } from "antd";
+// import FlightDetailsCard from "../Cards/FlightDetailsCard";
+// import { ArrowRightOutlined } from "@ant-design/icons";
+// import flightLogo from "../../../assets/home/logo/image 40.png";
+// import SideBar from "./SideBar";
+// import BookingCard from "./BookingCards";
+// import { useNavigate } from 'react-router-dom';
+
+// const { TabPane } = Tabs;
+
+// const MultiCity = ({ flightProps,passenger }) => {
+//   const [activeTabIndex, setActiveTabIndex] = useState(0);
+//   const [filters, setFilters] = useState(
+//     flightProps.map((flights) => ({
+//       maxPrice: Math.max(...flights.map(flight => flight.totalPriceList[0].fd.ADULT.fC.TF)),
+//       stops: [],
+//       departureTime: [],
+//       arrivalTime: [],
+//       airlines: []
+//     }))
+//   );
+//   const [filteredFlights, setFilteredFlights] = useState(flightProps);
+//   const [selectedFlights, setSelectedFlights] = useState(
+//     flightProps.map(() => ({ flightIndex: null, priceIndex: null }))
+//   );
+
+//   const navigate=useNavigate()
+
+//   useEffect(() => {
+//     const newFilteredFlights = flightProps.map((flights, index) =>
+//       flights.filter(flight => {
+//         const price = flight.totalPriceList[0].fd.ADULT.fC.TF;
+//         const stops = flight.sI[0].stops.toString();
+//         const departureTime = new Date(flight.sI[0].dt).getHours();
+//         const arrivalTime = new Date(flight.sI[0].at).getHours();
+//         const airline = flight.sI[0].fD.aI.name;
+//         const departureTimeRange =
+//           departureTime >= 0 && departureTime < 6 ? "00-06" :
+//           departureTime >= 6 && departureTime < 12 ? "06-12" :
+//           departureTime >= 12 && departureTime < 18 ? "12-18" : "18-00";
+//         const arrivalTimeRange =
+//           arrivalTime >= 0 && arrivalTime < 6 ? "00-06" :
+//           arrivalTime >= 6 && arrivalTime < 12 ? "06-12" :
+//           arrivalTime >= 12 && arrivalTime < 18 ? "12-18" : "18-00";
+//         return (
+//           price <= filters[index].maxPrice &&
+//           (filters[index].stops.length === 0 || filters[index].stops.includes(stops)) &&
+//           (filters[index].departureTime.length === 0 || filters[index].departureTime.includes(departureTimeRange)) &&
+//           (filters[index].arrivalTime.length === 0 || filters[index].arrivalTime.includes(arrivalTimeRange)) &&
+//           (filters[index].airlines.length === 0 || filters[index].airlines.includes(airline))
+//         );
+//       })
+//     );
+//     setSelectedFlights(flightProps.map(() => ({ flightIndex: null, priceIndex: null })));
+
+//     setFilteredFlights(newFilteredFlights);
+//   }, [filters, flightProps]);
+
+//   const handleTabChange = (activeKey) => {
+//     setActiveTabIndex(Number(activeKey));
+//   };
+
+//   const handleFlightSelection = (tabIndex, flightIndex, priceIndex) => {
+//     setSelectedFlights(prev => {
+//       const newSelected = [...prev];
+//       newSelected[tabIndex] = { flightIndex, priceIndex };
+//       return newSelected;
+//     });
+//   };
+
+//   const getTotalPrice = () => {
+//     return selectedFlights.reduce((total, selected, index) => {
+//       if (selected.flightIndex !== null && selected.priceIndex !== null) {
+//         const flight = filteredFlights[index][selected.flightIndex];
+//         return total + flight.totalPriceList[selected.priceIndex].fd.ADULT.fC.TF;
+//       }
+//       return total;
+//     }, 0);
+//   };
+
+//   const handleBooking = () => {
+//     const allFlightsSelected = selectedFlights.every(selected => 
+//       selected.flightIndex !== null && selected.priceIndex !== null
+//     );
+  
+//     if (!allFlightsSelected) {
+//       alert("Please select all connection flights before booking.");
+//       return;
+//     }
+  
+//     // If all flights are selected, proceed with booking
+//     const bookingData = selectedFlights.map((selected, index) => {
+//       const flight = filteredFlights[index][selected.flightIndex];
+//       return {
+//         priceId: flight.totalPriceList[selected.priceIndex].id,
+//         flightDetails: flight.sI
+//       };
+//     });
+  
+//     console.log("Booking:", bookingData);
+//     navigate("/book-flight", { state: { bookings:bookingData } });
+    
+//   };
+
+//   if (flightProps.length === 0) {
+//     return <div>No flights available</div>;
+//   }
+
+//   return (
+//     <div className="flex flex-col md:flex-row mb-3 relative">
+//       <SideBar
+//         flights={flightProps}
+//         filters={filters}
+//         setFilters={setFilters}
+//         activeTabIndex={activeTabIndex}
+//         passenger={passenger}
+//       />
+//       <div className="flex-grow pb-20">
+//         <Tabs defaultActiveKey="0" onChange={handleTabChange}>
+//           {flightProps.map((flights, tabIndex) => {
+//             const startCode = flights.length > 0 ? flights[0].sI[0].da.city : "Unknown";
+//             const endCode = flights.length > 0 ? flights[0].sI[0].aa.city : "Unknown";
+//             return (
+//               <TabPane
+//                 tab={
+//                   <span>
+//                     {startCode} <ArrowRightOutlined className="mx-2" /> {endCode}
+//                   </span>
+//                 }
+//                 key={tabIndex}
+//               >
+//                 <div className="h-[700px] overflow-y-auto no-scroll">
+//                   {filteredFlights[tabIndex].length === 0 ? (
+//                     <div>No flights available for this route</div>
+//                   ) : (
+//                     filteredFlights[tabIndex].map((flight, flightIndex) => (
+//                       <FlightDetailsCard
+//                         key={flightIndex}
+//                         logo={flightLogo}
+//                         flightDetails={flight}
+                        
+//                         isSelected={selectedFlights[tabIndex].flightIndex === flightIndex}
+//                         selectedPriceIndex={selectedFlights[tabIndex].flightIndex === flightIndex ? selectedFlights[tabIndex].priceIndex : 0}
+//                         onSelect={(priceIndex) => handleFlightSelection(tabIndex, flightIndex, priceIndex)}
+//                       />
+//                     ))
+//                   )}
+//                 </div>
+//               </TabPane>
+//             );
+//           })}
+//         </Tabs>
+//       </div>
+      
+//       <BookingCard
+//   selectedFlights={selectedFlights.map((selected, index) => 
+//     selected.flightIndex !== null ? {
+//       ...filteredFlights[index][selected.flightIndex],
+//       selectedPriceIndex: selected.priceIndex
+//     } : null
+//   ).filter(flight => flight !== null)}
+//   totalPrice={getTotalPrice()}
+//   onBook={handleBooking}
+// />
+//     </div>
+//   );
+// };
+
+// export default MultiCity;
+
+
 import React, { useState, useEffect } from "react";
 import { Tabs } from "antd";
 import FlightDetailsCard from "../Cards/FlightDetailsCard";
@@ -175,14 +347,15 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import flightLogo from "../../../assets/home/logo/image 40.png";
 import SideBar from "./SideBar";
 import BookingCard from "./BookingCards";
+import { useNavigate } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
-const MultiCity = ({ flightProps }) => {
+const MultiCity = ({ flightProps, passenger }) => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [filters, setFilters] = useState(
-    flightProps.map((flights) => ({
-      maxPrice: Math.max(...flights.map(flight => flight.totalPriceList[0].fd.ADULT.fC.TF)),
+    flightProps.map(() => ({
+      maxPrice: 100000,
       stops: [],
       departureTime: [],
       arrivalTime: [],
@@ -194,10 +367,23 @@ const MultiCity = ({ flightProps }) => {
     flightProps.map(() => ({ flightIndex: null, priceIndex: null }))
   );
 
+  const navigate = useNavigate();
+
+  const calculateTotalPrice = (flight) => {
+    let total = 0;
+    const priceList = flight.totalPriceList[0].fd;
+    for (const passengerType in passenger) {
+      if (priceList[passengerType]) {
+        total += priceList[passengerType].fC.TF * passenger[passengerType];
+      }
+    }
+    return total;
+  };
+
   useEffect(() => {
     const newFilteredFlights = flightProps.map((flights, index) =>
       flights.filter(flight => {
-        const price = flight.totalPriceList[0].fd.ADULT.fC.TF;
+        const price = calculateTotalPrice(flight);
         const stops = flight.sI[0].stops.toString();
         const departureTime = new Date(flight.sI[0].dt).getHours();
         const arrivalTime = new Date(flight.sI[0].at).getHours();
@@ -219,11 +405,21 @@ const MultiCity = ({ flightProps }) => {
         );
       })
     );
-    setSelectedFlights(flightProps.map(() => ({ flightIndex: null, priceIndex: null })));
-
+  
     setFilteredFlights(newFilteredFlights);
-  }, [filters, flightProps]);
-
+  
+    // Update selectedFlights only for the flights that are no longer available
+    setSelectedFlights(prev => prev.map((selected, index) => {
+      if (selected.flightIndex !== null) {
+        const flightStillAvailable = newFilteredFlights[index].some(
+          (flight, idx) => idx === selected.flightIndex
+        );
+        return flightStillAvailable ? selected : { flightIndex: null, priceIndex: null };
+      }
+      return selected;
+    }));
+  
+  }, [filters, flightProps, passenger]);
   const handleTabChange = (activeKey) => {
     setActiveTabIndex(Number(activeKey));
   };
@@ -240,25 +436,22 @@ const MultiCity = ({ flightProps }) => {
     return selectedFlights.reduce((total, selected, index) => {
       if (selected.flightIndex !== null && selected.priceIndex !== null) {
         const flight = filteredFlights[index][selected.flightIndex];
-        return total + flight.totalPriceList[selected.priceIndex].fd.ADULT.fC.TF;
+        return total + calculateTotalPrice(flight);
       }
       return total;
     }, 0);
   };
 
   const handleBooking = () => {
-    // Check if all flights are selected
     const allFlightsSelected = selectedFlights.every(selected => 
       selected.flightIndex !== null && selected.priceIndex !== null
     );
   
     if (!allFlightsSelected) {
-      // Show an alert if not all flights are selected
       alert("Please select all connection flights before booking.");
       return;
     }
   
-    // If all flights are selected, proceed with booking
     const bookingData = selectedFlights.map((selected, index) => {
       const flight = filteredFlights[index][selected.flightIndex];
       return {
@@ -268,12 +461,14 @@ const MultiCity = ({ flightProps }) => {
     });
   
     console.log("Booking:", bookingData);
-    // Here you would typically send this data to your booking API
+    navigate("/book-flight", { state: { bookings: bookingData } });
   };
 
   if (flightProps.length === 0) {
     return <div>No flights available</div>;
   }
+
+  console.log(selectedFlights,"fjoe-----------")
 
   return (
     <div className="flex flex-col md:flex-row mb-3 relative">
@@ -282,6 +477,7 @@ const MultiCity = ({ flightProps }) => {
         filters={filters}
         setFilters={setFilters}
         activeTabIndex={activeTabIndex}
+        passenger={passenger}
       />
       <div className="flex-grow pb-20">
         <Tabs defaultActiveKey="0" onChange={handleTabChange}>
@@ -306,10 +502,11 @@ const MultiCity = ({ flightProps }) => {
                         key={flightIndex}
                         logo={flightLogo}
                         flightDetails={flight}
-                        
+                        passenger={passenger}
                         isSelected={selectedFlights[tabIndex].flightIndex === flightIndex}
                         selectedPriceIndex={selectedFlights[tabIndex].flightIndex === flightIndex ? selectedFlights[tabIndex].priceIndex : 0}
                         onSelect={(priceIndex) => handleFlightSelection(tabIndex, flightIndex, priceIndex)}
+                        totalPrice={calculateTotalPrice(flight)}
                       />
                     ))
                   )}
@@ -321,15 +518,16 @@ const MultiCity = ({ flightProps }) => {
       </div>
       
       <BookingCard
-  selectedFlights={selectedFlights.map((selected, index) => 
-    selected.flightIndex !== null ? {
-      ...filteredFlights[index][selected.flightIndex],
-      selectedPriceIndex: selected.priceIndex
-    } : null
-  ).filter(flight => flight !== null)}
-  totalPrice={getTotalPrice()}
-  onBook={handleBooking}
-/>
+        selectedFlights={selectedFlights.map((selected, index) => 
+          selected.flightIndex !== null ? {
+            ...filteredFlights[index][selected.flightIndex],
+            selectedPriceIndex: selected.priceIndex
+          } : null
+        ).filter(flight => flight !== null)}
+        onBook={handleBooking}
+        passenger={passenger}
+        selectedPriceIndex={selectedFlights}
+      />
     </div>
   );
 };
