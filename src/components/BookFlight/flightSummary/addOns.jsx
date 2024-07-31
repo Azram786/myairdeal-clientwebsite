@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import BagAndMeal from "./bagAndMeal";
 import SeatSelection from "./seatSelection";
 import axios from "axios";
+// import {test, flightData, booking} from '../../BookFlight/Seats/dummy'
+import { useSelector } from "react-redux";
 
 const AddonsCard = ({
   passengers,
@@ -16,8 +18,11 @@ const AddonsCard = ({
   const [seatMapData, setSeatMapData] = useState(null);
   const [checkLoading, setCheckLoading] = useState(false);
   const [Errors, setErrors] = useState(null);
+  const token = useSelector((state) => state.auth.token);
 
-  console.log(data, "Hello");
+
+  console.log(passengers, "Hello");
+  console.log(bookingId, "bookingId");
 
   const checkSeatSelection = async () => {
     setCheckLoading(true);
@@ -27,10 +32,15 @@ const AddonsCard = ({
         "https://myairdeal-backend.onrender.com/booking/seat-map",
         {
           bookingId,
-        }
+        },{
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      }
       );
+
       if (response.status == 200) {
-        setSeatMapData(response.data);
+        setSeatMapData(response?.data);
       }
       console.log("Seat Map Data:", response);
       setCheckLoading(false);
@@ -41,7 +51,12 @@ const AddonsCard = ({
     }
   };
 
-  console.log(passengers, "admones===");
+  const [isSeatMapAvailable,setIsMapAvailable]=useState(data?.conditions?.isa)
+
+
+  useEffect(()=>{
+    checkSeatSelection()
+  },[])
   return (
     <div>
       <div
@@ -101,6 +116,7 @@ const AddonsCard = ({
               passengers={passengers}
               setPassengers={setPassengers}
               flightReviewData={data}
+              isSeatMapAvailable={isSeatMapAvailable}
             />
           )}
           {activeButton === "addBagAndMeal" && (

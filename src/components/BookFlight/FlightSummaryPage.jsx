@@ -14,6 +14,7 @@ import AddDetails from "./flightSummary/addDetails";
 import { ApiData } from "./dummy-meal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const FlightSummary = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -21,6 +22,8 @@ const FlightSummary = () => {
   const [Loading, setLoading] = useState(false);
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
   const [error, setError] = useState(null);
+  const token = useSelector((state) => state.auth.token);
+
 
   const location = useLocation();
   const { bookings } = location.state || {};
@@ -46,14 +49,19 @@ const FlightSummary = () => {
     setLoading(true);
     await axios
       .post(`https://myairdeal-backend.onrender.com/booking/review-price`, {
-        priceIds: bookingArray,
-      })
+        priceIds: bookingArray
+      },{
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
       .then((res) => {
         setLoading(false);
         console.log(res.data, "response datattata");
         setData(res.data);
       })
       .catch((error) => {
+        console.log(error)
         setLoading(false);
         console.log(error);
       });
@@ -67,25 +75,25 @@ const FlightSummary = () => {
 
   const handleSaveAndContinue = async () => {
     setCurrentStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
-    setLoading(true);
-    setError(null);
+    // setLoading(true);
+    // setError(null);
 
-    try {
-      const response = await axios.post(
-        "https://myairdeal-backend.onrender.com/booking/seat-map",
-        {
-          bookingId: "TJS118801029248",
-        }
-      );
+    // try {
+    //   const response = await axios.post(
+    //     "https://myairdeal-backend.onrender.com/booking/seat-map",
+    //     {
+    //       bookingId: "TJS118801029248",
+    //     }
+    //   );
 
-      setSeatMapData(response.data);
-      console.log("Seat Map Data:", response.data);
-    } catch (error) {
-      setError(error.message);
-      console.error("SeatMapError:", error);
-    } finally {
-      setLoading(false);
-    }
+    //   setSeatMapData(response.data);
+    //   console.log("Seat Map Data:", response.data);
+    // } catch (error) {
+    //   setError(error.message);
+    //   console.error("SeatMapError:", error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   //Price

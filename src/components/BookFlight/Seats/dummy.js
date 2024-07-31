@@ -5244,7 +5244,7 @@ export const booking = {
   },
 };
 
-const test = {
+export const test = {
   tripSeatMap: {
     tripSeat: {
       465: {
