@@ -78,7 +78,10 @@ const FlightList = () => {
         data
       );
 
-      console.log(res.data, "tripInfos-----------------------------------------");
+      console.log(
+        res.data,
+        "tripInfos-----------------------------------------"
+      );
       const tripInfos = res.data.searchResult.tripInfos;
 
       console.log(tripInfos, "tripInfos");
@@ -105,7 +108,6 @@ const FlightList = () => {
   };
 
   useEffect(() => {
-
     getData();
   }, []);
 
@@ -116,12 +118,25 @@ const FlightList = () => {
   return (
     <>
       <div className=" min-h-screen border p-4 bg-gray-50 gap-4 shadow-sm rounded-md flex flex-col">
-        {tripType === "oneway" && <Oneway flightProps={oneway} passenger={data.searchQuery.paxInfo} />}
-        {tripType === "roundtrip" && (
-          <Roundtrip onwardProps={oneway} returnProps={roundWay} passenger={data.searchQuery.paxInfo} />
+        {tripType === "oneway" && (
+          <Oneway flightProps={oneway} passenger={data.searchQuery.paxInfo} />
         )}
-        {tripType === "combo" && <Combo flightprops={combo} passenger={data.searchQuery.paxInfo} />}
-        {tripType === "multicity" && <MultiCity flightProps={multicity} passenger={data.searchQuery.paxInfo} />}
+        {tripType === "roundtrip" && (
+          <Roundtrip
+            onwardProps={oneway}
+            returnProps={roundWay}
+            passenger={data.searchQuery.paxInfo}
+          />
+        )}
+        {tripType === "combo" && (
+          <Combo flightprops={combo} passenger={data.searchQuery.paxInfo} />
+        )}
+        {tripType === "multicity" && (
+          <MultiCity
+            flightProps={multicity}
+            passenger={data.searchQuery.paxInfo}
+          />
+        )}
       </div>
     </>
   );

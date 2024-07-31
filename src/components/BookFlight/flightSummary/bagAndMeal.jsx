@@ -97,7 +97,6 @@
 
 // export default BagAndMeal;
 
-
 // import React, { useEffect, useState } from "react";
 
 // const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
@@ -203,18 +202,49 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
   const [flightOptions, setFlightOptions] = useState([]);
 
   useEffect(() => {
-    const options = flightData.tripInfos.flatMap(trip =>
-      trip.sI.map(segment => ({
+    const options = flightData.tripInfos.flatMap((trip) =>
+      trip.sI.map((segment) => ({
         id: segment.id,
         route: `${segment.da.code} → ${segment.aa.code}`,
         baggageOptions: segment.ssrInfo.BAGGAGE || [],
-        mealOptions: segment.ssrInfo.MEAL || []
+        mealOptions: segment.ssrInfo.MEAL || [],
       }))
     );
     setFlightOptions(options);
   }, [flightData]);
 
-  const updateAddonSelection = (passengerIndex, flightId, type, value) => {
+  // const updateAddonSelection = (passengerIndex, flightId, type, value) => {
+  //   setPassenger((prevPassengers) => {
+  //     const newPassengers = [...prevPassengers];
+  //     if (type === "meal") {
+  //       newPassengers[passengerIndex] = {
+  //         ...newPassengers[passengerIndex],
+  //         selectedMeals: {
+  //           ...newPassengers[passengerIndex].selectedMeals,
+  //           [flightId]: { code: value, key: flightId, amount },
+  //         },
+  //       };
+  //     } else if (type === "baggage") {
+  //       newPassengers[passengerIndex] = {
+  //         ...newPassengers[passengerIndex],
+  //         selectedBaggages: {
+  //           ...newPassengers[passengerIndex].selectedBaggages,
+  //           [flightId]: { code: value, key: flightId },
+  //         },
+  //       };
+  //     }
+  //     return newPassengers;
+  //   });
+  // };
+
+  const updateAddonSelection = (
+    passengerIndex,
+    flightId,
+    type,
+    value,
+    amount,
+    desc
+  ) => {
     setPassenger((prevPassengers) => {
       const newPassengers = [...prevPassengers];
       if (type === "meal") {
@@ -222,7 +252,7 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
           ...newPassengers[passengerIndex],
           selectedMeals: {
             ...newPassengers[passengerIndex].selectedMeals,
-            [flightId]: { code: value, key: flightId },
+            [flightId]: { code: value, key: flightId, amount, desc },
           },
         };
       } else if (type === "baggage") {
@@ -230,7 +260,7 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
           ...newPassengers[passengerIndex],
           selectedBaggages: {
             ...newPassengers[passengerIndex].selectedBaggages,
-            [flightId]: { code: value, key: flightId },
+            [flightId]: { code: value, key: flightId, amount },
           },
         };
       }
@@ -263,7 +293,12 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
                   key={index}
                   value={passenger?.selectedBaggages?.[flight.id]?.code || ""}
                   onChange={(e) =>
-                    updateAddonSelection(index, flight.id, "baggage", e.target.value)
+                    updateAddonSelection(
+                      index,
+                      flight.id,
+                      "baggage",
+                      e.target.value
+                    )
                   }
                   className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
@@ -283,9 +318,19 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
                 <select
                   key={index}
                   value={passenger?.selectedMeals?.[flight.id]?.code || ""}
-                  onChange={(e) =>
-                    updateAddonSelection(index, flight.id, "meal", e.target.value)
-                  }
+                  onChange={(e) => {
+                    const selectedMeal = flight.mealOptions.find(
+                      (meal) => meal.code === e.target.value
+                    );
+                    updateAddonSelection(
+                      index,
+                      flight.id,
+                      "meal",
+                      e.target.value,
+                      selectedMeal?.amount || 0,
+                      selectedMeal?.desc || ""
+                    );
+                  }}
                   className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">Select a meal</option>
