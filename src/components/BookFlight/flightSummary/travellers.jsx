@@ -49,7 +49,7 @@ const TravellersCard = ({
   };
 
   return (
-    <div className="border-gray-300 border-b p-4">
+    <div className="border-purple-300 border-b p-4 ">
       <div
         className="justify-between cursor-pointer flex items-center"
         onClick={toggleCard}

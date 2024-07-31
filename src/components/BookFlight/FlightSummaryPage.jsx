@@ -15,7 +15,7 @@ import { ApiData } from "./dummy-meal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
-const FlightSummary = () => {
+const FlightSummary = ({flightData,passengerDetails}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState(null);
   const [Loading, setLoading] = useState(false);
@@ -350,33 +350,39 @@ const FlightSummary = () => {
                   flightData={data}
                 />
               ) : (
-                <Review />
+                <Review 
+                setCurrentStep={setCurrentStep}
+                flightData={data}
+                passengerDetails={passengerDetails}
+                updatePssenger={updatePssenger}
+              />
+              
               )}
             </div>
 
             {/* Right Section */}
             <div className="w-full md:w-[30%] rounded-lg bg-white p-2 space-y-4">
-              <div className="w-full max-w-full rounded-lg border border-gray-300 bg-white p-3 sm:p-4 md:p-5 lg:p-6 shadow-md">
-                <div className="flex items-center justify-between border-b border-gray-300 pb-3 sm:pb-4">
+              <div className="w-full max-w-full rounded-lg border border-gray-300 bg-white p-4 md:p-6 shadow-md">
+                <div className="flex items-center justify-between border-b border-gray-300 pb-4">
                   <div>
-                    <span className="font-bold text-base sm:text-lg md:text-xl lg:text-2xl">
+                    <span className="font-bold text-lg md:text-xl lg:text-2xl">
                       FARE SUMMARY
                     </span>
                   </div>
                 </div>
 
-                <div className="text-gray-700 mt-3 sm:mt-4 md:mt-5 lg:mt-6 space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6">
+                <div className="text-gray-700 mt-4 md:mt-6  space-y-4 md:space-y-6">
                   <div className="border-t border-gray-200 pt-3">
-                    <div className="flex justify-between text-xs sm:text-sm md:text-base font-medium">
+                    <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                       <span>Base fare</span>
                       <span>
                         {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
                       </span>
                     </div>
 
-                    <div className="mt-2 sm:mt-3">
+                    <div className="mt-2">
                       <div
-                        className="flex justify-between text-xs sm:text-sm md:text-base font-medium cursor-pointer"
+                        className="flex justify-between text-xs md:text-sm lg:text-base font-medium cursor-pointer"
                         onClick={() => toggleTaxes()}
                       >
                         <span>Taxes and fees</span>
@@ -385,14 +391,14 @@ const FlightSummary = () => {
                             {data?.totalPriceInfo?.totalFareDetail?.fC?.TAF}
                           </span>
                           {taxesExpanded ? (
-                            <FaChevronUp className="ml-1 sm:ml-2 text-xs sm:text-sm md:text-base" />
+                            <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
                           ) : (
-                            <FaChevronDown className="ml-1 sm:ml-2 text-xs sm:text-sm md:text-base" />
+                            <FaChevronDown className="ml-2 text-xs md:text-sm lg:text-base" />
                           )}
                         </div>
                       </div>
                       {taxesExpanded && (
-                        <div className="text-xs sm:text-sm md:text-base text-gray-500 mt-2 space-y-1 sm:space-y-2">
+                        <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
                           <div className="flex justify-between">
                             <span>Airline GST</span>
                             <span>
@@ -424,9 +430,9 @@ const FlightSummary = () => {
                       )}
                     </div>
 
-                    <div className="mt-2 sm:mt-3">
+                    <div className="mt-2">
                       <div
-                        className="flex justify-between text-xs sm:text-sm md:text-base font-bold cursor-pointer"
+                        className="flex justify-between text-xs md:text-sm lg:text-base font-bold cursor-pointer"
                         onClick={() => toggleAmount()}
                       >
                         <span>Amount to Pay</span>
@@ -435,14 +441,14 @@ const FlightSummary = () => {
                             {data?.totalPriceInfo?.totalFareDetail?.fC?.TF}
                           </span>
                           {amountExpanded ? (
-                            <FaChevronUp className="ml-1 sm:ml-2 text-xs sm:text-sm md:text-base" />
+                            <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
                           ) : (
-                            <FaChevronDown className="ml-1 sm:ml-2 text-xs sm:text-sm md:text-base" />
+                            <FaChevronDown className="ml-2 text-xs md:text-sm lg:text-base" />
                           )}
                         </div>
                       </div>
                       {amountExpanded && (
-                        <div className="text-xs sm:text-sm md:text-base text-gray-500 mt-2 space-y-1 sm:space-y-2">
+                        <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
                           <div className="flex justify-between">
                             <span>Commission</span>
                             <span>N/A</span>

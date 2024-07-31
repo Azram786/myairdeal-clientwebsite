@@ -222,8 +222,11 @@
 
 // export default SeatMap;
 
+
+
 import React, { useEffect, useState } from "react";
 import ReactToast from "../Util/ReactToast";
+import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
 
 const SeatMap = ({
   Passengers,
@@ -231,36 +234,42 @@ const SeatMap = ({
   booking,
   onSeatSelect,
   setModalClose,
+  flightId,
 }) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [flightId, setFlightId] = useState("");
   const [flightDetails, setFlightDetails] = useState({});
   const [sData, setSData] = useState(null);
   const [sInfo, setSInfo] = useState([]);
 
   useEffect(() => {
-    if (flightData && booking) {
-      const firstFlightId = flightData.tripInfos[0].sI[0].id;
-      setFlightId(firstFlightId);
+    if (flightData && booking && flightId) {
+      const flightInfo = flightData.tripInfos
+        .flatMap((trip) => trip.sI)
+        .find((segment) => segment.id === flightId);
 
-      const flightInfo = flightData.tripInfos[0].sI[0];
-      setFlightDetails({
-        airline: flightInfo.fD.aI.name,
-        flightNumber: flightInfo.fD.fN,
-        flightClass: flightData.tripInfos[0].cabinClass,
-        departure: flightInfo.da.cityCode,
-        arrival: flightInfo.aa.cityCode,
-        departureTime: new Date(flightInfo.dt).toLocaleTimeString(),
-        arrivalTime: new Date(flightInfo.at).toLocaleTimeString(),
-      });
+      console.log(flightInfo, "ho77777777777777777");
+      if (flightInfo) {
+        setFlightDetails({
+          airline: flightInfo.fD?.aI?.name,
+          flightNumber: flightInfo?.fD.fN,
+          flightCode: flightInfo?.fD?.aI?.code,
+          flightClass: flightData.tripInfos.find((trip) =>
+            trip.sI.some((segment) => segment.id === flightId)
+          )?.cabinClass,
+          departure: flightInfo.da.cityCode,
+          arrival: flightInfo.aa.cityCode,
+          departureTime: new Date(flightInfo.dt).toLocaleTimeString(),
+          arrivalTime: new Date(flightInfo.at).toLocaleTimeString(),
+        });
 
-      const tripSeat = booking?.tripSeatMap?.tripSeat[firstFlightId];
-      if (tripSeat) {
-        setSData(tripSeat.sData);
-        setSInfo(tripSeat.sInfo);
+        const tripSeat = booking?.tripSeatMap?.tripSeat[flightId];
+        if (tripSeat) {
+          setSData(tripSeat.sData);
+          setSInfo(tripSeat.sInfo);
+        }
       }
     }
-  }, [flightData, booking]);
+  }, [flightData, booking, flightId]);
 
   const toggleSeat = (seat) => {
     if (!seat.isBooked) {
@@ -361,8 +370,10 @@ const SeatMap = ({
               <div className="border-b flex py-2 justify-between">
                 <div className="rounded-md size-12 bg-slate-500">
                   <img
-                    src={`https://imgs.search.brave.com/U7iB7Tg2MoOIZQEb7mbNXcBpgSlR7hdspQUeW6-AmBw/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9k/L2QwL0VtaXJhdGVz/X2xvZ28uc3Zn`}
-                    alt={`logo`}
+                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${flightDetails?.flightCode}.png`}
+                    onError={(e) => (e.currentTarget.src = defaultAirline)}
+                    alt={flightDetails?.flightCode}
+                    className="w-12 h-12 mr-6"
                   />
                 </div>
                 <div>
@@ -381,7 +392,7 @@ const SeatMap = ({
                 <div className="flex flex-col justify-start items-center">
                   <h1 className="font-semibold">Passengers</h1>
                   <div className="flex flex-col">
-                    {Passengers.map((person, index) => (
+                    {Passengers?.map((person, index) => (
                       <p key={index} className="truncate w-20">
                         {person?.firstName} {person?.lN}
                       </p>
@@ -403,7 +414,7 @@ const SeatMap = ({
                   <div>
                     {selectedSeats?.map((seat) => (
                       <p key={seat?.code} className="truncate">
-                        $ {seat?.amount}
+                        ₹ {seat?.amount}
                       </p>
                     ))}
                   </div>
@@ -419,7 +430,7 @@ const SeatMap = ({
               </div>
               <div>{`    `}</div>
               <div>
-                $ {selectedSeats.reduce((sum, seat) => sum + seat.amount, 0)}/-
+                ₹ {selectedSeats.reduce((sum, seat) => sum + seat.amount, 0)}/-
               </div>
             </div>
             <button

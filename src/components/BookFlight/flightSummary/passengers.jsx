@@ -1,18 +1,76 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { format } from "date-fns";
-import PassportDetails from "./passportDetails";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import ModalHistoryData from "./modalHistoryData";
+import PassportDetails from "./passportDetails"; // Import PassportDetails component
 
 const PassengerForm = ({ passenger, index, updatePassenger }) => {
+  const token = useSelector((state) => state.auth.token);
   const [formData, setFormData] = useState({
     title: passenger?.title || "",
     firstName: passenger?.firstName || "",
     lastName: passenger?.lastName || "",
     dob: passenger?.dob || "",
+    passport: passenger?.passport || {
+      passportNumber: "",
+      nationality: "",
+      issueDate: "",
+      expiryDate: "",
+    },
   });
+
+  const [historyData, setHistoryData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+
+  // Fetch history data with loading state
+  const fetchHistoryData = () => {
+    setLoading(true);
+    axios
+      .get("https://myairdeal-backend.onrender.com/user/all-passengers", {
+        headers: { authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setHistoryData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching history data:", error);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchHistoryData();
+  }, []);
+
+  const handleModalOpen = async () => {
+    fetchHistoryData();
+    setIsModalOpen(true);
+  };
+
+  const handleSelectFromHistory = (selectedPassenger) => {
+    setFormData({
+      title: selectedPassenger.ti,
+      firstName: selectedPassenger.fN,
+      lastName: selectedPassenger.lN,
+      dob: selectedPassenger.dob,
+      // Add other fields as necessary
+    });
+    // Update react-hook-form values
+    setValue("title", selectedPassenger.ti);
+    setValue("firstName", selectedPassenger.fN);
+    setValue("lastName", selectedPassenger.lN);
+    setValue("dob", selectedPassenger.dob);
+    // Add other fields as necessary
+    setIsModalOpen(false);
+  };
 
   const {
     register,
+    handleSubmit,
     trigger,
     formState: { errors },
     setValue,
@@ -21,21 +79,19 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
     defaultValues: formData,
   });
 
-  // Reset form when passenger data changes
   useEffect(() => {
     reset(formData);
-  }, [passenger, reset, formData]);
+  }, [formData, reset]);
 
   const departureDate = "2024-08-22T17:10";
 
-  const handleInputChange = async (name, value) => {
+  const handleInputChange = (name, value) => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    setValue(name, value); // Update form value
-    await trigger(name); // Validate field
-    updatePassenger(index, name, value); // Notify parent of change
+    setValue(name, value);
+    trigger(name); // Ensure trigger is awaited if necessary
   };
 
   const calculateDate = (years) => {
@@ -56,8 +112,53 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
     if (passengerType === "INFANT") return calculateDate(2);
   };
 
+  const onSubmit = (data) => {
+    const payload = {
+      ti: data.title,
+      fN: data.firstName,
+      lN: data.lastName,
+      pt: passenger.passengerType,
+      dob: data.dob,
+    };
+    setSubmittedData(payload);
+    setIsSubmitted(true);
+  };
+
+  const [submittedData, setSubmittedData] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (isSubmitted && submittedData) {
+      setLoading(true);
+      axios
+        .put(
+          "https://myairdeal-backend.onrender.com/user/add-passenger",
+          submittedData,
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          setIsSubmitted(false);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setError(error);
+          setIsSubmitted(false);
+          setLoading(false);
+        });
+    }
+  }, [isSubmitted, submittedData]);
+
   return (
-    <div className="rounded-lg p-4 mb-4 bg-white shadow-md">
+    <form
+      className="rounded-lg p-4 mb-4 bg-white shadow-md"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="text-lg font-semibold mb-4">
         {passenger.passengerType} {passenger.typeCount}
       </div>
@@ -160,32 +261,17 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                 {...register("dob", {
                   required: "Date of Birth is required",
                   validate: {
-                    validateDOB: (value) => {
-                      const selectedDate = new Date(value);
-                      const max = new Date(getMaxDate(passenger.passengerType));
-                      const min = new Date(getMinDate(passenger.passengerType));
-                      if (selectedDate > max) {
-                        return `${
-                          passenger.passengerType
-                        } must be born on or before ${format(
-                          max,
-                          "yyyy-MM-dd"
-                        )}`;
-                      }
-                      if (selectedDate < min) {
-                        return `${
-                          passenger.passengerType
-                        } must be born on or after ${format(
-                          min,
-                          "yyyy-MM-dd"
-                        )}`;
-                      }
-                      return true;
+                    validDate: (value) => {
+                      const minDate = getMinDate(passenger.passengerType);
+                      const maxDate = getMaxDate(passenger.passengerType);
+                      return (
+                        (new Date(value) >= new Date(minDate) &&
+                          new Date(value) <= new Date(maxDate)) ||
+                        `Date must be between ${minDate} and ${maxDate}`
+                      );
                     },
                   },
                 })}
-                min={getMinDate(passenger.passengerType)}
-                max={getMaxDate(passenger.passengerType)}
                 onChange={(e) =>
                   handleInputChange(e.target.name, e.target.value)
                 }
@@ -204,20 +290,52 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
           </div>
         </div>
         <PassportDetails
-          passenger={passenger}
-          index={index}
-          updatePassenger={updatePassenger}
+          passport={formData.passport}
+          onChange={(name, value) => handleInputChange(name, value)}
+          register={register}
+          errors={errors}
         />
-        <div className="relative flex justify-center md:justify-end mt-2 md:mt-0 w-full md:w-1/5 h-10 items-center">
+        <div className="flex items-center justify-center">
           <button
             type="button"
-            className="bg-blue-500 text-xs text-white py-1 px-4 rounded-md w-full md:w-auto"
+            onClick={handleModalOpen}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
           >
-            Select from history
+            Select from History
+          </button>
+          <ModalHistoryData
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            historyData={historyData}
+            onSelect={handleSelectFromHistory}
+            loading={loading}
+          />
+        </div>
+        <div className="flex justify-between mt-4">
+          <button
+            type="submit"
+            className="bg-green-500 text-white px-4 py-2 rounded-lg"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            onClick={() => setFormData({})}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg"
+          >
+            Reset
           </button>
         </div>
+        {loading && (
+          <div className="text-center text-gray-500 mt-4">Loading...</div>
+        )}
+        {error && (
+          <div className="text-center text-red-500 mt-4">
+            Error: {error.message}
+          </div>
+        )}
       </div>
-    </div>
+    </form>
   );
 };
 
