@@ -7,20 +7,61 @@ import Combo from "./SearchComponents/Combo";
 import Loader from "./Loader";
 import MultiCity from "./SearchComponents/MultiCity";
 import FilterSection from "../Home/FilterSection";
-import { useLocation, useNavigate } from "react-router-dom";
+import Spinner from '../Profile/Spinner';
 
 const FlightList = () => {
-
-  const location=useLocation()
-  const {query}=location.state
+  // const [data, setData] = useState({
+  //   searchQuery: {
+  //     cabinClass: "ECONOMY",
+  //     paxInfo: {
+  //       ADULT: "3",
+  //       CHILD: "0",
+  //       INFANT: "0",
+  //     },
+  //     routeInfos: [
+  //       {
+  //         fromCityOrAirport: { code: "COK" },
+  //         toCityOrAirport: { code: "BLR" },
+  //         travelDate: "2024-08-06",
+  //       },
+  //       {
+  //         fromCityOrAirport: { code: "BLR" },
+  //         toCityOrAirport: { code: "COK" },
+  //         travelDate: "2024-08-06",
+  //       },
+  //       // {
+  //       //   fromCityOrAirport: { code: "DEL" },
+  //       //   toCityOrAirport: { code: "DXB" },
+  //       //   travelDate: "2024-08-09",
+  //       // }
+  //       // {
+  //       //   fromCityOrAirport: { code: "BOM" },
+  //       //   toCityOrAirport: { code: "DEL" },
+  //       //   travelDate: "2024-08-12",
+  //       // }
+  //     ],
+  //     searchModifiers: {
+  //       isDirectFlight: false,
+  //       isConnectingFlight: false,
+  //     },
+  //   },
+  // });
+  const location=useLocation();
+  const { query } = location.state || {};
 
   const [data, setData] = useState(query);
-  console.log(query, "query")
+
 
   const navigate = useNavigate()
-  if (!query || !data) {
-    navigate('/')
-  }
+  
+
+  useEffect(() => {
+    setData(query);
+    if(!query || !data){
+      navigate('/')
+    }
+  }, [query]);
+
   const [tripType, setTripType] = useState("");
   const [oneway, setOneWay] = useState([]);
   const [roundWay, setRoundWay] = useState([]);
@@ -69,7 +110,7 @@ const FlightList = () => {
   }, []);
 
   if (loading) {
-    return <Loader text="Loading all available flights..." />;
+    return <div className='w-full h-screen flex justify-center items-center'><div className='flex-col flex gap-3'><Spinner/> <h1 className='italic'>Loading available flights..</h1></div></div>;
   }
 
   return (
