@@ -5,7 +5,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DeleteModalTemplateConfirm from "./DeleteModalTemplateConfirm";
-
+import { PiAirplaneInFlightDuotone } from "react-icons/pi";
+import { motion, AnimatePresence } from "framer-motion";
 const SubmitAmendment = ({ singleBookingData }) => {
   const { token } = useSelector((state) => state.auth);
   const collapsed = true;
@@ -43,7 +44,7 @@ const SubmitAmendment = ({ singleBookingData }) => {
     setLoading(true);
     await axios
       .post(
-        `${apiURL}admin-booking/view-booking`,
+        `${import.meta.env.VITE_SERVER_URL}booking/retrieve-booking`,
         {
           bookingId,
         },
@@ -97,7 +98,7 @@ const SubmitAmendment = ({ singleBookingData }) => {
     setLoading(true);
     await axios
       .post(
-        `${apiURL}admin-booking/amendment-charges`,
+        `${apiURL}booking/amendment-charges`,
         {
           bookingId,
           type: "CANCELLATION",
@@ -158,7 +159,7 @@ const SubmitAmendment = ({ singleBookingData }) => {
 
     setLoading(true);
     await axios
-      .post(`${apiURL} / admin - booking / submit - amendment, requestData`, {
+      .post(`${apiURLbooking}submit-amendment`, {
         headers: {
           authorization: ` Bearer ${token}`,
         },
@@ -224,127 +225,160 @@ const SubmitAmendment = ({ singleBookingData }) => {
   useEffect(() => {
     getData();
   }, []);
+  const spinnerVariants = {
+    animate: {
+      rotate: [0, 360],
+      transition: {
+        repeat: Infinity,
+        duration: 1,
+        ease: "linear",
+      },
+    },
+  };
 
   return (
     <div className=" bg-gray-50 p-7">
       <div className={`transition-padding duration-300`}>
-        {Loading ? (
-          <div className="flex justify-center items-center h-screen">
-            <p className="text-xl font-semibold">Loading...</p>
-          </div>
-        ) : (
-          <div className="max-w-7xl mx-auto">
-            {amendmentId && (
-              <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
-                <p>
-                  Amendment is Submitted: Your Amendment ID is{" "}
-                  <span className="font-bold">{amendmentId}</span>
-                </p>
-              </div>
-            )}
-
-            <div className="space-y-6">
-              {checkTrips?.map((trip, tripIndex) => (
-                <div key={tripIndex} className="amendment-trip-container">
-                  <div className="amendment-trip-detail">
-                    {" "}
-                    <div>
-                      <b>Source</b> : {trip.src}
-                    </div>
-                    <div>
-                      <b>Destination</b> : {trip.dest}
-                    </div>
-                    <div>
-                      <b>Departure Date</b> :{" "}
-                      {new Date(trip.departureDate).toLocaleString()}
-                    </div>
-                    <div>
-                      <b>Flight Numbers</b> : {trip.flightNumbers.join(", ")}
-                    </div>
-                    <div>
-                      <b>Airlines</b> : {trip.airlines.join(", ")}
-                    </div>
-                  </div>
-                  <div className="amendment-category-container">
-                    {Object.keys(trip.amendmentInfo).map(
-                      (category, catIndex) => (
-                        <div key={catIndex} className="amendment-category">
-                          <h4>{category}</h4>
-                          <div>
-                            <b>Amendment Charges</b>:{" "}
-                            {trip.amendmentInfo[category].amendmentCharges}
-                          </div>
-                          <div>
-                            <b>Refund Amount</b>:{" "}
-                            {trip.amendmentInfo[category].refundAmount}
-                          </div>
-                          <div>
-                            <b>Total Fare</b>:{" "}
-                            {trip.amendmentInfo[category].totalFare}
-                          </div>
-                        </div>
-                      )
-                    )}
-                  </div>
+        {Loading ? <>
+          <motion.div
+            className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+            variants={spinnerVariants}
+            animate="animate"
+          />  </>
+          : (
+            <div className="max-w-7xl mx-auto">
+              {amendmentId && (
+                <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
+                  <p>
+                    Amendment is Submitted: Your Amendment ID is{" "}
+                    <span className="font-bold">{amendmentId}</span>
+                  </p>
                 </div>
-              ))}
-            </div>
+              )}
 
-            <div className="mt-8">
-              <h3 className="text-xl font-bold mb-4">Note:</h3>
-              <ul className="list-disc list-inside space-y-2">
-                <li>
-                  To Cancel the Complete Booking, no need to select any trip.
-                </li>
-                <li>
-                  To Cancel a selected Trip for all the passengers, Just Select
-                  the Trip, no need to select any passenger.
-                </li>
-              </ul>
-            </div>
-
-            {trips?.length > 0 && (
-              <div className="mt-8">
-                <h3 className="text-xl font-bold mb-4">
-                  Select the Trips and Passengers to Cancel
-                </h3>
-                <div className="space-y-4">
-                  {trips?.length > 0 && (
-                    <div>
+              <div className="space-y-6">
+                {checkTrips?.map((trip, tripIndex) => (
+                  <div key={tripIndex} className="bg-yellow-300 ">
+                    <div className="amendment-trip-detail">
                       {" "}
-                      <h3>Select the Trips and Passengers to Cancel</h3>
-                      <div className="selected-trips-container">
-                        {trips?.map((item, tripIndex) => (
-                          <div className="selected-trip">
+                      <div>
+                        <b>Source</b> : {trip.src}
+                      </div>
+                      <div>
+                        <b>Destination</b> : {trip.dest}
+                      </div>
+                      <div>
+                        <b>Departure Date</b> :{" "}
+                        {new Date(trip.departureDate).toLocaleString()}
+                      </div>
+                      <div>
+                        <b>Flight Numbers</b> : {trip.flightNumbers.join(", ")}
+                      </div>
+                      <div>
+                        <b>Airlines</b> : {trip.airlines.join(", ")}
+                      </div>
+                    </div>
+                    <div className="amendment-category-container">
+                      {Object.keys(trip.amendmentInfo).map(
+                        (category, catIndex) => (
+                          <div key={catIndex} className="amendment-category">
+                            <h4>{category}</h4>
                             <div>
-                              <input
-                                type="checkbox"
-                                className="selected-trip-checkbox"
-                                checked={selectedTrips.some(
-                                  (t) => t.tripIndex === tripIndex
-                                )}
-                                onChange={() => handleTripSelection(tripIndex)}
-                              />
+                              <b>Amendment Charges</b>:{" "}
+                              {trip.amendmentInfo[category].amendmentCharges}
                             </div>
                             <div>
-                              <div>Source : {item?.src}</div>
-                              <div>Destination : {item?.dest}</div>
-                              <div>Departure Date : {item?.departureDate}</div>
+                              <b>Refund Amount</b>:{" "}
+                              {trip.amendmentInfo[category].refundAmount}
                             </div>
-                            <div className="travellers-container">
-                              {item?.travellers.map(
-                                (traveller, TravellerIndex) => (
-                                  <div>
+                            <div>
+                              <b>Total Fare</b>:{" "}
+                              {trip.amendmentInfo[category].totalFare}
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8">
+                <h3 className="text-xl font-bold mb-4">Note:</h3>
+                <ul className="list-disc list-inside space-y-2">
+                  <li>
+                    To Cancel the Complete Booking, no need to select any trip.
+                  </li>
+                  <li>
+                    To Cancel a selected Trip for all the passengers, Just Select
+                    the Trip, no need to select any passenger.
+                  </li>
+                </ul>
+              </div>
+
+              {trips?.length > 0 && (
+                <div className="mt-8">
+                  <h3 className="text-xl font-bold mb-4">
+                    Select the Trips and Passengers to Cancel
+                  </h3>
+                  <div className="space-y-4">
+                    {trips?.length > 0 && (
+                      <div>
+                        {" "}
+
+                        <div className="selected-trips-container">
+                          {trips?.map((item, tripIndex) => (
+
+                            <>
+                              <div className="p-2 bg-[#3951b9] rounded-lg flex flex-col">
+                                <p className="text-white font-bold flex items-center gap-3">
+                                  {item?.dest} <PiAirplaneInFlightDuotone />{item?.dest} {item?.departureDate}
+                                </p>
+                                <p className="text-white font-semibold">{item?.departureDate}</p>
+                                <label className="flex items-center mt-2">
+                                  <input
+                                    checked={selectedTrips.some(
+                                      (t) => t.tripIndex === tripIndex
+                                    )}
+                                    onChange={() => handleTripSelection(tripIndex)}
+                                    type="checkbox"
+
+                                    className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
+                                  />
+                                  <span className="ml-3 text-white font-semibold">Cancel this ticket</span>
+                                </label>
+                              </div>
+
+
+                              <div className="grid grid-cols-2 gap-4">
+                                {item?.travellers.map((traveller, TravellerIndex) => {
+                                  console.log({ traveller })
+                                  return <div
+                                    className="flex items-center p-4 bg-blue-100 rounded-lg">
+                                    <div className="h-16 w-16 flex items-center justify-center bg-blue-500 text-white font-bold text-xl rounded-full mr-4">
+                                      {traveller.fn.charAt(0).toUpperCase()}
+
+                                    </div>
                                     <div>
-                                      <input
-                                        type="checkbox"
-                                        checked={selectedTrips.some(
-                                          (t) =>
-                                            t.tripIndex === tripIndex &&
-                                            t.passengerIndices.includes(
-                                              TravellerIndex
-                                            )
-                                        )}
+                                      <div className="text-md font-bold">
+                                        {traveller?.ln}{" "}{traveller?.ln}
+                                      </div>
+                                      {/* <div className="text-sm font-bold">
+                                      Mail ID :
+                                    </div>
+                                    <div className="text-sm font-bold">
+                                      Date of birth :
+
+                                    </div> */}
+                                    </div>
+                                    <div className="ml-auto">
+                                      <input type="checkbox" className="form-checkbox h-5 w-5 text-blue-600" checked={selectedTrips.some(
+                                        (t) =>
+                                          t.tripIndex === tripIndex &&
+                                          t.passengerIndices.includes(
+                                            TravellerIndex
+                                          )
+                                      )}
                                         onChange={() =>
                                           handlePassengerSelection(
                                             tripIndex,
@@ -353,22 +387,16 @@ const SubmitAmendment = ({ singleBookingData }) => {
                                         }
                                       />
                                     </div>
-
-                                    <div>
-                                      First Name : {traveller?.fn}
-                                      <br />
-                                      Last Name : {traveller?.ln}
-                                    </div>
                                   </div>
-                                )
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <br />
-                      <br />
-                      {/* <label htmlFor="">Remarks</label>
+                                })}
+
+                              </div>
+                            </>
+                          ))}
+                        </div>
+                        <br />
+                        <br />
+                        {/* <label htmlFor="">Remarks</label>
                       <br />
                       <br />
                       <textarea
@@ -403,71 +431,102 @@ const SubmitAmendment = ({ singleBookingData }) => {
                       >
                         {Loading ? "Submitting..." : "Submit Amendment Charges"}
                       </button> */}
+                      </div>
+                    )}
+                  </div>
+                  {/* 
+                  <div className="mt-8">
+                    <label
+                      htmlFor="remarks"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Remarks
+                    </label>
+                    <textarea
+                      id="remarks"
+                      rows="5"
+                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-1/2 sm:text-sm border border-gray-300 rounded-md "
+                      placeholder="Enter Remarks"
+                      value={Remarks}
+                      onChange={(e) => setRemarks(e.target.value)}
+                    ></textarea>
+                  </div> */}
+
+                  {/* <div className="mt-8 space-x-4">
+                    <button
+                      onClick={checkAmendment}
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Check Amendment Charges
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (bookingId === "") {
+                          toast.warning("Please Enter Booking ID");
+                          return;
+                        }
+                        if (Remarks === "") {
+                          toast.warning("Please Enter Remarks");
+                          return;
+                        }
+                        setIsDeleteModalOpen(true);
+                      }}
+                      disabled={Loading}
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                    >
+                      {Loading ? "Submitting..." : "Submit Amendment Charges"}
+                    </button>
+                  </div> */}
+                  <div className="space-y-2">
+                    <label className="block text-gray-600">Remarks</label>
+                    <textarea
+                      placeholder="Enter Remarks"
+                      value={Remarks}
+                      onChange={(e) => setRemarks(e.target.value)}
+                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+
+                    ></textarea>
+                  </div>
+
+                  <div className="flex space-x-4">
+                    <button onClick={checkAmendment} className="w-full py-2 px-4 bg-[#637adc] border text-white rounded-md">
+                      Check Amendment Charges
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (bookingId === "") {
+                          toast.warning("Please Enter Booking ID");
+                          return;
+                        }
+                        if (Remarks === "") {
+                          toast.warning("Please Enter Remarks");
+                          return;
+                        }
+                        setIsDeleteModalOpen(true);
+                      }}
+                      className="w-full py-2 px-4 bg-white border-[#3951b9] border text-[#3951b9] rounded-md">
+                      Submit Amendment Charges
+                    </button>
+                  </div>
+                  {ErrorDetails?.length > 0 && (
+                    <div className="my-6 space-y-4">
+                      {ErrorDetails?.map((item, index) => (
+                        <div
+                          key={index}
+                          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded"
+                        >
+                          <p className="font-bold">Details:</p>
+                          <p>{item?.details}</p>
+                          <p className="font-bold mt-2">Message:</p>
+                          <p>{item?.message}</p>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
-
-                <div className="mt-8">
-                  <label
-                    htmlFor="remarks"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Remarks
-                  </label>
-                  <textarea
-                    id="remarks"
-                    rows="5"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-1/2 sm:text-sm border border-gray-300 rounded-md "
-                    placeholder="Enter Remarks"
-                    value={Remarks}
-                    onChange={(e) => setRemarks(e.target.value)}
-                  ></textarea>
-                </div>
-
-                <div className="mt-8 space-x-4">
-                  <button
-                    onClick={checkAmendment}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Check Amendment Charges
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (bookingId === "") {
-                        toast.warning("Please Enter Booking ID");
-                        return;
-                      }
-                      if (Remarks === "") {
-                        toast.warning("Please Enter Remarks");
-                        return;
-                      }
-                      setIsDeleteModalOpen(true);
-                    }}
-                    disabled={Loading}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
-                  >
-                    {Loading ? "Submitting..." : "Submit Amendment Charges"}
-                  </button>
-                </div>
-                {ErrorDetails?.length > 0 && (
-                  <div className="my-6 space-y-4">
-                    {ErrorDetails?.map((item, index) => (
-                      <div
-                        key={index}
-                        className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded"
-                      >
-                        <p className="font-bold">Details:</p>
-                        <p>{item?.details}</p>
-                        <p className="font-bold mt-2">Message:</p>
-                        <p>{item?.message}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
       </div>
       <DeleteModalTemplateConfirm
         isOpen={isDeleteModalOpen}

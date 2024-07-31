@@ -128,6 +128,7 @@ const FlightBookings = () => {
                     <FlightTicket
                       key={booking.id}
                       index={index}
+                      bookingFilter={bookingFilter}
                       bookingID={booking.bookingId}
                       booking={booking}
                     />
