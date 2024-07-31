@@ -29,12 +29,13 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
   const departureDate = "2024-08-22T17:10";
 
   const handleInputChange = async (name, value) => {
+    console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    setValue(name, value); // Update form value
-    await trigger(name); // Validate field
+    setValue(name, value); 
+    await trigger(name);
     updatePassenger(index, name, value); // Notify parent of change
   };
 
