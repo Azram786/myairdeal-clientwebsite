@@ -61,9 +61,9 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
       <div className="text-lg font-semibold mb-4">
         {passenger.passengerType} {passenger.typeCount}
       </div>
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6">
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             <div className="relative p-2">
               <select
                 {...register("title", { required: "Title is required" })}
@@ -71,7 +71,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                   handleInputChange(e.target.name, e.target.value)
                 }
                 value={formData.title}
-                className="h-10 border w-full border-gray-300 rounded-lg py-1 px-2 text-sm focus:outline-none peer"
+                className="h-10 border w-full border-gray-300 rounded-lg py-1 px-2 text-sm sm:text-base focus:outline-none peer"
               >
                 <option value="" disabled>
                   Select Title
@@ -91,11 +91,11 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                   </>
                 )}
               </select>
-              <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
+              <label className="absolute top-0 left-2 text-gray-500 text-sm sm:text-base transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
                 Title
               </label>
               {errors.title && (
-                <span className="text-red-500 text-xs">
+                <span className="text-red-500 text-xs sm:text-sm">
                   {errors.title.message}
                 </span>
               )}
@@ -116,18 +116,18 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                   handleInputChange(e.target.name, e.target.value)
                 }
                 value={formData.firstName}
-                className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
+                className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm sm:text-base focus:outline-none placeholder-transparent"
               />
-              <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
+              <label className="absolute top-0 left-2 text-gray-500 text-sm sm:text-base transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
                 First Name
               </label>
               {errors.firstName && (
-                <span className="text-red-500 text-xs">
+                <span className="text-red-500 text-xs sm:text-sm">
                   {errors.firstName.message}
                 </span>
               )}
             </div>
-            <div className="relative ml-3 p-2">
+            <div className="relative p-2">
               <input
                 type="text"
                 {...register("lastName", {
@@ -143,13 +143,13 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                   handleInputChange(e.target.name, e.target.value)
                 }
                 value={formData.lastName}
-                className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
+                className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm sm:text-base focus:outline-none placeholder-transparent"
               />
-              <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
+              <label className="absolute top-0 left-2 text-gray-500 text-sm sm:text-base transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
                 Last Name
               </label>
               {errors.lastName && (
-                <span className="text-red-500 text-xs">
+                <span className="text-red-500 text-xs sm:text-sm">
                   {errors.lastName.message}
                 </span>
               )}
@@ -190,13 +190,13 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                   handleInputChange(e.target.name, e.target.value)
                 }
                 value={formData.dob}
-                className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
+                className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm sm:text-base focus:outline-none placeholder-transparent"
               />
-              <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
+              <label className="absolute top-0 left-2 text-gray-500 text-sm sm:text-base transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
                 Date of Birth
               </label>
               {errors.dob && (
-                <span className="text-red-500 text-xs">
+                <span className="text-red-500 text-xs sm:text-sm">
                   {errors.dob.message}
                 </span>
               )}
@@ -208,6 +208,14 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
           index={index}
           updatePassenger={updatePassenger}
         />
+        <div className="relative flex justify-center md:justify-end mt-2 md:mt-0 w-full md:w-1/5 h-10 items-center">
+          <button
+            type="button"
+            className="bg-blue-500 text-xs text-white py-1 px-4 rounded-md w-full md:w-auto"
+          >
+            Select from history
+          </button>
+        </div>
       </div>
     </div>
   );

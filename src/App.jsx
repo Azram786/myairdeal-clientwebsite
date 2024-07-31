@@ -31,8 +31,9 @@ function App() {
           <Route path="/search" element={<FlightList />} />
           <Route path="book-flight" element={<FlightSummaryPage />} />
           <Route path="/profile" element={<Profile />} />
-          
-          <Route path="/review" component={Review} />
+
+          <Route path="/review" element={<Review />} />
+
         </Routes>
       </BrowserRouter>
     </>
