@@ -916,7 +916,7 @@ return (
   </div>
 
 );
-};
+
 
 export default SubmitAmendment;
 

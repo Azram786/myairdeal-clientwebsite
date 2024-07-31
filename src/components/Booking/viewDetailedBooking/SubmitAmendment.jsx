@@ -159,7 +159,7 @@ const SubmitAmendment = ({ singleBookingData }) => {
 
     setLoading(true);
     await axios
-      .post(`${apiURLbooking}submit-amendment`, {
+      .post(`${import.meta.env.VITE_SERVER_URL}}submit-amendment`, {
         headers: {
           authorization: ` Bearer ${token}`,
         },

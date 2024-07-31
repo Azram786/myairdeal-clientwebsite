@@ -147,17 +147,17 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex">
-      <div className="flex w-[90%] mx-auto">
+    <div className="h-screen flex ">
+      <div className="flex  w-[90%] mx-auto">
         <div
           onClick={() => {
             navigate("/");
           }}
-          className="absolute md:top-[15%] left-[9%] text-[2rem] cursor-pointer"
+          className="absolute top-[9%] left-[11%] md:left-[8%] text-[2rem] cursor-pointer"
         >
           <RiHome7Fill />
         </div>
-        <div className="bg-blue w-[50%] flex flex-col items-center justify-center">
+        <div className="bg-blue w-full md:w-[50%] flex flex-col items-center justify-center">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -233,7 +233,7 @@ const Login = () => {
             )}
           </motion.div>
         </div>
-        <div className="w-[50%] flex items-center h-full">
+        <div className="hidden  md:w-[50%] md:flex md:items-center md:h-full">
           <div className="h-full flex w-full justify-center items-center">
             <motion.img
               initial={{ opacity: 0 }}
