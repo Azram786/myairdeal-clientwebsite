@@ -78,24 +78,13 @@ const CustomModal = ({
       style={style}
       isOpen={modalIsOpen}
       onRequestClose={() => {
-        setFormData((prev) => ({
-          ...prev, ADULT: "1",
-          CHILD: 0,
-          INFANT: "0",
-        }))
+
         setModelIsOpen(false)
       }}
     >
       <PassengerSelector
         formData={formData}
         onClose={() => {
-
-          setFormData((prev) => ({
-            ...prev, ADULT: "1",
-            CHILD: 0,
-            INFANT: "0",
-          }))
-
           setModelIsOpen(false)
         }}
         setFormData={setFormData}

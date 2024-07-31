@@ -7,50 +7,18 @@ import Combo from "./SearchComponents/Combo";
 import Loader from "./Loader";
 import MultiCity from "./SearchComponents/MultiCity";
 import FilterSection from "../Home/FilterSection";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const FlightList = () => {
-  const [data, setData] = useState({
-    searchQuery: {
-      cabinClass: "ECONOMY",
-      paxInfo: {
-        ADULT: "1",
-        CHILD: "0",
-        INFANT: "0",
-      },
-      routeInfos: [
-        {
-          fromCityOrAirport: { code: "COK" },
-          toCityOrAirport: { code: "BLR" },
-          travelDate: "2024-08-06",
-        },
-        {
-          fromCityOrAirport: { code: "BLR" },
-          toCityOrAirport: { code: "BOM" },
-          travelDate: "2024-08-08",
-        },
-        // {
-        //   fromCityOrAirport: { code: "BOM" },
-        //   toCityOrAirport: { code: "DEL" },
-        //   travelDate: "2024-08-12",
-        // }
-      ],
-      searchModifiers: {
-        isDirectFlight: false,
-        isConnectingFlight: false,
-      },
-    },
-  });
-  // const location=useLocation();
-  // const { query } = location.state || {};
 
-  // const [data, setData] = useState(query);
-  // console.log(query, "query")
 
-  // const navigate = useNavigate()
-  // if(!query || !data){
-  //   navigate('/')
-  // }
+  const [data, setData] = useState(query);
+  console.log(query, "query")
 
+  const navigate = useNavigate()
+  if (!query || !data) {
+    navigate('/')
+  }
   const [tripType, setTripType] = useState("");
   const [oneway, setOneWay] = useState([]);
   const [roundWay, setRoundWay] = useState([]);

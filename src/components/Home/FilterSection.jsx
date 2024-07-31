@@ -28,12 +28,8 @@ const FilterSection = () => {
     CHILD: "0",
     INFANT: "0",
 
-    fromCityOrAirport: {
-      code: "",
-    },
-    toCityOrAirport: {
-      code: "",
-    },
+    fromCityOrAirport: "",
+    toCityOrAirport: "",
     travelDate: new Date(),
     returnDate: new Date(),
 
@@ -84,16 +80,14 @@ const FilterSection = () => {
 
   //set country code where to
   const setContryCodeTo = (value) => {
-    if (formData.fromCityOrAirport === value) {
-      ReactToast("Select different airport");
+    if (formData.fromCityOrAirport === value && value !== "") {
+      ReactToast("You cannot select the same airport twice");
     } else {
       setFormData((prev) => ({
         ...prev,
         toCityOrAirport: value,
       }));
-      if (typeOfTravel === "multi-city") {
-        // setDynamicFormData((prev) => ({ ...prev }));
-      }
+
     }
   };
 
@@ -113,7 +107,7 @@ const FilterSection = () => {
 
       callback(options);
     } catch (error) {
-      console.error("Error fetching options:", error);
+      ReactToast("Please reload the page")
       callback([]);
     }
   };
@@ -133,7 +127,7 @@ const FilterSection = () => {
 
       callback(options);
     } catch (error) {
-      console.error("Error fetching options:", error);
+      ReactToast("Please reload the page")
       callback([]);
     }
   };
@@ -151,12 +145,55 @@ const FilterSection = () => {
       }));
       setDefaultOptions(options);
     } catch (error) {
-      console.error("Error fetching default options:", error);
+      ReactToast("Fetching Country Details Reload Again")
     }
   };
 
   const submitHandler = async () => {
     try {
+
+      if (formData.fromCityOrAirport === formData.toCityOrAirport && formData.fromCityOrAirport !== "" && formData.fromCityOrAirport !== "") {
+        ReactToast("You cannot select the same airport twice");
+        return
+      }
+      const validateFormData = (data) => {
+
+
+        // Validate common fields
+        if (!data.cabinClass || !data.ADULT || !data.fromCityOrAirport || !data.toCityOrAirport || !data.travelDate) {
+          return false;
+        }
+
+        // Validate round-trip specific fields
+        if (typeOfTravel === "round-trip" && !data.returnDate) {
+          return false;
+        }
+        return true;
+      };
+
+      const validateDynamicFormData = (dynamicData) => {
+        for (let i = 0; i < dynamicData.length; i++) {
+          const { fromCity, toCity, travelDate } = dynamicData[i];
+          if (!fromCity || !toCity || !travelDate) {
+            return false;
+          }
+        }
+        return true;
+      };
+
+      // Perform validation
+      if (!validateFormData(formData)) {
+        setLoading(false);
+        ReactToast("Please fill in all required fields");
+        return;
+      }
+
+      if (typeOfTravel === "multi-city" && !validateDynamicFormData(dynamicFormData)) {
+        setLoading(false);
+        ReactToast("Please fill in all required fields for each trip");
+        return;
+      }
+
       let query;
 
       if (typeOfTravel === "one-way") {
@@ -168,7 +205,6 @@ const FilterSection = () => {
               CHILD: formData.CHILD,
               INFANT: formData.INFANT,
             },
-
             routeInfos: [
               {
                 fromCityOrAirport: {
@@ -195,7 +231,6 @@ const FilterSection = () => {
               CHILD: formData.CHILD,
               INFANT: formData.INFANT,
             },
-
             routeInfos: [
               {
                 fromCityOrAirport: {
@@ -241,19 +276,15 @@ const FilterSection = () => {
               CHILD: formData.CHILD,
               INFANT: formData.INFANT,
             },
-
-            routeInfos: [
-              {
-                fromCityOrAirport: {
-                  code: formData.fromCityOrAirport,
-                },
-                toCityOrAirport: {
-                  code: formData.toCityOrAirport,
-                },
-                travelDate: formatDate(formData.travelDate),
+            routeInfos: [{
+              fromCityOrAirport: {
+                code: formData.fromCityOrAirport,
               },
-              ...dynamic,
-            ],
+              toCityOrAirport: {
+                code: formData.toCityOrAirport,
+              },
+              travelDate: formatDate(formData.travelDate),
+            }, ...dynamic],
             searchModifiers: {
               isDirectFlight: formData.isDirectFlight,
               isConnectingFlight: formData.isConnectingFlight,
@@ -261,25 +292,17 @@ const FilterSection = () => {
           },
         };
       }
-      console.log("query", query);
 
-      setLoading(true);
-      // const data = await axios.post(
-      //   `${import.meta.env.VITE_SERVER_URL}search/flight`,
-      //   query,
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
+
+
       setLoading(false);
-      navigate(`/search`, { state: { query } })
+      navigate(`/search`, { state: { query } });
     } catch (error) {
       setLoading(false);
-      console.log(error.message);
+      ReactToast("Something went wrong");
     }
   };
+
 
   useEffect(() => {
     fetchDefaultOptions();
@@ -545,9 +568,11 @@ const FilterSection = () => {
             className="flex justify-center relative  items-center p-2 w-full  outline-none sm:w-1/2 sm:mx-auto rounded-lg border border-blue-500 mt-1 font-roboto text-center font-light  bg-white md:w-3/4 2xl:w-3/4 2xl:p-4"
             name=""
             id=""
+            // selected={}
+            defaultValue={"i"}
           >
-            <option value="Nithin">International</option>
-            <option value="Nithin">Domestic</option>
+            <option value="i">International</option>
+            <option value="d">Domestic</option>
           </select>
         </div>
       </div>
