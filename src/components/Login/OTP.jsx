@@ -4,14 +4,23 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../store/slices/aut.slice";
 import { useDispatch, useSelector } from "react-redux";
-
-const OTPInput = ({ value }) => {
+import { motion, AnimatePresence } from "framer-motion";
+const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const spinnerVariants = {
+    animate: {
+      rotate: [0, 360],
+      transition: {
+        repeat: Infinity,
+        duration: 1,
+        ease: "linear",
+      },
+    },
+  };
   const handleChange = (e, index) => {
     const value = e.target.value;
 
@@ -81,6 +90,9 @@ const OTPInput = ({ value }) => {
       console.log("Error verifying OTP:", error.message);
     }
   };
+  const handleResendOTP = () => {
+    handleSendOTP();
+  };
 
   return (
     <div>
@@ -94,23 +106,54 @@ const OTPInput = ({ value }) => {
             onKeyDown={(e) => handleKeyDown(e, index)}
             ref={(el) => (inputsRef.current[index] = el)}
             maxLength="1"
-            className="w-12 h-12 text-center border rounded-md"
+            className="w-12 h-12 text-center border border-[#007EC4] rounded-md"
             onPaste={handlePaste}
           />
         ))}
       </div>
-      {loading ? (
-        <button className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-full">
-          Verifying...
-        </button>
-      ) : (
-        <button
-          onClick={onSubmit}
-          className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-full"
-        >
-          Verify OTP
-        </button>
-      )}
+      <div className="flex w-full items-center gap-1">
+
+        {loading ? (
+          <motion.button
+            whileTap={{ scale: 0.85 }} className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-1/2">
+            <div className="flex justify-center items-center">
+              <motion.div
+                className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                variants={spinnerVariants}
+                animate="animate"
+              />
+            </div>
+          </motion.button>
+        ) : (
+          <motion.button
+            whileTap={{ scale: 0.85 }}
+            onClick={onSubmit}
+            className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-1/2"
+          >
+            Verify OTP
+          </motion.button>
+        )}
+        <div className="text-center h-full w-1/2 flex justify-center items-center ">
+          {timer > 0 ? (
+            <p >Resend OTP in {timer} seconds</p>
+          ) : (
+            <motion.button
+              whileTap={{ scale: 0.85 }}
+              onClick={handleResendOTP}
+              className="text-[#007EC4] border border-[#007EC4] bg-white h-[45px] rounded-md mt-5 w-full"
+              disabled={secondLoading}
+            >
+              {secondLoading ? <div className="flex justify-center items-center">
+                <motion.div
+                  className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                  variants={spinnerVariants}
+                  animate="animate"
+                />
+              </div> : "Resend OTP"}
+            </motion.button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

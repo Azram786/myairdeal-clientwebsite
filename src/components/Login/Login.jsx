@@ -8,6 +8,47 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 import OTPInput from "./OTP";
 import { RiHome7Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import "./CustomPhoneInput.css";
+
+const spinnerVariants = {
+  animate: {
+    rotate: [0, 360],
+    transition: {
+      repeat: Infinity,
+      duration: 1,
+      ease: "linear",
+    },
+  },
+};
+
+const StyledPhoneInput = ({ value, onChange }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className=""
+    >
+      <PhoneInput
+        country={"in"}
+        value={value}
+        onChange={onChange}
+        containerClass="custom-container"
+        buttonClass="custom-button"
+        dropdownClass="custom-dropdown"
+        enableSearch
+        searchPlaceholder="Search for a country"
+        inputProps={{
+          name: "phone",
+          required: true,
+          autoFocus: true,
+          className: "custom-input",
+        }}
+      />
+    </motion.div>
+  );
+};
 
 const Login = () => {
   const [phone, setPhone] = useState("");
@@ -40,14 +81,13 @@ const Login = () => {
       .split("")
       .filter((e, i) => i >= countryData?.dialCode?.length)
       .join("");
-    console.log({ newPhno });
+
     setCountry({
       dialCode: countryData.dialCode,
       countryCode: countryData.countryCode.toUpperCase(),
       country: countryData.name,
       onlyPhoneNumber: newPhno,
     });
-    console.log({ newPhno });
   };
 
   const validatePhoneNumber = (phoneNumber, countryCode) => {
@@ -100,9 +140,7 @@ const Login = () => {
     }
   };
 
-  const handleResendOTP = () => {
-    handleSendOTP();
-  };
+
 
   const handleSubmit = () => {
     handleSendOTP();
@@ -120,7 +158,12 @@ const Login = () => {
           <RiHome7Fill />
         </div>
         <div className="bg-blue w-[50%] flex flex-col items-center justify-center">
-          <div className="flex flex-col w-[85%] gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col w-[85%] gap-4"
+          >
             <div className="flex items-center gap-7">
               <div>
                 <img className="h-[80px]" src={Logo} alt="Logo" />
@@ -137,66 +180,69 @@ const Login = () => {
             </div>
 
             <div className="">
-              {step === "sent-otp" && (
-                <PhoneInput
-                  country={"in"}
-                  value={phone}
-                  onChange={handleOnChange}
-                  containerClass="h-[45px] border border-black rounded-md flex flex-row gap-2"
-                  inputProps={{
-                    name: "phone",
-                    required: true,
-                    autoFocus: true,
-                    className:
-                      "p-2 border-none w-full th-full outline-none rounded-md  ml-12 flex  h-full w-3/4",
-                  }}
-                  buttonClass=""
-                  dropdownClass="absolute bg-white border border-gray-300 shadow-lg"
-                  enableSearch
-                />
-              )}
-              {step === "otp-sent-success" && (
-                <div>
-                  <OTPInput value={country} />
-                  <div className="mt-2 text-center">
-                    {timer > 0 ? (
-                      <p>Resend OTP in {timer} seconds</p>
-                    ) : (
-                      <button
-                        onClick={handleResendOTP}
-                        className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-full"
-                        disabled={loading}
-                      >
-                        {loading ? "Loading..." : "Resend OTP"}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
+              <AnimatePresence>
+                {step === "sent-otp" && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <StyledPhoneInput value={phone} onChange={handleOnChange} />
+                  </motion.div>
+                )}
+                {step === "otp-sent-success" && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <OTPInput value={country} timer={timer} secondLoading={loading} handleSendOTP={handleSendOTP} />
+
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>
             {step === "sent-otp" && (
-              <button
+              <motion.button
+                whileTap={{ scale: 0.85 }}
                 disabled={loading}
                 onClick={handleSubmit}
                 className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5"
               >
-                {loading ? "Loading...." : " Send OTP"}
-              </button>
+                {loading ? (
+                  <div className="flex justify-center items-center">
+                    <motion.div
+                      className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                      variants={spinnerVariants}
+                      animate="animate"
+                    />
+                  </div>
+                ) : (
+                  "Send OTP"
+                )}
+              </motion.button>
             )}
             {step !== "sent-otp" && (
               <div className="flex flex-row items-center w-full justify-center">
-                <h2 className="flex items-center underline text-red-600">
-                  <a href="/sign-in"> Change number</a>
+                <h2 className="flex items-center  uppercase text-red-600">
+                  <a href="/sign-in">Change number</a>
                 </h2>
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
         <div className="w-[50%] flex items-center h-full">
           <div className="h-full flex w-full justify-center items-center">
-            <img className="h-[90%]" src={SliderImg} alt="Slider" />
+            <motion.img
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+              className="h-[90%]"
+              src={SliderImg}
+              alt="Slider"
+            />
           </div>
         </div>
       </div>
