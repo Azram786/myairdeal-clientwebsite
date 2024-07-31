@@ -68,47 +68,47 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
   };
 
   return (
-    <div className="flex flex-col gap-5 md:flex-row justify-between items-end xl:p-6 p-2  border rounded-lg">
-      <div className="w-full md:w-[80%] xl:w-[75%] justify-between flex  flex-col gap-2">
+    <div className="flex flex-col gap-5 lg:flex-row justify-between items-end xl:p-6 p-2   border rounded-lg">
+      <div className="w-full  xl:w-[75%] justify-between  flex  flex-col gap-2">
         {booking?.data?.itemInfos?.AIR?.tripInfos?.map((trip, index) => (
-          <div className="flex  lg:flex-row  items-center flex-col border p-5 gap-2">
-            <div className="flex flex-col md:flex-row w-full  lg:w-[80%] xl:w-[70%]">
-              <div className="flex justify-center p-2">
+          <div className="flex  lg:flex-row  items-center flex-col border   p-5 gap-2">
+            <div className="flex flex-col items-center xs:flex-row xs:item-start sm:flex-row md:flex-row lg:flex-row xl:flex-row    w-full   lg:w-[80%] xl:w-[70%]">
+              <div className="flex   p-2">
                 <img
                   src={FlightLogo}
                   className="h-16 w-16 rounded-lg p-1 object-contain mr-4 border border-blue-700"
                 />
               </div>
 
-              <div className="flex flex-col md:flex-row w-full gap-3 justify-between items-center ">
-                <div className="flex justify-center items-center gap-1 w-full md:w-[60%]">
-                  <div className="w-full ">
-                    <div className="xl:text-lg font-semibold flex">
-                      {trip.sI[0].da.code}-{" "}
-                      <span className="text-[1rem]">{trip.sI[0].da.name}</span>
-                    </div>
+              <div className="flex    w-full  sm:flex-row md:flex-row  gap-3 sm:justify-between   justify-between items-center ">
 
-                    <div className="xl:text-lg font-semibold flex">
+                <div className="flex gap-4 md:gap-1  flex-col  ">
+                  <div className="xl:text-lg font-semibold flex">
+                    {trip.sI[0].da.code}-{" "}
+                    <span className="text-[1rem]">{trip.sI[0].da.name}</span>
+                  </div>
+
+                  <div className=" xl:text-lg font-semibold flex">
+                    {trip.sI.length === 1
+                      ? trip.sI[0].aa.code
+                      : trip.sI[trip.sI.length - 1].aa.code}{" "}
+                    -
+                    <span className="text-[1rem]">
                       {trip.sI.length === 1
-                        ? trip.sI[0].aa.code
-                        : trip.sI[trip.sI.length - 1].aa.code}{" "}
-                      -
-                      <span className="text-[1rem]">
-                        {trip.sI.length === 1
-                          ? trip.sI[0].aa.name
-                          : trip.sI[trip.sI.length - 1].aa.name}
-                      </span>
-                    </div>
+                        ? trip.sI[0].aa.name
+                        : trip.sI[trip.sI.length - 1].aa.name}
+                    </span>
                   </div>
                 </div>
-                <div className="border w-6 border-black"></div>
-                <div className="flex w-full md:w-[30%]  items-center space-x-4 ">
-                  <div className="flex flex-col items-end">
-                    <div className="text-xl font-bold">
+
+
+                <div className="flex     space-x-4 ">
+                  <div className="flex flex-col w-full items-center gap-4 ">
+                    <div className="  text-sm xs:text-xl  md:text-lg lg:text-xl font-bold">
                       {formatTime(trip.sI[0].dt)}
                     </div>
 
-                    <div className="text-xl font-bold">
+                    <div className=" text-sm  xs:text-xl md:text-lg lg:text-xl font-bold">
                       {trip.sI.length === 1
                         ? formatTime(trip.sI[0].at)
                         : formatTime(trip.sI[trip.sI.length - 1].at)}
@@ -116,10 +116,11 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                 </div>
               </div>
+
             </div>
 
-            <div className="flex flex-col md:flex-row items-left w-full  md:w-[50%] space-x-0 md:space-x-6 ">
-              <div className="flex flex-col gap-1">
+            <div className="flex justify-center  flex-row items-left   w-full gap-5  lg:w-[50%]   ">
+              <div className="flex flex-col justify-evenly sm:flex-row lg:flex-col gap-3  md:w-1/2">
                 <div className="flex items-center gap-1">
                   <div className="text-[1.5rem] text-sky-600 bg-slate-300 p-1 rounded-md">
                     <MdOutlineDateRange />
@@ -143,7 +144,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col sm:flex-row lg:flex-col justify-evenly  md:w-1/2 gap-3">
                 <div className="flex items-center gap-1">
                   <div className="text-[1.5rem] text-sky-600 bg-slate-300 p-1 rounded-md">
                     <BsDoorClosedFill />
@@ -170,7 +171,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
         ))}
       </div>
 
-      <div className="flex flex-col md:flex-row  lg:w-[20%] xl:w-[25%] md:space-x-4 ">
+      <div className="flex  gap-1 flex-row   lg:w-[20%] xl:w-[25%] md:space-x-4 ">
         <button
           onClick={() => DownloadInvoice()}
           className="bg-[#007EC4] text-white px-2 xl:px-4 py-1 xl:py-2 rounded-sm mb-4 md:mb-0"

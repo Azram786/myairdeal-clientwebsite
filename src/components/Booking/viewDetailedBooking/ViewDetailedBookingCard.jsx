@@ -905,7 +905,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                         </div>
                       </div>
                     </div>
-                   
+
                   </div>
                 </div>
               </div>
