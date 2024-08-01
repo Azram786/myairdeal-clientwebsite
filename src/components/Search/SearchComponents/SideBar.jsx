@@ -1042,7 +1042,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
   }
 
   return (
-    <div className="flex flex-row md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex flex-row text-xs md:text-base md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
       <div className="grid gap-2 w-full grid-cols-1">
         {/* Price slider */}
         <div className="mb-6 border-b border-gray-300 pb-4">
@@ -1055,7 +1055,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
               max={absoluteMaxPrice}
               value={filters[activeTabIndex].maxPrice}
               onChange={handlePriceChange}
-              className="flex-1 mr-4 range-slider"
+              className="flex-1 md:mr-4 range-slider"
             />
             <span>₹{filters[activeTabIndex].maxPrice}</span>
           </div>
