@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Oneway from "./SearchComponents/Oneway";
@@ -7,7 +6,8 @@ import Combo from "./SearchComponents/Combo";
 import Loader from "./Loader";
 import MultiCity from "./SearchComponents/MultiCity";
 import FilterSection from "../Home/FilterSection";
-import Spinner from '../Profile/Spinner';
+import Spinner from "../Profile/Spinner";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const FlightList = () => {
   // const [data, setData] = useState({
@@ -46,19 +46,17 @@ const FlightList = () => {
   //     },
   //   },
   // });
-  const location=useLocation();
+  const location = useLocation();
   const { query } = location.state || {};
 
   const [data, setData] = useState(query);
 
-
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     setData(query);
-    if(!query || !data){
-      navigate('/')
+    if (!query || !data) {
+      navigate("/");
     }
   }, [query]);
 
@@ -68,8 +66,6 @@ const FlightList = () => {
   const [multicity, setMulticity] = useState([]);
   const [combo, setCombo] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-
 
   const getData = async () => {
     try {
@@ -112,7 +108,13 @@ const FlightList = () => {
   }, []);
 
   if (loading) {
-    return <div className='w-full h-screen flex justify-center items-center'><div className='flex-col flex gap-3'><Spinner/> <h1 className='italic'>Loading available flights..</h1></div></div>;
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="flex-col flex gap-3">
+          <Spinner /> <h1 className="italic">Loading available flights..</h1>
+        </div>
+      </div>
+    );
   }
 
   return (
