@@ -74,7 +74,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
       <div className="w-full  xl:w-[75%] justify-between  flex  flex-col gap-2">
         {booking?.data?.itemInfos?.AIR?.tripInfos?.map((trip, index) => (
           <div className="flex  lg:flex-row   items-center justify-between flex-col sm:flex-row border   p-5 gap-2 ">
-            <div className="flex  items-center justify-center  flex-row gap-4  xs:flex-row xs:item-start sm:flex-row md:flex-row lg:flex-row xl:flex-row sm:w-1/2    w-full     md:w-[70%] xl:w-[70%]">
+            <div className="flex  items-center justify-center md:justify-between  flex-row gap-4  xs:flex-row xs:item-start sm:flex-row md:flex-row lg:flex-row xl:flex-row sm:w-[60%]  ">
               <div className="flex border border-blue-400  rounded-xl  p-2">
 
                 {/* <img
@@ -86,9 +86,9 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
               </div>
 
-              <div className="flex rounded-lg     sm:flex-row md:flex-row  gap-3    items-center ">
+              <div className="flex rounded-lg    md:w-[90%]    sm:flex-row md:flex-row  gap-3    items-center ">
 
-                <div className="flex gap-4 md:gap-1 md:w-[70%] flex-col  ">
+                <div className="flex gap-4 md:gap-1  md:w-[70%] lg:w-[60%] flex-col  ">
 
                   <div className=" text-lg font-semibold flex">
                     <span className="md:hidden tracking-widest"> {trip.sI[0].da.code}{" "}</span>
@@ -111,7 +111,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                 </div>
 
 
-                <div className="flex md:w-[30%]    space-x-4 ">
+                <div className="flex md:w-[30%]  lg:w-[40%]    space-x-4 ">
                   <div className="flex flex-col w-full items-center gap-4 ">
                     <div className="  text-lg font-bold">
                       {formatTime(trip.sI[0].dt)}
@@ -128,7 +128,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
             </div>
 
-            <div className="flex   justify-around md:w-1/2   gap-5   ">
+            <div className="flex sm:w-[40%]  justify-around md:w-1/2    gap-5   ">
               <div className="flex flex-col justify-evenly   sm:flex-col gap-3  sm:w-1/2">
                 <div className="flex items-center gap-1">
                   <div className="text-[1.5rem] text-sky-600 bg-slate-300 p-1 rounded-md">

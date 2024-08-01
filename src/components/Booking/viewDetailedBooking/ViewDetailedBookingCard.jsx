@@ -731,7 +731,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
         </div>
         {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
 
-          console.log( value.sI )
+          console.log(value.sI)
           return (
             <div key={index}>
               <div className=" flex flex-wrap gap-2 w-full py-2">
@@ -754,7 +754,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                     </div>
                   </div>
 
-                  <div className="flex w-full h-full  justify-between items-center">
+                  <div className="flex w-full h-full  justify-between items-center ">
                     <div className="w-1/3 flex text-center flex-col gap-1 h-full">
                       <div className="font-bold text-md">
                         <span>{value.sI[0].da.code}</span>
@@ -817,17 +817,17 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                     </div>
                   </div>
                 </div>
-                <div className="w-full flex flex-col  justify-center">
+                <div className="w-full flex flex-col lg:items-center justify-center">
                   <div className="justify-center p-2 bg-[#D0E7F4]  rounded-lg flex items-center gap-3">
                     <h1 className=" md:text-xl lg:text-2xl font-semibold text-gray-800 ">
                       Total Duration
                     </h1>
                     <h1 className="text-base md:text-xl lg:text-2xl font-bold text-gray-500 uppercase">{value.sI.length === 1 ? calculateDuration(value.sI[0].dt, value.sI[0].at) : calculateDuration(value.sI[0].dt, value.sI[value.sI.length - 1].at)}</h1>
                   </div>
-                  <div className="flex md:flex-col justify-center px-1 ">
+                  <div className="flex md:flex-col lg:w-3/4 justify-center md:justify-between px-1 ">
 
-                    <div className="flex flex-wrap md:justify-between mb-2 flex-col md:flex-row w-full  justify-center md:items-center">
-                      <div className="flex  gap-1 items-center  md:w-1/3">
+                    <div className="flex flex-wrap md:justify-between sm:items-center mb-2  flex-col md:flex-row w-full  justify-center md:items-center">
+                      <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
                           <MdDateRange />
                         </div>
@@ -840,7 +840,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex  gap-1 items-center  md:w-1/3">
+                      <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
                           <IoIosTime />
                         </div>
@@ -853,7 +853,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex  gap-1 items-center  md:w-1/3 ">
+                      <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3 ">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg ">
                           <IoIosTime />
                         </div>
@@ -869,8 +869,8 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-wrap md:justify-between mb-2 flex-col md:flex-row w-full  justify-center md:items-center">
-                      <div className="flex  gap-1 items-center md:w-1/3 ">
+                    <div className="flex flex-wrap md:justify-between mb-2 flex-col md:flex-row w-full  sm:items-center   justify-center md:items-center">
+                      <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 ">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
                           <BsDoorClosedFill />
                         </div>
@@ -885,7 +885,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-1 items-center md:w-1/3 ">
+                      <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 ">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
                           <BsDoorClosedFill />
                         </div>
@@ -898,7 +898,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-1 items-center md:w-1/3 ">
+                      <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 ">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg ">
                           <MdOutlineAirlineSeatReclineExtra />
                         </div>
@@ -950,53 +950,63 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
                                   </div>
                                 </div>
                               )}
-
-                              <div className="flex items-center justify-between mb-4">
-                                <div className="flex-col w-1/3">
-                                  <div className="w-full">
-                                    <div className="mb-2">
-                                      <div className="font-semibold text-xs border rounded-md inline-flex items-center shadow-md p-1 space-x-2">
-                                        <div className="w-5 h-5">
-                                          <img
+                              <div className="font-semibold text-xs border  rounded-md inline-flex items-center shadow-md p-1 space-x-2">
+                                <div className="w-5 h-5">
+                                  {/* <img
                                             src="https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/AA.png"
                                             alt="Airline Logo"
                                             className="w-full h-full object-contain"
-                                          />
-                                        </div>
-                                        <div>
-                                          <div>{singleValue.fD.aI.name}</div>
-                                          <div className="flex items-center space-x-1">
-                                            <span>{singleValue.fD.aI.code}</span>
-                                            <MdFlight className="w-3 h-3 rotate-45" />
-                                            <span>{searchQuery.cabinClass}</span>
-                                          </div>
-                                        </div>
+                                          /> */}
+                                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={value?.sI[0].fD?.aI?.code} className="w-full h-full object-contain" />
+                                </div>
+                                <div>
+                                  <div>{singleValue.fD.aI.name}</div>
+                                  <div className="flex items-center space-x-1">
+                                    <span>{singleValue.fD.aI.code}</span>
+                                    <MdFlight className="w-3 h-3 rotate-45" />
+                                    <span>{searchQuery.cabinClass}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-center w-full">
+                                <div className="flex items-center justify-between mb-4 w-full">
+
+                                  <div className="flex-col  w-1/3">
+                                    <div className="w-full">
+                                      <div className="mb-2">
+
                                       </div>
                                     </div>
+                                    <div className="text-lg font-bold">{singleValue.da.code}</div>
+                                    <div className="text-sm">{singleValue.da.city}, {singleValue.da.country}</div>
+                                    <div className="text-sm font-bold">{singleValue.da.name}</div>
+                                    <div className="text-sm">{singleValue.da?.terminal || "N/A"}</div>
+                                    <div className="text-sm font-semibold">{timeFormatChanger(singleValue.dt)}</div>
                                   </div>
-                                  <div className="text-lg font-bold">{singleValue.da.code}</div>
-                                  <div className="text-sm">{singleValue.da.city}, {singleValue.da.country}</div>
-                                  <div className="text-sm font-bold">{singleValue.da.name}</div>
-                                  <div className="text-sm">{singleValue.da?.terminal || "N/A"}</div>
-                                  <div className="text-sm font-semibold">{timeFormatChanger(singleValue.dt)}</div>
-                                </div>
-                                <div className="flex-col items-center w-1/3">
-                                  <div className="text-center">
-                                    <span className="text-sm">{calculateDuration(singleValue.dt, singleValue.at)}</span>
+                                  <div className="flex-col items-center w-1/3">
+                                    <div className="text-center">
+                                      <span className="text-sm">{calculateDuration(singleValue.dt, singleValue.at)}</span>
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                      <hr className="w-1/3 border-t border-gray-300" />
+                                      <MdFlight className="w-7 h-5 mx-2 rotate-90" />
+                                      <hr className="w-1/3 border-t border-gray-300" />
+                                    </div>
+                                    <div className="text-center text-sm">Non Stop</div>
                                   </div>
-                                  <div className="flex justify-center items-center">
-                                    <hr className="w-1/3 border-t border-gray-300" />
-                                    <MdFlight className="w-7 h-5 mx-2 rotate-90" />
-                                    <hr className="w-1/3 border-t border-gray-300" />
+
+                                  <div className="flex-col  w-1/3">
+                                    <div className="w-full">
+                                      <div className="mb-2">
+
+                                      </div>
+                                    </div>
+                                    <div className="text-lg font-bold">{singleValue.aa.code}</div>
+                                    <div className="text-sm">{singleValue.aa.city}, {singleValue.aa.country}</div>
+                                    <div className="text-sm font-bold">{singleValue.aa.name}</div>
+                                    <div className="text-sm">{singleValue.aa?.terminal || "N/A"}</div>
+                                    <div className="text-sm font-semibold">{timeFormatChanger(singleValue.at)}</div>
                                   </div>
-                                  <div className="text-center text-sm">Non Stop</div>
-                                </div>
-                                <div className="flex-col w-1/3 text-right">
-                                  <div className="text-lg font-bold">{singleValue.aa.code}</div>
-                                  <div className="text-sm">{singleValue.aa.city}, {singleValue.aa.country}</div>
-                                  <div className="text-sm">{singleValue.aa.name}</div>
-                                  <div className="text-sm">{singleValue.aa?.terminal || "N/A"}</div>
-                                  <div className="text-sm font-semibold">{timeFormatChanger(singleValue.at)}</div>
                                 </div>
                               </div>
                             </React.Fragment>
