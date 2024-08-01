@@ -1022,7 +1022,7 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
             {data.map((segment, index) => (
               <div key={index} className="flex flex-col md:flex-row items-center justify-between py-4 border-b">
                 <div className="flex items-center">
-                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`} alt={segment?.fD?.aI?.code} className="w-10 h-10 mr-4" />
+                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`} alt={segment?.fD?.aI?.code} className="md:size-10 size-8 rounded-md mr-4" />
                   <div>
                     <div className="font-bold">{segment.fD.aI.name} {segment.fD.fN}</div>
                     <div className="text-sm text-gray-500">
@@ -1126,12 +1126,12 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
 
   return (
     <div className="border flex flex-col p-4 rounded-lg m-4 bg-white shadow-md">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-2">
-        <div className="flex items-center mb-4 md:mb-0">
+      <div className="flex flex-col md:flex-row p-4 justify-between items-center mb-2">
+        <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
           <img
             src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
             alt={startSegment?.fD?.aI?.code}
-            className="w-16 h-16 mr-6"
+            className="md:size-12 rounded-md mr-6 md:flex hidden"
           />
           <div>
             <h1 className="text-lg font-bold">{startSegment.da.code}</h1>

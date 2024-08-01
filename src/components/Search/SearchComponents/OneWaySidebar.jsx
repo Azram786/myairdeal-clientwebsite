@@ -245,7 +245,7 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
   };
 
   return (
-    <div className="md:w-1/4 border p-4 m-2 shadow-md rounded-md md:min-h-screen">
+    <div className="md:w-1/4 text-xs md:text-base border p-4 m-2 shadow-md rounded-md md:min-h-screen">
       <div className="p-4">
         {/* Price filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
@@ -258,7 +258,7 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
               max={maxPrice}
               value={filters.maxPrice}
               onChange={handlePriceChange}
-              className="flex-1 mr-4 range-slider"
+              className="flex-1 md:mr-4 range-slider"
             />
             <span>₹{filters.maxPrice}</span>
           </div>
@@ -304,8 +304,8 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
                   disabled={stopsCountMap[stop] === 0}
                 />
                 <span>{stop}</span>
-                <span className="text-xs text-gray-500">
-                  {stopsCountMap[stop] > 0 ? `(${stopsCountMap[stop]})` : "(Not available)"}
+                <span className="md:text-[10px] text-[8px] text-gray-500">
+                  {stopsCountMap[stop] > 0 ? `(${stopsCountMap[stop]})` : "(0)"}
                 </span>
               </label>
             ))}

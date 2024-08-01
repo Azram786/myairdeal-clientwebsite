@@ -441,7 +441,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   );
 
   return (
-    <div className="flex flex-row md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex flex-row md:w-1/4 border  m-2 shadow-md rounded-md min-h-screen">
       <div className="p-4 grid gap-2 grid-cols-1 w-full md:grid-cols-1">
         <div className='flex flex-col'>
           <div className="mb-6 border-b border-gray-300 pb-4">

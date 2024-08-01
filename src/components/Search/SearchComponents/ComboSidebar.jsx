@@ -272,7 +272,7 @@ const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
   };
 
   return (
-    <div className="flex-none md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex-none md:w-1/4 text-xs md:text-base border p-4 m-2 shadow-md rounded-md min-h-screen">
       <div className="p-4">
         {/* Price filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
@@ -285,7 +285,7 @@ const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
               max={maxPrice}
               value={filters.maxPrice}
               onChange={handlePriceChange}
-              className="flex-1 mr-4 range-slider"
+              className="flex-1 md:mr-4 range-slider"
             />
             <span>₹{filters.maxPrice}</span>
           </div>
@@ -312,8 +312,8 @@ const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
                   disabled={stopsCountMap[stop] === 0}
                 />
                 <span>{stop}</span>
-                <span className="text-xs text-gray-500">
-                  {stopsCountMap[stop] > 0 ? `(${stopsCountMap[stop]})` : "(Not available)"}
+                <span className="md:text-[10px] text-[8px]  text-gray-500">
+                  {stopsCountMap[stop] > 0 ? `(${stopsCountMap[stop]})` : "(0)"}
                 </span>
               </label>
             ))}

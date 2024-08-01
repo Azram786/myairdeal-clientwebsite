@@ -160,7 +160,7 @@ const Oneway = ({ flightProps, passenger }) => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex md:flex-row flex-col">
       <OneWaySideBar 
         flights={flightProps} 
         filters={filters} 
