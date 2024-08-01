@@ -1126,7 +1126,7 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
 
   return (
     <div className="border flex flex-col p-4 rounded-lg m-4 bg-white shadow-md">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-2">
+      <div className="flex flex-col md:flex-row p-4 justify-between items-center mb-2">
         <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
           <img
             src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}

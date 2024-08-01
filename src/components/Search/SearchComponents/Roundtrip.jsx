@@ -632,7 +632,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
         setActiveDirection={setActiveDirection}
         calculateTotalPrice={calculateTotalPrice}
       />
-      <div className="flex flex-col md:p-4 md:w-3/4">
+      <div className="flex flex-col  md:w-3/4">
         <div className="flex">
           <div className="w-1/2">
             <h2 className="text-sm text-center md:text-xl font-semibold mb-2">

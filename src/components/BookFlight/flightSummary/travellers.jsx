@@ -79,7 +79,7 @@ const TravellersCard = ({
           </div>
           <div className="mt-4">
             <h3 className="font-semibold text-sm mb-2">Contact Details</h3>
-            <form onSubmit={handleSubmit(validateContactDetails)}>
+            <form className="flex md:flex-row flex-col gap-2 justify-center" onSubmit={handleSubmit(validateContactDetails)}>
               <input
                 type="email"
                 name="email"
@@ -100,7 +100,7 @@ const TravellersCard = ({
                   },
                 })}
                 onChange={(e) => updateContactDetails("email", e.target.value)}
-                className="w-1/2 h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none mb-2"
+                className="md:w-1/2 h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none mb-2"
               />
               {errors.email && (
                 <span className="text-red-500 text-xs">
@@ -119,7 +119,7 @@ const TravellersCard = ({
                   },
                 })}
                 onChange={(e) => updateContactDetails("phone", e.target.value)}
-                className="w-1/2 h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none"
+                className="md:w-1/2 h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none"
               />
               {errors.phone && (
                 <span className="text-red-500 text-xs">
@@ -129,7 +129,7 @@ const TravellersCard = ({
               <br />
               <button
                 type="submit"
-                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+                className=" bg-blue-500 text-white  text-sm h-12 px-5 rounded"
               >
                 Save
               </button>

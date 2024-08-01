@@ -161,7 +161,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
   };
 
   return (
-    <div className="rounded-lg p-4 mb-4 bg-white shadow-md">
+    <div className="rounded-lg  mb-4 bg-white ">
       <div className="text-lg font-semibold mb-4">
         {passenger.passengerType} {passenger.typeCount}
       </div>
@@ -232,7 +232,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                   </span>
                 )}
               </div>
-              <div className="relative ml-3 p-2">
+              <div className="relative p-2">
                 <input
                   type="text"
                   {...register("lastName", {
@@ -318,19 +318,23 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
               updatePassenger={updatePassenger}
               passport={formData.passport}
             />
-            <div>
+            <div className="w-full justify-end mt-2 flex">
               <button
                 type="submit"
-                className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+                className="button text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
               >
                 Save
               </button>
               <button
                 type="button"
+                disabled={loading}
                 onClick={handleModalOpen}
-                className="button bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                className="button text-sm bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               >
-                Select From History
+                {loading ? (
+                <div className="text-center text-white "><span className="italic">Loading...</span></div>
+              ):( "Select From History")}
+               
               </button>
               <ModalHistoryData
                 isOpen={isModalOpen}
@@ -339,9 +343,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                 onSelect={handleSelectFromHistory}
                 loading={loading}
               />
-              {loading && (
-                <div className="text-center text-gray-500 mt-4">Loading...</div>
-              )}
+            
               {error && (
                 <div className="text-center text-red-500 mt-4">
                   Error: {error.message}

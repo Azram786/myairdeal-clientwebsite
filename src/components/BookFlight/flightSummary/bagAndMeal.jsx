@@ -260,7 +260,7 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
           ...newPassengers[passengerIndex],
           selectedBaggages: {
             ...newPassengers[passengerIndex].selectedBaggages,
-            [flightId]: { code: value, key: flightId, amount },
+            [flightId]: { code: value, key: flightId, amount,desc },
           },
         };
       }
@@ -292,14 +292,20 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
                 <select
                   key={index}
                   value={passenger?.selectedBaggages?.[flight.id]?.code || ""}
-                  onChange={(e) =>
+                  
+                  onChange={(e) => {
+                    const selectedBaggage = flight.baggageOptions.find(
+                      (baggage) => baggage.code === e.target.value
+                    );
                     updateAddonSelection(
                       index,
                       flight.id,
                       "baggage",
-                      e.target.value
-                    )
-                  }
+                      e.target.value,
+                      selectedBaggage?.amount || 0,
+                      selectedBaggage?.desc || ""
+                    );
+                  }}
                   className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">Select a Baggage</option>

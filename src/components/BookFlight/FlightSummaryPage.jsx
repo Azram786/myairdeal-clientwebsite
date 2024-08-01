@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { MdFlight } from "react-icons/md";
 import {
@@ -13,10 +13,13 @@ import Review from "./Review";
 import AddDetails from "./flightSummary/addDetails";
 import { ApiData } from "./dummy-meal";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import defaultAirline from "../../assets/home/logo/defaultAirline.png";
 import { set } from "react-hook-form";
+import PaymentPage from "./PaymentPage";
+import SessionTimer from "./SessionTimer";
+import ReactToast from "./Util/ReactToast";
 
 const FlightSummary = ({ flightData, passenger }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -32,16 +35,16 @@ const FlightSummary = ({ flightData, passenger }) => {
   const location = useLocation();
   const [seatMapData, setSeatMapData] = useState(null); // For seat map API
   const { bookings } = location.state || {};
+  const navigate=useNavigate()
+  const bookingArray = useMemo(() => {
+    return bookings ? bookings.map(item => item.priceId) : [];
+  }, [bookings]);
 
-  console.log(bookings, "Helll y");
-  let bookingArray = [];
-
-  bookings.map((item) => {
-    bookingArray.push(item.priceId);
-  });
-
-  console.log(bookingArray);
-  console.log("hehe");
+  useEffect(() => {
+    if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
+      navigate('/search');
+    }
+  }, [bookings, bookingArray, navigate]);
 
   const handleStepClick = (step) => {
     if (step <= currentStep) {
@@ -76,6 +79,8 @@ const FlightSummary = ({ flightData, passenger }) => {
       .catch((error) => {
         console.log(error);
         setLoading(false);
+        ReactToast('Some error occurred please try again')
+        navigate('/')
         console.log(error);
       });
   };
@@ -154,11 +159,11 @@ const FlightSummary = ({ flightData, passenger }) => {
   }
 
   return (
-    <div className="bg-gray-100 sm:text-sm md:text-lg p-2">
+    <div className="bg-gray-100 min-h-screen sm:text-sm md:text-lg p-2">
       {Loading ? (
         <div>Loading...</div>
       ) : (
-        <div className="container mx-auto p-2 max-w-5xl font-poppins">
+        <div className="container mx-auto md:p-2 max-w-5xl font-poppins">
           <ProgressBar
             currentStep={currentStep}
             onStepClick={handleStepClick}
@@ -167,7 +172,7 @@ const FlightSummary = ({ flightData, passenger }) => {
           <div className="flex flex-col md:flex-row gap-4 p-2 ">
             {/* Left section */}
 
-            <div className="w-full md:w-[70%] rounded-lg bg-white p-2 space-y-4">
+            <div className="w-full md:w-[70%] rounded-lg bg-white md:p-2 space-y-4">
               {currentStep === 0 ? (
                 <>
                   <div className="border-b border-gray-300 pb-4 ">
@@ -344,7 +349,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                     ))}
                   </div>
 
-                  <div className="flex justify-center mt-6 px-4">
+                  <div className="flex justify-center py-3 px-4">
                     <button
                       className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-blue-500 text-white rounded-md text-sm sm:text-base flex items-center justify-center"
                       onClick={handleSaveAndContinue}
@@ -357,7 +362,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                     </button>
                   </div>
                 </>
-              ) : currentStep === 1 ? (
+              ) :  currentStep === 1 ? (
                 <AddDetails
                   bookingId={data?.bookingId}
                   Step={handleSaveAndContinue}
@@ -365,24 +370,32 @@ const FlightSummary = ({ flightData, passenger }) => {
                   onData={handleDataFromChild}
                   setCurrentStep={setCurrentStep}
                 />
-              ) : (
-                currentStep === 2 && (
-                  <>
-                    {console.log("hehe")}
-                    <Review
-                      setCurrentStep={setCurrentStep}
-                      data={data}
-                      passengersData={passengersData}
-                      // updatePssenger={updatePssenger}
-                    />
-                  </>
-                )
-              )}
+              ) : currentStep === 2 ? (
+                <>
+                  {console.log("hehe")}
+                  <Review
+                    setCurrentStep={setCurrentStep}
+                    data={data}
+                    passengersData={passengersData}
+                    // updatePssenger={updatePssenger}
+                  />
+                </>
+              ) : currentStep === 3 ? (
+                <>
+                  {console.log("hehe")}
+                  <PaymentPage
+                    data={data}
+                    passengersData={passengersData}
+                    // updatePssenger={updatePssenger}
+                  />
+                </>
+              ) : null
+            }
             </div>
 
             {/* Right Section */}
-            <div className="w-full md:w-[30%] rounded-lg bg-white p-2 space-y-4">
-              <div className="w-full max-w-full rounded-lg border border-gray-300 bg-white p-4 md:p-6 shadow-md">
+            <div className=" md:w-[30%] rounded-lg bg-white p-2 space-y-4">
+              <div className="w-full max-w-full rounded-lg bg-white">
                 <div className="flex items-center justify-between border-b border-gray-300 pb-4">
                   <div>
                     <span className="font-bold text-lg md:text-xl lg:text-2xl">
@@ -392,7 +405,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                 </div>
 
                 <div className="text-gray-700 mt-4 md:mt-6  space-y-4 md:space-y-6">
-                  <div className="border-t border-gray-200 pt-3">
+                  <div className=" pt-3">
                     <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                       <span>Base fare</span>
                       <span>
@@ -493,6 +506,9 @@ const FlightSummary = ({ flightData, passenger }) => {
           </div>
         </div>
       )}
+      {data?.conditions?.st &&
+        <SessionTimer sessionTimeout={data?.conditions?.st}/>}
+      
     </div>
   );
 };
