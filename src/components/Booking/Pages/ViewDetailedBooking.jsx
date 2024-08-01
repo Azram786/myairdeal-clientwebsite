@@ -238,6 +238,7 @@ import Header from "../../Home/Header";
 import Footer from "../../Home/Footer";
 import Spinner from "../../Profile/Spinner";
 import { motion } from "framer-motion";
+import ViewAmendmentDetails from "../viewDetailedBooking/ViewAmendmentDetails";
 
 const ViewDetailedBooking = () => {
   const location = useLocation();
@@ -250,10 +251,11 @@ const ViewDetailedBooking = () => {
   const queryParams = getQueryParams(location.search);
   const { bookingId, bookingFilter } = queryParams;
   const [loading, setLoading] = useState(true);
+  const [amendment, setAmendment] = useState([])
   const getSingleTicketDetailHandler = async () => {
     try {
       setLoading(true);
-      console.log("===============================================================")
+
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}booking/retrieve-booking`,
         { bookingId }, // Body of the request
@@ -263,9 +265,10 @@ const ViewDetailedBooking = () => {
           },
         }
       );
-      console.log(response.data);
+
       setSearchQuery(response.data.searchQuery);
       setSingleBookingData(response.data.data);
+      setAmendment(response.data.amendment)
       setLoading(false);
       console.log({ response });
     } catch (error) {
@@ -350,9 +353,10 @@ const ViewDetailedBooking = () => {
               <ViewDetailedBookingCard
                 singleBookingData={singleBookingData}
                 searchQuery={searchQuery}
+                amendment={amendment}
               />
               {/* </motion.div> */}
-              <div className="m-2 w-full  md:w-[20%] flex flex-col  p-5 rounded-lg shadow-lg  border">
+              <div className="m-2 w-full lg:w-[20%] flex flex-col  p-5 rounded-lg shadow-lg  border">
                 <div className=" py-4 text-[1rem]">
                   <h2 className="font-montserrat">
                     Your booking is protected by{" "}
@@ -364,7 +368,7 @@ const ViewDetailedBooking = () => {
                   <div className="flex flex-col gap-2">
                     <div className="flex justify-between">
                       <div>Base Fare</div>
-                      <div>
+                      <div className="flex ">
                         ₹{" "}
                         {
                           singleBookingData?.itemInfos.AIR.totalPriceInfo
@@ -372,44 +376,43 @@ const ViewDetailedBooking = () => {
                         }
                       </div>
                     </div>
-                    <div className="flex flex-col">
+                    <div className=" flex flex-col">
                       <div
-                        className="flex justify-between cursor-pointer"
+                        className="flex justify-between  cursor-pointer"
                         onClick={toggleDropdown}
                       >
-                        <div className="flex justify-center items-center gap-1">
-                          {" "}
+                        <div className="flex justify-center items-end gap-1">
+
                           <div>Total Additional Fare</div>{" "}
                           <FaAngleDoubleDown color="green" />
                         </div>
 
-                        <div>
-                          ₹{" "}
+                        <div className="flex items-end">
                           {
-                            singleBookingData?.itemInfos.AIR.totalPriceInfo
-                              .totalFareDetail.fC.TAF
+                            `₹${singleBookingData?.itemInfos.AIR.totalPriceInfo
+                              .totalFareDetail.fC.TAF}`
                           }
                         </div>
                       </div>
                       {isDropdownOpen && (
-                        <div className="mt-2 ml-4 bg-slate-200 p-2 shadow-sm rounded-lg">
+                        <div className="mt-2 ml-4  bg-slate-200 p-2 shadow-sm rounded-lg">
                           <div className="flex justify-between">
                             <div>IGST</div>
-                            <div>
+                            <div className="flex">
                               ₹
                               {
                                 singleBookingData?.itemInfos.AIR
-                                  .totalPriceInfo.totalFareDetail.afC.TAF.AGST
+                                  .totalPriceInfo.totalFareDetail.afC.TAF?.AGST || "N/A"
                               }
                             </div>
                           </div>
                           <div className="flex justify-between">
                             <div>Other Taxes</div>
                             <div>
-                              ₹{" "}
-                              {
+
+                              ₹{
                                 singleBookingData?.itemInfos.AIR
-                                  .totalPriceInfo.totalFareDetail.afC.TAF.OT
+                                  .totalPriceInfo.totalFareDetail.afC?.TAF?.OT || "N/A"
                               }
                             </div>
                           </div>
@@ -419,7 +422,7 @@ const ViewDetailedBooking = () => {
                               ₹
                               {
                                 singleBookingData?.itemInfos.AIR
-                                  .totalPriceInfo.totalFareDetail.afC.TAF.YR
+                                  .totalPriceInfo.totalFareDetail.afC.TAF?.YR || "N/A"
                               }
                             </div>
                           </div>
@@ -439,7 +442,7 @@ const ViewDetailedBooking = () => {
                   </div>
                   <div className="flex justify-between pt-3 border-t">
                     <div>Total</div>
-                    <div>
+                    <div className="flex">
                       ₹{" "}
                       {
                         singleBookingData?.itemInfos.AIR.totalPriceInfo
@@ -450,6 +453,9 @@ const ViewDetailedBooking = () => {
                 </div>
               </div>
             </div>
+
+            <ViewAmendmentDetails amendment={amendment} />
+
             <TicketLinks
               singleBookingData={singleBookingData}
               bookingFilter={bookingFilter}
