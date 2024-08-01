@@ -11,6 +11,8 @@ const initialState = {
 
 };
 
+
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -30,10 +32,10 @@ const authSlice = createSlice({
       localStorage.setItem("user_air_deal", JSON.stringify(action.payload))
     },
     setResentSearch: (state, action) => {
-      state.resent = action.payload
+      state.resentSearch = action.payload
     },
     clearResent: () => {
-      state.resent = null
+      state.resentSearch = null
     }
   },
 });

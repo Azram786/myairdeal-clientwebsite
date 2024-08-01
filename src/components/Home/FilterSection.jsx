@@ -20,37 +20,26 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
-const FilterSection = () => {
-  const [formData, setFormData] = useState({
-    cabinClass: "ECONOMY",
+import { useSelector } from "react-redux";
+const FilterSection = ({ formData, setFormData }) => {
 
-    ADULT: "1",
-    CHILD: "0",
-    INFANT: "0",
 
-    fromCityOrAirport: "",
-    toCityOrAirport: "",
-    travelDate: new Date(),
-    returnDate: new Date(),
 
-    isDirectFlight: true,
-    isConnectingFlight: true,
-    pft: "REGULAR",
-  });
+  const { resentSearch } = useSelector((state) => state.auth)
 
   const navigate = useNavigate()
 
   // State for dynamically rendering form elements
   const [dynamicFormData, setDynamicFormData] = useState([
     {
-      fromCity: "",
+      fromCity: formData.toCity ? formData.toCityOrAirport : "",
       toCity: "",
       travelDate: formData.travelDate,
     },
   ]);
+  console.log({ dynamicFormData })
 
-
-
+  const { token } = useSelector((state) => state.auth)
   const [Loading, setLoading] = useState(false);
 
   //filter state for country code
@@ -107,7 +96,7 @@ const FilterSection = () => {
 
       callback(options);
     } catch (error) {
-      ReactToast("Please reload the page")
+      // ReactToast("Please reload the page")
       callback([]);
     }
   };
@@ -127,7 +116,7 @@ const FilterSection = () => {
 
       callback(options);
     } catch (error) {
-      ReactToast("Please reload the page")
+      // ReactToast("Please reload the page")
       callback([]);
     }
   };
@@ -145,13 +134,13 @@ const FilterSection = () => {
       }));
       setDefaultOptions(options);
     } catch (error) {
-      ReactToast("Fetching Country Details Reload Again")
+      // ReactToast("Fetching Country Details Reload Again")
     }
   };
 
   const submitHandler = async () => {
     try {
-
+      setLoading(true)
       if (formData.fromCityOrAirport === formData.toCityOrAirport && formData.fromCityOrAirport !== "" && formData.fromCityOrAirport !== "") {
         ReactToast("You cannot select the same airport twice");
         return
@@ -293,12 +282,20 @@ const FilterSection = () => {
         };
       }
 
+      console.log({ query })
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log({ response, index: 4 })
 
 
       setLoading(false);
       navigate(`/search`, { state: { query } });
     } catch (error) {
       setLoading(false);
+      console.log(error)
       ReactToast("Something went wrong");
     }
   };
