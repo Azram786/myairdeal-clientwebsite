@@ -238,6 +238,7 @@ import Header from "../../Home/Header";
 import Footer from "../../Home/Footer";
 import Spinner from "../../Profile/Spinner";
 import { motion } from "framer-motion";
+import ViewAmendmentDetails from "../viewDetailedBooking/ViewAmendmentDetails";
 
 const ViewDetailedBooking = () => {
   const location = useLocation();
@@ -250,10 +251,11 @@ const ViewDetailedBooking = () => {
   const queryParams = getQueryParams(location.search);
   const { bookingId, bookingFilter } = queryParams;
   const [loading, setLoading] = useState(true);
+  const [amendment, setAmendment] = useState([])
   const getSingleTicketDetailHandler = async () => {
     try {
       setLoading(true);
-      console.log("===============================================================")
+
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}booking/retrieve-booking`,
         { bookingId }, // Body of the request
@@ -263,9 +265,10 @@ const ViewDetailedBooking = () => {
           },
         }
       );
-      console.log(response.data);
+
       setSearchQuery(response.data.searchQuery);
       setSingleBookingData(response.data.data);
+      setAmendment(response.data.amendment)
       setLoading(false);
       console.log({ response });
     } catch (error) {
@@ -350,6 +353,7 @@ const ViewDetailedBooking = () => {
               <ViewDetailedBookingCard
                 singleBookingData={singleBookingData}
                 searchQuery={searchQuery}
+                amendment={amendment}
               />
               {/* </motion.div> */}
               <div className="m-2 w-full lg:w-[20%] flex flex-col  p-5 rounded-lg shadow-lg  border">
@@ -449,6 +453,9 @@ const ViewDetailedBooking = () => {
                 </div>
               </div>
             </div>
+
+            <ViewAmendmentDetails amendment={amendment} />
+
             <TicketLinks
               singleBookingData={singleBookingData}
               bookingFilter={bookingFilter}

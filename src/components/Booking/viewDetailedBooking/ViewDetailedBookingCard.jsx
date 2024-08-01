@@ -678,7 +678,7 @@ import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
 
 
 
-const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
+const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) => {
   const { user } = useSelector((state) => state.auth)
   const { token } = useSelector((state) => state.auth)
   const [openConnectionIndex, setOpenConnectionIndex] = useState(null);
@@ -731,7 +731,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery }) => {
         </div>
         {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
 
-          console.log(value.sI)
+
           return (
             <div key={index}>
               <div className=" flex flex-wrap gap-2 w-full py-2">

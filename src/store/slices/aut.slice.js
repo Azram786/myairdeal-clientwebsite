@@ -7,6 +7,7 @@ const initialState = {
   user: localStorage.getItem("user_air_deal")
     ? JSON.parse(localStorage.getItem("user_air_deal"))
     : null,
+  resentSearch: null
 
 };
 
@@ -27,10 +28,16 @@ const authSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
       localStorage.setItem("user_air_deal", JSON.stringify(action.payload))
+    },
+    setResentSearch: (state, action) => {
+      state.resent = action.payload
+    },
+    clearResent: () => {
+      state.resent = null
     }
   },
 });
 
-export const { setToken, logout, setUser } = authSlice.actions;
+export const { setToken, logout, setUser,setResentSearch } = authSlice.actions;
 
 export default authSlice.reducer;
