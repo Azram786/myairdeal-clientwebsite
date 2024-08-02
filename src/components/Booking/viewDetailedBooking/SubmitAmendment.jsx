@@ -11,7 +11,6 @@ const SubmitAmendment = ({ singleBookingData }) => {
   const [fullBookingData, setFullbookingData] = useState({});
   const [Loading, setLoading] = useState(true);
   const [selectedTrips, setSelectedTrips] = useState([]);
-
   const [selectedTravelers, setSelectedTravelers] = useState([]);
   const [cancelWholeTicket, setCancelWholeTicket] = useState(false);
   const [remarks, setRemarks] = useState("");
@@ -49,8 +48,6 @@ const SubmitAmendment = ({ singleBookingData }) => {
       },
     },
   };
-
-
 
   const handleTripSelection = (tripIndex) => {
     setSelectedTrips((prevSelectedTrips) => {
@@ -120,50 +117,67 @@ const SubmitAmendment = ({ singleBookingData }) => {
         .filter((traveler) => traveler.startsWith(`${tripIndex}-`))
         .map((travelerKey) => {
           const travelerIndex = parseInt(travelerKey.split("-")[1]);
-          const traveler = fullBookingData?.itemInfos?.AIR?.travellerInfos[
-            travelerIndex
-          ];
+          const traveler = fullBookingData?.itemInfos?.AIR?.travellerInfos[travelerIndex];
           return {
             fn: traveler.fN,
             ln: traveler.lN,
           };
         });
-      return {
-        src: trip?.sI[0].da.code,
-        dest:
-          trip.sI.length === 1
-            ? trip?.sI[0].aa.code
-            : trip?.sI[trip.sI.length - 1].aa.code,
-        departureDate: trip?.sI[0].dt,
-        ...(travelers.length > 0 ? { travellers: travelers } : {}),
-      };
+
+      // Include the travelers only if there are selected travelers for the trip
+      return travelers.length > 0
+        ? {
+          src: trip?.sI[0].da.code,
+          dest: trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code,
+          departureDate: trip?.sI[0].dt,
+          travellers: travelers,
+        }
+        : {
+          src: trip?.sI[0].da.code,
+          dest: trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code,
+          departureDate: trip?.sI[0].dt,
+        };
     });
 
     return {
       bookingId,
       type: "CANCELLATION",
       remarks,
-      ...(tripsData.length > 0 ? { trips: tripsData } : {}),
+      trips: tripsData,
     };
   };
 
   const submitAmendment = async () => {
     const data = getFormattedData();
-    try {
-      await axios.put(
-        `${import.meta.env.VITE_SERVER_URL}booking/cancel`,
-        data,
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      toast.success("Cancellation request submitted successfully!");
-    } catch (error) {
-      console.log(error.message);
-      toast.error("Failed to submit cancellation request.");
-    }
+    console.log({ data });
+    // let confirmationMessage = "Are you sure you want to cancel ";
+    // if (cancelWholeTicket) {
+    //   confirmationMessage += "the whole ticket?";
+    // } else {
+    //   const tripCount = data.trips?.length || 0;
+    //   const travellerCount = data.trips?.reduce((acc, trip) => acc + (trip.travellers?.length || 0), 0) || 0;
+    //   confirmationMessage += `${tripCount} trip(s) and ${travellerCount} traveller(s)?`;
+    // }
+
+    // if (window.confirm(confirmationMessage)) {
+    //   try {
+    //     await axios.put(
+    //       `${import.meta.env.VITE_SERVER_URL}booking/cancel`,
+    //       data,
+    //       {
+    //         headers: {
+    //           authorization: `Bearer ${token}`,
+    //         },
+    //       }
+    //     );
+    //     toast.success("Cancellation request submitted successfully!");
+    //   } catch (error) {
+    //     console.error("Error submitting cancellation request:", error);
+    //     toast.error("Failed to submit cancellation request.");
+    //   }
+    // } else {
+    //   toast.info("Cancellation request cancelled.");
+    // }
   };
 
   return (
@@ -228,75 +242,59 @@ const SubmitAmendment = ({ singleBookingData }) => {
                     checked={cancelWholeTicket}
                   />
                   <span className="ml-3 text-[#3951b9] font-semibold">
-                    Cancel whole ticket
+                    Cancel Whole Ticket
                   </span>
                 </label>
-                {fullBookingData?.itemInfos?.AIR?.tripInfos?.map(
-                  (trip, tripIndex) => (
-                    <div key={tripIndex} className="space-y-4">
-                      <div className="selected-trips-container">
-                        <div className="p-2 rounded-lg flex flex-col">
-                          <p className="text-[#3951b9] font-extrabold">
-                            Trip {tripIndex + 1}
-                          </p>
-                          <label className="flex items-center mt-2">
-                            <input
-                              type="checkbox"
-                              className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus"
-                              checked={selectedTrips.includes(tripIndex)}
-                              onChange={() => handleTripSelection(tripIndex)}
-                            />
-                            <span className="ml-3 text-[#3951b9] font-semibold">
-                              Select this trip
-                            </span>
-                          </label>
-                          {/* ... (trip details remain the same) */}
-                          <div>
-                            <h4 className="text-[#3951b9] font-bold mt-4">
-                              Travelers
-                            </h4>
-                            {fullBookingData?.itemInfos?.AIR?.travellerInfos?.map(
-                              (traveler, travelerIndex) => {
-                                const travelerKey = `${tripIndex}-${travelerIndex}`;
-                                return (
-                                  <label
-                                    key={travelerIndex}
-                                    className="flex items-center mt-2"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus"
-                                      checked={selectedTravelers.includes(travelerKey)}
-                                      onChange={() => handleTravelerSelection(tripIndex, travelerIndex)}
-                                    />
-                                    <span className="ml-3 text-[#3951b9] font-semibold">
-                                      {traveler.fN} {traveler.lN}
-                                    </span>
-                                  </label>
-                                );
-                              }
-                            )}
-                          </div>
-                        </div>
+
+                {fullBookingData?.itemInfos?.AIR?.tripInfos.map((trip, tripIndex) => (
+                  <div key={tripIndex} className="mt-4">
+                    <label className="flex items-center mt-2">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
+                        onChange={() => handleTripSelection(tripIndex)}
+                        checked={selectedTrips.includes(tripIndex)}
+                        disabled={cancelWholeTicket}
+                      />
+                      <span className="ml-3 text-[#3951b9] font-semibold">
+                        Trip {tripIndex + 1} - {trip?.sI[0].da.code} to {trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code}
+                      </span>
+                    </label>
+
+                    {fullBookingData?.itemInfos?.AIR?.travellerInfos.map((traveler, travelerIndex) => (
+                      <div key={travelerIndex} className="ml-6 mt-2">
+                        <label className="flex items-center">
+                          <input
+                            type="checkbox"
+                            className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
+                            onChange={() => handleTravelerSelection(tripIndex, travelerIndex)}
+                            checked={selectedTravelers.includes(`${tripIndex}-${travelerIndex}`)}
+                            disabled={cancelWholeTicket || !selectedTrips.includes(tripIndex)}
+                          />
+                          <span className="ml-3 text-[#3951b9] font-semibold">
+                            {traveler.fN} {traveler.lN}
+                          </span>
+                        </label>
                       </div>
-                    </div>
-                  )
-                )}
+                    ))}
+                  </div>
+                ))}
+
                 <div className="mt-4">
                   <label className="block text-[#3951b9] font-semibold mb-2">
-                    Remarks:
+                    Remarks
                   </label>
                   <textarea
-                    className="form-textarea mt-1 block w-full border-gray-300 rounded focus:ring-[#ffeb3b] focus
-"
-                    rows="4"
+                    className="form-textarea mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ffeb3b] focus:ring focus:ring-[#ffeb3b] focus:ring-opacity-50"
+                    rows="3"
                     value={remarks}
                     onChange={(e) => setRemarks(e.target.value)}
                   ></textarea>
                 </div>
-                <div className="mt-6">
+
+                <div className="mt-8">
                   <button
-                    className="bg-[#3951b9] hover:bg-[#ffeb3b] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all"
+                    className="px-4 py-2 bg-[#3951b9] text-white font-semibold rounded-md hover:bg-[#ffeb3b] hover:text-[#3951b9] transition-colors"
                     onClick={submitAmendment}
                   >
                     Submit Cancellation
