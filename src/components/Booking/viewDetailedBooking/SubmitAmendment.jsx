@@ -1,230 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import DeleteModalTemplateConfirm from "./DeleteModalTemplateConfirm";
-import { PiAirplaneInFlightDuotone } from "react-icons/pi";
-import { motion, AnimatePresence } from "framer-motion";
+import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
+
 const SubmitAmendment = ({ singleBookingData }) => {
   const { token } = useSelector((state) => state.auth);
-  const collapsed = true;
-  const apiURL = import.meta.env.VITE_SERVER_URL;
-  const [bookingId, setBookingId] = useState(singleBookingData.order.bookingId);
-  const [disable, setDisabled] = useState(false);
-  const [Remarks, setRemarks] = useState("");
-  const [Loading, setLoading] = useState(false);
-  const [ErrorDetails, setErrorDetails] = useState([]);
-  const [trips, setTrips] = useState(null);
+  const [bookingId] = useState(singleBookingData.order.bookingId);
+  const [fullBookingData, setFullbookingData] = useState({});
+  const [Loading, setLoading] = useState(true);
   const [selectedTrips, setSelectedTrips] = useState([]);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [checkTrips, setCheckTrips] = useState(null);
-  const navigate = useNavigate();
-  const [amendmentId, setAmendmentId] = useState(null);
-  const dispatch = useDispatch();
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-  };
+  const [selectedTravelers, setSelectedTravelers] = useState([]);
+  const [cancelWholeTicket, setCancelWholeTicket] = useState(false);
+  const [remarks, setRemarks] = useState("");
 
   const getData = async () => {
-    if (bookingId === "") {
-      toast.warning("Please Enter Booking ID");
-      return;
-    }
-    setLoading(true);
-    await axios
-      .post(
+    try {
+      const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}booking/retrieve-booking`,
-        {
-          bookingId,
-        },
+        { bookingId },
         {
           headers: {
             authorization: `Bearer ${token}`,
           },
         }
-      )
-      .then((res) => {
-        setLoading(false);
-
-        // Extract trips information
-        const travellers = res.data.data.itemInfos?.AIR?.travellerInfos.map(
-          (passenger) => ({
-            fn: passenger.fN,
-            ln: passenger.lN,
-          })
-        );
-        const extractedTrips = res.data.data.itemInfos?.AIR?.tripInfos.map(
-          (tripInfo) => {
-            const segments = tripInfo.sI;
-            const firstSegment = segments[0];
-            const lastSegment = segments[segments.length - 1];
-            return {
-              src: firstSegment.da.code,
-              dest: lastSegment.aa.code,
-              departureDate: formatDate(firstSegment.dt),
-              travellers,
-            };
-          }
-        );
-        setTrips(extractedTrips);
-        setDisabled(true);
-      })
-      .catch((error) => {
-        if (error?.response?.data?.action === "logout") {
-          setTimeout(() => {
-            dispatch({ type: "logout" });
-          }, 1000);
-        }
-        toast.error(error?.response?.data?.error);
-        setLoading(false);
-      });
-  };
-
-  const checkAmendment = async () => {
-    if (bookingId === "") {
-      toast.warning("Please Enter Booking ID");
-    }
-    setLoading(true);
-    await axios
-      .post(
-        `${apiURL}booking/amendment-charges`,
-        {
-          bookingId,
-          type: "CANCELLATION",
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((res) => {
-        setLoading(false);
-        setCheckTrips(res.data.trips);
-      })
-      .catch((error) => {
-        if (error?.response?.data?.action === "logout") {
-          setTimeout(() => {
-            dispatch({ type: "logout" });
-          }, 1000);
-        }
-        setLoading(false);
-        toast.error(error?.response?.data?.error);
-        setErrorDetails(error?.response?.data?.errors);
-      });
-  };
-
-  const submitAmendment = async () => {
-    const finalTripList = selectedTrips.map((selection) => {
-      const trip = trips[selection.tripIndex];
-      const selectedPassengers = selection.passengerIndices.map(
-        (index) => trip.travellers[index]
       );
-
-      const tripDetails = {
-        src: trip.src,
-        dest: trip.dest,
-        departureDate: trip.departureDate,
-      };
-
-      if (selectedPassengers.length > 0) {
-        tripDetails.travellers = selectedPassengers;
-      }
-
-      return tripDetails;
-    });
-
-
-
-    if (finalTripList.length > 0) {
-      requestData.trips = finalTripList;
+      setFullbookingData(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error.message);
+      setLoading(false);
     }
-
-
-    setLoading(true);
-    await axios
-      .post(`${import.meta.env.VITE_SERVER_URL}booking/submit-amendment`, {
-        bookingId,
-        type: "CANCELLATION",
-        remarks: Remarks
-      },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        })
-      .then((res) => {
-        setLoading(false);
-        console.log(res.data);
-        toast.success("Amendment Submitted Successfsully");
-        setBookingId("");
-        setRemarks("");
-        setBookingId("");
-        setErrorDetails([]);
-        setTrips(null);
-        setAmendmentId(res.data.amendmentId);
-        setIsDeleteModalOpen(false);
-        setDisabled(false);
-        setCheckTrips(null);
-      })
-      .catch((error) => {
-        if (error?.response?.data?.action === "logout") {
-          setTimeout(() => {
-            dispatch({ type: "logout" });
-          }, 1000);
-        }
-        toast.error(error?.response?.data?.error);
-        setLoading(false);
-        setErrorDetails(error?.response?.data?.errors);
-        setIsDeleteModalOpen(false);
-      });
-  };
-
-  const handleTripSelection = (tripIndex) => {
-    setSelectedTrips((prevSelectedTrips) => {
-      if (prevSelectedTrips.some((t) => t.tripIndex === tripIndex)) {
-        return prevSelectedTrips.filter((t) => t.tripIndex !== tripIndex);
-      } else {
-        return [...prevSelectedTrips, { tripIndex, passengerIndices: [] }];
-      }
-    });
-  };
-
-  const handlePassengerSelection = (tripIndex, passengerIndex) => {
-    setSelectedTrips((prevSelectedTrips) => {
-      const trip = prevSelectedTrips.find((t) => t.tripIndex === tripIndex);
-      if (trip) {
-        if (trip.passengerIndices.includes(passengerIndex)) {
-          trip.passengerIndices = trip.passengerIndices.filter(
-            (id) => id !== passengerIndex
-          );
-        } else {
-          trip.passengerIndices.push(passengerIndex);
-        }
-        return [...prevSelectedTrips];
-      } else {
-        return [
-          ...prevSelectedTrips,
-          { tripIndex, passengerIndices: [passengerIndex] },
-        ];
-      }
-    });
   };
 
   useEffect(() => {
     getData();
   }, []);
+
   const spinnerVariants = {
     animate: {
       rotate: [0, 360],
@@ -236,304 +50,263 @@ const SubmitAmendment = ({ singleBookingData }) => {
     },
   };
 
-  return (
-    <div className=" bg-gray-50 p-7">
-      <div className={`transition-padding duration-300`}>
-        {Loading ? <>
-          <motion.div
-            className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
-            variants={spinnerVariants}
-            animate="animate"
-          />  </>
-          : (
-            <div className="max-w-7xl mx-auto">
-              {amendmentId && (
-                <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
-                  <p>
-                    Amendment is Submitted: Your Amendment ID is{" "}
-                    <span className="font-bold">{amendmentId}</span>
-                  </p>
-                </div>
-              )}
 
-              <div className="space-y-6">
-                {checkTrips?.map((trip, tripIndex) => (
-                  <div key={tripIndex} className="bg-yellow-300 ">
-                    <div className="amendment-trip-detail">
-                      {" "}
-                      <div>
-                        <b>Source</b> : {trip.src}
-                      </div>
-                      <div>
-                        <b>Destination</b> : {trip.dest}
-                      </div>
-                      <div>
-                        <b>Departure Date</b> :{" "}
-                        {new Date(trip.departureDate).toLocaleString()}
-                      </div>
-                      <div>
-                        <b>Flight Numbers</b> : {trip.flightNumbers.join(", ")}
-                      </div>
-                      <div>
-                        <b>Airlines</b> : {trip.airlines.join(", ")}
-                      </div>
+
+  const handleTripSelection = (tripIndex) => {
+    setSelectedTrips((prevSelectedTrips) => {
+      if (prevSelectedTrips.includes(tripIndex)) {
+        // If the trip is being deselected, deselect all travelers for that trip
+        setSelectedTravelers((prevSelectedTravelers) =>
+          prevSelectedTravelers.filter(
+            (traveler) => !traveler.startsWith(`${tripIndex}-`)
+          )
+        );
+        return prevSelectedTrips.filter((index) => index !== tripIndex);
+      } else {
+        // If the trip is being selected, select all travelers for that trip
+        const allTravelers = fullBookingData?.itemInfos?.AIR?.travellerInfos.map(
+          (_, index) => `${tripIndex}-${index}`
+        );
+        setSelectedTravelers((prevSelectedTravelers) => [
+          ...prevSelectedTravelers,
+          ...allTravelers,
+        ]);
+        return [...prevSelectedTrips, tripIndex];
+      }
+    });
+  };
+
+  const handleTravelerSelection = (tripIndex, travelerIndex) => {
+    const travelerKey = `${tripIndex}-${travelerIndex}`;
+    setSelectedTravelers((prevSelectedTravelers) => {
+      if (prevSelectedTravelers.includes(travelerKey)) {
+        return prevSelectedTravelers.filter((key) => key !== travelerKey);
+      } else {
+        return [...prevSelectedTravelers, travelerKey];
+      }
+    });
+  };
+
+  const handleCancelWholeTicket = () => {
+    if (cancelWholeTicket) {
+      setCancelWholeTicket(false);
+      setSelectedTrips([]);
+      setSelectedTravelers([]);
+    } else {
+      setCancelWholeTicket(true);
+      setSelectedTrips(fullBookingData?.itemInfos?.AIR?.tripInfos?.map((_, index) => index));
+      setSelectedTravelers(
+        fullBookingData?.itemInfos?.AIR?.tripInfos?.flatMap((_, tripIndex) =>
+          fullBookingData?.itemInfos?.AIR?.travellerInfos?.map(
+            (_, travellerIndex) => `${tripIndex}-${travellerIndex}`
+          )
+        )
+      );
+    }
+  };
+
+  const getFormattedData = () => {
+    if (cancelWholeTicket) {
+      return {
+        bookingId,
+        type: "CANCELLATION",
+        remarks,
+      };
+    }
+
+    const tripsData = selectedTrips.map((tripIndex) => {
+      const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
+      const travelers = selectedTravelers
+        .filter((traveler) => traveler.startsWith(`${tripIndex}-`))
+        .map((travelerKey) => {
+          const travelerIndex = parseInt(travelerKey.split("-")[1]);
+          const traveler = fullBookingData?.itemInfos?.AIR?.travellerInfos[
+            travelerIndex
+          ];
+          return {
+            fn: traveler.fN,
+            ln: traveler.lN,
+          };
+        });
+      return {
+        src: trip?.sI[0].da.code,
+        dest:
+          trip.sI.length === 1
+            ? trip?.sI[0].aa.code
+            : trip?.sI[trip.sI.length - 1].aa.code,
+        departureDate: trip?.sI[0].dt,
+        ...(travelers.length > 0 ? { travellers: travelers } : {}),
+      };
+    });
+
+    return {
+      bookingId,
+      type: "CANCELLATION",
+      remarks,
+      ...(tripsData.length > 0 ? { trips: tripsData } : {}),
+    };
+  };
+
+  const submitAmendment = async () => {
+    const data = getFormattedData();
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_SERVER_URL}booking/cancel`,
+        data,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success("Cancellation request submitted successfully!");
+    } catch (error) {
+      console.log(error.message);
+      toast.error("Failed to submit cancellation request.");
+    }
+  };
+
+  return (
+    <div className="px-4 py-4 flex justify-center items-center h-[50vh]">
+      <div className="px-4 py-4 h-[50vh]">
+        <div className="transition-padding duration-300">
+          {Loading ? (
+            <div className="flex justify-center items-center h-full">
+              <motion.div
+                className="w-12 h-12 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                variants={spinnerVariants}
+                animate="animate"
+              />
+            </div>
+          ) : (
+            <div>
+              <div className="space-y-6 bg-yellow-300">
+                <div className="bg-yellow-700">
+                  <div>
+                    <div>
+                      <b>Source</b>: nithin
                     </div>
-                    <div className="amendment-category-container">
-                      {Object.keys(trip.amendmentInfo).map(
-                        (category, catIndex) => (
-                          <div key={catIndex} className="amendment-category">
-                            <h4>{category}</h4>
-                            <div>
-                              <b>Amendment Charges</b>:{" "}
-                              {trip.amendmentInfo[category].amendmentCharges}
-                            </div>
-                            <div>
-                              <b>Refund Amount</b>:{" "}
-                              {trip.amendmentInfo[category].refundAmount}
-                            </div>
-                            <div>
-                              <b>Total Fare</b>:{" "}
-                              {trip.amendmentInfo[category].totalFare}
-                            </div>
-                          </div>
-                        )
-                      )}
+                    <div>
+                      <b>Destination</b>: nithin
+                    </div>
+                    <div>
+                      <b>Departure Date</b>: {/* Add departure date here */}
+                    </div>
+                    <div>
+                      <b>Flight Numbers</b>: {/* Add flight numbers here */}
+                    </div>
+                    <div>
+                      <b>Airlines</b>: {/* Add airlines here */}
                     </div>
                   </div>
-                ))}
+                  <div className="amendment-category-container">
+                    <div className="amendment-category">
+                      <h4></h4>
+                      <div>
+                        <b>Amendment Charges</b>: {/* Add amendment charges here */}
+                      </div>
+                      <div>
+                        <b>Refund Amount</b>: {/* Add refund amount here */}
+                      </div>
+                      <div>
+                        <b>Total Fare</b>: {/* Add total fare here */}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="mt-8">
-                <h3 className="text-xl font-bold mb-4">Note:</h3>
-                <ul className="list-disc list-inside space-y-2">
-                  <li>
-                    To Cancel the Complete Booking, no need to select any trip.
-                  </li>
-                  <li>
-                    To Cancel a selected Trip for all the passengers, Just Select
-                    the Trip, no need to select any passenger.
-                  </li>
-                </ul>
-              </div>
-
-              {trips?.length > 0 && (
-                <div className="mt-8">
-                  <h3 className="text-xl font-bold mb-4">
-                    Select the Trips and Passengers to Cancel
-                  </h3>
-                  <div className="space-y-4">
-                    {trips?.length > 0 && (
-                      <div>
-                        {" "}
-
-                        <div className="selected-trips-container">
-                          {trips?.map((item, tripIndex) => (
-
-                            <>
-                              <div className="p-2 bg-[#3951b9] rounded-lg flex flex-col">
-                                <p className="text-white font-bold flex items-center gap-3">
-                                  {item?.dest} <PiAirplaneInFlightDuotone />{item?.dest} {item?.departureDate}
-                                </p>
-                                <p className="text-white font-semibold">{item?.departureDate}</p>
-                                <label className="flex items-center mt-2">
-                                  <input
-                                    checked={selectedTrips.some(
-                                      (t) => t.tripIndex === tripIndex
-                                    )}
-                                    onChange={() => handleTripSelection(tripIndex)}
-                                    type="checkbox"
-
-                                    className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
-                                  />
-                                  <span className="ml-3 text-white font-semibold">Cancel this ticket</span>
-                                </label>
-                              </div>
-
-
-                              <div className="grid grid-cols-2 gap-4">
-                                {item?.travellers.map((traveller, TravellerIndex) => {
-                                  console.log({ traveller })
-                                  return <div
-                                    className="flex items-center p-4 bg-blue-100 rounded-lg">
-                                    <div className="h-16 w-16 flex items-center justify-center bg-blue-500 text-white font-bold text-xl rounded-full mr-4">
-                                      {traveller.fn.charAt(0).toUpperCase()}
-
-                                    </div>
-                                    <div>
-                                      <div className="text-md font-bold">
-                                        {traveller?.ln}{" "}{traveller?.ln}
-                                      </div>
-                                      {/* <div className="text-sm font-bold">
-                                      Mail ID :
-                                    </div>
-                                    <div className="text-sm font-bold">
-                                      Date of birth :
-
-                                    </div> */}
-                                    </div>
-                                    <div className="ml-auto">
-                                      <input type="checkbox" className="form-checkbox h-5 w-5 text-blue-600" checked={selectedTrips.some(
-                                        (t) =>
-                                          t.tripIndex === tripIndex &&
-                                          t.passengerIndices.includes(
-                                            TravellerIndex
-                                          )
-                                      )}
-                                        onChange={() =>
-                                          handlePassengerSelection(
-                                            tripIndex,
-                                            TravellerIndex
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  </div>
-                                })}
-
-                              </div>
-                            </>
-                          ))}
+                <h3 className="text-xl font-bold mb-4">
+                  Select the Trips and Passengers to Cancel
+                </h3>
+                <label className="flex items-center mt-2">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
+                    onChange={handleCancelWholeTicket}
+                    checked={cancelWholeTicket}
+                  />
+                  <span className="ml-3 text-[#3951b9] font-semibold">
+                    Cancel whole ticket
+                  </span>
+                </label>
+                {fullBookingData?.itemInfos?.AIR?.tripInfos?.map(
+                  (trip, tripIndex) => (
+                    <div key={tripIndex} className="space-y-4">
+                      <div className="selected-trips-container">
+                        <div className="p-2 rounded-lg flex flex-col">
+                          <p className="text-[#3951b9] font-extrabold">
+                            Trip {tripIndex + 1}
+                          </p>
+                          <label className="flex items-center mt-2">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus"
+                              checked={selectedTrips.includes(tripIndex)}
+                              onChange={() => handleTripSelection(tripIndex)}
+                            />
+                            <span className="ml-3 text-[#3951b9] font-semibold">
+                              Select this trip
+                            </span>
+                          </label>
+                          {/* ... (trip details remain the same) */}
+                          <div>
+                            <h4 className="text-[#3951b9] font-bold mt-4">
+                              Travelers
+                            </h4>
+                            {fullBookingData?.itemInfos?.AIR?.travellerInfos?.map(
+                              (traveler, travelerIndex) => {
+                                const travelerKey = `${tripIndex}-${travelerIndex}`;
+                                return (
+                                  <label
+                                    key={travelerIndex}
+                                    className="flex items-center mt-2"
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus"
+                                      checked={selectedTravelers.includes(travelerKey)}
+                                      onChange={() => handleTravelerSelection(tripIndex, travelerIndex)}
+                                    />
+                                    <span className="ml-3 text-[#3951b9] font-semibold">
+                                      {traveler.fN} {traveler.lN}
+                                    </span>
+                                  </label>
+                                );
+                              }
+                            )}
+                          </div>
                         </div>
-                        <br />
-                        <br />
-                        {/* <label htmlFor="">Remarks</label>
-                      <br />
-                      <br />
-                      <textarea
-                        name=""
-                        id=""
-                        rows="5"
-                        cols="100"
-                        placeholder="Enter Remarks"
-                        value={Remarks}
-                        onChange={(e) => {
-                          setRemarks(e.target.value);
-                        }}
-                      ></textarea>
-                      <br />
-                      <br />
-                      <button onClick={checkAmendment}>
-                        Check Amendment Charges
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (bookingId === "") {
-                            toast.warning("Please Enter Booking ID");
-                            return;
-                          }
-                          if (Remarks === "") {
-                            toast.warning("Please Enter Remarks");
-                            return;
-                          }
-                          setIsDeleteModalOpen(true);
-                        }}
-                        disabled={Loading}
-                      >
-                        {Loading ? "Submitting..." : "Submit Amendment Charges"}
-                      </button> */}
                       </div>
-                    )}
-                  </div>
-                  {/* 
-                  <div className="mt-8">
-                    <label
-                      htmlFor="remarks"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Remarks
-                    </label>
-                    <textarea
-                      id="remarks"
-                      rows="5"
-                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-1/2 sm:text-sm border border-gray-300 rounded-md "
-                      placeholder="Enter Remarks"
-                      value={Remarks}
-                      onChange={(e) => setRemarks(e.target.value)}
-                    ></textarea>
-                  </div> */}
-
-                  {/* <div className="mt-8 space-x-4">
-                    <button
-                      onClick={checkAmendment}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Check Amendment Charges
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (bookingId === "") {
-                          toast.warning("Please Enter Booking ID");
-                          return;
-                        }
-                        if (Remarks === "") {
-                          toast.warning("Please Enter Remarks");
-                          return;
-                        }
-                        setIsDeleteModalOpen(true);
-                      }}
-                      disabled={Loading}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
-                    >
-                      {Loading ? "Submitting..." : "Submit Amendment Charges"}
-                    </button>
-                  </div> */}
-                  <div className="space-y-2">
-                    <label className="block text-gray-600">Remarks</label>
-                    <textarea
-                      placeholder="Enter Remarks"
-                      value={Remarks}
-                      onChange={(e) => setRemarks(e.target.value)}
-                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-
-                    ></textarea>
-                  </div>
-
-                  <div className="flex space-x-4">
-                    <button onClick={checkAmendment} className="w-full py-2 px-4 bg-[#637adc] border text-white rounded-md">
-                      Check Amendment Charges
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (bookingId === "") {
-                          toast.warning("Please Enter Booking ID");
-                          return;
-                        }
-                        if (Remarks === "") {
-                          toast.warning("Please Enter Remarks");
-                          return;
-                        }
-                        setIsDeleteModalOpen(true);
-                      }}
-                      className="w-full py-2 px-4 bg-white border-[#3951b9] border text-[#3951b9] rounded-md">
-                      Submit Amendment Charges
-                    </button>
-                  </div>
-                  {ErrorDetails?.length > 0 && (
-                    <div className="my-6 space-y-4">
-                      {ErrorDetails?.map((item, index) => (
-                        <div
-                          key={index}
-                          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded"
-                        >
-                          <p className="font-bold">Details:</p>
-                          <p>{item?.details}</p>
-                          <p className="font-bold mt-2">Message:</p>
-                          <p>{item?.message}</p>
-                        </div>
-                      ))}
                     </div>
-                  )}
+                  )
+                )}
+                <div className="mt-4">
+                  <label className="block text-[#3951b9] font-semibold mb-2">
+                    Remarks:
+                  </label>
+                  <textarea
+                    className="form-textarea mt-1 block w-full border-gray-300 rounded focus:ring-[#ffeb3b] focus
+"
+                    rows="4"
+                    value={remarks}
+                    onChange={(e) => setRemarks(e.target.value)}
+                  ></textarea>
                 </div>
-              )}
+                <div className="mt-6">
+                  <button
+                    className="bg-[#3951b9] hover:bg-[#ffeb3b] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all"
+                    onClick={submitAmendment}
+                  >
+                    Submit Cancellation
+                  </button>
+                </div>
+              </div>
             </div>
           )}
+        </div>
       </div>
-      <DeleteModalTemplateConfirm
-        isOpen={isDeleteModalOpen}
-        handleClose={closeDeleteModal}
-        handleDelete={submitAmendment}
-        description={"Submit the Amendment"}
-      />
     </div>
   );
 };

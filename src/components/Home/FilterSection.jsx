@@ -20,7 +20,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setLastSearch } from "../../store/slices/aut.slice";
 const FilterSection = ({ formData, setFormData }) => {
 
 
@@ -41,6 +42,8 @@ const FilterSection = ({ formData, setFormData }) => {
 
   const { token } = useSelector((state) => state.auth)
   const [Loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch()
 
   //filter state for country code
   const [countryCodeone, setCountryCodeOne] = useState("IN");
@@ -283,6 +286,7 @@ const FilterSection = ({ formData, setFormData }) => {
       }
 
       console.log({ query })
+      dispatch(setLastSearch(query))
       const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -452,7 +456,7 @@ const FilterSection = ({ formData, setFormData }) => {
                   <input
                     className="font-bold outline-none "
                     type="text"
-                    value={`${Number(formData.ADULT) + Number(formData.CHILD)
+                    value={`${Number(formData.ADULT) + Number(formData.CHILD) + Number(formData.INFANT)
                       } | ${formData.cabinClass}`}
                     readOnly
                   />

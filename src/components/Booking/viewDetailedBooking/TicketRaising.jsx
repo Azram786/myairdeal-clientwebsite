@@ -45,7 +45,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
 
     return (
         <div className="w-full h-full">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 flex flex-col justify-center h-full md:py-0 py-14 px-10">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 flex flex-col justify-center h-full md:py-0  px-10">
                 <div className="space-y-4">
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
                         {["New Complaint", "Unresolved Complaint", "Write to management"].map((heading) => (
