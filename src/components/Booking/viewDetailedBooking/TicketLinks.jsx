@@ -172,7 +172,7 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
 
       {modalIsOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-center z-50">
-          <div className="bg-white flex justify-center flex-col rounded-lg shadow-xl w-[90%] md:w-1/2  md:mx-auto max-h-[90vh] ">
+          <div className="bg-white flex justify-center flex-col rounded-lg shadow-xl w-[90%] md:w-1/2  md:mx-auto ">
             <div className="flex justify-between items-center p-4 border-b">
               <h2 className="text-2xl font-bold">
                 {selectedLink.for === 'raise' ? 'Raise a Ticket' : 'Cancel Ticket'}
@@ -184,7 +184,7 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
                 <FaTimes className="text-xl" />
               </button>
             </div>
-            <div className="p-2 overflow-y-auto no-scroll flex justify-center items-center h-80 ">
+            <div className="p-2 overflow-y-auto no-scroll flex justify-center items-center ">
               {selectedLink.for === 'raise' ? (
                 <TicketRaising bookingId={singleBookingData?.order?.bookingId} closeModal={closeModal} />
               ) : (
