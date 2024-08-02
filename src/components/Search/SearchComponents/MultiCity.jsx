@@ -544,11 +544,15 @@ import flightLogo from "../../../assets/home/logo/image 40.png";
 import SideBar from "./SideBar";
 import BookingCard from "./BookingCards";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import ReactToast from "../../util/ReactToast";
 
 const { TabPane } = Tabs;
 
-const MultiCity = ({ flightProps, passenger }) => {
+const MultiCity = ({ flightProps, passenger,query }) => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const token = useSelector((state) => state.auth.token);
+
   const [filters, setFilters] = useState(
     flightProps.map(() => ({
       maxPrice: 100000,
@@ -648,7 +652,7 @@ const MultiCity = ({ flightProps, passenger }) => {
     );
   
     if (!allFlightsSelected) {
-      alert("Please select all connection flights before booking.");
+      ReactToast("Please select all connection flights before booking.");
       return;
     }
   
@@ -661,6 +665,11 @@ const MultiCity = ({ flightProps, passenger }) => {
     });
   
     console.log("Booking:", bookingData);
+    if(!token){
+      ReactToast('Please login first')
+      navigate("/sign-in",{state:{booking:query}});
+
+    }
     navigate("/book-flight", { state: { bookings: bookingData } });
   };
 

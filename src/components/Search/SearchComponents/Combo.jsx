@@ -423,13 +423,16 @@ import { Tabs } from "antd";
 import { useNavigate } from 'react-router-dom';
 import ComboFlightCard from "../Cards/ComboFlightCard";
 import ComboSideBar from "./ComboSidebar";
+import { useSelector } from "react-redux";
+import ReactToast from "../../util/ReactToast";
 const { TabPane } = Tabs;
 
-const Combo = ({ flightprops, passenger }) => {
+const Combo = ({ flightprops, passenger,query }) => {
   if (!flightprops || flightprops.length === 0) {
     return <h1>No flights available ..</h1>;
   }
   const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
 
   const calculateTotalPrice = useMemo(() => (flight) => {
     let total = 0;
@@ -482,6 +485,11 @@ const Combo = ({ flightprops, passenger }) => {
     const selectedPrice = selectedFlight.totalPriceList[priceIndex];
     const priceId = selectedPrice.id;
     const data = [{ flightDetails: selectedFlight, priceId }];
+
+    if(!token){
+      ReactToast('Please login first')
+      navigate("/sign-in",{state:{booking:query}});
+    }
     navigate("/book-flight", { state: { bookings: data } });
   };
 

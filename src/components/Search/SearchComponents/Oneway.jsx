@@ -70,10 +70,12 @@ import flightLogo from "../../../assets/home/logo/image 40.png";
 import OneWaySideBar from "./OneWaySidebar";
 import BookingCard from "./BookingCards"; 
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import ReactToast from "../../util/ReactToast";
 
 const { TabPane } = Tabs;
 
-const Oneway = ({ flightProps, passenger }) => {
+const Oneway = ({ flightProps, passenger,query }) => {
   console.log("flightProps in Oneway:", flightProps);
 
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
@@ -85,6 +87,7 @@ const Oneway = ({ flightProps, passenger }) => {
     airlines: []
   });
 
+  const token = useSelector((state) => state.auth.token);
   const [selectedFlight, setSelectedFlight] = useState([]);
   const navigate = useNavigate();
 
@@ -103,6 +106,44 @@ const Oneway = ({ flightProps, passenger }) => {
     return flight.sI.length - 1;
   };
 
+  // useEffect(() => {
+  //   console.log("Filters changed:", filters);
+  //   const newFilteredFlights = flightProps.filter(flight => {
+  //     console.log("Processing flight:", flight);
+  //     const price = calculateTotalPrice(flight);
+  //     const stops = getStopsCount(flight);
+  //     const departureHour = new Date(flight.sI[0].dt).getHours();
+  //     const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
+  //     const airline = flight.sI[0].fD.aI.name;
+
+  //     const priceMatch = price <= filters.maxPrice;
+  //     const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString()) || (stops >= 3 && filters.stops.includes("3+"));
+  //     const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
+  //       const [start, end] = range.split('-').map(Number);
+  //       return departureHour >= start && departureHour < end;
+  //     });
+  //     const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
+  //       const [start, end] = range.split('-').map(Number);
+  //       return arrivalHour >= start && arrivalHour < end;
+  //     });
+  //     const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
+
+  //     return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
+  //   });
+
+  //   console.log("New filtered flights:", newFilteredFlights);
+  //   setFilteredFlights(newFilteredFlights);
+  // }, [filters, flightProps, calculateTotalPrice]);
+
+  const isHourInRange = (hour, range) => {
+    const [start, end] = range.split('-').map(Number);
+    if (start < end) {
+      return hour >= start && hour < end;
+    } else {
+      return hour >= start || hour < end;
+    }
+  };
+
   useEffect(() => {
     console.log("Filters changed:", filters);
     const newFilteredFlights = flightProps.filter(flight => {
@@ -115,14 +156,8 @@ const Oneway = ({ flightProps, passenger }) => {
 
       const priceMatch = price <= filters.maxPrice;
       const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString()) || (stops >= 3 && filters.stops.includes("3+"));
-      const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
-        const [start, end] = range.split('-').map(Number);
-        return departureHour >= start && departureHour < end;
-      });
-      const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
-        const [start, end] = range.split('-').map(Number);
-        return arrivalHour >= start && arrivalHour < end;
-      });
+      const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => isHourInRange(departureHour, range));
+      const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => isHourInRange(arrivalHour, range));
       const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
 
       return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
@@ -138,11 +173,16 @@ const Oneway = ({ flightProps, passenger }) => {
 
   const handleBooking = () => {
     if (selectedFlight.length > 0) {
-      const bookings = selectedFlight.map(selected => ({
+      const bookings = selectedFlight?.map(selected => ({
         flightDetails: filteredFlights[selected.flightIndex].sI,
         priceId: filteredFlights[selected.flightIndex].totalPriceList[selected.priceIndex].id
       }));
       console.log("Processing bookings:", bookings);
+
+      if(!token){
+      ReactToast('Please login first')
+      navigate("/sign-in",{state:{booking:query}});
+      }
   
       navigate("/book-flight", { state: { bookings } });
     }

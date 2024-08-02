@@ -236,22 +236,24 @@ const FlightList = () => {
       <div className=" min-h-screen border p-4 bg-gray-50 gap-4 shadow-sm rounded-md flex flex-col">
         {/* <div>{renderFilterSummary()}</div> */}
         {tripType === "oneway" && (
-          <Oneway flightProps={oneway} passenger={data.searchQuery.paxInfo} />
+          <Oneway flightProps={oneway} query={data} passenger={data?.searchQuery.paxInfo} />
         )}
         {tripType === "roundtrip" && (
           <Roundtrip
             onwardProps={oneway}
             returnProps={roundWay}
-            passenger={data.searchQuery.paxInfo}
+            query={data}
+            passenger={data?.searchQuery.paxInfo}
           />
         )}
         {tripType === "combo" && (
-          <Combo flightprops={combo} passenger={data.searchQuery.paxInfo} />
+          <Combo flightprops={combo} query={data} passenger={data?.searchQuery.paxInfo} />
         )}
         {tripType === "multicity" && (
           <MultiCity
             flightProps={multicity}
-            passenger={data.searchQuery.paxInfo}
+            query={data}
+            passenger={data?.searchQuery.paxInfo}
           />
         )}
       </div>
