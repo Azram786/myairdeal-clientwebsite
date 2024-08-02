@@ -35,9 +35,10 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
   };
 
   return (
-    <div className="bg-gray-100 sm:text-sm md:text-lg p-2">
-      <div className="container mx-auto p-2 max-w-5xl font-poppins">
-        <div className="w-full max-w-full rounded-lg bg-white p-2 space-y-4">
+    // <div className="bg-gray-100 sm:text-sm md:text-lg p-2">
+      <div className="mx-auto max-w-5xl font-poppins mb-2">
+        {/* <div className="w-full max-w-full rounded-lg bg-white p-2 space-y-4"> */}
+         
           {/* Flight Summary Section */}
           <div className="border-b border-gray-300 pb-4">
             {data?.tripInfos?.map((item, index) => (
@@ -45,7 +46,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                 key={index}
                 className="border border-gray-300 rounded-lg p-2 mb-4"
               >
-                <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-200 p-2 rounded-t-lg">
+                <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-200 p-2 rounded-t-lg mb-2">
                   <div className="text-base sm:text-lg font-bold flex items-center">
                     <span>{item.sI[0].da.city}</span>
                     <FaArrowRight className="mx-2 hidden sm:inline" />
@@ -183,30 +184,30 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
           </div>
 
           {/* Passenger & Contact Details Section */}
-          <div className="mb-6">
-            <h2 className="text-xl font-bold mb-4">Passenger Details</h2>
-            <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+          <div className="mb-6 overflow-x-scroll mb-2">
+            <h2 className="text-xl font-semibold mb-4 mt-2">Passenger Details</h2>
+            <table className="min-w-full bg-white border border-gray-300 rounded-lg ">
               <thead>
                 <tr className="bg-gray-100 text-left">
-                  <th className="py-2 px-4 border-b">First Name</th>
-                  <th className="py-2 px-4 border-b">Last Name</th>
-                  <th className="py-2 px-4 border-b">Passenger Type</th>
-                  <th className="py-2 px-4 border-b">Selected Seats</th>
-                  <th className="py-2 px-4 border-b">Selected Meals</th>
-                  <th className="py-2 px-4 border-b">Baggage</th>
+                  <th className="py-2 px-4 border-b text-sm">First Name</th>
+                  <th className="py-2 px-4 border-b text-sm">Last Name</th>
+                  <th className="py-2 px-4 border-b text-sm">Passenger Type</th>
+                  <th className="py-2 px-4 border-b text-sm">Selected Seats</th>
+                  <th className="py-2 px-4 border-b text-sm">Selected Meals</th>
+                  <th className="py-2 px-4 border-b text-sm">Baggage</th>
                 </tr>
               </thead>
               <tbody>
                 {passengersData?.map((passenger, index) => (
                   <tr key={index}>
-                    <td className="py-2 px-4 border-b">
+                    <td className="py-2 px-4 border-b text-xs">
                       {passenger.firstName}
                     </td>
-                    <td className="py-2 px-4 border-b">{passenger.lastName}</td>
-                    <td className="py-2 px-4 border-b">
+                    <td className="py-2 px-4 border-b text-xs">{passenger.lastName}</td>
+                    <td className="py-2 px-4 border-b text-xs">
                       {passenger.passengerType}
                     </td>
-                    <td className="py-2 px-4 border-b">
+                    <td className="py-2 px-4 border-b text-xs">
                       {Object.entries(passenger.selectedSeats || {}).map(
                         ([flightId, seat]) => (
                           <div key={flightId}>
@@ -215,7 +216,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                         )
                       )}
                     </td>
-                    <td className="py-2 px-4 border-b">
+                    <td className="py-2 px-4 border-b text-xs">
                       {Object.entries(passenger.selectedMeals || {}).map(
                         ([flightId, meal]) => (
                           <div key={flightId}>
@@ -224,7 +225,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                         )
                       )}
                     </td>
-                    <td className="py-2 px-4 border-b">
+                    <td className="py-2 px-4 border-b text-xs">
                       {Object.entries(passenger.baggage || {}).map(
                         ([flightId, bag]) => (
                           <div key={flightId}>
@@ -253,9 +254,9 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
               Continue to Payment
             </button>
           </div>
-        </div>
+        {/* </div> */}
+        {/* </div> */}
       </div>
-    </div>
   );
 };
 

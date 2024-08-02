@@ -73,20 +73,21 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
     <div className="flex flex-col gap-5 lg:flex-row justify-between items-end xl:p-6 p-2  border rounded-lg">
       <div className="w-full  xl:w-[75%] justify-between  flex  flex-col gap-2">
         {booking?.data?.itemInfos?.AIR?.tripInfos?.map((trip, index) => (
-          <div className="flex  lg:flex-row   items-center justify-between flex-col sm:flex-row border   p-5 gap-2 ">
-            <div className="flex  items-center justify-center md:justify-between  flex-row gap-4  xs:flex-row xs:item-start sm:flex-row md:flex-row lg:flex-row xl:flex-row sm:w-[60%]  ">
+          <div  key={index} className="flex  lg:flex-row   items-center justify-between flex-col sm:flex-row border   p-5 gap-2 ">
+            
+            <div className="flex  items-center justify-center md:justify-between  flex-row gap-7  xs:flex-row xs:item-start sm:flex-row md:flex-row lg:flex-row xl:flex-row sm:w-[60%]  ">
               <div className="flex border border-blue-400  rounded-xl  p-2">
 
                 {/* <img
                   src={FlightLogo}
                   className="h-16 w-16 rounded-lg p-1 object-contain mr-4 border border-blue-700"
                 /> */}
-                <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${trip.sI[0].fD.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={trip?.sI[0].fD?.aI?.code} className="w-10 h-10 mr-4" />
+                <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${trip.sI[0].fD.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={trip?.sI[0].fD?.aI?.code} className="w-10 h-10 " />
 
 
               </div>
 
-              <div className="flex rounded-lg    md:w-[90%]    sm:flex-row md:flex-row  gap-3    items-center ">
+              <div className="flex rounded-lg    md:w-[90%]    sm:flex-row md:flex-row  gap-7    items-center ">
 
                 <div className="flex gap-4 md:gap-1  md:w-[70%] lg:w-[60%] flex-col  ">
 
