@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FiMenu, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { logout, setUser } from "../../store/slices/aut.slice";
 import main_logo from "../../assets/home/logo/main_logo.png";
 import { IoPersonCircleOutline } from "react-icons/io5";
@@ -34,11 +34,13 @@ const Header = () => {
     <div className="bg-[#ffffff] min-w-[250px]">
       <div className="flex mx-auto h-[10vh] md:h-[13vh] xl:h-[13vh] justify-between items-center px-[6vw]">
         <div className="flex gap-4 items-center ">
-          <img
-            src={main_logo}
-            alt="logo"
-            className="h-[45px] md:h-[55px] 2xl:h-[70px]"
-          />
+          <Link to='/'>
+            <img
+              src={main_logo}
+              alt="logo"
+              className="h-[45px] md:h-[55px] 2xl:h-[70px]"
+            />
+          </Link>
           <h3 className="text-[#1F61BC] md:text-[25px] 2xl:text-[1.6rem] font-bold">
             My Air Deal
           </h3>

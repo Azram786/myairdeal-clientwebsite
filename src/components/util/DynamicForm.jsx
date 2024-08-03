@@ -42,6 +42,10 @@ const DynamicForm = ({
         </div>
       </div>
 
+      {/* <div className="md:flex  hidden sm:items-center  justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2  -translate-y-1/2 bg-black w-8 h-8 rounded-full ">
+                <GoArrowSwitch />
+              </div> */}
+
       <div className="flex md:w-1/3 items-center border rounded p-2">
         <div>
           <RiFlightLandLine className="text-2xl md:text-3xl" />
@@ -57,7 +61,7 @@ const DynamicForm = ({
       </div>
 
       <div className="flex md:w-[36%] flex-col md:flex-row">
-        <div className="rounded flex items-center border w-full">
+        <div className="rounded flex ml-1 px-4 items-center border w-full">
           <div className="flex items-center justify-between w-full">
             <DatePicker
               minDate={formData.travelDate}

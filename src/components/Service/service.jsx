@@ -4,10 +4,10 @@ import background from "../../assets/service/world.png"
 
 function Card(props) {
   return (
-    <div className="bg-white text-sky-950 rounded-3xl p-6 shadow-md m-4 w-60 h-72">
-    <img src={props.imgURL} alt="plane" className="w-24 h-24 mx-auto mb-4 bg-sky-100 border-solid border-4 border-sky-900 rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm"  />
-    <h2 className="text-2xl font-bold mb-2">{props.head}</h2>
-    <p className="text-baseleading-10 text-xl font-semibold pl-7 pr-7 pt-4">{props.para}</p>
+    <div className="bg-white text-sky-950 rounded-xl p-6 shadow-md  w-52 h-60">
+    <img src={props.imgURL} alt="plane" className="w-20 h-20 mx-auto mb-4 bg-sky-100 border-solid border-4 border-sky-900 rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm"  />
+    <h2 className="text-2xl font-semibold mb-2">{props.head}</h2>
+    <p className=" text-lg   ">{props.para}</p>
   </div>
   );
 }
@@ -27,10 +27,10 @@ function Service() {
     return (
         <div
           style={{ backgroundImage: `url(${background})` }}
-          className="bg-cover container mx-auto text-center py-8">
+          className="bg-cover px-16 mx-auto text-center py-8">
             <div className="text-white text-lg font-medium mb-2">Services</div>
-          <div className="text-white text-4xl font-bold mb-8">We Offer Best Services</div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pl-20 pr-20 justify-center">
+          <div className="text-white text-3xl font-bold mb-8">We Offer Best Services</div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 place-items-center justify-center">
             {Content.map(createCard)}
           </div>
         </div>

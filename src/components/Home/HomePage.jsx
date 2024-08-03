@@ -13,6 +13,7 @@ import AboutUs from "./AboutUsSection";
 import WhyChooseUs from "./whyChooseUs";
 import Testimonials from "./TestMonials";
 import DownloadApp from "./AppDownload";
+import Service from "../Service/service";
 
 
 const HomePage = () => {
@@ -88,6 +89,7 @@ const HomePage = () => {
           <RecentSearch ResentSearchData={ResentSearchData} />
           <OfferSection />
           <AboutUs/>
+          <Service/>
           <WhyChooseUs/>
           <Testimonials/>
           <Contact />

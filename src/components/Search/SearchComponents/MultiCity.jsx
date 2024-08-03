@@ -686,16 +686,18 @@ const MultiCity = ({ flightProps, passenger,query }) => {
         activeTabIndex={activeTabIndex}
         passenger={passenger}
       />
-      <div className="flex-grow pb-20">
-        <Tabs defaultActiveKey="0" onChange={handleTabChange}>
+      <div className="flex-grow pb-20 ">
+        <Tabs className="m-0" defaultActiveKey="0" onChange={handleTabChange}>
           {flightProps.map((flights, tabIndex) => {
             const startCode = flights.length > 0 ? flights[0].sI[0].da.city : "Unknown";
             const endCode = flights.length > 0 ? flights[0].sI[flights[0].sI.length - 1].aa.city : "Unknown";
             return (
               <TabPane
+              
+              className=""
                 tab={
-                  <span>
-                    {startCode} <ArrowRightOutlined className="mx-2" /> {endCode}
+                  <span className="border-r-2 p-2 ">
+                    {startCode} <ArrowRightOutlined className="" /> {endCode}
                   </span>
                 }
                 key={tabIndex}
