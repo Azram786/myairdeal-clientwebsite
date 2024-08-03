@@ -462,19 +462,29 @@ const Combo = ({ flightprops, passenger,query }) => {
       const departureHour = new Date(flight.sI[0].dt).getHours();
       const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
       const airline = flight.sI[0].fD.aI.name;
-
+  
       const priceMatch = price <= filters.maxPrice;
       const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stopCategory);
       const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
         const [start, end] = range.split('-').map(Number);
-        return departureHour >= start && departureHour < end;
+        if (start < end) {
+          return departureHour >= start && departureHour < end;
+        } else {
+          // Handle the case where the range crosses midnight
+          return departureHour >= start || departureHour < end;
+        }
       });
       const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
         const [start, end] = range.split('-').map(Number);
-        return arrivalHour >= start && arrivalHour < end;
+        if (start < end) {
+          return arrivalHour >= start && arrivalHour < end;
+        } else {
+          // Handle the case where the range crosses midnight
+          return arrivalHour >= start || arrivalHour < end;
+        }
       });
       const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
-
+  
       return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
     });
     setFilteredFlights(newFilteredFlights);
@@ -488,13 +498,13 @@ const Combo = ({ flightprops, passenger,query }) => {
 
     if(!token){
       ReactToast('Please login first')
-      navigate("/sign-in",{state:{booking:query}});
+      navigate("/sign-in");
     }
     navigate("/book-flight", { state: { bookings: data } });
   };
 
   return (
-    <div className="flex flex-col md:flex-row md:h-screen">
+    <div className="flex flex-col md:flex-row md:min-h-screen">
       <ComboSideBar
         filters={filters}
         setFilters={setFilters}
@@ -504,17 +514,19 @@ const Combo = ({ flightprops, passenger,query }) => {
       <div className="flex-1 overflow-y-auto">
         <Tabs defaultActiveKey="1">
           <TabPane tab="All Combo flights" key="1">
-            {filteredFlights.map((flight, index) => (
-              <div key={index} className="border shadow-xl p-4 mb-4 rounded-lg relative">
-                <ComboFlightCard
-                  key={index}
-                  flightDetails={flight}
-                  onBooking={(priceIndex) => handleBooking(index, priceIndex)}
-                  passenger={passenger}
-                  totalPrice={calculateTotalPrice(flight)}
-                />
-              </div>
-            ))}
+            <div className="h-[680px] overflow-y-auto no-scroll">
+              {filteredFlights.map((flight, index) => (
+                <div key={index} className="px-2 mb-2 rounded-lg relative">
+                  <ComboFlightCard
+                    key={index}
+                    flightDetails={flight}
+                    onBooking={(priceIndex) => handleBooking(index, priceIndex)}
+                    passenger={passenger}
+                    totalPrice={calculateTotalPrice(flight)}
+                  />
+                </div>
+              ))}
+            </div>
           </TabPane>
         </Tabs>
       </div>

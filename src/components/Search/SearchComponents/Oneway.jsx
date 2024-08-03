@@ -181,7 +181,7 @@ const Oneway = ({ flightProps, passenger,query }) => {
 
       if(!token){
       ReactToast('Please login first')
-      navigate("/sign-in",{state:{booking:query}});
+      navigate("/sign-in");
       }
   
       navigate("/book-flight", { state: { bookings } });
@@ -218,22 +218,24 @@ const Oneway = ({ flightProps, passenger,query }) => {
             }
             key="1"
           >
-            {filteredFlights.length > 0 ? (
-              filteredFlights.map((flight, index) => (
-                <FlightDetailsCard
-                  key={index}
-                  passenger={passenger}
-                  logo={flightLogo}
-                  flightDetails={flight}
-                  isSelected={selectedFlight.some(selected => selected.flightIndex === index)}
-                  selectedPriceIndex={selectedFlight.find(selected => selected.flightIndex === index)?.priceIndex}
-                  onSelect={(priceIndex) => handleFlightSelection(index, priceIndex)}
-                  totalPrice={calculateTotalPrice(flight)}
-                />
-              ))
-            ) : (
-              <p>No flights match the current filters.</p>
-            )}
+            <div className="h-[630px] overflow-y-auto no-scroll">
+              {filteredFlights.length > 0 ? (
+                filteredFlights.map((flight, index) => (
+                  <FlightDetailsCard
+                    key={index}
+                    passenger={passenger}
+                    logo={flightLogo}
+                    flightDetails={flight}
+                    isSelected={selectedFlight.some(selected => selected.flightIndex === index)}
+                    selectedPriceIndex={selectedFlight.find(selected => selected.flightIndex === index)?.priceIndex}
+                    onSelect={(priceIndex) => handleFlightSelection(index, priceIndex)}
+                    totalPrice={calculateTotalPrice(flight)}
+                  />
+                ))
+              ) : (
+                <p>No flights match the current filters.</p>
+              )}
+            </div>
           </TabPane>
         </Tabs>
 

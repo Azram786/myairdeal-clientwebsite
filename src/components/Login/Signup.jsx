@@ -12,6 +12,7 @@ const Signup = () => {
     lastName: "",
   });
   const [isAgreed, setIsAgreed] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [validation, setValidation] = useState({
     email: "",
     firstName: "",
@@ -23,11 +24,11 @@ const Signup = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get("token");
+  // const [loading, setLoading] = useState(false)
 
   const validate = () => {
     let isValid = true;
     const newValidation = { email: "", firstName: "", lastName: "", isAgreed: "" };
-    const [loading, setLoading] = useState(false)
     if (!formData.firstName) {
       newValidation.firstName = "First name is required.";
       isValid = false;

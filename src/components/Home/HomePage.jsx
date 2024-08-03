@@ -9,6 +9,10 @@ import Spinner from "../Profile/Spinner";
 import RecentSearch from "./ResentSearch";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import AboutUs from "./AboutUsSection";
+import WhyChooseUs from "./whyChooseUs";
+import Testimonials from "./TestMonials";
+import DownloadApp from "./AppDownload";
 
 
 const HomePage = () => {
@@ -83,7 +87,11 @@ const HomePage = () => {
           <FilterSection formData={formData} setFormData={setFormData} />
           <RecentSearch ResentSearchData={ResentSearchData} />
           <OfferSection />
+          <AboutUs/>
+          <WhyChooseUs/>
+          <Testimonials/>
           <Contact />
+          <DownloadApp/>
           <Footer />
         </>
       )}

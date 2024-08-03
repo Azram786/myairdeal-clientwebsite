@@ -626,7 +626,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
 
     if(!token){
       ReactToast('Please login first')
-      navigate("/sign-in",{state:{booking:query}});
+      navigate("/sign-in");
       return;
     }
 

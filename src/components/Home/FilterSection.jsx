@@ -287,12 +287,14 @@ const FilterSection = ({ formData, setFormData }) => {
 
       console.log({ query })
       dispatch(setLastSearch(query))
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      console.log({ response, index: 4 })
+      if(token){
+        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log({ response, index: 4 })
+      }
 
 
       setLoading(false);

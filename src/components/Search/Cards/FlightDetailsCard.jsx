@@ -22,7 +22,6 @@
 
 //   console.log(data.length,"stp[")
 
-
 //   const startSegment = data[0];
 //   const endSegment = data[data.length - 1];
 
@@ -60,7 +59,6 @@
 //   const arrivalTime = formatDateTime(endSegment.at);
 
 //   const totalDuration = data.reduce((sum, segment) => sum + segment.duration, 0);
-
 
 //   return (
 //     <div className="border flex flex-col p-4 rounded-lg m-4  bg-white shadow-md">
@@ -116,8 +114,6 @@
 
 // export default FlightDetailsCard;
 
-
-
 // import React, { useState } from "react";
 // import { FaPlane, FaChevronDown, FaChevronUp } from "react-icons/fa";
 
@@ -127,9 +123,6 @@
 
 //   let data;
 //   let priceList = [];
-
-
-
 
 //   if (!flightDetails) {
 //     return <div>Loading flights...</div>;
@@ -281,8 +274,6 @@
 // };
 
 // export default FlightDetailsCard;
-
-
 
 /// checking the tab for view details
 
@@ -552,7 +543,7 @@
 //             {showDetails ? "Hide Details" : "View Details"}
 //           </button>
 //         </div>
-//         <button 
+//         <button
 //           className={`${isSelected ? 'bg-green-500' : 'bg-blue-500'} text-white px-4 py-2 rounded-md mt-4 md:mt-0`}
 //           onClick={() => onSelect(selectedPriceIndex)}
 //         >
@@ -588,8 +579,6 @@
 
 // export default FlightDetailsCard;
 
-
-
 // import axios from "axios";
 // import React, { useState, useEffect } from "react";
 // import { FaPlane, FaChevronDown, FaChevronUp, FaInfoCircle } from "react-icons/fa";
@@ -613,12 +602,12 @@
 //   const calculateTotalPrice = (priceIndex) => {
 //     const selectedPrice = priceList[priceIndex];
 //     if (!selectedPrice) return 0;
-  
+
 //     return Object.entries(selectedPrice.fd).reduce((total, [passengerType, details]) => {
 //       return total + (details.fC.TF * (passenger[passengerType] || 0));
 //     }, 0);
 //   };
-  
+
 //   const totalPrice = calculateTotalPrice(localSelectedPriceIndex);
 
 //   if (!flightDetails) {
@@ -666,7 +655,6 @@
 //     };
 //     return date.toLocaleString(undefined, options);
 //   };
-
 
 //   console.log({flightDetails},"")
 
@@ -838,14 +826,14 @@
 //       <div className="flex flex-col md:flex-row mt-2 justify-between items-center text-center">
 //         <div className="flex flex-col justify-center items-start">
 //           {displayedPrices?.map((price, index) => (
-//             <div 
+//             <div
 //               key={index}
 //               onClick={() => handlePriceSelection(index)}
 //               className={`
 //                 text-xs text-start space-y-2 flex items-center w-full md:w-auto
 //                 p-1 mb-2 cursor-pointer transition-all duration-200 ease-in-out
-//                 ${localSelectedPriceIndex === index 
-//                   ? 'border border-blue-500 rounded-md' 
+//                 ${localSelectedPriceIndex === index
+//                   ? 'border border-blue-500 rounded-md'
 //                   : 'border border-gray-200 hover:border-blue-300 rounded-md'}
 //               `}
 //             >
@@ -863,7 +851,7 @@
 //               </div>
 //             </div>
 //           ))}
-  
+
 //           {priceList?.length > 1 && (
 //             <button
 //               onClick={() => setShowAllPrices(!showAllPrices)}
@@ -889,7 +877,7 @@
 //             {showDetails ? "Hide Details" : "View Details"}
 //           </button>
 //         </div>
-//         <button 
+//         <button
 //           className={`${isSelected ? 'bg-green-500' : 'bg-blue-500'} text-white px-4 py-2 rounded-md mt-4 md:mt-0`}
 //           onClick={() => onSelect(localSelectedPriceIndex)}
 //         >
@@ -925,15 +913,28 @@
 
 // export default FlightDetailsCard;
 
+import React, { useState, useEffect } from "react";
+import {
+  FaPlane,
+  FaInfoCircle,
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
 
-import React, { useState, useEffect } from 'react';
-import { FaPlane, FaInfoCircle, FaChevronDown, FaChevronUp } from 'react-icons/fa';
-
-const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex, onSelect, passenger }) => {
+const FlightDetailsCard = ({
+  logo,
+  flightDetails,
+  isSelected,
+  selectedPriceIndex,
+  onSelect,
+  passenger,
+}) => {
   const [showAllPrices, setShowAllPrices] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [activeTab, setActiveTab] = useState("Flight Details");
-  const [localSelectedPriceIndex, setLocalSelectedPriceIndex] = useState(selectedPriceIndex || 0);
+  const [localSelectedPriceIndex, setLocalSelectedPriceIndex] = useState(
+    selectedPriceIndex || 0
+  );
 
   useEffect(() => {
     if (isSelected && selectedPriceIndex === null) {
@@ -947,12 +948,15 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
   const calculateTotalPrice = (priceIndex) => {
     const selectedPrice = priceList[priceIndex];
     if (!selectedPrice) return 0;
-  
-    return Object.entries(selectedPrice.fd).reduce((total, [passengerType, details]) => {
-      return total + (details.fC.TF * (passenger[passengerType] || 0));
-    }, 0);
+
+    return Object.entries(selectedPrice.fd).reduce(
+      (total, [passengerType, details]) => {
+        return total + details.fC.TF * (passenger[passengerType] || 0);
+      },
+      0
+    );
   };
-  
+
   const totalPrice = calculateTotalPrice(localSelectedPriceIndex);
 
   if (!flightDetails) {
@@ -1005,9 +1009,12 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
   const departureTime = formatDateTime(startSegment.dt);
   const arrivalTime = formatDateTime(endSegment.at);
 
-  const totalDuration = data.reduce((sum, segment) => sum + segment.duration, 0);
+  const totalDuration = data.reduce(
+    (sum, segment) => sum + segment.duration,
+    0
+  );
 
-  const displayedPrices = showAllPrices ? priceList : priceList.slice(0, 1);
+  const displayedPrices = showAllPrices ? priceList : priceList;
 
   const handlePriceSelection = (index) => {
     setLocalSelectedPriceIndex(index);
@@ -1018,35 +1025,67 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className="w-full">
+          <div className="w-full p-2">
             {data.map((segment, index) => (
-              <div key={index} className="flex flex-col md:flex-row items-center justify-between py-4 border-b">
+              <div
+                key={index}
+                className="flex flex-col md:flex-row items-center justify-between py-4 border-b"
+              >
                 <div className="flex items-center">
-                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`} alt={segment?.fD?.aI?.code} className="md:size-10 size-8 rounded-md mr-4" />
+                  <img
+                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                    alt={segment?.fD?.aI?.code}
+                    className="md:size-10 size-8 rounded-md mr-4"
+                  />
                   <div>
-                    <div className="font-bold">{segment.fD.aI.name} {segment.fD.fN}</div>
+                    <div className="font-bold">
+                      {segment.fD.aI.name} {segment.fD.fN}
+                    </div>
                     <div className="text-sm text-gray-500">
-                      {segment.da.city} → {segment.aa.city} {formatDateTime(segment.dt).split(',')[0]}
+                      {segment.da.city} → {segment.aa.city}{" "}
+                      {formatDateTime(segment.dt).split(",")[0]}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <div className="text-right mr-8">
-                    <div className="font-bold">{formatDateTime(segment.dt).split(',')[1].trim()}</div>
-                    <div className="text-sm text-gray-500">{segment.da.city}, {segment.da.country}</div>
-                    <div className="text-sm text-gray-500">{segment.da.name}</div>
-                    <div className="text-sm text-gray-500">{segment.da.terminal || 'N/A'}</div>
+                    <div className="font-bold">
+                      {formatDateTime(segment.dt).split(",")[1].trim()}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {segment.da.city}, {segment.da.country}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {segment.da.name}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {segment.da.terminal || "N/A"}
+                    </div>
                   </div>
                   <div className="flex flex-col items-center mx-4">
-                    <div className="text-sm text-gray-500">{segment.stops === 0 ? 'Non-Stop' : `${segment.stops} Stop(s)`}</div>
+                    <div className="text-sm text-gray-500">
+                      {segment.stops === 0
+                        ? "Non-Stop"
+                        : `${segment.stops} Stop(s)`}
+                    </div>
                     <FaPlane className="my-2 text-gray-400" />
-                    <div className="text-sm text-gray-500">{convertToHoursMinutes(segment.duration)}</div>
+                    <div className="text-sm text-gray-500">
+                      {convertToHoursMinutes(segment.duration)}
+                    </div>
                   </div>
                   <div className="text-left ml-8">
-                    <div className="font-bold">{formatDateTime(segment.at).split(',')[1].trim()}</div>
-                    <div className="text-sm text-gray-500">{segment.aa.city}, {segment.aa.country}</div>
-                    <div className="text-sm text-gray-500">{segment.aa.name}</div>
-                    <div className="text-sm text-gray-500">{segment.aa.terminal || 'N/A'}</div>
+                    <div className="font-bold">
+                      {formatDateTime(segment.at).split(",")[1].trim()}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {segment.aa.city}, {segment.aa.country}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {segment.aa.name}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {segment.aa.terminal || "N/A"}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1055,7 +1094,7 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
         );
       case "Fare Details":
         return (
-          <div className="w-full">
+          <div className="w-full p-2">
             <div className="grid grid-cols-3 w-full border-b pb-2 mb-2">
               <div className="font-bold">TYPE</div>
               <div className="font-bold">Fare</div>
@@ -1063,25 +1102,33 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
             </div>
             {Object.entries(passenger).map(([passengerType, count]) => {
               if (count > 0) {
-                const details = priceList[localSelectedPriceIndex]?.fd[passengerType];
+                const details =
+                  priceList[localSelectedPriceIndex]?.fd[passengerType];
                 if (details) {
                   return (
                     <div key={passengerType} className="mb-4">
                       <div className="grid grid-cols-3 w-full text-gray-600 mb-2">
-                        <div>Fare Details for {passengerType} (CB: {details.cB})</div>
+                        <div>
+                          Fare Details for {passengerType} (CB: {details.cB})
+                        </div>
                         <div></div>
                         <div></div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
                         <div>Base Price</div>
-                        <div>₹{details.fC.BF.toFixed(2)} x {count}</div>
+                        <div>
+                          ₹{details.fC.BF.toFixed(2)} x {count}
+                        </div>
                         <div>₹{(details.fC.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
                         <div className="flex items-center">
-                          Taxes and fees <FaInfoCircle className="ml-1 text-gray-500" />
+                          Taxes and fees{" "}
+                          <FaInfoCircle className="ml-1 text-gray-500" />
                         </div>
-                        <div>₹{details.fC.TAF.toFixed(2)} x {count}</div>
+                        <div>
+                          ₹{details.fC.TAF.toFixed(2)} x {count}
+                        </div>
                         <div>₹{(details.fC.TAF * count).toFixed(2)}</div>
                       </div>
                     </div>
@@ -1093,26 +1140,30 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
             <div className="grid grid-cols-3 w-full font-bold border-t pt-2">
               <div>Total</div>
               <div></div>
-              <div>₹{calculateTotalPrice(localSelectedPriceIndex).toFixed(2)}</div>
+              <div>
+                ₹{calculateTotalPrice(localSelectedPriceIndex).toFixed(2)}
+              </div>
             </div>
           </div>
         );
       case "Fare Rules":
         return (
-          <div>
+          <div className="p-2">
             <h2 className="font-bold mb-2">Fare Rules</h2>
             <p>Insert fare rules information here.</p>
           </div>
         );
       case "Baggage Information":
         return (
-          <div className="grid grid-cols-3 w-full gap-4">
+          <div className="grid p-2 grid-cols-3 w-full gap-4">
             <div className="font-bold">SECTOR</div>
             <div className="font-bold">CHECKIN</div>
             <div className="font-bold">CABIN</div>
             {priceList.map((item, index) => (
               <React.Fragment key={index}>
-                <div>{startSegment.da.code} - {endSegment.aa.code}</div>
+                <div>
+                  {startSegment.da.code} - {endSegment.aa.code}
+                </div>
                 <div>Adult {item?.fd?.ADULT?.bI?.iB}</div>
                 <div>Adult {item?.fd?.ADULT?.bI?.cB}</div>
               </React.Fragment>
@@ -1125,126 +1176,163 @@ const FlightDetailsCard = ({ logo, flightDetails, isSelected, selectedPriceIndex
   };
 
   return (
-    <div className="border flex flex-col p-4 rounded-lg m-4 bg-white shadow-md">
-      <div className="flex flex-col md:flex-row p-4 justify-between items-center mb-2">
-        <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
+    <div className="border flex flex-col  rounded-lg m-4 bg-white shadow-md overflow-x-auto ">
+      <div className="flex flex-col md:flex-row justify-between items-stretch p-3  mb-2">
+        <div className="flex flex-col w-full ">
+          <div className="flex justify-around">
+          <div className="md:hidden">
           <img
-            src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-            alt={startSegment?.fD?.aI?.code}
-            className="md:size-12 rounded-md mr-6 md:flex hidden"
-          />
-          <div>
-            <h1 className="text-lg font-bold">{startSegment.da.code}</h1>
-            <h1 className="text-sm text-gray-500">{startSegment.da.city}</h1>
-            <h1 className="text-sm">{departureTime}</h1>
+              src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+              onError={(e) => e.currentTarget.src = defaultAirline}
+              alt={startSegment?.fD?.aI?.code}
+              className="size-12 hidden mr-6"
+            />
           </div>
-        </div>
-        <div className="flex items-center mb-4 md:mb-0">
-          <div className="border-t hidden md:flex border-dashed border-gray-400 w-10 md:w-28"></div>
-          <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
-            <span>{convertToHoursMinutes(totalDuration)}</span>
-            <FaPlane className="mx-2 text-blue-800 text-3xl" />
-            <div className="flex items-center">
-              {isConnectionFlight ? (
-                <span>
-                  {data.length - 1} stop{data.length > 2 ? 's' : ''}
-                  {data.length === 2 && ` via ${data[0].aa.city}`}
-                </span>
-              ) : (
-                <span>Non-stop flight</span>
-              )}
-            </div>
-          </div>
-          <div className="border-t hidden md:flex border-dashed border-gray-400 w-10 md:w-28"></div>
-        </div>
-        <div className="flex items-center mb-4 md:mb-0">
-          <div>
-            <h1 className="text-lg font-bold">{endSegment.aa.code}</h1>
-            <h1 className="text-sm text-gray-500">{endSegment.aa.city}</h1>
-            <h1 className="text-sm">{arrivalTime}</h1>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row mt-2 justify-between items-center text-center">
-        <div className="flex flex-col justify-center items-start">
-          {displayedPrices?.map((price, index) => (
-            <div 
-              key={index}
-              onClick={() => handlePriceSelection(index)}
-              className={`
-                text-xs text-start space-y-2 flex items-center w-full md:w-auto
-                p-1 mb-2 cursor-pointer transition-all duration-200 ease-in-out
-                ${localSelectedPriceIndex === index 
-                  ? 'border border-blue-500 rounded-md' 
-                  : 'border border-gray-200 hover:border-blue-300 rounded-md'}
-              `}
-            >
-              <div className="flex flex-col w-full">
-                <p className="font-semibold">₹ {calculateTotalPrice(index).toFixed(2)}</p>
-                <p className="text-[10px]">
-                  <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700">
-                    {price?.fareIdentifier}
-                  </span>{" "}
-                  {price?.fd?.ADULT?.cc}
-                </p>
-                <p className="text-red-600 text-[10px]">
-                  Seats left: {price?.fd?.ADULT?.sR}
-                </p>
+            <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
+              <img
+                src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                alt={startSegment?.fD?.aI?.code}
+                className="md:size-12 rounded-md  mr-6 md:flex hidden"
+              />
+              <div>
+                <h1 className="text-lg font-bold">{startSegment?.da.code}</h1>
+                <h1 className="text-sm text-gray-500">
+                  {startSegment.da.city}
+                </h1>
+                <h1 className="text-sm">{departureTime}</h1>
               </div>
             </div>
-          ))}
-  
-          {priceList?.length > 1 && (
-            <button
-              onClick={() => setShowAllPrices(!showAllPrices)}
-              className="text-blue-500 text-sm mt-2 flex items-center"
-            >
-              {showAllPrices ? (
-                <>
-                  <FaChevronUp className="mr-1" /> Show less
-                </>
-              ) : (
-                <>
-                  <FaChevronDown className="mr-1" /> Show more
-                </>
-              )}
-            </button>
-          )}
+            <div className="flex items-center mb-4 md:mb-0">
+              <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
+              <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
+                <span>{convertToHoursMinutes(totalDuration)}</span>
+                <FaPlane className="mx-2 text-blue-800 text-3xl" />
+                <div className="flex items-center">
+                  {isConnectionFlight ? (
+                    <span>
+                      {data.length - 1} stop{data.length > 2 ? "s" : ""}
+                      {data.length === 2 && ` via ${data[0].aa.city}`}
+                    </span>
+                  ) : (
+                    <span>Non-stop flight</span>
+                  )}
+                </div>
+              </div>
+              <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
+            </div>
+            <div className="flex md:text-start text-end  items-center mb-4 md:mb-0">
+              <div>
+                <h1 className="text-lg font-bold">{endSegment?.aa.code}</h1>
+                <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1>
+                <h1 className="text-sm">{arrivalTime}</h1>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col w-full  overflow-x-auto ">
+            <div className="flex  mt-3 gap-2 overflow-x-auto items-start">
+              {displayedPrices?.map((price, index) => (
+                <div
+                  key={index}
+                  onClick={() => handlePriceSelection(index)}
+                  className={`
+                text-xs text-start space-y-2 flex shrink-0 items-center min-w-24 md:w-fit
+                p-1 mb-2 cursor-pointer 
+                ${
+                  localSelectedPriceIndex === index
+                    ? "border border-blue-500 rounded-md"
+                    : "border border-gray-200 hover:border-blue-300 rounded-md"
+                }
+              `}
+                >
+                  <div className="flex flex-col ">
+                    <p className="font-semibold">
+                      ₹ {calculateTotalPrice(index).toFixed(2)}
+                    </p>
+                    <p className="text-[10px]">
+                      <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700">
+                        {price?.fareIdentifier}
+                      </span>{" "}
+                      {price?.fd?.ADULT?.cc}
+                    </p>
+                    <p className="text-red-600 text-[10px]">
+                      Seats left: {price?.fd?.ADULT?.sR}
+                    </p>
+                  </div>
+                </div>
+              ))}
+
+              {/* {priceList?.length > 1 && (
+                <button
+                  onClick={() => setShowAllPrices(!showAllPrices)}
+                  className="text-blue-500 text-sm mt-2 flex items-center"
+                >
+                  {showAllPrices ? (
+                    <>
+                      Show less
+                    </>
+                  ) : (
+                    <>
+                       Show more
+                    </>
+                  )}
+                </button>
+              )} */}
+            </div>
+            <div>
+              <button
+                onClick={() => setShowDetails(!showDetails)}
+                className=" text-sm mt-2"
+              >
+                {showDetails ? (
+                  <span className="text-black">
+                    Fare Details :{" "}
+                    <span className="text-blue-500">Hide Details</span>
+                  </span>
+                ) : (
+                  <span className="text-black">
+                    Fare Details :{" "}
+                    <span className="text-blue-500">View Details</span>
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
-        <div>
+
+        <div className="flex   justify-center items-end md:border-l-2 pl-3 ">
           <button
-            onClick={() => setShowDetails(!showDetails)}
-            className="text-blue-500 text-sm mt-2"
+            className={`${
+              isSelected ? "bg-green-500" : "bg-blue-500"
+            } text-white md:w-36 px-7 py-2 rounded-md mt-4 md:mt-0`}
+            onClick={() => onSelect(localSelectedPriceIndex)}
           >
-            {showDetails ? "Hide Details" : "View Details"}
+            {isSelected ? "Selected" : "Select"}
           </button>
         </div>
-        <button 
-          className={`${isSelected ? 'bg-green-500' : 'bg-blue-500'} text-white px-4 py-2 rounded-md mt-4 md:mt-0`}
-          onClick={() => onSelect(localSelectedPriceIndex)}
-        >
-          {isSelected ? 'Selected' : 'Select'}
-        </button>
       </div>
 
       {showDetails && (
-        <div className="mt-4 border-t overflow-x-auto border-gray-200 pt-4">
-          <div className="mb-2 flex">
-            {["Flight Details", "Fare Details", "Fare Rules", "Baggage Information"].map(
-              (tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`py-2 px-4 text-sm ${
-                    activeTab === tab
-                      ? "text-blue-500 font-bold border-b-2 border-blue-500"
-                      : "text-gray-500"
-                  }`}
-                >
-                  {tab}
-                </button>
-              )
-            )}
+        <div className=" border-t  border-gray-200 pt-4">
+          <div className="mb-2 overflow-x-auto shrink-0 flex">
+            {[
+              "Flight Details",
+              "Fare Details",
+              "Fare Rules",
+              "Baggage Information",
+            ].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-2 px-4 shrink-0 text-sm ${
+                  activeTab === tab
+                    ? "text-blue-500  font-bold border-b-2 border-blue-500"
+                    : "text-gray-500"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
           {renderTabs()}
         </div>

@@ -724,7 +724,8 @@ const MultiCity = ({ flightProps, passenger,query }) => {
         </Tabs>
       </div>
       
-      <BookingCard
+      {console.log(selectedFlights[0].priceIndex,"heoo")}
+      {(selectedFlights[0].priceIndex!=null ||selectedFlights[1].priceIndex!=null) && ( <BookingCard
         selectedFlights={selectedFlights.map((selected, index) => 
           selected.flightIndex !== null ? {
             ...filteredFlights[index][selected.flightIndex],
@@ -734,7 +735,7 @@ const MultiCity = ({ flightProps, passenger,query }) => {
         onBook={handleBooking}
         passenger={passenger}
         selectedPriceIndex={selectedFlights}
-      />
+      />)}
     </div>
   );
 };
