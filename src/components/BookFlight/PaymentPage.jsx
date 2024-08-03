@@ -13,8 +13,10 @@ const PaymentPage = ({ passengersData, data }) => {
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
+  console.log(passengersData.gstDetails,"hoe")
+
   const calculatePassengerDetails = useMemo(() => {
-    return passengersData.map(passenger => {
+    return passengersData?.passengers?.map(passenger => {
       const baseFare = data?.totalPriceInfo?.totalFareDetail.fC?.TF || 0;
       const mealsCost = Object.values(passenger.selectedMeals || {}).reduce((sum, meal) => sum + (meal.amount || 0), 0);
       const seatsCost = (passenger.SelectedSeat || []).reduce((sum, seat) => sum + (seat.amount || 0), 0);
@@ -61,7 +63,7 @@ const PaymentPage = ({ passengersData, data }) => {
   }, [isProcessing]);
 
   const prepareApiData = (paymentResponse) => {
-    const travellerInfo = passengersData.map(passenger => ({
+    const travellerInfo = passengersData.passengers.map(passenger => ({
       ti: passenger.title,
       fN: passenger.firstName,
       lN: passenger.lastName,
@@ -81,15 +83,15 @@ const PaymentPage = ({ passengersData, data }) => {
         }],
         travellerInfo: travellerInfo,
         gstInfo: {
-          gstNumber: "",
-          email: passengersData[0].email,
-          registeredName: `${passengersData[0].firstName} ${passengersData[0].lastName}`,
-          mobile: passengersData[0].phone,
-          address: ""
+          gstNumber:passengersData.gstDetails.gstNumber,
+          email: passengersData.gstDetails.email,
+          registeredName: passengersData.gstDetails.companyName,
+          mobile: passengersData.gstDetails.phone,
+          address: passengersData.gstDetails.address
         },
         deliveryInfo: {
-          emails: passengersData.map(p => p.email),
-          contacts: passengersData.map(p => p.phone)
+          emails: passengersData.passengers.map(p => p.email),
+          contacts: passengersData.passengers.map(p => p.phone)
         }
       },
       searchQuery: data?.searchQuery
@@ -103,7 +105,7 @@ const PaymentPage = ({ passengersData, data }) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('https://myairdeal-backend.onrender.com/booking/complete', {
+      const response = await axios.post('https://api.myairdeal.com/booking/complete', {
         searchQuery, booking
       }, { headers: { authorization: `Bearer ${token}` }});
       
@@ -114,7 +116,7 @@ const PaymentPage = ({ passengersData, data }) => {
 
       if (response.data?.status?.success) {
         ReactToast('Booking successful!');
-        navigate(`/view-detailed-booking?bookingId=${response?.data?.bookingId}`);
+        navigate(`/view-detailed-booking?bookingId=${response?.data?.bookingId}&bookingFilter=UPCOMING`);
       }
     } catch (error) {
       console.error('Booking API error:', error);
@@ -163,9 +165,9 @@ const PaymentPage = ({ passengersData, data }) => {
         image: logo,
         handler: handlePaymentSuccess,
         prefill: {
-          name: `${passengersData[0]?.firstName} ${passengersData[0]?.lastName}`,
-          email: passengersData[0]?.email || '',
-          contact: passengersData[0]?.phone || ''
+          name: `${passengersData.passengers[0]?.firstName} ${passengersData.passengers[0]?.lastName}`,
+          email: passengersData.passengers[0].email || '',
+          contact: passengersData.passengers[0]?.phone || ''
         },
         theme: { color: '#3399cc' },
         modal: { ondismiss: () => setIsProcessing(false) }
@@ -182,10 +184,11 @@ const PaymentPage = ({ passengersData, data }) => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col w-full justify-center gap-2 items-center h-screen">
-        <Spinner />
-        <h1 className="italic text-lg">Please wait , Don't refresh or go back</h1>
-      </div>
+       <div className="w-full h-screen flex justify-center items-center">
+       <div className="flex-col flex gap-3">
+         <Spinner /> <h1 className="italic">Please wait , Don't refresh or go back</h1>
+       </div>
+     </div>
     );
   }
 

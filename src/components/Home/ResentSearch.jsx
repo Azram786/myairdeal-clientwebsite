@@ -1,84 +1,135 @@
-// RecentSearch.js
-import React from 'react';
-import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { FaPlane } from 'react-icons/fa';
-import "./ResentSearch.css"
-import { useDispatch } from 'react-redux';
-import { setResentSearch } from '../../store/slices/aut.slice';
-const RecentSearch = ({ ResentSearchData }) => {
-    const dispatch = useDispatch()
+// // RecentSearch.js
+// import React from 'react';
+// import Slider from 'react-slick';
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
+// import { FaPlane } from 'react-icons/fa';
+// import "./ResentSearch.css"
+// import { useDispatch } from 'react-redux';
+// import { setResentSearch } from '../../store/slices/aut.slice';
+// const RecentSearch = ({ ResentSearchData }) => {
+//     const dispatch = useDispatch()
 
 
-    const settings = {
-        // dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    infinite: true,
-                    // dots: true
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    initialSlide: 1
-                }
-            }
-        ]
-    };
-    const setResentStateHandler = async (value) => {
-        try {
-            console.log({ value })
-            dispatch(setResentSearch(value))
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
+//     const settings = {
+//         // dots: true,
+//         infinite: true,
+//         speed: 500,
+//         slidesToShow: 3,
+//         slidesToScroll: 1,
+//         responsive: [
+//             {
+//                 breakpoint: 1024,
+//                 settings: {
+//                     slidesToShow: 2,
+//                     slidesToScroll: 1,
+//                     infinite: true,
+//                     // dots: true
+//                 }
+//             },
+//             {
+//                 breakpoint: 600,
+//                 settings: {
+//                     slidesToShow: 1,
+//                     slidesToScroll: 1,
+//                     initialSlide: 1
+//                 }
+//             }
+//         ]
+//     };
+//     const setResentStateHandler = async (value) => {
+//         try {
+//             console.log({ value })
+//             dispatch(setResentSearch(value))
+//         } catch (error) {
+//             console.log(error.message)
+//         }
+//     }
 
-    return (
-        <div className="max-w-7xl w-[90%] lg:w-full text-center rounded-xl p-4 h-[30vh] justify-center mx-auto flex flex-col gap-5">
-            <h1 className='font-bold text-2xl'>Recent Search</h1>
-            <Slider {...settings}>
-                {ResentSearchData.map((search, index) => (
-                    <div key={index} className="p-2 h-[15vh]  " 
+//     return (
+//         <div className=" w-[90%]  text-center rounded-xl p-4 h-[30vh] justify-center mx-auto flex flex-col gap-5">
+//             <h1 className='font-bold text-2xl'>Recent Search</h1>
+//             <Slider {...settings}>
+//                 {ResentSearchData.map((search, index) => (
+//                     <div key={index} className="p-2 h-[15vh]  " 
                     
-                    // onClick={() => setResentStateHandler(search)
+//                     // onClick={() => setResentStateHandler(search)
 
-                    // }
-                    >
-                        <div className="bg-blue-500 text-white rounded-lg h-full shadow-lg p-4  flex flex-col items-center justify-center space-y-2">
-                            <div className="flex justify-between w-full">
-                                <div className="text-center">
-                                    <div className="text-xl font-bold">{search?.searchQuery.routeInfos[0].fromCityOrAirport?.code || "N/A"}</div>
-                                    <div className="text-lg font-bold"> {search?.searchQuery.cabinClass}</div>
-                                    <div className="text-xs">{search?.searchQuery.searchModifiers.pft}</div>
-                                </div>
-                                <div className="text-center">
-                                    <FaPlane className="text-3xl" />
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-xl font-bold">{search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}</div>
-                                    <div className="text-lg font-bold">Passengers{" :"}{Number(search?.searchQuery?.paxInfo.ADULT) + Number(search?.searchQuery?.paxInfo.INFANT) + Number(search?.searchQuery?.paxInfo.CHILD)}</div>
-                                    <div className="text-xs">{search?.searchQuery.routeInfos[0].travelDate}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </Slider>
+//                     // }
+//                     >
+//                         <div className="bg-blue-500 text-white rounded-lg h-full shadow-lg p-4  flex flex-col items-center justify-center space-y-2">
+//                             <div className="flex justify-between w-full">
+//                                 <div className="text-center">
+//                                     <div className="text-xl font-bold">{search?.searchQuery.routeInfos[0].fromCityOrAirport?.code || "N/A"}</div>
+//                                     <div className="text-lg font-bold"> {search?.searchQuery.cabinClass}</div>
+//                                     <div className="text-xs">{search?.searchQuery.searchModifiers.pft}</div>
+//                                 </div>
+//                                 <div className="text-center">
+//                                     <FaPlane className="text-3xl" />
+//                                 </div>
+//                                 <div className="text-center">
+//                                     <div className="text-xl font-bold">{search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}</div>
+//                                     <div className="text-lg font-bold">Passengers{" :"}{Number(search?.searchQuery?.paxInfo.ADULT) + Number(search?.searchQuery?.paxInfo.INFANT) + Number(search?.searchQuery?.paxInfo.CHILD)}</div>
+//                                     <div className="text-xs">{search?.searchQuery.routeInfos[0].travelDate}</div>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 ))}
+//             </Slider>
+//         </div>
+//     );
+// };
+
+// export default RecentSearch;
+
+import React from "react";
+import { MdFlight } from "react-icons/md";
+import flightLogo from "../../assets/booking/viewBookings/flightLogo.png";
+
+const RecentSearch = () => {
+  return (
+    <div className="w-full py-8">
+        <h1 className="text-3xl px-16 font-bold text-start">Recent Search</h1>
+
+        <div className="bg-white rounded-2xl shadow-lg p-3 border border-#007EC4] my-3 font-poppins max-w-[335px] mx-auto">
+          <div className="flex flex-col space-y-2">
+            <div className="flex flex-row justify-between items-center">
+              <div className="text-left flex-1">
+                <div className="text-xs font-bold">BNG</div>
+                <div className="text-xxs text-gray-500">Bangalore</div>
+                <div className="text-xs text-gray-400 mt-1">Depart</div>
+                <div className="text-xs">02-08-2024</div>
+              </div>
+              <div className="flex flex-col items-center flex-1">
+                {/* <div className="w-10 h-10 rounded-md mb-1">
+                  <img
+                    src={flightLogo}
+                    alt="Flight Logo"
+                    className="w-full h-full object-cover"
+                  />
+                </div> */}
+                <div className="text-xxs font-semibold">Air India</div>
+                <div className="relative w-20 h-0.5 bg-gray-300 my-1">
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500">
+                    <MdFlight className="transform rotate-90 text-base" />
+                  </div>
+                </div>
+              </div>
+              <div className="text-right flex-1">
+                <div className="text-xs font-bold">HYD</div>
+                <div className="text-xxs text-gray-500">Hyderabad</div>
+                <div className="text-xs text-gray-400 mt-1">Arrival</div>
+                <div className="text-xs">02-08-2024</div>
+              </div>
+            </div>
+            {/* <button className="w-full bg-blue-800 text-white py-2 rounded-full font-semibold text-xs hover:bg-blue-900 transition duration-300">
+              Book Now
+            </button> */}
+          </div>
         </div>
-    );
+    </div>
+  );
 };
 
-export default RecentSearch;
+export default RecentSearch;

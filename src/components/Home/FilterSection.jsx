@@ -20,7 +20,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setLastSearch } from "../../store/slices/aut.slice";
 const FilterSection = ({ formData, setFormData }) => {
 
 
@@ -41,6 +42,8 @@ const FilterSection = ({ formData, setFormData }) => {
 
   const { token } = useSelector((state) => state.auth)
   const [Loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch()
 
   //filter state for country code
   const [countryCodeone, setCountryCodeOne] = useState("IN");
@@ -283,12 +286,15 @@ const FilterSection = ({ formData, setFormData }) => {
       }
 
       console.log({ query })
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      console.log({ response, index: 4 })
+      dispatch(setLastSearch(query))
+      if(token){
+        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log({ response, index: 4 })
+      }
 
 
       setLoading(false);
@@ -306,13 +312,13 @@ const FilterSection = ({ formData, setFormData }) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-between md:justify-evenly  relative0">
-      <div className="     md:rounded-xl w-[90%]   shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4  md:py-5 md:w-[85%] relative  md:top-[-100px]   ">
+    <div className="flex flex-col items-center mb-4 justify-between md:justify-evenly ">
+      <div className="     md:rounded-xl w-[90%]    shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5 py-4 md:gap-4  md:py-7 md:w-[85%] relative  md:top-[-100px]   ">
         {/* type of travel selecting section */}
 
         <div className="flex justify-center md:justify-stretch  text-white ">
           <button
-            className={`bg-[#007EC4] rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "border-red-500"
+            className={`bg-[#007EC4] rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#01324D]"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
@@ -320,7 +326,7 @@ const FilterSection = ({ formData, setFormData }) => {
             One way
           </button>
           <button
-            className={`bg-[#01324D] md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "border-red-500"
+            className={`bg-[#007EC4] md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#01324D]"
               } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
@@ -328,7 +334,7 @@ const FilterSection = ({ formData, setFormData }) => {
             Round trip
           </button>
           <button
-            className={` bg-[#007EC4] rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "border-red-500"
+            className={` bg-[#007EC4] rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#01324D]"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
@@ -452,7 +458,7 @@ const FilterSection = ({ formData, setFormData }) => {
                   <input
                     className="font-bold outline-none "
                     type="text"
-                    value={`${Number(formData.ADULT) + Number(formData.CHILD)
+                    value={`${Number(formData.ADULT) + Number(formData.CHILD) + Number(formData.INFANT)
                       } | ${formData.cabinClass}`}
                     readOnly
                   />
@@ -529,7 +535,7 @@ const FilterSection = ({ formData, setFormData }) => {
               disabled={Loading}
               // form submition
               onClick={submitHandler}
-              className=" flex items-center  space-x-2  text-white bg-[#1F61BC] p-3 rounded"
+              className=" flex items-center  space-x-2  text-white bg-[#01324D] p-3 rounded"
             >
               <FaTelegramPlane className="text-white text-lg" />
               <span>{Loading ? "Searching..." : "Search Flights"}</span>
@@ -545,28 +551,9 @@ const FilterSection = ({ formData, setFormData }) => {
         className="  flex flex-col md:flex-row
        justify-between     md:w-[90%]  md:mt-[-5%]"
       >
-        <div className="flex flex-col items-start gap-4 2xl:gap-6 ">
-          <h2 className="font-semibold text-[1.3rem]  md:text-4xl 2xl:text-[2.2rem] ">
-            Explore places together
-          </h2>
-          <h4 className="font-light text-sm md:text-lg 2xl:text-2xl">
-            Discover the latest offers and news and start planning your next
-            trip with us.
-          </h4>
-        </div>
+        
 
-        <div className="flex items-center  rounded-lg w-full md:w-1/4 2xl:h-full ">
-          <select
-            className="flex justify-center relative  items-center p-2 w-full  outline-none sm:w-1/2 sm:mx-auto rounded-lg border border-blue-500 mt-1 font-roboto text-center font-light  bg-white md:w-3/4 2xl:w-3/4 2xl:p-4"
-            name=""
-            id=""
-            // selected={}
-            defaultValue={"i"}
-          >
-            <option value="i">International</option>
-            <option value="d">Domestic</option>
-          </select>
-        </div>
+       
       </div>
       <Modal
         formData={formData}

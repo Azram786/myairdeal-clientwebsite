@@ -4,6 +4,7 @@ import { FaArrowRight, FaRegClock } from "react-icons/fa";
 import ProgressBar from "./ProgressBar";
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
+  console.log(passengersData,"passneger")
   const calculateLayoverTime = (segments) => {
     if (segments.length <= 1) return null;
     let totalLayoverTime = 0;
@@ -197,7 +198,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                 </tr>
               </thead>
               <tbody>
-                {passengersData?.map((passenger, index) => (
+                {passengersData?.passengers?.map((passenger, index) => (
                   <tr key={index}>
                     <td className="py-2 px-4 border-b">
                       {passenger.firstName}

@@ -544,11 +544,15 @@ import flightLogo from "../../../assets/home/logo/image 40.png";
 import SideBar from "./SideBar";
 import BookingCard from "./BookingCards";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import ReactToast from "../../util/ReactToast";
 
 const { TabPane } = Tabs;
 
-const MultiCity = ({ flightProps, passenger }) => {
+const MultiCity = ({ flightProps, passenger,query }) => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const token = useSelector((state) => state.auth.token);
+
   const [filters, setFilters] = useState(
     flightProps.map(() => ({
       maxPrice: 100000,
@@ -648,7 +652,7 @@ const MultiCity = ({ flightProps, passenger }) => {
     );
   
     if (!allFlightsSelected) {
-      alert("Please select all connection flights before booking.");
+      ReactToast("Please select all connection flights before booking.");
       return;
     }
   
@@ -661,6 +665,11 @@ const MultiCity = ({ flightProps, passenger }) => {
     });
   
     console.log("Booking:", bookingData);
+    if(!token){
+      ReactToast('Please login first')
+      navigate("/sign-in",{state:{booking:query}});
+
+    }
     navigate("/book-flight", { state: { bookings: bookingData } });
   };
 
@@ -677,16 +686,18 @@ const MultiCity = ({ flightProps, passenger }) => {
         activeTabIndex={activeTabIndex}
         passenger={passenger}
       />
-      <div className="flex-grow pb-20">
-        <Tabs defaultActiveKey="0" onChange={handleTabChange}>
+      <div className="flex-grow pb-20 ">
+        <Tabs className="m-0" defaultActiveKey="0" onChange={handleTabChange}>
           {flightProps.map((flights, tabIndex) => {
             const startCode = flights.length > 0 ? flights[0].sI[0].da.city : "Unknown";
             const endCode = flights.length > 0 ? flights[0].sI[flights[0].sI.length - 1].aa.city : "Unknown";
             return (
               <TabPane
+              
+              className=""
                 tab={
-                  <span>
-                    {startCode} <ArrowRightOutlined className="mx-2" /> {endCode}
+                  <span className="border-r-2 p-2 ">
+                    {startCode} <ArrowRightOutlined className="" /> {endCode}
                   </span>
                 }
                 key={tabIndex}
@@ -715,7 +726,8 @@ const MultiCity = ({ flightProps, passenger }) => {
         </Tabs>
       </div>
       
-      <BookingCard
+      {console.log(selectedFlights[0].priceIndex,"heoo")}
+      {(selectedFlights[0].priceIndex!=null ||selectedFlights[1].priceIndex!=null) && ( <BookingCard
         selectedFlights={selectedFlights.map((selected, index) => 
           selected.flightIndex !== null ? {
             ...filteredFlights[index][selected.flightIndex],
@@ -725,7 +737,7 @@ const MultiCity = ({ flightProps, passenger }) => {
         onBook={handleBooking}
         passenger={passenger}
         selectedPriceIndex={selectedFlights}
-      />
+      />)}
     </div>
   );
 };
