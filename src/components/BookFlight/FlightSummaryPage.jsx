@@ -236,8 +236,8 @@ const FlightSummary = ({ flightData, passenger }) => {
                                           <img
                                             src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
                                             onError={(e) =>
-                                              (e.currentTarget.src =
-                                                defaultAirline)
+                                            (e.currentTarget.src =
+                                              defaultAirline)
                                             }
                                             alt={segment?.fD?.aI?.code}
                                             className="w-full h-full object-contain "
@@ -378,6 +378,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                   </div>
                 </>
               ) : currentStep === 1 ? (
+              ) : currentStep === 1 ? (
                 <AddDetails
                   bookingId={data?.bookingId}
                   Step={handleSaveAndContinue}
@@ -392,7 +393,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                     setCurrentStep={setCurrentStep}
                     data={data}
                     passengersData={passengersData}
-                    // updatePssenger={updatePssenger}
+                  // updatePssenger={updatePssenger}
                   />
                 </>
               ) : currentStep === 3 ? (
@@ -401,7 +402,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                   <PaymentPage
                     data={data}
                     passengersData={passengersData}
-                    // updatePssenger={updatePssenger}
+                  // updatePssenger={updatePssenger}
                   />
                 </>
               ) : null}

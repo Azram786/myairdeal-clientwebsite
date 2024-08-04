@@ -8,12 +8,9 @@ const initialState = {
     ? JSON.parse(localStorage.getItem("user_air_deal"))
     : null,
   resentSearch: null,
-  lastSearch: null
-
-
+  lastSearch: null,
+  resentSearchFilter: [[], []]
 };
-
-
 
 const authSlice = createSlice({
   name: "auth",
@@ -23,29 +20,46 @@ const authSlice = createSlice({
       state.token = action.payload;
       localStorage.setItem("token_air_deal", JSON.stringify(action.payload));
     },
-    logout: (state, action) => {
+    logout: (state) => {
       state.token = null;
       localStorage.removeItem("token_air_deal");
-      localStorage.removeItem("user_air_deal")
-
+      localStorage.removeItem("user_air_deal");
     },
     setUser: (state, action) => {
       state.user = action.payload;
-      localStorage.setItem("user_air_deal", JSON.stringify(action.payload))
+      localStorage.setItem("user_air_deal", JSON.stringify(action.payload));
     },
     setResentSearch: (state, action) => {
-      state.resentSearch = action.payload
+      state.resentSearch = action.payload;
     },
-    clearResent: () => {
-      state.resentSearch = null
+    clearResent: (state) => {
+      state.resentSearch = null;
     },
     setLastSearch: (state, action) => {
-      state.lastSearch = action.payload
+      state.lastSearch = action.payload;
     },
-
-  },
+    setResentSearchFromFilter: (state, action) => {
+      state.resentSearchFilter[0].push(action.payload);
+    },
+    setResentSearchToFilter: (state, action) => {
+      state.resentSearchFilter[1].push(action.payload);
+    },
+    clearResentSearchFilter: (state, action) => {
+      state.resentSearchFilter = [[], []]
+    }
+  }
 });
 
-export const { setToken, logout, setUser, setResentSearch, setLastSearch } = authSlice.actions;
+export const {
+  setToken,
+  logout,
+  setUser,
+  setResentSearch,
+  clearResent,
+  setLastSearch,
+  setResentSearchFromFilter,
+  setResentSearchToFilter,
+  clearResentSearchFilter
+} = authSlice.actions;
 
 export default authSlice.reducer;

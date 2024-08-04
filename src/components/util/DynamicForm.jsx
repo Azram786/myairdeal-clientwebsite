@@ -15,6 +15,7 @@ const DynamicForm = ({
   dateDynamic,
 }) => {
   const [startDate, setStartDate] = useState(dateDynamic);
+  console.log({ form })
 
   useEffect(() => {
     setForm({ travelDate: startDate });
@@ -38,6 +39,7 @@ const DynamicForm = ({
             placeholder="Where From?"
             icon={<RiFlightTakeoffFill />}
             setFormData={(value) => setForm({ fromCity: value })}
+            value={form.fromCity}
           />
         </div>
       </div>
@@ -56,6 +58,7 @@ const DynamicForm = ({
             defaultOptions={defaultOptions}
             placeholder="Where To?"
             setFormData={(value) => setForm({ toCity: value })}
+            value={form.toCity}
           />
         </div>
       </div>
