@@ -280,7 +280,7 @@ const Header = () => {
                     </Link>
                     <button
                       onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                      className=" text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                     >
                       <AiOutlineLogout className="mr-2" />
                       Sign Out
@@ -312,7 +312,7 @@ const Header = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-t"
           >
-            <div className="container mx-auto px-4 py-2">
+            <div className=" mx-auto px-4 py-2">
               <NavLinks mobile />
               {token ? (
                 <>

@@ -13,6 +13,8 @@ import { RiFlightLandLine, RiFlightTakeoffFill } from "react-icons/ri";
 import { GoArrowSwitch } from "react-icons/go";
 import { FaTelegramPlane } from "react-icons/fa";
 import FlightSearchSummary from "./FlightSearchSummary";
+import Header from "../Home/Header";
+import Footer from "../Home/Footer";
 
 const FlightList = () => {
   // const [data, setData] = useState();
@@ -93,8 +95,9 @@ const FlightList = () => {
   }
 
   return (
-    <>
-      <div className="min-h-screen border p-4 bg-gray-50 gap-4 shadow-sm rounded-md flex flex-col">
+    <div className="min-h-screen bg-gray-50">
+        <Header/>
+      <div className=" border p-4  gap-4 shadow-sm rounded-md flex flex-col">
      { data &&   <div><FlightSearchSummary data={data} tripType={tripType} /></div>}
         {tripType === "oneway" && (
           <Oneway flightProps={oneway} query={data} passenger={data?.searchQuery.paxInfo} />
@@ -118,7 +121,8 @@ const FlightList = () => {
           />
         )}
       </div>
-    </>
+      <Footer/>
+    </div>
   );
 };
 
