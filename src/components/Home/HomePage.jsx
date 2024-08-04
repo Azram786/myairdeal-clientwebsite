@@ -188,12 +188,13 @@ const HomePage = () => {
         isConnectingFlight: resentSearch.searchQuery.searchModifiers?.isConnectingFlight ?? prevFormData.isConnectingFlight,
         pft: resentSearch.searchQuery.searchModifiers?.pft || prevFormData.pft,
       }));
-      setDynamicFormData(() => ({
-        fromCity: formData.toCityOrAirport || "",
+      if (resentSearch?.searchQuery?.routeInfos?.length === 1)
+        setTypeOfTravel("one-way")
+      setDynamicFormData(() => ([{
+        fromCity: "",
         toCity: "",
         travelDate: formData.travelDate,
-      }),)
-      setTypeOfTravel("one-way")
+      }]))
       if (resentSearch.searchQuery.routeInfos.length > 1) {
         setTypeOfTravel("multi-city")
         setDynamicFormData(
