@@ -221,7 +221,7 @@ const Login = () => {
                 {loading ? (
                   <div className="flex justify-center items-center">
                     <motion.div
-                      className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                      className="w-4 h-4 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
                       variants={spinnerVariants}
                       animate="animate"
                     />

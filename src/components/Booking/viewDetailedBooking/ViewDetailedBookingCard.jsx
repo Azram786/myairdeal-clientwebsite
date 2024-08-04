@@ -31,7 +31,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
         <div className="flex justify-between items-center bg-[#007EC4] flex-wrap p-4 rounded-t-xl text-white">
           <div className="flex w-full  flex-col md:flex-row justify-end ">
             <div
-              className="h-16 w-16 flex items-center justify-center bg-white text-blue-500 font-bold text-xl rounded-full mr-4"
+              className="h-16 w-16 flex items-center justify-center bg-white text-[#007EC4] font-bold text-xl rounded-full mr-4"
             >
               {singleBookingData?.gstInfo?.registeredName?.charAt(0).toUpperCase() || user.firstName.charAt(0)}
             </div>
@@ -71,13 +71,13 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
 
           return (
             <div key={index}>
-              <div className=" flex flex-wrap gap-2 w-full py-2">
-                <div className="bg-[#D0E7F4] flex justify-center items-center gap-3 p-2 rounded-lg flex-col w-full ">
+              <div className=" flex flex-wrap gap-2 w-full py-2  lg:fle=-row lg:flex-nowrap">
+                <div className="bg-[#D0E7F4] flex justify-center items-center gap-3 p-2 rounded-lg flex-col w-full lg:w-1/2 ">
                   <div className="w-full">
-                    <div className="gap-4 flex">
+                    <div className="gap-4 flex pl-4 items-center">
                       <div>
                         {/* <img className="h-[60px]" src={paymentFlight} alt="" /> */}
-                        <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={value?.sI[0].fD?.aI?.code} className="w-10 h-10 mr-4" />
+                        <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={value?.sI[0].fD?.aI?.code} className="w-12 h-12 rounded mr-4" />
 
                       </div>
                       <div className="py-2 flex flex-col justify-between">
@@ -154,18 +154,18 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                     </div>
                   </div>
                 </div>
-                <div className="w-full flex flex-col lg:items-center justify-center">
+                <div className="w-full flex flex-col lg:items-center justify-center lg:justify-start">
                   <div className="justify-center p-2 bg-[#D0E7F4]  rounded-lg flex items-center gap-3">
                     <h1 className=" md:text-xl lg:text-2xl font-semibold text-gray-800 ">
                       Total Duration
                     </h1>
                     <h1 className="text-base md:text-xl lg:text-2xl font-bold text-gray-500 uppercase">{value.sI.length === 1 ? calculateDuration(value.sI[0].dt, value.sI[0].at) : calculateDuration(value.sI[0].dt, value.sI[value.sI.length - 1].at)}</h1>
                   </div>
-                  <div className="flex md:flex-col lg:w-3/4 justify-center md:justify-between px-1 ">
+                  <div className="flex md:flex-col lg:w-full justify-center md:justify-between px-1 mt-1 lg:mt-4">
 
                     <div className="flex flex-wrap md:justify-between sm:items-center mb-2  flex-col md:flex-row w-full  justify-center md:items-center">
                       <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
                           <MdDateRange />
                         </div>
                         <div>
@@ -178,7 +178,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                         </div>
                       </div>
                       <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
                           <IoIosTime />
                         </div>
                         <div>
@@ -191,7 +191,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                         </div>
                       </div>
                       <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3 ">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg ">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded  ">
                           <IoIosTime />
                         </div>
                         <div>
@@ -208,7 +208,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                     </div>
                     <div className="flex flex-wrap md:justify-between mb-2 flex-col md:flex-row w-full  sm:items-center   justify-center md:items-center">
                       <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 ">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
                           <BsDoorClosedFill />
                         </div>
                         <div>
@@ -223,7 +223,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                         </div>
                       </div>
                       <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 ">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
                           <BsDoorClosedFill />
                         </div>
                         <div>
@@ -236,7 +236,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                         </div>
                       </div>
                       <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 ">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-1 rounded-lg ">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded  ">
                           <MdOutlineAirlineSeatReclineExtra />
                         </div>
                         <div>

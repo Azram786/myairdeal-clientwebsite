@@ -49,7 +49,7 @@ const TravellersCard = ({
   };
 
   return (
-    <div className="border-purple-300 border-b p-4 ">
+    <div className="border-purple-300 border-b p-3 ">
       <div
         className="justify-between cursor-pointer flex items-center"
         onClick={toggleCard}
@@ -129,7 +129,7 @@ const TravellersCard = ({
               <br />
               <button
                 type="submit"
-                className=" bg-blue-500 text-white  text-sm h-12 px-5 rounded"
+                className=" bg-[#007EC4] text-white  text-sm h-12 px-5 rounded"
               >
                 Save
               </button>

@@ -4,6 +4,7 @@ import { RiFlightLandLine, RiFlightTakeoffFill } from 'react-icons/ri';
 import { GoArrowSwitch } from 'react-icons/go';
 
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { TbArrowsRightLeft } from 'react-icons/tb';
 
 const FlightSearchSummary = ({ data, tripType }) => {
   if (!data || !data.searchQuery) {
@@ -19,8 +20,8 @@ const FlightSearchSummary = ({ data, tripType }) => {
 
 
   const renderOneWay = () => (
-    <div className="grid md:grid-cols-4 grid-cols-2  w-full bg-[#007EC4] text-white p-2 rounded">
-      <div className="flex items-center space-x-4 border-r justify-center ">
+    <div className="grid md:grid-cols-4 grid-cols-1  bg-[#007EC4] text-white p-2 rounded">
+      <div className="flex items-center space-x-4 md:border-r justify-center ">
         <div className="flex flex-col">
           <span className="text-xs text-white">From</span>
           <span className="text-lg font-semibold">{routeInfos[0].fromCityOrAirport.code}</span>
@@ -37,12 +38,12 @@ const FlightSearchSummary = ({ data, tripType }) => {
           <span className="text-xs text-white">Departure Date</span>
           <span className="text-lg font-semibold">{routeInfos[0].travelDate}</span>
         </div> */}
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center" >
           <span className="text-xs text-white">Passengers & Class</span>
           <span className="text-lg font-semibold">{`${passengers} ${passengers > 1 ? 'Passengers' : 'Passenger'} | ${cabinClass}`}</span>
         </div>
       </div>
-      <div className="flex items-center justify-center  border-r">
+      <div className="flex items-center justify-center  md:border-r">
         <div className="flex flex-col ">
           <span className="text-xs text-white">Departure Date</span>
           <span className="text-lg font-semibold">{routeInfos[0].travelDate}</span>
@@ -63,29 +64,29 @@ const FlightSearchSummary = ({ data, tripType }) => {
   );
 
   const renderRoundTrip = () => (
-    <div className="flex items-center justify-between w-full bg-[#007EC4] text-white p-2 rounded">
-      <div className="flex items-center space-x-4">
+    <div className="flex flex-col md:flex-row items-center justify-between  bg-[#007EC4] text-white p-2 rounded">
+      <div className="flex items-center space-x-4 w-[30%] justify-center md:border-r md:px-2">
         <div className="flex flex-col">
           <span className="text-xs text-white">From</span>
           <span className="text-lg font-semibold">{routeInfos[0].fromCityOrAirport.code}</span>
         </div>
         {/* <GoArrowSwitch className="text-2xl" /> */}
-        <span className='rotate-90'><MdFlight/></span>
+        <span className=''><TbArrowsRightLeft/></span>
         <div className="flex flex-col">
           <span className="text-xs text-white">To</span>
           <span className="text-lg font-semibold">{routeInfos[0].toCityOrAirport.code}</span>
         </div>
       </div>
-      <div className="flex items-center space-x-4">
-        <div className="flex flex-col items-end">
-          <span className="text-xs text-white">Departure</span>
+      <div className="flex flex-col md:flex-row items-center space-x-4">
+        <div className="flex flex-col items-center md:border-r md:px-2 md:items-end">
+          <span className="text-xs  text-white">Departure</span>
           <span className="text-lg font-semibold">{routeInfos[0].travelDate}</span>
         </div>
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-center md:border-r  md:px-2 md:items-end">
           <span className="text-xs text-white">Return</span>
           <span className="text-lg font-semibold">{routeInfos[1]?.travelDate || 'N/A'}</span>
         </div>
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-center md:border-r md:px-2  md:items-end">
           <span className="text-xs text-white">Passengers & Class</span>
           <span className="text-lg font-semibold">{`${passengers} ${passengers > 1 ? 'Passengers' : 'Passenger'} | ${cabinClass}`}</span>
         </div>
@@ -99,7 +100,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
   );
 
   const renderMultiCity = () => (
-    <div className="flex w-full bg-[#007EC4] text-black p-2 rounded">
+    <div className="flex  bg-[#007EC4] text-black p-2 rounded">
       <div className='w-1/2  overflow-x-auto no-scroll flex'>
         {routeInfos.map((route, index) => (
           <div key={index} className="flex items-center shrink-0 justify-around  md:border-r border-black px-2   ">

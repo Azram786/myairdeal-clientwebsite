@@ -179,6 +179,7 @@ import TravellersDetails from "./travellers";
 import AddonsCard from "./addOns";
 import GstDetails from "./gstDetails";
 import { useNavigate } from "react-router-dom";
+import ReactToast from "../../util/ReactToast";
 
 const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
   const navigate = useNavigate();
@@ -273,7 +274,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
 
   const toggleCard = useCallback((card) => {
     if ((card === "addons" || card === "gst") && !isPassengersCompleted) {
-      alert("Please complete all passenger details before proceeding to Add-ons.");
+      ReactToast("Please complete all passenger details before proceeding to Add-ons.");
       return;
     }
     setExpandedCard((prevState) => ({
@@ -307,9 +308,9 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
       onData({passengers,gstDetails});
       setCurrentStep((p) => p + 1);
     } else {
-      alert(
-        "Please fill out all required fields correctly before proceeding to review."
-      );
+     
+       ReactToast( "Please fill out all required fields correctly before proceeding to review.")
+      
     }
   }, [passengers, gstDetails, onData, setCurrentStep]);
 

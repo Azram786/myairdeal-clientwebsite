@@ -10,7 +10,7 @@ const AccordionItem = ({ id, title, content, isOpen, toggleAccordion }) => {
         className="w-full text-left py-4 focus:outline-none"
         onClick={() => toggleAccordion(id)}
       >
-        <h3 className="text-xl font-semibold flex items-center">
+        <h3 className=" sm:text-xl font-semibold flex items-center">
           <span className='text-gray-500 font-sans mr-4'>{id}</span>
           {title}
           <span className={`ml-auto transform transition-transform duration-200 `}>
@@ -57,7 +57,7 @@ const WhyChooseUs = () => {
 
         <div className="md:w-1/2 w-[90%] md:mt-0 mt-2">
           <h2 className="text-sm font-sans text-gray-500 font-bold">Why Choose Us?</h2>
-          <h1 className="text-4xl font-bold font-sans mb-2">98% of Client Satisfied <br/>with our Service</h1>
+          <h1 className="text-xl sm:text-3xl  font-bold font-sans mb-2">98% of Client Satisfied <br/>with our Service</h1>
 
           <div className="mb-8 w-full h-full">
             {items.map((item) => (

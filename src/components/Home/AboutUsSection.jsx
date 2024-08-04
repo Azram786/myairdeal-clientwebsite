@@ -4,12 +4,12 @@ import shadow from '../../assets/home/aboutUs/shadow.svg'
 
 const AboutUs = () => {
   return (
-    <div className="container mx-auto    py-12">
+    <div className="container mx-auto   py-12">
       <div className="flex flex-col-reverse md:px-16  md:flex-row items-center">
         <div className="md:w-1/2 w-[90%] md:mt-0 mt-2">
           <h2 className="text-sm font-sans text-gray-500 font-bold ">About us</h2>
-          <h1 className="text-4xl font-bold font-sans mb-2">My air deal</h1>
-          <p className="text-gray-700 font-semibold mb-6">Welcome to My air deal, your trusted Flight booking company.</p>
+          <h1 className="text-xl sm:text-3xl font-bold font-sans mb-2">My air deal</h1>
+          <p className="text-gray-700 text-base font-semibold mb-6">Welcome to My air deal, your trusted Flight booking company.</p>
 
           <div className="mb-8">
             <div className="flex items-center mb-2">
@@ -19,10 +19,10 @@ const AboutUs = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl w-full border-b font-semibold ml-4">Guaranteed Results</h3>
+                <h3 className="sm:text-xl w-full border-b font-semibold ml-4">Guaranteed Results</h3>
               </div>
             </div>
-            <p className="text-gray-600 pl-12">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+            <p className="text-gray-600 text-sm pl-12">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
           </div>
 
           <div>
@@ -33,10 +33,10 @@ const AboutUs = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl border-b font-semibold ml-4">Team of Industry Experts</h3>
+                <h3 className=" sm:text-xl border-b font-semibold ml-4">Team of Industry Experts</h3>
               </div>
             </div>
-            <p className="text-gray-600 pl-12">Consectetur amet dolor sit comeneer tiremsilom dolce issilm acalrm leoinison duycqoqun consemlenit lorem.</p>
+            <p className="text-gray-600 text-sm pl-12">Consectetur amet dolor sit comeneer tiremsilom dolce issilm acalrm leoinison duycqoqun consemlenit lorem.</p>
           </div>
         </div>
 
