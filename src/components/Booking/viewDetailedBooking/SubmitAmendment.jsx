@@ -247,6 +247,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
       submitAmendment()
     }
   };
+
   return (
     <div className="px-4 py-4 flex justify-center items-center  h-[50vh] w-full">
       <div className="px-4 py-4 h-[50vh] bg-white shadow-lg w-full rounded-lg">
