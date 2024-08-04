@@ -188,6 +188,7 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { AiOutlineLogout } from "react-icons/ai";
 import { FiMenu } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import Avatar from '../../assets/home/banner/avatar.png'
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -251,7 +252,11 @@ const Header = () => {
                 onClick={handleDropdownToggle}
               >
                 <img
-                  src="/api/placeholder/32/32"
+                  src={user?.image || Avatar}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = {Avatar};
+                  }}
                   alt="User"
                   className="w-8 h-8 rounded-full"
                 />

@@ -1065,7 +1065,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                 p-1 mb-2 cursor-pointer 
                   ${
                     selectedPrice === index
-                      ? "border border-blue-500 rounded-md"
+                      ? "border border-[#007EC4] rounded-md"
                       : "border border-gray-200 hover:border-blue-300 rounded-md"
                   }
                 `}
@@ -1104,17 +1104,17 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
           <div>
             <button
               onClick={() => setShowDetails(!showDetails)}
-              className="text-blue-500 text-sm mt-2"
+              className="text-[#007EC4] text-sm mt-2"
             >
               {showDetails ? (
                   <span className="text-black">
                     Fare Details :{" "}
-                    <span className="text-blue-500">Hide Details</span>
+                    <span className="text-[#007EC4]">Hide Details</span>
                   </span>
                 ) : (
                   <span className="text-black">
                     Fare Details :{" "}
-                    <span className="text-blue-500">View Details</span>
+                    <span className="text-[#007EC4]">View Details</span>
                   </span>
                 )}
             </button>
@@ -1148,7 +1148,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                   onClick={() => setActiveTab(tab)}
                   className={`py-2 px-4 text-sm ${
                     activeTab === tab
-                      ? "text-blue-500 font-bold border-b-2 border-blue-500"
+                      ? "text-[#007EC4] font-bold border-b-2 border-[#007EC4]"
                       : "text-gray-500"
                   }`}
                 >

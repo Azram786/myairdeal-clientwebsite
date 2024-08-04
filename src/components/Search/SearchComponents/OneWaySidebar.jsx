@@ -258,7 +258,8 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
               max={maxPrice}
               value={filters.maxPrice}
               onChange={handlePriceChange}
-              className="flex-1 md:mr-4 range-slider"
+              id='priceRange'
+              className="flex-1 price-range-slider range-slider"
             />
             <span>₹{filters.maxPrice}</span>
           </div>

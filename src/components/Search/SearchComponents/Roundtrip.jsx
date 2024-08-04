@@ -369,6 +369,7 @@ import BookingCard from "./BookingCards";
 import ReactToast from "../../util/ReactToast";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import RoundTripCard from "../Cards/RoundTripFlightCard";
 
 const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
   const [filteredOnward, setFilteredOnward] = useState([]);
@@ -559,7 +560,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
     return (
       <div>
         {flights.map((flight, index) => (
-          <FlightDetailsCard
+          <RoundTripCard
             key={index}
             flightDetails={flight}
             isSelected={
@@ -669,14 +670,14 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
       </div>
 
       {console.log(selectedOnwardFlight, selectedReturnFlight, "selected flights")}
-      <BookingCard
+      {(selectedOnwardFlight || selectedReturnFlight) && <BookingCard
         selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(
           Boolean
         )}
         totalPrice={calculateTotalBookingPrice()}
         onBook={() => handleBooking()}
         passenger={passenger}
-      />
+      />}
     </div>
   );
 };

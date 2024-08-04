@@ -244,13 +244,13 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
           <div className="flex justify-between items-center bg-gray-200 p-2 rounded-lg shadow-md mt-4">
             <button
               onClick={() => setCurrentStep(1)}
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none"
+              className="bg-[#007EC4] hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none"
             >
               Back
             </button>
             <button
               onClick={() => setCurrentStep(3)}
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none"
+              className="bg-[#007EC4] hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none"
             >
               Continue to Payment
             </button>

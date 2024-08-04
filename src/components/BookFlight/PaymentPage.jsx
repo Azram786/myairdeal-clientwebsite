@@ -230,7 +230,7 @@ const PaymentPage = ({ passengersData, data }) => {
       </table>
 
       <button 
-        className='bg-blue-500 rounded-md text-white font-semibold text-xl px-5 py-2 mt-4 disabled:opacity-50 flex items-center justify-center'
+        className='bg-[#007EC4] rounded-md text-white font-semibold text-xl px-5 py-2 mt-4 disabled:opacity-50 flex items-center justify-center'
         onClick={openRazorpay}
         disabled={isProcessing}
       >

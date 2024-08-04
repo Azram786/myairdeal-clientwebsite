@@ -173,7 +173,7 @@ const SubmitAmendment = ({ singleBookingData }) => {
           {Loading ? (
             <div className="flex justify-center items-center h-full">
               <motion.div
-                className="w-12 h-12 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                className="w-12 h-12 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
                 variants={spinnerVariants}
                 animate="animate"
               />

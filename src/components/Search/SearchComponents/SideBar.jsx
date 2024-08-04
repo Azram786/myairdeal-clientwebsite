@@ -1055,7 +1055,8 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
               max={absoluteMaxPrice}
               value={filters[activeTabIndex].maxPrice}
               onChange={handlePriceChange}
-              className="flex-1 md:mr-4 range-slider"
+               id='priceRange'
+              className="flex-1 price-range-slider range-slider"
             />
             <span>₹{filters[activeTabIndex].maxPrice}</span>
           </div>

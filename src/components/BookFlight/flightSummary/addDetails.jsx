@@ -210,19 +210,19 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
   const createPassenger = useCallback(
     (type, count) => ({
       title: type === "ADULT" ? "MR" : "",
-      firstName: "test",
-      lastName: "test",
+      firstName: "",
+      lastName: "",
       passengerType: type,
-      email: "test@gmail.com",
-      phone: "9876543210",
-      dob: "2020-01-01",
+      email: "",
+      phone: "",
+      dob: "",
       SelectedSeat: [],
       selectedBaggage: [],
       selectedMeal: [],
-      passportNumber: "12345678",
-      nationality: "India",
-      issueDate: "2020-01-01",
-      expiryDate: "2030-01-01",
+      passportNumber: "",
+      nationality: "",
+      issueDate: "",
+      expiryDate: "",
       typeCount: count,
     }),
     []
@@ -300,7 +300,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
   };
 
   const handleProceedToReview = useCallback(() => {
-    const isValid = validateFormData(passengers);
+    const isValid = validateFormData(passengers, gstDetails);
 
     console.log("isValid", isValid,gstDetails,"gst");
     if (isValid) {

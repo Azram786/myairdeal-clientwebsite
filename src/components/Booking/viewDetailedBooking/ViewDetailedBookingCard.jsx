@@ -31,7 +31,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
         <div className="flex justify-between items-center bg-[#007EC4] flex-wrap p-4 rounded-t-xl text-white">
           <div className="flex w-full  flex-col md:flex-row justify-end ">
             <div
-              className="h-16 w-16 flex items-center justify-center bg-white text-blue-500 font-bold text-xl rounded-full mr-4"
+              className="h-16 w-16 flex items-center justify-center bg-white text-[#007EC4] font-bold text-xl rounded-full mr-4"
             >
               {singleBookingData?.gstInfo?.registeredName.charAt(0).toUpperCase()}
             </div>

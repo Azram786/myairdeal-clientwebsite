@@ -20,6 +20,7 @@ import { set } from "react-hook-form";
 import PaymentPage from "./PaymentPage";
 import SessionTimer from "./SessionTimer";
 import ReactToast from "./Util/ReactToast";
+import Spinner from "../Profile/Spinner";
 
 const FlightSummary = ({ flightData, passenger }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -158,11 +159,21 @@ const FlightSummary = ({ flightData, passenger }) => {
     return `${hours}h ${minutes}m`;
   }
 
+
+
+  if (Loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="flex-col flex gap-3">
+          <Spinner /> <h1 className="italic">Loading Please wait...</h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-gray-100 min-h-screen sm:text-sm md:text-lg p-2">
-      {Loading ? (
-        <div>Loading...</div>
-      ) : (
+    <div className="bg-gray-100 min-h-screen py-10 sm:text-sm md:text-lg p-2">
+      
         <div className="container mx-auto md:p-2 max-w-5xl font-poppins">
           <ProgressBar
             currentStep={currentStep}
@@ -351,7 +362,7 @@ const FlightSummary = ({ flightData, passenger }) => {
 
                   <div className="flex justify-center py-3 px-4">
                     <button
-                      className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-blue-500 text-white rounded-md text-sm sm:text-base flex items-center justify-center"
+                      className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-[#007EC4] text-white rounded-md text-sm sm:text-base flex items-center justify-center"
                       onClick={handleSaveAndContinue}
                     >
                       {isSeatMapLoading ? (
@@ -505,7 +516,7 @@ const FlightSummary = ({ flightData, passenger }) => {
             </div>
           </div>
         </div>
-      )}
+      
       {data?.conditions?.st &&
         <SessionTimer sessionTimeout={data?.conditions?.st}/>}
       

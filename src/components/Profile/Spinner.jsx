@@ -14,7 +14,7 @@ const Spinner = () => {
                 }}
             >
                 <motion.div
-                    className="w-20 h-20 bg-blue-500 rounded-full"
+                    className="w-20 h-20 bg-[#007EC4] rounded-full"
                     animate={{
                         scale: [1, 1.2, 1.2, 1, 1],
                         rotate: [0, 0, 270, 270, 0],

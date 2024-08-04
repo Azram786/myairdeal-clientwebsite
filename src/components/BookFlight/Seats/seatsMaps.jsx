@@ -569,7 +569,7 @@ const SeatMap = ({
     if (seat.isBooked) {
       className += "bg-gray-400 cursor-not-allowed";
     } else if (isSeatSelected(seat.seatNo)) {
-      className += "bg-blue-500 text-white";
+      className += "bg-[#007EC4] text-white";
     } else {
       className += "bg-white hover:bg-gray-200";
     }
@@ -733,7 +733,7 @@ const SeatMap = ({
               <p>Extra Legroom</p>
             </div>
             <div className="w-full sm:w-1/2 flex items-center ml-4 md:ml-0 mb-3">
-              <span className="inline-block w-4 h-4 bg-blue-500 mr-2"></span>
+              <span className="inline-block w-4 h-4 bg-[#007EC4] mr-2"></span>
               <p>Selected</p>
             </div>
           </div>

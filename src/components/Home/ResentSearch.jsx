@@ -74,7 +74,7 @@ const RecentSearch = ({ ResentSearchData }) => {
                     </div> */}
                     <div className="text-xs font-semibold">Air India</div>
                     <div className="relative  h-0.5 bg-gray-300 my-1">
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500">
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[#007EC4">
                         <MdFlight className="transform rotate-90 text-base" />
                       </div>
                     </div>
