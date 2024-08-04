@@ -394,7 +394,7 @@ const FlightSummary = ({ flightData, passenger }) => {
             </div>
 
             {/* Right Section */}
-            <div className=" md:w-[30%] rounded-lg bg-white p-2 space-y-4">
+            <div className=" md:w-[30%] rounded-lg bg-white p-2 space-y-4 h-fit">
               <div className="w-full max-w-full rounded-lg bg-white">
                 <div className="flex items-center justify-between border-b border-gray-300 pb-4">
                   <div>

@@ -91,9 +91,9 @@ const AddonsCard = ({
             >
               Seat Selection
             </button>
-            <button onClick={checkSeatSelection} disabled={checkLoading}>
+            {/* <button onClick={checkSeatSelection} disabled={checkLoading}>
               {checkLoading ? "Checking..." : "Check Seat Availability"}
-            </button>
+            </button> */}
             <button
               onClick={() => setActiveButton("addBagAndMeal")}
               className={`px-4 py-2 rounded ${
@@ -106,10 +106,11 @@ const AddonsCard = ({
             </button>
           </div>
           <div>
-            {Errors?.map((item) => (
+            {/* {Errors?.map((item) => (
               <div>Message : {item?.message}</div>
-            ))}
-            <div></div>
+            ))} */}
+            <div>
+            </div>
           </div>
           {activeButton === "seatSelection" && (
             <SeatSelection
