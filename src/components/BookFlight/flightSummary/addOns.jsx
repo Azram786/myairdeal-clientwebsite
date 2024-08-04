@@ -61,7 +61,7 @@ const AddonsCard = ({
   return (
     <div className="">
       <div
-        className="p-4 border-b border-gray-300 cursor-pointer flex justify-between items-center"
+        className="p-3 border-b border-gray-300 cursor-pointer flex justify-between items-center"
         onClick={toggleCard}
       >
         <div>
@@ -72,9 +72,9 @@ const AddonsCard = ({
         </div>
         <div>
           {expanded ? (
-            <FaChevronUp className="text-gray-500" />
+            <FaChevronUp/>
           ) : (
-            <FaChevronDown className="text-gray-500" />
+            <FaChevronDown  />
           )}
         </div>
       </div>

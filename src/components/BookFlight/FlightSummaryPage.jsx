@@ -423,7 +423,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                     <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                       <span>Base fare</span>
                       <span>
-                        {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
+                        ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
                       </span>
                     </div>
 
@@ -435,7 +435,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                         <span>Taxes and fees</span>
                         <div className="flex items-center">
                           <span>
-                            {data?.totalPriceInfo?.totalFareDetail?.fC?.TAF}
+                            ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.TAF}
                           </span>
                           {taxesExpanded ? (
                             <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
@@ -454,7 +454,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                             <div className="flex justify-between">
                               <span>Airline GST</span>
                               <span>
-                                {
+                                ₹ {
                                   data?.totalPriceInfo?.totalFareDetail?.afC
                                     ?.TAF?.AGST
                                 }
@@ -463,7 +463,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                             <div className="flex justify-between">
                               <span>Other Taxes</span>
                               <span>
-                                {
+                                ₹ {
                                   data?.totalPriceInfo?.totalFareDetail?.afC
                                     ?.TAF?.OT
                                 }
@@ -472,7 +472,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                             <div className="flex justify-between">
                               <span>YR</span>
                               <span>
-                                {
+                                ₹ {
                                   data?.totalPriceInfo?.totalFareDetail?.afC
                                     ?.TAF?.YR
                                 }
@@ -491,7 +491,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                         <span>Amount to Pay</span>
                         <div className="flex items-center">
                           <span>
-                            {data?.totalPriceInfo?.totalFareDetail?.fC?.TF}
+                           ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.TF}
                           </span>
                           {amountExpanded ? (
                             <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
@@ -518,7 +518,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                             <div className="flex justify-between font-medium">
                               <span>Net Price</span>
                               <span>
-                                {data?.totalPriceInfo?.totalFareDetail?.fC?.NF}
+                                ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.NF}
                               </span>
                             </div>
                           </div>
@@ -531,7 +531,7 @@ const FlightSummary = ({ flightData, passenger }) => {
             </div>
           </div>
         </div>
-      )}
+      
       {data?.conditions?.st && (
         <SessionTimer sessionTimeout={data?.conditions?.st} />
       )}

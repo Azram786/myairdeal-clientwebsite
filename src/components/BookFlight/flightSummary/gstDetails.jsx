@@ -96,7 +96,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
     <div className="rounded-lg overflow-hidden">
       <div
         // className="p-4 bg-gray-50 cursor-pointer flex justify-between items-center "
-        className="p-4 cursor-pointer flex justify-between items-center border border-gray-300 border-l-0 border-r-0"
+        className="p-3 cursor-pointer flex justify-between items-center "
         onClick={toggleCard}
       >
         <div>
@@ -110,9 +110,9 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
         </div>
         <div>
           {expanded ? (
-            <FaChevronUp className="text-gray-500" />
+            <FaChevronUp />
           ) : (
-            <FaChevronDown className="text-gray-500" />
+            <FaChevronDown />
           )}
         </div>
       </div>

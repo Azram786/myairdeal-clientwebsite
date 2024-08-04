@@ -214,14 +214,14 @@ const Oneway = ({ flightProps, passenger,query }) => {
           <TabPane
             tab={
               <span className="flex gap-2">
-               <span className="flex flex-col justify-center items-center">
+               <span className="flex flex-col justify-center ">
       <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
       <p className="text-[10px]">
         {filteredFlights[0]?.sI[0] && new Date(filteredFlights[0].sI[0].dt).toISOString().split('T')[0]}
       </p>
     </span>
     <ArrowRightOutlined />
-    <span className="flex flex-col justify-center items-center">
+    <span className="flex flex-col justify-center ">
       <p>{filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa?.city}</p>
       <p className="text-[10px]">
         {filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1] &&

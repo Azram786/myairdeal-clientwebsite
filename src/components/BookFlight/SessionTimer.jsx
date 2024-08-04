@@ -3,7 +3,7 @@ import { CiClock1 } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 
 const SessionTimer = ({ sessionTimeout }) => {
-  const [timeLeft, setTimeLeft] = useState(9876543);
+  const [timeLeft, setTimeLeft] = useState(sessionTimeout);
   const navigate = useNavigate();
 
   useEffect(() => {

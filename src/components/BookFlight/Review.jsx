@@ -270,6 +270,16 @@ import ProgressBar from "./ProgressBar";
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
   console.log(passengersData,"passneger")
+
+  const renderValue = (value) => value || 'N/A';
+
+  const renderObjectEntries = (obj, renderFunction) => {
+    if (!obj || Object.keys(obj).length === 0) return 'N/A';
+    return Object.entries(obj).map(([flightId, data]) => (
+      <div key={flightId}>{renderFunction(flightId, data)}</div>
+    ));
+  };
+  
   const calculateLayoverTime = (segments) => {
     if (segments.length <= 1) return null;
     let totalLayoverTime = 0;
@@ -451,60 +461,50 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
 
           {/* Passenger & Contact Details Section */}
           <div className="mb-6 overflow-x-scroll mb-2">
-            <h2 className="text-xl font-semibold mb-4 mt-2">Passenger Details</h2>
-            <table className="min-w-full bg-white border border-gray-300 rounded-lg ">
-              <thead>
-                <tr className="bg-gray-100 text-left">
-                  <th className="py-2 px-4 border-b text-sm">First Name</th>
-                  <th className="py-2 px-4 border-b text-sm">Last Name</th>
-                  <th className="py-2 px-4 border-b text-sm">Passenger Type</th>
-                  <th className="py-2 px-4 border-b text-sm">Selected Seats</th>
-                  <th className="py-2 px-4 border-b text-sm">Selected Meals</th>
-                  <th className="py-2 px-4 border-b text-sm">Baggage</th>
-                </tr>
-              </thead>
-              <tbody>
-                {passengersData?.passengers?.map((passenger, index) => (
-                  <tr key={index}>
-                    <td className="py-2 px-4 border-b text-xs">
-                      {passenger.firstName}
-                    </td>
-                    <td className="py-2 px-4 border-b text-xs">{passenger.lastName}</td>
-                    <td className="py-2 px-4 border-b text-xs">
-                      {passenger.passengerType}
-                    </td>
-                    <td className="py-2 px-4 border-b text-xs">
-                      {Object.entries(passenger.selectedSeats || {}).map(
-                        ([flightId, seat]) => (
-                          <div key={flightId}>
-                            Flight {flightId}: {seat.code}
-                          </div>
-                        )
-                      )}
-                    </td>
-                    <td className="py-2 px-4 border-b text-xs">
-                      {Object.entries(passenger.selectedMeals || {}).map(
-                        ([flightId, meal]) => (
-                          <div key={flightId}>
-                            Flight {flightId}: {meal.code} (₹{meal.amount})
-                          </div>
-                        )
-                      )}
-                    </td>
-                    <td className="py-2 px-4 border-b text-xs">
-                      {Object.entries(passenger.baggage || {}).map(
-                        ([flightId, bag]) => (
-                          <div key={flightId}>
-                            Flight {flightId}: {bag.details}
-                          </div>
-                        )
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      <h2 className="text-xl font-semibold mb-4 mt-2">Passenger Details</h2>
+      <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+        <thead>
+          <tr className="bg-gray-100 text-left">
+            <th className="py-2 px-4 border-b text-sm">First Name</th>
+            <th className="py-2 px-4 border-b text-sm">Last Name</th>
+            <th className="py-2 px-4 border-b text-sm">Passenger Type</th>
+            <th className="py-2 px-4 border-b text-sm">Selected Seats</th>
+            <th className="py-2 px-4 border-b text-sm">Selected Meals</th>
+            <th className="py-2 px-4 border-b text-sm">Baggage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {passengersData?.passengers?.map((passenger, index) => (
+            <tr key={index}>
+              <td className="py-2 px-4 border-b text-xs">
+                {renderValue(passenger.firstName)}
+              </td>
+              <td className="py-2 px-4 border-b text-xs">
+                {renderValue(passenger.lastName)}
+              </td>
+              <td className="py-2 px-4 border-b text-xs">
+                {renderValue(passenger.passengerType)}
+              </td>
+              <td className="py-2 px-4 border-b text-xs">
+                {renderObjectEntries(passenger.selectedSeats, (flightId, seat) => 
+                  `Flight ${flightId}: ${seat.code}`
+                )}
+              </td>
+              <td className="py-2 px-4 border-b text-xs">
+                {renderObjectEntries(passenger.selectedMeals, (flightId, meal) => 
+                  `Flight ${flightId}: ${meal.code} (₹${meal.amount})`
+                )}
+              </td>
+              <td className="py-2 px-4 border-b text-xs">
+                {renderObjectEntries(passenger.baggage, (flightId, bag) => 
+                  `Flight ${flightId}: ${bag.details}`
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
 
           <div className="flex justify-between items-center bg-gray-200 p-2 rounded-lg shadow-md mt-4">
             <button

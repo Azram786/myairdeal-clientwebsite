@@ -4,6 +4,7 @@ import { RiFlightLandLine, RiFlightTakeoffFill } from 'react-icons/ri';
 import { GoArrowSwitch } from 'react-icons/go';
 
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { TbArrowsRightLeft } from 'react-icons/tb';
 
 const FlightSearchSummary = ({ data, tripType }) => {
   if (!data || !data.searchQuery) {
@@ -64,13 +65,13 @@ const FlightSearchSummary = ({ data, tripType }) => {
 
   const renderRoundTrip = () => (
     <div className="flex flex-col md:flex-row items-center justify-between  bg-[#007EC4] text-white p-2 rounded">
-      <div className="flex items-center space-x-4 md:border-r md:px-2">
+      <div className="flex items-center space-x-4 w-[30%] justify-center md:border-r md:px-2">
         <div className="flex flex-col">
           <span className="text-xs text-white">From</span>
           <span className="text-lg font-semibold">{routeInfos[0].fromCityOrAirport.code}</span>
         </div>
         {/* <GoArrowSwitch className="text-2xl" /> */}
-        <span className='rotate-90'><MdFlight/></span>
+        <span className=''><TbArrowsRightLeft/></span>
         <div className="flex flex-col">
           <span className="text-xs text-white">To</span>
           <span className="text-lg font-semibold">{routeInfos[0].toCityOrAirport.code}</span>

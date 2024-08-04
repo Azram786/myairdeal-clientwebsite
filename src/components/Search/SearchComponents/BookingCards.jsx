@@ -318,7 +318,7 @@ const BookingCard = ({ selectedFlights, onBook, passenger }) => {
           <div className="text-lg font-bold">₹{totalPrice.toLocaleString()}</div>
           <button
             onClick={onBook}
-            className="bg-[##007EC4] text-white px-6 py-2 rounded font-bold"
+            className="bg-[#007EC4] text-white px-6 py-2 rounded font-bold"
           >
             BOOK
           </button>
