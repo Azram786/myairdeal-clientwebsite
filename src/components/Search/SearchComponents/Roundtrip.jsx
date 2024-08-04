@@ -368,8 +368,9 @@ import RoundSideBar from "./Roundsidebar";
 import BookingCard from "./BookingCards";
 import ReactToast from "../../util/ReactToast";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
+const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
   const [filteredOnward, setFilteredOnward] = useState([]);
   const [filteredReturn, setFilteredReturn] = useState([]);
   const [activeDirection, setActiveDirection] = useState("onward");
@@ -377,6 +378,8 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
   const [error, setError] = useState(null);
   const [selectedOnwardFlight, setSelectedOnwardFlight] = useState(null);
   const [selectedReturnFlight, setSelectedReturnFlight] = useState(null);
+
+  const token = useSelector((state) => state.auth.token);
 
   const calculateTotalPrice = (flight) => {
     let total = 0;
@@ -415,22 +418,27 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
         console.error("Invalid flight data:", flight);
         return false;
       }
-
+  
       const directionFilters = filters[direction];
       const stops = flight.sI.length - 1;
       const airline = flight.sI[0]?.fD?.aI?.name || "";
       const departureTime = new Date(flight.sI[0].dt).getHours();
       const arrivalTime = new Date(flight.sI[flight.sI.length - 1].at).getHours();
       const price = calculateTotalPrice(flight);
-
+  
       const isInTimeRange = (time, ranges) => {
         if (ranges.length === 0) return true;
         return ranges.some((range) => {
           const [start, end] = range.split("-").map(Number);
-          return time >= start && time < end;
+          if (start < end) {
+            return time >= start && time < end;
+          } else {
+            // Handle the case for 18-00 (6 PM to midnight)
+            return time >= start || time < end;
+          }
         });
       };
-
+  
       return (
         price <= directionFilters.maxPrice &&
         (directionFilters.stops.length === 0 ||
@@ -442,7 +450,6 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
       );
     });
   };
-
   const applySpecialReturnFilter = (onwardFlights, returnFlights) => {
     const specialReturnOnward = onwardFlights.filter((flight) =>
       flight.totalPriceList.some(
@@ -494,7 +501,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
       try {
         let filteredOnwardFlights = applyFilters(onwardProps, "onward");
         let filteredReturnFlights = applyFilters(returnProps, "return");
-
+  
         if (filters.specialReturn) {
           const specialReturnPairs = applySpecialReturnFilter(
             filteredOnwardFlights,
@@ -503,14 +510,14 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
           filteredOnwardFlights = specialReturnPairs.map((pair) => pair.onward);
           filteredReturnFlights = specialReturnPairs.map((pair) => pair.return);
         }
-
+  
         console.log(
           filteredOnwardFlights,
           "filtered onward flights",
           filteredReturnFlights,
           "filtered return flights"
         );
-
+  
         setFilteredOnward(filteredOnwardFlights);
         setFilteredReturn(filteredReturnFlights);
       } catch (err) {
@@ -524,7 +531,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
         setSelectedReturnFlight(null);
       }
     };
-
+  
     fetchAndFilterFlights();
   }, [filters, onwardProps, returnProps]);
 
@@ -616,6 +623,12 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger }) => {
       },
     ];
     console.log(data);
+
+    if(!token){
+      ReactToast('Please login first')
+      navigate("/sign-in");
+      return;
+    }
 
     navigate("/book-flight", { state: { bookings: data } });
   };

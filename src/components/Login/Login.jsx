@@ -7,7 +7,7 @@ import axios from "axios";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import OTPInput from "./OTP";
 import { RiHome7Fill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import "./CustomPhoneInput.css";
 import ReactToast from "../util/ReactToast";
@@ -22,6 +22,10 @@ const spinnerVariants = {
     },
   },
 };
+
+
+
+
 
 const StyledPhoneInput = ({ value, onChange }) => {
   return (
@@ -60,6 +64,7 @@ const Login = () => {
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     let interval;
@@ -151,14 +156,14 @@ const Login = () => {
   return (
     <div className="h-screen flex ">
       <div className="flex  w-[90%] mx-auto">
-        <div
+        {/* <div
           onClick={() => {
             navigate("/");
           }}
           className="absolute top-[9%] left-[11%] md:left-[8%] text-[2rem] cursor-pointer"
         >
           <RiHome7Fill />
-        </div>
+        </div> */}
         <div className="bg-blue w-full md:w-[50%] flex flex-col items-center justify-center">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -168,7 +173,7 @@ const Login = () => {
           >
             <div className="flex items-center gap-7">
               <div>
-                <img className="h-[80px]" src={Logo} alt="Logo" />
+                <Link to='/'><img className="h-[80px]" src={Logo} alt="Logo" /></Link>
               </div>
               <div className="text-[1.6rem] font-bold text-[#1F61BC]">
                 <h3>My Air Deal</h3>

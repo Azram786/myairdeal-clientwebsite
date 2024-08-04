@@ -112,6 +112,11 @@ import Spinner from "../Profile/Spinner";
 import RecentSearch from "./ResentSearch";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import AboutUs from "./AboutUsSection";
+import WhyChooseUs from "./whyChooseUs";
+import Testimonials from "./TestMonials";
+import DownloadApp from "./AppDownload";
+import Service from "../Service/service";
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -217,7 +222,12 @@ const HomePage = () => {
           />
           <RecentSearch ResentSearchData={ResentSearchData} />
           <OfferSection />
+          <AboutUs/>
+          <Service/>
+          <WhyChooseUs/>
+          <Testimonials/>
           <Contact />
+          <DownloadApp/>
           <Footer />
         </>
       )}
