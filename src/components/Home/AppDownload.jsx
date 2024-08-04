@@ -45,7 +45,7 @@ const DownloadApp = () => {
   return (
     <div className="max-w-6xl mx-auto p-6 font-poppins overflow-hidden relative m-5">
       <h1 className="text-3xl font-bold mb-8">Download our app</h1>
-      <div className="relative flex flex-col md:flex-row items-center  bg-[#253B59] justify-between p-8 rounded-lg h-56">
+      <div className="relative flex flex-col md:flex-row items-center  bg-[#253B59] justify-between p-8 rounded-lg md:h-56">
         <div className=" w-full  flex  rounded-lg ">
           <section className=" text-white md:w-3/4">
             <h2 className="text-2xl font-bold mb-4">

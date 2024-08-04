@@ -84,9 +84,8 @@ import { FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="h-full  bg-[#092945] mx-auto text-white w-full ">
-      <div
-        className=" 
+    <div className="h-full  bg-[#092945] mx-auto text-white w-full  py-8">
+      <div className=" 
           justify-center  md:items-center flex flex-col md:flex-row h-full w-full "
       >
         <div className="w-[100%] md:w-[20%]  flex  md:flex-col justify-center items-center  md:gap-5 pt-2 ">
@@ -100,7 +99,7 @@ const Footer = () => {
             <div>My Air Deal</div>
           </div>
 
-          <div className="flex gap-2  justify-start w-[50%] text-white text-2xl  mr-1">
+          <div className=" gap-2  px-2 grid  grid-cols-2 sm:grid-cols-4 justify-start w-[50%] text-white text-2xl  mr-1">
             <div>
               <FaFacebook />
             </div>

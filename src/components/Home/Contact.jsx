@@ -95,10 +95,12 @@ import contactMain from "../../assets/home/contact/contactMain.png";
 import { IoCallOutline } from "react-icons/io5";
 import { CiLocationOn, CiMail } from "react-icons/ci";
 import background from "../../assets/home/contact/svg/background.svg";
+import { FaArrowRight, FaChevronDown } from "react-icons/fa";
+import { FiArrowRight } from "react-icons/fi";
 
 const Contact = () => {
   return (
-    <div className="w-full bg-[#0A2945] max-w-[1900px] min-w-[250px] mx-auto font-poppins">
+    <div className="w-full bg-[#0A2945] py-10 max-w-[1900px] min-w-[250px] mx-auto font-poppins">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:px-10 items-center">
         {/* Image Section */}
         <div
@@ -190,8 +192,8 @@ const Contact = () => {
               </div>
 
               <div className="flex flex-col gap-2 col-span-2 ">
-                <button className="mt-4 py-2 text-white rounded-lg w-full bg-gradient-to-r from-blue-900 via-blue-700 to-blue-400">
-                  Send Message
+                <button className="mt-4 py-2 flex gap-2 items-center justify-between px-6 text-white rounded-lg  bg-gradient-to-r from-blue-900 via-blue-700 to-blue-400">
+                  Send Message <span className="text-xs -rotate-90"><FaChevronDown/></span>
                 </button>
               </div>
 
