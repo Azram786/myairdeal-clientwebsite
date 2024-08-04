@@ -861,7 +861,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row items-center justify-between py-4 border-b"
+                className="flex flex-col md:flex-row items-center justify-between md:justify-around py-4 border-b"
               >
                 <div className="flex items-center">
                   <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}  onError={(e) => e.currentTarget.src = defaultAirline} alt={segment?.fD?.aI?.code} className="w-10 h-10 mr-4" />

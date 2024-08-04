@@ -58,13 +58,13 @@ const RecentSearch = ({ ResentSearchData }) => {
                 <div className="bg-white rounded-2xl shadow-lg p-3 border border-#007EC4] my-3 font-poppins max-w-[335px] mx-auto">
                           <div className="flex flex-col space-y-2">
                 <div className="flex flex-row justify-between items-center">
-                  <div className="text-left flex-1">
+                  <div className="text-left w-[40%]">
                     <div className="text-xs font-bold">{search?.searchQuery.routeInfos[0].fromCityOrAirport?.code || "N/A"}</div>
                     <div className="text-xxs text-gray-500">Bangalore</div>
                     <div className="text-xs text-gray-400 mt-1">Depart</div>
                     <div className="text-xs">02-08-2024</div>
                   </div>
-                  <div className="flex flex-col items-center flex-1">
+                  <div className="flex flex-col w-[20%] items-center ">
                     {/* <div className="w-10 h-10 rounded-md mb-1">
                       <img
                         src={flightLogo}
@@ -72,14 +72,14 @@ const RecentSearch = ({ ResentSearchData }) => {
                         className="w-full h-full object-cover"
                       />
                     </div> */}
-                    <div className="text-xxs font-semibold">Air India</div>
-                    <div className="relative w-20 h-0.5 bg-gray-300 my-1">
+                    <div className="text-xs font-semibold">Air India</div>
+                    <div className="relative  h-0.5 bg-gray-300 my-1">
                       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500">
                         <MdFlight className="transform rotate-90 text-base" />
                       </div>
                     </div>
                   </div>
-                  <div className="text-right flex-1">
+                  <div className="text-right w-[40%] ">
                     <div className="text-xs font-bold">{search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}</div>
                     <div className="text-xxs text-gray-500">Hyderabad</div>
                     <div className="text-xs text-gray-400 mt-1">Arrival</div>

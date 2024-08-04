@@ -19,7 +19,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
 
 
   const renderOneWay = () => (
-    <div className="grid md:grid-cols-4 grid-cols-2  w-full bg-[#007EC4] text-white p-2 rounded">
+    <div className="grid md:grid-cols-4 grid-cols-2  bg-[#007EC4] text-white p-2 rounded">
       <div className="flex items-center space-x-4 border-r justify-center ">
         <div className="flex flex-col">
           <span className="text-xs text-white">From</span>
@@ -63,7 +63,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
   );
 
   const renderRoundTrip = () => (
-    <div className="flex items-center justify-between w-full bg-[#007EC4] text-white p-2 rounded">
+    <div className="flex items-center justify-between  bg-[#007EC4] text-white p-2 rounded">
       <div className="flex items-center space-x-4">
         <div className="flex flex-col">
           <span className="text-xs text-white">From</span>
@@ -99,7 +99,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
   );
 
   const renderMultiCity = () => (
-    <div className="flex w-full bg-[#007EC4] text-black p-2 rounded">
+    <div className="flex  bg-[#007EC4] text-black p-2 rounded">
       <div className='w-1/2  overflow-x-auto no-scroll flex'>
         {routeInfos.map((route, index) => (
           <div key={index} className="flex items-center shrink-0 justify-around  md:border-r border-black px-2   ">

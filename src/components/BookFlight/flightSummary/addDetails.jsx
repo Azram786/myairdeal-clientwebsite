@@ -300,7 +300,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
   };
 
   const handleProceedToReview = useCallback(() => {
-    const isValid = validateFormData(passengers, gstDetails);
+    const isValid = validateFormData(passengers);
 
     console.log("isValid", isValid,gstDetails,"gst");
     if (isValid) {

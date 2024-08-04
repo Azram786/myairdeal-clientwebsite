@@ -199,6 +199,7 @@ const Oneway = ({ flightProps, passenger,query }) => {
     return 0;
   };
 
+  console.log(filteredFlights, "filtered flights");
   return (
     <div className="flex md:flex-row flex-col">
       <OneWaySideBar 
@@ -212,8 +213,8 @@ const Oneway = ({ flightProps, passenger,query }) => {
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={
-              <span>
-                {filteredFlights[0]?.sI[0]?.da.city} <ArrowRightOutlined /> {filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa.city}
+              <span className="flex gap-2">
+                <span className="flex flex-col justify-center items-center  "> <p>{filteredFlights[0]?.sI[0]?.da.city}</p> <p className="text-[10px]">{new Date(filteredFlights[0]?.sI[0]?.dt).toISOString().split('T')[0]}</p></span> <ArrowRightOutlined /> <span className="flex flex-col justify-center items-center " > <p>{filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa.city}</p> <p className="text-[10px]">{new Date(filteredFlights[0]?.sI[0]?.dt).toISOString().split('T')[0]}</p></span> 
               </span>
             }
             key="1"

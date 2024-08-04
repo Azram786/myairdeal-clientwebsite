@@ -1029,7 +1029,7 @@ const FlightDetailsCard = ({
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row items-center justify-around py-4 border-b"
+                className="flex flex-col md:flex-row items-center justify-between md:justify-around py-4 border-b"
               >
                 <div className="flex items-center">
                   <img

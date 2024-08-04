@@ -277,7 +277,7 @@ const BookingCard = ({ selectedFlights, onBook, passenger }) => {
   return (
     <div className="fixed left-0 bottom-0 w-full bg-[#0A223D]  text-white p-2">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <div className='w-[85%] flex overflow-x-auto no-scroll gap-2'>
+        <div className='w-[55%] md:w-[70%] flex overflow-x-auto no-scroll gap-2'>
           {selectedFlights.map((flight, index) => {
             const { departureCity, departureTime, arrivalCity, arrivalTime, airline, flightNumber, airlineCode } = getFlightDetails(flight);
             return (
@@ -314,7 +314,7 @@ const BookingCard = ({ selectedFlights, onBook, passenger }) => {
             );
           })}
         </div>
-        <div className="flex w-[15%] items-center space-x-4">
+        <div className="flex w-[45%] md:w-[30%] flex-col md:flex-row items-center space-x-4">
           <div className="text-lg font-bold">₹{totalPrice.toLocaleString()}</div>
           <button
             onClick={onBook}

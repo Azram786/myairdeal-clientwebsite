@@ -86,7 +86,7 @@ const HomePage = () => {
           <Header />
           <Banner />
           <FilterSection formData={formData} setFormData={setFormData} />
-          <RecentSearch ResentSearchData={ResentSearchData} />
+         {token && <RecentSearch ResentSearchData={ResentSearchData} />}
           <OfferSection />
           <AboutUs/>
           <Service/>
