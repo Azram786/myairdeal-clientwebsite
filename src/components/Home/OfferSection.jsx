@@ -240,7 +240,7 @@ const OfferSection = () => {
       className="h-full"
     >
       <div style={{ backgroundImage: `url(${background})` }} className="h-full">
-        <div className='px-16 py-6 mx-auto bg-gradient-to-b from-[#1966AB]/80 to-[#0E385E]/80 max-w-[1900px] min-w-[250px] overflow-hidden'>
+        <div className='md:px-16 px-3 py-6 mx-auto bg-gradient-to-b from-[#1966AB]/80 to-[#0E385E]/80 max-w-[1900px] min-w-[250px] overflow-hidden'>
           <div className='flex w-full justify-between'>
             <div className="flex flex-col text-white px-5 items-start gap-4 2xl:gap-6 ">
               <h2 className="font-semibold text-[1.3rem] md:text-4xl 2xl:text-[2.2rem] ">
@@ -253,29 +253,30 @@ const OfferSection = () => {
             </div>
             <div className="flex items-center rounded-lg w-full md:w-1/4 2xl:h-full ">
               <select
-                className="flex justify-center relative text-white items-center p-2 w-full outline-none sm:w-1/2 sm:mx-auto rounded-lg border border-white mt-1 font-roboto text-center font-light bg-transparent md:w-3/4 2xl:w-3/4 2xl:p-4"
+                className="flex justify-center  relative text-white items-center p-2 w-full outline-none sm:w-1/2 sm:mx-auto rounded-lg border border-white mt-1 font-roboto text-center font-light bg-transparent md:w-3/4 2xl:w-3/4 2xl:p-4"
                 name=""
                 id=""
                 defaultValue={"i"}
               >
-                <option value="i">International</option>
-                <option value="d">Domestic</option>
+                <option className='bg-gray-500' value="i">International</option>
+                <option className='bg-gray-500' value="d">Domestic</option>
               </select>
             </div>
           </div>
           <div className="h-full px-6 py-6 text-white grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
             {offers.map((offer, index) => (
               <div
+              
                 key={index}
                 style={{
                   backgroundImage: `url(${offer.img})`,
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                 }}
-                className="h-[55vh] w-full flex items-end rounded-[3%]"
+                className="h-[55vh] w-full  flex items-end rounded-[3%]"
               >
-                <div className="mb-5 px-3 w-full">
-                  <div className="flex items-end justify-between">
+                <div className="mb-5 w-full px-5">
+                  <div className="flex w-full items-end justify-between ">
                     <div>
                       <div className="font-bold text-[.9rem] md:text-[1.3rem]">
                         {offer.cntryName}
@@ -288,9 +289,11 @@ const OfferSection = () => {
                       {offer.amount}
                     </h3>
                   </div>
-                  <button className="text-black bg-white rounded-lg font-semibold text-[.8rem] md:text-[1rem] mt-4 md:p-4 p-2 md:w-[88%] w-full">
-                    Book Flight
-                  </button>
+                  <div className='flex justify-center mt-3 '>
+                    <button className="text-black p-2 w-full bg-white rounded-lg font-semibold text-[.8rem] md:text-[1rem] ">
+                      Book Flight
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
