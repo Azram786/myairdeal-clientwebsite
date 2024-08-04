@@ -36,14 +36,14 @@ const FlightSummary = ({ flightData, passenger }) => {
   const location = useLocation();
   const [seatMapData, setSeatMapData] = useState(null); // For seat map API
   const { bookings } = location.state || {};
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const bookingArray = useMemo(() => {
-    return bookings ? bookings.map(item => item.priceId) : [];
+    return bookings ? bookings.map((item) => item.priceId) : [];
   }, [bookings]);
 
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
-      navigate('/search');
+      navigate("/search");
     }
   }, [bookings, bookingArray, navigate]);
 
@@ -80,8 +80,8 @@ const FlightSummary = ({ flightData, passenger }) => {
       .catch((error) => {
         console.log(error);
         setLoading(false);
-        ReactToast('Some error occurred please try again')
-        navigate('/')
+        ReactToast("Some error occurred please try again");
+        navigate("/");
         console.log(error);
       });
   };
@@ -101,23 +101,26 @@ const FlightSummary = ({ flightData, passenger }) => {
 
   //Price
 
-  const [taxesExpanded, setTaxesExpanded] = useState(
-    ApiData.tripInfos.map(() => false)
-  );
-  const [amountExpanded, setAmountExpanded] = useState(
-    ApiData.tripInfos.map(() => false)
-  );
+  const [taxesExpanded, setTaxesExpanded] = useState(false);
+  const [amountExpanded, setAmountExpanded] = useState(false);
 
-  const toggleTaxes = (index) => {
-    setTaxesExpanded((prev) =>
-      prev.map((value, i) => (i === index ? !value : value))
-    );
+  // const toggleTaxes = (index) => {
+  //   setTaxesExpanded((prev) =>
+  //     prev.map((value, i) => (i === index ? !value : value))
+  //   );
+  // };
+  const toggleTaxes = () => {
+    setTaxesExpanded((prev) => !prev);
   };
 
-  const toggleAmount = (index) => {
-    setAmountExpanded((prev) =>
-      prev.map((value, i) => (i === index ? !value : value))
-    );
+  // const toggleAmount = (index) => {
+  //   setAmountExpanded((prev) =>
+  //     prev.map((value, i) => (i === index ? !value : value))
+  //   );
+  // };
+
+  const toggleAmount = () => {
+    setAmountExpanded((prev) => !prev);
   };
   // ------------------------------------------------------------
 
@@ -175,11 +178,12 @@ const FlightSummary = ({ flightData, passenger }) => {
     <div className="bg-gray-100 min-h-screen py-10 sm:text-sm md:text-lg p-2">
       
         <div className="container mx-auto md:p-2 max-w-5xl font-poppins">
-          <ProgressBar
-            currentStep={currentStep}
-            onStepClick={handleStepClick}
-          />
-
+          <div className="w-full px-4 sm:px-6 md:px-8 mb-6  ">
+            <ProgressBar
+              currentStep={currentStep}
+              onStepClick={handleStepClick}
+            />
+          </div>
           <div className="flex flex-col md:flex-row gap-4 p-2 ">
             {/* Left section */}
 
@@ -373,7 +377,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                     </button>
                   </div>
                 </>
-              ) :  currentStep === 1 ? (
+              ) : currentStep === 1 ? (
                 <AddDetails
                   bookingId={data?.bookingId}
                   Step={handleSaveAndContinue}
@@ -400,12 +404,11 @@ const FlightSummary = ({ flightData, passenger }) => {
                     // updatePssenger={updatePssenger}
                   />
                 </>
-              ) : null
-            }
+              ) : null}
             </div>
 
             {/* Right Section */}
-            <div className=" md:w-[30%] rounded-lg bg-white p-2 space-y-4 h-fit">
+            <div className="md:w-[30%] rounded-lg bg-white space-y-4 p-5 mx-9">
               <div className="w-full max-w-full rounded-lg bg-white">
                 <div className="flex items-center justify-between border-b border-gray-300 pb-4">
                   <div>
@@ -415,8 +418,8 @@ const FlightSummary = ({ flightData, passenger }) => {
                   </div>
                 </div>
 
-                <div className="text-gray-700 mt-4 md:mt-6  space-y-4 md:space-y-6">
-                  <div className=" pt-3">
+                <div className="text-gray-700 mt-4 md:mt-6 space-y-4 md:space-y-6">
+                  <div className="pt-3">
                     <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                       <span>Base fare</span>
                       <span>
@@ -427,7 +430,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                     <div className="mt-2">
                       <div
                         className="flex justify-between text-xs md:text-sm lg:text-base font-medium cursor-pointer"
-                        onClick={() => toggleTaxes()}
+                        onClick={toggleTaxes}
                       >
                         <span>Taxes and fees</span>
                         <div className="flex items-center">
@@ -441,43 +444,49 @@ const FlightSummary = ({ flightData, passenger }) => {
                           )}
                         </div>
                       </div>
-                      {taxesExpanded && (
-                        <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
-                          <div className="flex justify-between">
-                            <span>Airline GST</span>
-                            <span>
-                              {
-                                data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
-                                  ?.AGST
-                              }
-                            </span>
+                      <div
+                        className={`transition-max-height duration-300 ease-in-out ${
+                          taxesExpanded ? "max-h-[500px]" : "max-h-0"
+                        } overflow-y-auto`}
+                      >
+                        {taxesExpanded && (
+                          <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
+                            <div className="flex justify-between">
+                              <span>Airline GST</span>
+                              <span>
+                                {
+                                  data?.totalPriceInfo?.totalFareDetail?.afC
+                                    ?.TAF?.AGST
+                                }
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Other Taxes</span>
+                              <span>
+                                {
+                                  data?.totalPriceInfo?.totalFareDetail?.afC
+                                    ?.TAF?.OT
+                                }
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>YR</span>
+                              <span>
+                                {
+                                  data?.totalPriceInfo?.totalFareDetail?.afC
+                                    ?.TAF?.YR
+                                }
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Other Taxes</span>
-                            <span>
-                              {
-                                data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
-                                  ?.OT
-                              }
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>YR</span>
-                            <span>
-                              {
-                                data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
-                                  ?.YR
-                              }
-                            </span>
-                          </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
 
                     <div className="mt-2">
                       <div
                         className="flex justify-between text-xs md:text-sm lg:text-base font-bold cursor-pointer"
-                        onClick={() => toggleAmount()}
+                        onClick={toggleAmount}
                       >
                         <span>Amount to Pay</span>
                         <div className="flex items-center">
@@ -491,24 +500,30 @@ const FlightSummary = ({ flightData, passenger }) => {
                           )}
                         </div>
                       </div>
-                      {amountExpanded && (
-                        <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
-                          <div className="flex justify-between">
-                            <span>Commission</span>
-                            <span>N/A</span>
+                      <div
+                        className={`transition-max-height duration-300 ease-in-out ${
+                          amountExpanded ? "max-h-[500px]" : "max-h-0"
+                        } overflow-y-auto`}
+                      >
+                        {amountExpanded && (
+                          <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
+                            <div className="flex justify-between">
+                              <span>Commission</span>
+                              <span>N/A</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>TDS</span>
+                              <span>N/A</span>
+                            </div>
+                            <div className="flex justify-between font-medium">
+                              <span>Net Price</span>
+                              <span>
+                                {data?.totalPriceInfo?.totalFareDetail?.fC?.NF}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex justify-between">
-                            <span>TDS</span>
-                            <span>N/A</span>
-                          </div>
-                          <div className="flex justify-between font-medium">
-                            <span>Net Price</span>
-                            <span>
-                              {data?.totalPriceInfo?.totalFareDetail?.fC?.NF}
-                            </span>
-                          </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -516,10 +531,10 @@ const FlightSummary = ({ flightData, passenger }) => {
             </div>
           </div>
         </div>
-      
-      {data?.conditions?.st &&
-        <SessionTimer sessionTimeout={data?.conditions?.st}/>}
-      
+      )}
+      {data?.conditions?.st && (
+        <SessionTimer sessionTimeout={data?.conditions?.st} />
+      )}
     </div>
   );
 };

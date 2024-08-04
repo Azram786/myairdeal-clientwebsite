@@ -37,7 +37,7 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
 
   const handleInputChange = (name, value) => {
     setValue(name, value);
-    trigger(name)
+    trigger(name);
     updatePassenger(index, name, value);
   };
 
@@ -87,16 +87,15 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
               minLength: { value: 8, message: "Minimum 8 characters" },
               maxLength: { value: 15, message: "Maximum 15 characters" },
             })}
-            onChange={(e) =>
-              handleInputChange(e.target.name, e.target.value)
-            }
+            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
             value={watch("passportNumber")}
             className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
             aria-label="Passport Number"
           />
-          <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
+          <label className=" absolute top-0 left-2 w-44 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
             Passport Number
           </label>
+
           {errors.passportNumber && (
             <span className="text-red-500 text-xs">
               {errors.passportNumber.message}
