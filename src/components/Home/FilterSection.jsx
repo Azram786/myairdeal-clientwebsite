@@ -22,7 +22,7 @@ import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLastSearch } from "../../store/slices/aut.slice";
-const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormData }) => {
+const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormData, setTypeOfTravel,typeOfTravel }) => {
 
 
 
@@ -50,7 +50,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
   const [modalIsOpen, setModelIsOpen] = useState(false);
 
   // state for filteration
-  const [typeOfTravel, setTypeOfTravel] = useState("one-way");
+
 
   //changing type-of-travel
   const handleTypeOfTravelChange = (type) => {

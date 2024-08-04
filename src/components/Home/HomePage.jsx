@@ -117,6 +117,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const { token, resentSearch } = useSelector((state) => state.auth);
   const [ResentSearchData, setResentSearchData] = useState([]);
+  const [typeOfTravel, setTypeOfTravel] = useState("one-way");
 
   const [formData, setFormData] = useState({
     cabinClass: "ECONOMY",
@@ -183,6 +184,7 @@ const HomePage = () => {
         pft: resentSearch.searchQuery.searchModifiers?.pft || prevFormData.pft,
       }));
       if (resentSearch.searchQuery.routeInfos.length > 1) {
+        setTypeOfTravel("multi-city")
         setDynamicFormData(
           resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => ({
             fromCity: route.fromCityOrAirport.code,
@@ -210,6 +212,8 @@ const HomePage = () => {
             setFormData={setFormData}
             dynamicFormData={dynamicFormData}
             setDynamicFormData={setDynamicFormData}
+            typeOfTravel={typeOfTravel}
+            setTypeOfTravel={setTypeOfTravel}
           />
           <RecentSearch ResentSearchData={ResentSearchData} />
           <OfferSection />
