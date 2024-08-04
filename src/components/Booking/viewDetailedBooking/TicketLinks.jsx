@@ -188,7 +188,7 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
               {selectedLink.for === 'raise' ? (
                 <TicketRaising bookingId={singleBookingData?.order?.bookingId} closeModal={closeModal} />
               ) : (
-                <SubmitAmendment singleBookingData={singleBookingData} />
+                <SubmitAmendment setModalIsOpen={setModalIsOpen} singleBookingData={singleBookingData} />
               )}
             </div>
           </div>

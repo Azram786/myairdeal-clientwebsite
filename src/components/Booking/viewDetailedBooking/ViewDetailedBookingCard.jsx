@@ -33,13 +33,13 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
             <div
               className="h-16 w-16 flex items-center justify-center bg-white text-blue-500 font-bold text-xl rounded-full mr-4"
             >
-              {singleBookingData?.gstInfo?.registeredName.charAt(0).toUpperCase()}
+              {singleBookingData?.gstInfo?.registeredName?.charAt(0).toUpperCase() || user.firstName.charAt(0)}
             </div>
             <div className="w-full  ">
 
               <div className="text-xl font-bold uppercase ">
                 {/* {user?.firstName} {user?.lastName} */}
-                {singleBookingData?.gstInfo?.registeredName}
+                {singleBookingData?.gstInfo?.registeredName || user.firstName}
               </div>
               <div className="text-lg  lg:text-xl  flex-col md:flex-row font-semibold flex w-full justify-between">
                 <div className=" flex ">

@@ -22,23 +22,20 @@ import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLastSearch } from "../../store/slices/aut.slice";
-const FilterSection = ({ formData, setFormData }) => {
+const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormData, setTypeOfTravel,typeOfTravel }) => {
 
 
 
-  const { resentSearch } = useSelector((state) => state.auth)
+  const { resentSearch, resentSearchFilter } = useSelector((state) => state.auth)
+
+
+
+
 
   const navigate = useNavigate()
 
-  // State for dynamically rendering form elements
-  const [dynamicFormData, setDynamicFormData] = useState([
-    {
-      fromCity: formData.toCity ? formData.toCityOrAirport : "",
-      toCity: "",
-      travelDate: formData.travelDate,
-    },
-  ]);
-  console.log({ dynamicFormData })
+
+
 
   const { token } = useSelector((state) => state.auth)
   const [Loading, setLoading] = useState(false);
@@ -53,7 +50,7 @@ const FilterSection = ({ formData, setFormData }) => {
   const [modalIsOpen, setModelIsOpen] = useState(false);
 
   // state for filteration
-  const [typeOfTravel, setTypeOfTravel] = useState("one-way");
+
 
   //changing type-of-travel
   const handleTypeOfTravelChange = (type) => {
@@ -64,6 +61,9 @@ const FilterSection = ({ formData, setFormData }) => {
   const openModalHandler = () => {
     setModelIsOpen(true);
   };
+
+
+
 
   //set country code where from
   const setContryCodeFrom = (value) => {
@@ -135,6 +135,9 @@ const FilterSection = ({ formData, setFormData }) => {
         value: item.code,
         label: `${item.name} - ${item.code}`,
       }));
+
+
+
       setDefaultOptions(options);
     } catch (error) {
       // ReactToast("Fetching Country Details Reload Again")
@@ -287,21 +290,19 @@ const FilterSection = ({ formData, setFormData }) => {
 
       console.log({ query })
       dispatch(setLastSearch(query))
-      if(token){
-        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        console.log({ response, index: 4 })
-      }
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
 
 
       setLoading(false);
       navigate(`/search`, { state: { query } });
     } catch (error) {
       setLoading(false);
-      console.log(error)
+      // console.log(error)
       ReactToast("Something went wrong");
     }
   };
@@ -364,8 +365,14 @@ const FilterSection = ({ formData, setFormData }) => {
                     loadOptions={getCountriesHandlerOne}
                     placeholder="Where From ?"
                     icon={<RiFlightTakeoffFill />}
+                    myFormData={formData}
                     setFormData={setContryCodeFrom}
                     defaultOptions={defaultOptions}
+                    // defaultValue={resentSearchFilter[0][0] ? {
+                    //   value: resentSearchFilter[0][0].value,
+                    //   label: resentSearchFilter[0][0].label
+                    // } : null}
+                    value={formData?.fromCityOrAirport}
                   />
                 </div>
               </div>
@@ -382,6 +389,11 @@ const FilterSection = ({ formData, setFormData }) => {
                     loadOptions={getCountriesHandlerTwo}
                     placeholder="Where To ?"
                     defaultOptions={defaultOptions}
+                    // defaultValue={resentSearchFilter[0][0] ? {
+                    //   value: resentSearchFilter[1][0].value,
+                    //   label: resentSearchFilter[1][0].label
+                    // } : null}
+                    value={formData.toCityOrAirport}
                   />
                 </div>
               </div>
