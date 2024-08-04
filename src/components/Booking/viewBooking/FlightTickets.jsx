@@ -197,8 +197,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
       
     </div>
-  
-    </>
+
   );
 };
 
