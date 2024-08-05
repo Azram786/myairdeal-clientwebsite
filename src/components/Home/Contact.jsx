@@ -200,7 +200,7 @@ const Contact = () => {
               </div>
 
               {/* Contact Info Section */}
-              <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+              <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
                 <div className="flex items-start gap-2">
                   <div className="flex-shrink-0 p-1 rounded-full bg-white">
                     <IoCallOutline className="text-blue-900 text-[1.25rem]" />
@@ -221,13 +221,13 @@ const Contact = () => {
                     </span>
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
+                <div className="flex flex-1 items-start gap-2">
                   <div className="flex-shrink-0 p-1 rounded-full bg-white">
                     <CiMail className="text-blue-900 text-[1.25rem]" />
                   </div>
                   <div className="flex flex-col text-sm">
                     <span className="text-white font-semibold">Email</span>
-                    <span className="text-white">contact@example.com</span>
+                    <span className="text-white ">contact@example.com</span>
                   </div>
                 </div>
               </div>

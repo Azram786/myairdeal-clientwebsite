@@ -313,8 +313,8 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-between md:justify-evenly  relative0">
-      <div className="     md:rounded-xl w-[90%]   shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4  md:py-5 md:w-[85%] relative  md:top-[-100px]   ">
+    <div className="flex flex-col items-center  justify-between md:justify-evenly ">
+      <div className="     md:rounded-xl w-[90%] mt-4 md:mt-0  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   ">
         {/* type of travel selecting section */}
 
         <div className="flex justify-center md:justify-stretch  text-white ">
@@ -493,7 +493,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         {/* fare type with submit button section  */}
         <div className=" md:items-center  flex flex-col md:flex-row mt-3   ">
           <div className="    flex  flex-col md:flex-row  md:w-3/4 gap-2 md:gap-0">
-            <div className=" w-full md:w-1/3 ">
+            <div className=" w-full flex justify-center md:w-1/3 ">
               <select
                 id="fare-type"
                 className=" outline-none border rounded-md md:w-auto p-2 w-3/4 md:p-1  bg-white"
@@ -514,7 +514,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                 <option value="SENIOR_CITIZEN">Senior Citizen Fares</option>
               </select>
             </div>
-            <div className="lg:w-1/3">
+            <div className="lg:w-1/3 flex justify-center">
               <select
                 name=""
                 className="border w-3/4  md:w-auto rounded-md l p-2 md:p-1    bg-white"
@@ -526,7 +526,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                 <option value="">ethiad</option>
               </select>
             </div>
-            <div className="flex gap-2 p-1 w-full items-center md:w-1/3  ">
+            <div className="flex gap-2 p-1 w-full justify-center items-center md:w-1/3  ">
               <label>Direct flights</label>
               <input
                 type="checkbox"
@@ -547,7 +547,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               disabled={Loading}
               // form submition
               onClick={submitHandler}
-              className=" flex items-center  space-x-2  text-white bg-[#1F61BC] p-3 rounded"
+              className=" flex items-center  space-x-2  text-white bg-[#01324D] p-3 rounded"
             >
               <FaTelegramPlane className="text-white text-lg" />
               <span>{Loading ? "Searching..." : "Search Flights"}</span>
