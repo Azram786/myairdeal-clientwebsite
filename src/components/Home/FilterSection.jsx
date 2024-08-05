@@ -318,7 +318,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
   }, []);
 
   return (
-    <div className="flex flex-col items-center  justify-between md:justify-evenly ">
+    <div className="flex flex-col items-center  justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
       <div className="     md:rounded-xl w-[90%] mt-4 md:mt-0  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   ">
         {/* type of travel selecting section */}
 
@@ -384,7 +384,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               <div className="md:flex  hidden sm:items-center  justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2  -translate-y-1/2 bg-black w-8 h-8 rounded-full ">
                 <GoArrowSwitch />
               </div>
-              <div className="flex  items-center border rounded p-2 md:w-1/2 ">
+              <div className="flex md:ml-2 items-center border rounded p-2 md:w-1/2 ">
                 <div>
                   <RiFlightLandLine className=" text-2xl md:text-3xl " />
                 </div>
