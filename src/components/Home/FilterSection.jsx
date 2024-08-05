@@ -21,12 +21,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setLastSearch } from "../../store/slices/aut.slice";
+import { setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
 const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormData, setTypeOfTravel, typeOfTravel }) => {
 
 
 
-  const { resentSearch, resentSearchFilter } = useSelector((state) => state.auth)
+  const { resentSearch, lastSearch } = useSelector((state) => state.auth)
 
 
 
@@ -94,7 +94,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
       const options = response.data.data.map((item) => ({
         value: item.code,
-        label: `${item.name} - ${item.code}`,
+        label: `${item.city} - ${item.code}`,
       }));
 
       callback(options);
@@ -114,7 +114,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
       const options = response.data.data.map((item) => ({
         value: item.code,
-        label: `${item.name} - ${item.code}`,
+        label: `${item.city} - ${item.code}`,
       }));
 
       callback(options);
@@ -126,21 +126,25 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
   //select tag default value
   const fetchDefaultOptions = async () => {
+
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_URL
         }search/airport-country-code?countrycode=IN`
       );
-      const options = response.data.data.map((item) => ({
-        value: item.code,
-        label: `${item.name} - ${item.code}`,
-      }));
+      const options = response.data.data.map((item) => {
+
+        return ({
+          value: item.code,
+          label: `${item.city} - ${item.code}`,
+        })
+      });
 
 
 
       setDefaultOptions(options);
     } catch (error) {
-      // ReactToast("Fetching Country Details Reload Again")
+
     }
   };
 
@@ -290,6 +294,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
       console.log({ query })
       dispatch(setLastSearch(query))
+      dispatch(setResentSearch(query))
       const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
         headers: {
           Authorization: `Bearer ${token}`
