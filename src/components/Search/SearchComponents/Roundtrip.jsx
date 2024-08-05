@@ -660,11 +660,11 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
             </h2>
           </div>
         </div>
-        <div className="flex h-[850px] overflow-y-auto no-scroll">
-          <div className="w-1/2 md:pr-2">
+        <div className="flex h-[850px] ">
+          <div className="w-1/2 overflow-y-auto no-scroll">
             {renderFlightSection(filteredOnward, "onward")}
           </div>
-          <div className="w-1/2 md:pl-2">
+          <div className="w-1/2  overflow-y-auto no-scroll">
             {renderFlightSection(filteredReturn, "return")}
           </div>
         </div>

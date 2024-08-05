@@ -70,7 +70,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
   };
 
   return (
-    <div className="flex flex-col gap-5 lg:flex-row justify-between items-end xl:p-6 p-2 bg-red-200 border rounded-lg">
+    <div className="flex  flex-col gap-5 lg:flex-row justify-between items-end xl:p-6 p-2 bg-red-200 border rounded-lg">
       <div className="w-full  xl:w-[75%] justify-between  flex  flex-col gap-2">
         {booking?.data?.itemInfos?.AIR?.tripInfos?.map((trip, index) => (
           <div key={index} className="flex  lg:flex-row   items-center justify-between flex-col sm:flex-row border   p-5 gap-2 ">

@@ -120,10 +120,13 @@ const Contact = () => {
 
         {/* Contact Form Section */}
         <div className="flex flex-col w-full justify-center items-center">
-          <div className="mb-5 lg:mb-10 text-center lg:text-left">
-            <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl font-bold">
-              Let us know how we can help you!
-            </h1>
+          <div className="mb-5 px-6 md:w-[85%]   lg:mb-10  ">
+          <h2 className="text-base font-sans text-gray-500 font-bold">Contact us</h2>
+            <div  className="flex w-full">
+              <h1 className="text-white w-full text-start text-2xl sm:text-3xl lg:text-4xl font-bold">
+                Let us know how we can help you!
+              </h1>
+            </div>
           </div>
           <div className="w-full sm:w-[90%] mt-6">
             <form className="px-6">

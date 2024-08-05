@@ -17,10 +17,25 @@ const FlightSearchSummary = ({ data, tripType }) => {
   console.log(tripType,"type")
   const passengers = parseInt(paxInfo.ADULT) + parseInt(paxInfo.CHILD) + parseInt(paxInfo.INFANT);
 
+  const formatTravelDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Invalid Date";
+    }
+  
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  
+    return formatter.format(date).replace(/(\d+)/, '$1th');
+  };
 
 
   const renderOneWay = () => (
-    <div className="grid md:grid-cols-4 grid-cols-1  bg-[#007EC4] text-white p-2 rounded">
+    <div className="grid  md:grid-cols-4 grid-cols-1  bg-[#007EC4] text-white p-2 ">
       <div className="flex items-center space-x-4 md:border-r justify-center ">
         <div className="flex flex-col">
           <span className="text-xs text-white">From</span>
@@ -46,7 +61,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
       <div className="flex items-center justify-center  md:border-r">
         <div className="flex flex-col ">
           <span className="text-xs text-white">Departure Date</span>
-          <span className="text-lg font-semibold">{routeInfos[0].travelDate}</span>
+          <span className="text-lg font-semibold">{ formatTravelDate(routeInfos[0].travelDate)}</span>
         </div>
         {/* <div className="flex flex-col">
           <span className="text-xs text-white">Preferred</span>
@@ -64,8 +79,8 @@ const FlightSearchSummary = ({ data, tripType }) => {
   );
 
   const renderRoundTrip = () => (
-    <div className="flex flex-col md:flex-row items-center justify-between  bg-[#007EC4] text-white p-2 rounded">
-      <div className="flex items-center space-x-4 w-[30%] justify-center md:border-r md:px-2">
+    <div className="grid grid-cols-1 md:grid-cols-5  place-items-center justify-between  bg-[#007EC4] text-white p-2 px-6">
+      <div className="flex w-full items-center space-x-4  justify-center md:border-r md:px-2">
         <div className="flex flex-col">
           <span className="text-xs text-white">From</span>
           <span className="text-lg font-semibold">{routeInfos[0].fromCityOrAirport.code}</span>
@@ -77,16 +92,16 @@ const FlightSearchSummary = ({ data, tripType }) => {
           <span className="text-lg font-semibold">{routeInfos[0].toCityOrAirport.code}</span>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row items-center space-x-4">
-        <div className="flex flex-col items-center md:border-r md:px-2 md:items-end">
+      {/* <div className="flex flex-col md:flex-row items-center space-x-4"> */}
+        <div className="flex w-full  flex-col items-center md:border-r md:px-2 ">
           <span className="text-xs  text-white">Departure</span>
           <span className="text-lg font-semibold">{routeInfos[0].travelDate}</span>
         </div>
-        <div className="flex flex-col items-center md:border-r  md:px-2 md:items-end">
+        <div className="flex flex-col items-center md:border-r  md:px-2 w-full">
           <span className="text-xs text-white">Return</span>
           <span className="text-lg font-semibold">{routeInfos[1]?.travelDate || 'N/A'}</span>
         </div>
-        <div className="flex flex-col items-center md:border-r md:px-2  md:items-end">
+        <div className="flex flex-col items-center md:border-r w-full overflow-x-auto">
           <span className="text-xs text-white">Passengers & Class</span>
           <span className="text-lg font-semibold">{`${passengers} ${passengers > 1 ? 'Passengers' : 'Passenger'} | ${cabinClass}`}</span>
         </div>
@@ -95,7 +110,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
             MODIFY SEARCH
           </button>
         </Link>
-      </div>
+      {/* </div> */}
     </div>
   );
 
@@ -150,7 +165,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
   );
 
   return (
-    <div className="w-full max-w-6xl mx-auto">
+    <div className="w-full ">
       {tripType === 'oneway' && renderOneWay()}
       {tripType === 'roundtrip' && renderRoundTrip()}
       {(tripType === 'multicity' || tripType === 'combo') && renderMultiCity()}

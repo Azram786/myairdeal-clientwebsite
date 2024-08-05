@@ -19,7 +19,10 @@ const Banner = () => {
         >
           Special offers to suit your plan
         </h4>
-      <div> <button className="bg-[#01324D] px-6 rounded-md mt-4 py-2">Explore</button></div>
+      <div> <button onClick={() => window.scrollTo({
+      top: 276,
+      behavior: 'smooth'
+    })} className="bg-[#01324D] px-6 rounded-md mt-4 py-2">Explore</button></div>
       </div>
     </div>
   );

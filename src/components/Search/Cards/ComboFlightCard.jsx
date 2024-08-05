@@ -861,7 +861,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row items-center justify-between md:justify-around py-4 border-b"
+                className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
               >
                 <div className="flex items-center">
                   <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}  onError={(e) => e.currentTarget.src = defaultAirline} alt={segment?.fD?.aI?.code} className="w-10 h-10 mr-4" />
@@ -1023,7 +1023,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
             />
             <div>
               <h1 className="text-lg font-bold">{startSegment.da.code}</h1>
-              <h1 className="text-sm text-gray-500">{startSegment.da.city}</h1>
+              {/* <h1 className="text-sm text-gray-500">{startSegment.da.city}</h1> */}
               <h1 className="text-sm">{formatDateTime(startSegment.dt)}</h1>
             </div>
           </div>
@@ -1048,7 +1048,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
           <div className="flex md:text-start text-end  items-center mb-4 md:mb-0">
             <div>
               <h1 className="text-lg font-bold">{endSegment.aa.code}</h1>
-              <h1 className="text-sm text-gray-500">{endSegment.aa.city}</h1>
+              {/* <h1 className="text-sm text-gray-500">{endSegment.aa.city}</h1> */}
               <h1 className="text-sm">{formatDateTime(endSegment.at)}</h1>
             </div>
           </div>
@@ -1108,12 +1108,12 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
             >
               {showDetails ? (
                   <span className="text-black">
-                    Fare Details :{" "}
+                    {/* Fare Details :{" "} */}
                     <span className="text-[#007EC4]">Hide Details</span>
                   </span>
                 ) : (
                   <span className="text-black">
-                    Fare Details :{" "}
+                    {/* Fare Details :{" "} */}
                     <span className="text-[#007EC4]">View Details</span>
                   </span>
                 )}
