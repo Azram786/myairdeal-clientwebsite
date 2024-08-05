@@ -1024,81 +1024,103 @@ const FlightDetailsCard = ({
     onSelect(index);
   };
 
+  const calculateLayoverTime = (currentSegment, nextSegment) => {
+    const currentArrival = new Date(currentSegment.at);
+    const nextDeparture = new Date(nextSegment.dt);
+    const layoverMinutes = (nextDeparture - currentArrival) / (1000 * 60);
+    const hours = Math.floor(layoverMinutes / 60);
+    const minutes = Math.floor(layoverMinutes % 60);
+    return `${hours}h ${minutes}m`;
+  };
+
   const renderTabs = () => {
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className="w-full p-2">
+          <div className="w-full  p-2">
             {data.map((segment, index) => (
+              <>
               <div
                 key={index}
-                className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
+                className="flex relative flex-col md:flex-row items-center justify-between px-4 py-4 "
               >
-                <div className="flex items-center">
+                <div className="flex items-center md:w-1/3">
                   <img
                     src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
                     alt={segment?.fD?.aI?.code}
                     className="md:size-10 size-8 rounded-md mr-4"
                   />
                   <div>
-                    <div className="font-bold">
+                    <div className="font-bold text-sm">
                       {segment.fD.aI.name} {segment.fD.fN}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.da.city} → {segment.aa.city}{" "}
                       {formatDateTime(segment.dt).split(",")[0]}
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <div className="text-right mr-8">
+               
+                <div className="flex flex-wr items-center md:w-2/3 justify-start">
+                  <div className=" mr-8 w-1/3">
                     <div className="font-bold">
-                      {formatDateTime(segment.dt).split(",")[1].trim()}
+                      {formatDateTime(segment.dt).split(",")[0].trim()}
                     </div>
-                    <div className="text-sm text-gray-500">
-                      {segment.da.city}, {segment.da.country}
+                    <div className="text-xs text-gray-500">
+                      {segment.da.city}, {segment?.da?.country}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.da.name}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.da.terminal || "N/A"}
                     </div>
                   </div>
-                  <div className="flex flex-col items-center mx-4">
-                    <div className="text-sm text-gray-500">
+                  <div className="flex w-1/3 flex-col items-center mx-4">
+                    <div className="text-xs text-end text-gray-500">
                       {segment.stops === 0
                         ? "Non-Stop"
                         : `${segment.stops} Stop(s)`}
                     </div>
                     <FaPlane className="my-2 text-gray-400" />
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {convertToHoursMinutes(segment.duration)}
                     </div>
                   </div>
-                  <div className="text-left ml-8">
+                  <div className="text-left w-1/3 ml-8">
                     <div className="font-bold">
-                      {formatDateTime(segment.at).split(",")[1].trim()}
+                      {formatDateTime(segment.at).split(",")[0].trim()}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.aa.city}, {segment.aa.country}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.aa.name}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.aa.terminal || "N/A"}
                     </div>
                   </div>
+                  
                 </div>
+                
               </div>
+              <div className="w-full flex justify-center">
+              {index < data.length - 1 && (
+                  <div className="px-4  flex justify-around text-xs  py-2 md:w-1/2 border border-gray-200 bg-gray-100 rounded-full md:text-sm">
+                    <span className=" font-bold">Require to change Plane</span>
+                    <span><span className="font-bold ml-4">Layover Time:</span> {calculateLayoverTime(segment, data[index + 1])}</span>
+                  </div>
+                )}
+              </div>
+                </>
             ))}
           </div>
         );
       case "Fare Details":
         return (
           <div className="w-full p-2">
-            <div className="grid grid-cols-3 w-full border-b pb-2 mb-2">
+            <div className="grid grid-cols-3 text-sm w-full border-b pb-2 mb-2">
               <div className="font-bold">TYPE</div>
               <div className="font-bold">Fare</div>
               <div className="font-bold">Total</div>
@@ -1110,7 +1132,7 @@ const FlightDetailsCard = ({
                 if (details) {
                   return (
                     <div key={passengerType} className="mb-4">
-                      <div className="grid grid-cols-3 w-full text-gray-600 mb-2">
+                      <div className="grid grid-cols-3 w-full text-xs text-gray-600 mb-2">
                         <div>
                           Fare Details for {passengerType} (CB: {details.cB})
                         </div>
@@ -1158,17 +1180,17 @@ const FlightDetailsCard = ({
         );
       case "Baggage Information":
         return (
-          <div className="grid p-2 grid-cols-3 w-full gap-4">
+          <div className="grid p-2 grid-cols-3 text-sm w-full gap-4">
             <div className="font-bold">SECTOR</div>
             <div className="font-bold">CHECKIN</div>
             <div className="font-bold">CABIN</div>
             {priceList.map((item, index) => (
               <React.Fragment key={index}>
-                <div>
+                <div className="text-xs">
                   {startSegment.da.code} - {endSegment.aa.code}
                 </div>
-                <div>Adult {item?.fd?.ADULT?.bI?.iB}</div>
-                <div>Adult {item?.fd?.ADULT?.bI?.cB}</div>
+                <div className="text-xs">Adult {item?.fd?.ADULT?.bI?.iB}</div>
+                <div className="text-xs">Adult {item?.fd?.ADULT?.bI?.cB}</div>
               </React.Fragment>
             ))}
           </div>
@@ -1198,11 +1220,11 @@ const FlightDetailsCard = ({
                 className="md:size-12 rounded-md  mr-6 md:flex hidden"
               />
               <div>
-                <h1 className="text-lg font-bold">{startSegment?.da.code}</h1>
+                <h1 className="text-base font-bold">{startSegment?.da.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
-                <h1 className="text-sm">{departureTime}</h1>
+                <h1 className="text-xs">{departureTime}</h1>
               </div>
             </div>
             <div className="flex items-center mb-4 md:mb-0">
@@ -1225,9 +1247,9 @@ const FlightDetailsCard = ({
             </div>
             <div className="flex md:text-start text-end  items-center mb-4 md:mb-0">
               <div>
-                <h1 className="text-lg font-bold">{endSegment?.aa.code}</h1>
+                <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
-                <h1 className="text-sm">{arrivalTime}</h1>
+                <h1 className="text-xs">{arrivalTime}</h1>
               </div>
             </div>
           </div>
@@ -1248,8 +1270,8 @@ const FlightDetailsCard = ({
                 }
               `}
                 >
-                  <div className="flex flex-col ">
-                    <p className="font-semibold">
+                  <div className="flex flex-col text-xs ">
+                    <p className="font-semibold text-xs">
                       ₹ {calculateTotalPrice(index).toFixed(2)}
                     </p>
                     <p className="text-[10px]">
