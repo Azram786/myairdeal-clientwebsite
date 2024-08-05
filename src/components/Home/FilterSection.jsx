@@ -94,7 +94,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
       const options = response.data.data.map((item) => ({
         value: item.code,
-        label: `${item.name} - ${item.code}`,
+        label: `${item.city} - ${item.code}`,
       }));
 
       callback(options);
@@ -114,7 +114,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
       const options = response.data.data.map((item) => ({
         value: item.code,
-        label: `${item.name} - ${item.code}`,
+        label: `${item.city} - ${item.code}`,
       }));
 
       callback(options);
@@ -126,15 +126,19 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
   //select tag default value
   const fetchDefaultOptions = async () => {
+
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_URL
         }search/airport-country-code?countrycode=IN`
       );
-      const options = response.data.data.map((item) => ({
-        value: item.code,
-        label: `${item.name} - ${item.code}`,
-      }));
+      const options = response.data.data.map((item) => {
+
+        return ({
+          value: item.code,
+          label: `${item.city} - ${item.code}`,
+        })
+      });
 
 
 
