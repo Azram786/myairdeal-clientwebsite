@@ -250,8 +250,8 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
 
   return (
     <div className="px-4 py-4 flex justify-center items-center  h-[50vh] w-full">
-      <div className="px-4 py-4 h-[50vh] bg-white shadow-lg w-full rounded-lg">
-        <div className="transition-padding duration-300 w-full">
+      <div className="px-4 py-4 h-[50vh] bg-white  w-full rounded-lg">
+        <div className="transition-padding duration-300 h-full w-full">
           {Loading ? (
             <div className="flex justify-center items-center w-full h-full">
               <motion.div
@@ -262,41 +262,44 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
             </div>
           ) : (
             <div>
-              <div className="mt-8">
+              <div className="mt-2">
                 <h3 className="text-2xl font-bold mb-4 text-center">Select the Trips and Passengers to Cancel</h3>
                 <label className="flex items-center mt-2">
                   <input
                     type="checkbox"
-                    className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                    className="form-checkbox h-6 w-6 text-blue-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
                     onChange={handleCancelWholeTicket}
                     checked={cancelWholeTicket}
                   />
-                  <span className="ml-3 text-blue-700 font-semibold">Cancel Whole Ticket</span>
+                  <span className={`ml-3 font-bold border p-1 rounded-md ${cancelWholeTicket ? 'border-blue-700 bg-blue-200' : 'bg-gray-100'}`}>
+                    Cancel Whole Ticket
+                  </span>
                 </label>
 
                 {fullBookingData?.itemInfos?.AIR?.tripInfos.map((trip, tripIndex) => (
                   <div key={tripIndex} className="mt-4">
-                    <div className="flex items-center mb-2 text-blue-700 font-extrabold">
+                    <div className={`flex flex-col gap-1 p-2 mb-2 font-extrabold border rounded-lg ${selectedTrips.includes(tripIndex) && "border-blue-700 bg-blue-200"}`}>
                       Trip {tripIndex + 1}
-                      <p className="text-blue-700 font-extrabold flex items-center gap-3">
-                        <PiAirplaneInFlightDuotone />
+
+                      <p className="text-blue-700 text-2xl
+                        
+                        font-extrabold">
+                        {trip?.sI[0].da.code} -
+                        {trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code}
                       </p>
-                      <p className="text-blue-700 font-extrabold">
-                        {trip?.sI[0].da.code} to {trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code}
-                      </p>
+                      <label className="flex items-center mt-2">
+                        <input
+                          type="checkbox"
+                          className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                          onChange={() => handleTripSelection(tripIndex)}
+                          checked={selectedTrips.includes(tripIndex)}
+                          disabled={cancelWholeTicket}
+                        />
+                        <span className="ml-3  font-semibold">Cancel this trip</span>
+                      </label>
                     </div>
-                    <label className="flex items-center mt-2">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
-                        onChange={() => handleTripSelection(tripIndex)}
-                        checked={selectedTrips.includes(tripIndex)}
-                        disabled={cancelWholeTicket}
-                      />
-                      <span className="ml-3 text-blue-700 font-semibold">Cancel this trip</span>
-                    </label>
                     {fullBookingData?.itemInfos?.AIR?.travellerInfos.map((traveler, travelerIndex) => (
-                      <div key={travelerIndex} className="flex items-center p-4 bg-blue-100 rounded-lg mt-2">
+                      <div key={travelerIndex} className={`flex items-center p-4 bg-blue-100 rounded-lg mt-2 ${selectedTravelers.includes(`${tripIndex}-${travelerIndex}`) ? 'border border-blue-800' : ''}`}>
                         <div className="h-16 w-16 flex items-center justify-center bg-blue-500 text-white font-bold text-xl rounded-full mr-4">
                           {traveler.fN.charAt(0).toUpperCase()}
                         </div>
@@ -327,7 +330,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                 <div className="mt-4">
                   <label className="block text-blue-700 font-semibold mb-2">Remarks</label>
                   <textarea
-                    className="form-textarea mt-1 block w-full rounded-md border border-gray-800 shadow-sm focus:border-yellow-500 focus:ring focus:ring-yellow-500 focus:ring-opacity-50"
+                    className="form-textarea mt-1 block w-[96%] rounded-md border border-gray-800 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-2"
                     rows="3"
                     value={remarks}
                     onChange={(e) => setRemarks(e.target.value)}
@@ -342,7 +345,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                       animate="animate"
                     />
                   </div></> : <button
-                    className="px-4 py-2 bg-blue-700 text-white font-semibold rounded-md hover:bg-yellow-500 hover:text-blue-700 transition-colors"
+                    className="px-4 py-2 bg-blue-700 text-white font-semibold mb-4 rounded-md hover:bg-yellow-500 hover:text-blue-700 transition-colors"
                     // onClick={submitAmendment}
                     onClick={openModal}
                   >
