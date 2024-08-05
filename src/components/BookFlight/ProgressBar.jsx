@@ -6,22 +6,23 @@ import { GoChecklist } from "react-icons/go";
 
 const ProgressBar = ({ currentStep, onStepClick }) => {
   const steps = [
-    { label: "Itinerary", icon: <GoChecklist size={24} /> },
-    { label: "Add Details", icon: <FaUser size={24} /> },
-    { label: "Review", icon: <VscPreview size={24} /> },
-    { label: "Payment", icon: <MdPayment size={24} /> },
+    {
+      label: "Itinerary",
+      icon: <GoChecklist className="text-2xl sm:text-3xl" />,
+    },
+    { label: "Add Details", icon: <FaUser className="text-2xl sm:text-xl" /> },
+    { label: "Review", icon: <VscPreview className="text-2xl sm:text-xl" /> },
+    { label: "Payment", icon: <MdPayment className="text-2xl sm:text-xl" /> },
   ];
 
   return (
     <div className="flex justify-center mb-8">
       <div className="flex items-center justify-between w-full max-w-4xl px-4 ml-8 sm:ml-16 md:ml-24">
-        {" "}
-        {/* Added ml-8 sm:ml-16 md:ml-24 */}
         {steps.map((step, index) => (
           <div key={index} className="flex items-center w-full relative">
             <div className="flex flex-col items-center">
               <div
-                className={`relative flex items-center justify-center w-12 h-12 rounded-full cursor-pointer ${
+                className={`relative flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 rounded-full cursor-pointer ${
                   index <= currentStep
                     ? "bg-blue-500 text-white shadow-lg"
                     : "bg-gray-200 text-gray-600"
@@ -34,17 +35,17 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
                 )}
               </div>
               <div
-                className={`mt-4 text-sm ${
+                className={`mt-2 sm:mt-4 text-xs sm:text-sm ${
                   index <= currentStep
                     ? "font-bold text-blue-500"
                     : "text-gray-600"
                 }`}
               >
-                {step.label}
+                <span className="hidden sm:block ">{step.label}</span>
               </div>
             </div>
             {index < steps.length - 1 && (
-              <div className="flex-grow flex items-center">
+              <div className="hidden sm:flex flex-grow items-center">
                 <div
                   className={`w-full h-1 ${
                     index < currentStep ? "bg-blue-500" : "bg-gray-200"
