@@ -91,7 +91,7 @@
 
 
 
-import contactMain from "../../assets/home/contact/contactMain.png";
+import contactMain from "../../assets/home/contact/background.png";
 import { IoCallOutline } from "react-icons/io5";
 import { CiLocationOn, CiMail } from "react-icons/ci";
 import background from "../../assets/home/contact/svg/background.svg";
@@ -106,7 +106,7 @@ const Contact = () => {
         <div
           className="flex items-center justify-center"
           style={{
-            backgroundImage: `url(${background})`,
+            // backgroundImage: `url(${background})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
           }}
@@ -120,10 +120,13 @@ const Contact = () => {
 
         {/* Contact Form Section */}
         <div className="flex flex-col w-full justify-center items-center">
-          <div className="mb-5 lg:mb-10 text-center lg:text-left">
-            <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl font-bold">
-              Let us know how we can help you!
-            </h1>
+          <div className="mb-5 px-6 md:w-[85%]   lg:mb-10  ">
+          <h2 className="text-base font-sans text-gray-500 font-bold">Contact us</h2>
+            <div  className="flex w-full">
+              <h1 className="text-white w-full text-start text-2xl sm:text-3xl lg:text-4xl font-bold">
+                Let us know how we can help you!
+              </h1>
+            </div>
           </div>
           <div className="w-full sm:w-[90%] mt-6">
             <form className="px-6">

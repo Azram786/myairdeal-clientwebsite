@@ -238,7 +238,7 @@ const Header = () => {
 
   return (
     <div className="bg-white shadow-md">
-      <div className=" mx-auto px-4 py-2 flex justify-between items-center">
+      <div className=" mx-auto px-8 py-2 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <img src={main_logo} alt="logo" className="h-10 mr-2" />
           <h3 className="text-[#1F61BC] text-xl font-bold">My Air Deal</h3>

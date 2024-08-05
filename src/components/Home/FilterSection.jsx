@@ -22,7 +22,7 @@ import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLastSearch } from "../../store/slices/aut.slice";
-const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormData, setTypeOfTravel,typeOfTravel }) => {
+const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormData, setTypeOfTravel, typeOfTravel }) => {
 
 
 
@@ -389,10 +389,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                     loadOptions={getCountriesHandlerTwo}
                     placeholder="Where To ?"
                     defaultOptions={defaultOptions}
-                    // defaultValue={resentSearchFilter[0][0] ? {
-                    //   value: resentSearchFilter[1][0].value,
-                    //   label: resentSearchFilter[1][0].label
-                    // } : null}
+
                     value={formData.toCityOrAirport}
                   />
                 </div>

@@ -198,7 +198,7 @@ import Offer1 from "../../assets/home/offer/Offer1.png";
 import Offer2 from "../../assets/home/offer/Offer2.png";
 import Offer3 from "../../assets/home/offer/Offer3.png";
 import Offer4 from "../../assets/home/offer/Offer4.png";
-import background from "../../assets/service/world.png";
+import background from "../../assets/service/earth.png";
 
 
 const offers = [

@@ -43,7 +43,8 @@ import mobile from "../../assets/home/mobile/mobile.png";
 
 const DownloadApp = () => {
   return (
-    <div className="px-3 mx-auto p-6 font-poppins overflow-hidden relative m-5">
+    <div className="px-3 md:px-16 mx-auto p-6 font-poppins overflow-hidden relative m-5">
+      <h2 className="text-base font-sans text-gray-500 font-bold">Download</h2>
       <h1 className="text-3xl font-bold mb-8">Download our app</h1>
       <div className="relative flex flex-col md:flex-row items-center  bg-[#253B59] justify-between p-8 rounded-lg md:h-56">
         <div className=" w-full  flex  rounded-lg ">
