@@ -14,19 +14,8 @@ const RecentSearch = ({ ResentSearchData }) => {
 
     useEffect(() => {
         if (resentSearch) {
-            dispatch(clearResentSearchFilter())
-            resentSearch.searchQuery.routeInfos.forEach(item => {
 
-                const fromCityOrAirport = item.fromCityOrAirport;
-                const toCityOrAirport = item.toCityOrAirport;
-
-                const fromValue = { value: fromCityOrAirport.code, label: ` ${fromCityOrAirport.code}` };
-                const toValue = { value: toCityOrAirport.code, label: ` ${toCityOrAirport.code}` };
-
-                dispatch(setResentSearchFromFilter(fromValue));
-                dispatch(setResentSearchToFilter(toValue));
-            });
-            dispatch(clearResent())
+            // dispatch(clearResent())
         }
     }, [resentSearch, dispatch]);
 
@@ -61,13 +50,28 @@ const RecentSearch = ({ ResentSearchData }) => {
         ]
     };
 
+    useEffect(() => {
+        let timer;
+        if (resentSearch) {
+            timer = setTimeout(() => {
+                dispatch(clearResent());
+            }, 2 * 60 * 1000); // 2 minutes in milliseconds
+        }
+
+        // Cleanup function to clear the timer if the component unmounts or resentSearch changes
+        return () => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+        };
+    }, [resentSearch, dispatch]);
     return (
         <div className=" w-[90%]  text-center rounded-xl my-4  justify-center mx-auto flex flex-col gap-5">
             <h1 className='font-semibold px-4 text-start text-2xl'>Recent Search</h1>
             <div className='px-4'>
                 <Slider {...settings}>
                     {ResentSearchData.map((search, index) => {
-                
+
                         return (
                             // <div key={index} className="p-2 h-[15vh]"
                             //     onClick={() => { setResentStateHandler(search) }}

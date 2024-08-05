@@ -227,7 +227,7 @@ const HomePage = () => {
             typeOfTravel={typeOfTravel}
             setTypeOfTravel={setTypeOfTravel}
           />
-         {token && <RecentSearch ResentSearchData={ResentSearchData} />}
+          {token && <RecentSearch ResentSearchData={ResentSearchData} />}
           <OfferSection />
           <AboutUs />
           <Service />

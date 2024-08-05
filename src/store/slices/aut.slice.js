@@ -7,7 +7,9 @@ const initialState = {
   user: localStorage.getItem("user_air_deal")
     ? JSON.parse(localStorage.getItem("user_air_deal"))
     : null,
-  resentSearch: null,
+  resentSearch: localStorage.getItem("resentSearch")
+    ? JSON.parse(localStorage.getItem("resentSearch"))
+    : null,
   lastSearch: null,
   resentSearchFilter: [[], []]
 };
@@ -31,8 +33,10 @@ const authSlice = createSlice({
     },
     setResentSearch: (state, action) => {
       state.resentSearch = action.payload;
+      localStorage.setItem("resentSearch", JSON.stringify(action.payload));
     },
     clearResent: (state) => {
+      localStorage.removeItem("resentSearch");
       state.resentSearch = null;
     },
     setLastSearch: (state, action) => {
