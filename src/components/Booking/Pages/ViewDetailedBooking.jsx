@@ -315,7 +315,7 @@ const ViewDetailedBooking = () => {
   }, []);
 
   return (
-    <>
+    <div className="">
       <Header />
       {loading ? (
         <div className="h-[85vh] w-full flex  justify-center items-center ">
@@ -467,7 +467,7 @@ const ViewDetailedBooking = () => {
       )}
 
       <Footer />
-    </>
+    </div>
   );
 };
 

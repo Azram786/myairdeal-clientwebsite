@@ -384,7 +384,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               <div className="md:flex  hidden sm:items-center  justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2  -translate-y-1/2 bg-black w-8 h-8 rounded-full ">
                 <GoArrowSwitch />
               </div>
-              <div className="flex ml-2 items-center border rounded p-2 md:w-1/2 ">
+              <div className="flex md:ml-2 items-center border rounded p-2 md:w-1/2 ">
                 <div>
                   <RiFlightLandLine className=" text-2xl md:text-3xl " />
                 </div>

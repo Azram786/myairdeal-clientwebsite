@@ -28,7 +28,7 @@ function Service() {
         <div
           style={{ backgroundImage: `url(${background})` }}
           className="bg-cover px-16 mx-auto text-center py-8">
-            <div className="text-white text-lg font-medium mb-2">Services</div>
+            <div className="text-white text-base font-bold mb-2">Services</div>
           <div className="text-white text-xl sm:text-3xl font-bold mb-8">We Offer Best Services</div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 place-items-center justify-center">
             {Content.map(createCard)}

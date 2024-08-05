@@ -82,7 +82,7 @@ const DynamicForm = ({
           </div>
         </div>
 
-        <div className="flex md:w-full items-center border rounded p-2 ml-2">
+        <div className="flex md:w-full items-center border rounded p-2 md:ml-2">
           <div>
             <RiFlightLandLine className="text-2xl md:text-3xl" />
           </div>

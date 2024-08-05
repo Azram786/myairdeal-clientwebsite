@@ -87,8 +87,9 @@ const RoundTripCard = ({
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
+      hour12: false
     };
-    return date.toLocaleString(undefined, options);
+    return date.toLocaleString('en-US', options);
   };
 
   const departureTime = formatDateTime(startSegment.dt);
@@ -114,7 +115,7 @@ const RoundTripCard = ({
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row items-center justify-between md:justify-around py-4 border-b"
+                className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
               >
                 <div className="flex items-center">
                   <img
@@ -261,29 +262,29 @@ const RoundTripCard = ({
   };
 
   return (
-    <div className="border flex flex-col   rounded-lg m-4 bg-white shadow-md overflow-x-auto ">
+    <div className="border flex flex-col   rounded-lg m-4 bg-white shadow-md overflow-x-auto no-scroll ">
       <div className="flex flex-col md:flex-row justify-between items-stretch p-3  mb-2">
-        <div className="flex flex-col w-full ">
+        <div className="flex flex-col px-2 ">
           <div className="flex justify-around">
           <div className="md:hidden">
           <img
               src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
               onError={(e) => e.currentTarget.src = defaultAirline}
               alt={startSegment?.fD?.aI?.code}
-              className="size-12 hidden mr-6"
+              className="size-12 hidden mr-4"
             />
           </div>
-            <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
+            <div className="md:flex-row  flex-col flex justify-center items-center mb-4 md:mb-0">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                 alt={startSegment?.fD?.aI?.code}
-                className="md:size-12 rounded-md  mr-6 md:flex hidden"
+                className="md:size-10 rounded-md  mr-4 md:flex hidden"
               />
               <div>
                 <h1 className="text-lg font-bold">{startSegment?.da.code}</h1>
-                <h1 className="text-sm text-gray-500">
+                {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
-                </h1>
+                </h1> */}
                 <h1 className="text-sm">{departureTime}</h1>
               </div>
             </div>
@@ -305,17 +306,17 @@ const RoundTripCard = ({
               </div>
               <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
             </div>
-            <div className="flex md:text-start text-end  items-center mb-4 md:mb-0">
+            <div className="flex  md:text-start text-end  items-center mb-4 md:mb-0">
               <div>
                 <h1 className="text-lg font-bold">{endSegment?.aa.code}</h1>
-                <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1>
+                {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
                 <h1 className="text-sm">{arrivalTime}</h1>
               </div>
             </div>
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex flex-col w-full  overflow-x-auto ">
+            <div className="flex flex-col w-full  ">
               <div className="flex   mt-3 gap-2 overflow-x-auto no-scroll items-center ">
                 {displayedPrices?.map((price, index) => (
                   <div
@@ -372,12 +373,12 @@ const RoundTripCard = ({
                   >
                     {showDetails ? (
                       <span className="text-black">
-                        Fare Details :{" "}
+                        {/* Fare Details :{" "} */}
                         <span className="text-[#007EC4]">Hide Details</span>
                       </span>
                     ) : (
                       <span className="text-black">
-                        Fare Details :{" "}
+                        {/* Fare Details :{" "} */}
                         <span className="text-[#007EC4]">View Details</span>
                       </span>
                     )}
