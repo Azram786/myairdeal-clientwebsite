@@ -281,7 +281,9 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                     <div className={`flex flex-col gap-1 p-2 mb-2 font-extrabold border rounded-lg ${selectedTrips.includes(tripIndex) && "border-blue-700 bg-blue-200"}`}>
                       Trip {tripIndex + 1}
 
-                      <p className="text-blue-700 font-extrabold">
+                      <p className="text-blue-700 text-2xl
+                        
+                        font-extrabold">
                         {trip?.sI[0].da.code} -
                         {trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code}
                       </p>
