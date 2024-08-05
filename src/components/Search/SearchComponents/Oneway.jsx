@@ -217,15 +217,23 @@ const Oneway = ({ flightProps, passenger,query }) => {
                <span className="flex flex-col justify-center ">
       <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
       <p className="text-[10px]">
-        {filteredFlights[0]?.sI[0] && new Date(filteredFlights[0].sI[0].dt).toISOString().split('T')[0]}
+      {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric'
+}).format(new Date(filteredFlights[0].sI[0].dt)).split('/').join('-')}
       </p>
     </span>
     <ArrowRightOutlined />
     <span className="flex flex-col justify-center ">
       <p>{filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa?.city}</p>
       <p className="text-[10px]">
-        {filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1] &&
-          new Date(filteredFlights[0].sI[filteredFlights[0]?.sI.length - 1].at).toISOString().split('T')[0]}
+        
+          {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric'
+}).format(new Date(filteredFlights[0].sI[filteredFlights[0]?.sI.length - 1].at)).split('/').join('-')}
       </p>
     </span>
               </span>

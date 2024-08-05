@@ -41,7 +41,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
   };
 
   const renderOneWay = () => (
-    <div className="grid  md:grid-cols-5  grid-cols-1  bg-[#007EC4] text-white p-2 ">
+    <div className="grid  md:grid-cols-5  gap-3 grid-cols-1  bg-[#007EC4] text-white p-2 ">
       <div className="flex items-center space-x-4 md:border-r justify-center ">
         <div className="flex flex-col">
           <span className="text-xs text-white">From</span>
@@ -93,8 +93,8 @@ const FlightSearchSummary = ({ data, tripType }) => {
       </div>
       <div className="flex items-center justify-center md:border-r">
       <div className="flex flex-col">
-          <span className="text-xs text-white">Preferred</span>
-          <span className="text-xs font-semibold">{`none`}</span>
+          <span className="text-xs text-white">Preferred Airline</span>
+          <span className="text-xs font-semibold">{`None`}</span>
         </div>
       </div>
       <div className="flex justify-center">
@@ -156,8 +156,8 @@ const FlightSearchSummary = ({ data, tripType }) => {
         </span>
       </div>
       <div className="flex flex-col items-center md:border-r  md:px-2 w-full">
-        <span className="text-xs text-white">Preferred Airlines</span>
-        <span className="text-xs font-semibold">{"none"}</span>
+        <span className="text-xs text-white">Preferred Airline</span>
+        <span className="text-xs font-semibold">{"None"}</span>
       </div>
       <Link to="/">
         <button className="border-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
@@ -230,9 +230,9 @@ const FlightSearchSummary = ({ data, tripType }) => {
         <div className="flex justify-center md:border-r  ">
           <div className="flex  flex-col">
             <span className="text-xs text-center text-white">
-              Preferred Airlines
+              Preferred Airline
             </span>
-            <span className="text-xs text-center font-semibold">none</span>
+            <span className="text-xs text-center font-semibold">None</span>
           </div>
         </div>
         <div className="flex  justify-center items-center">
