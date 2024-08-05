@@ -28,7 +28,7 @@ const DynamicForm = ({
   }, [dateDynamic]);
 
   return (
-    <div className="flex flex-col p-3 md:p-0 md:flex-row justify-between relative border border-slate-400 rounded-lg gap-2 md:border-none ">
+    <div className="flex flex-col p-3 md:p-0 md:flex-row justify-between relative border border-slate-400 rounded-lg gap-2 md:border-none max-w-[1800px] ">
       {/* <div className="bg-purple-400 gap-2  w-[66.6666%] flex relative">
         <div className="flex md:w-1/2 items-center border rounded p-2 bg-yellow-400">
           <div>

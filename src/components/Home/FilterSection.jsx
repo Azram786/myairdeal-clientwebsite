@@ -318,7 +318,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
   }, []);
 
   return (
-    <div className="flex flex-col items-center  justify-between md:justify-evenly ">
+    <div className="flex flex-col items-center  justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
       <div className="     md:rounded-xl w-[90%] mt-4 md:mt-0  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   ">
         {/* type of travel selecting section */}
 
