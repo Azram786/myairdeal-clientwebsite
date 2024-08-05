@@ -94,7 +94,7 @@ const RecentSearch = ({ ResentSearchData }) => {
                             //         </div>
                             //     </div>
                             // </div>
-                            <div className="bg-white rounded-2xl shadow-lg p-3 px-5 border border-#007EC4] font-poppins  mx-auto" onClick={() => { setResentStateHandler(search) }}>
+                            <div className=" rounded-2xl shadow-lg max-w-60 md:max-w-80 my-4   p-4 border border-[#007EC4] font-poppins " onClick={() => { setResentStateHandler(search) }}>
                                 <div className="flex flex-col space-y-2">
                                     <div className="flex flex-row justify-between items-center">
                                         <div className="text-left w-[40%]">

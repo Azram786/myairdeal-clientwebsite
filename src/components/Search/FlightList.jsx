@@ -97,8 +97,8 @@ const FlightList = () => {
   return (
     <div className="min-h-screen bg-gray-50">
         <Header/>
+     { data &&   <div className="w-full py-5"><FlightSearchSummary data={data} tripType={tripType} /></div>}
       <div className=" border p-4  gap-4 shadow-sm rounded-md flex flex-col">
-     { data &&   <div><FlightSearchSummary data={data} tripType={tripType} /></div>}
         {tripType === "oneway" && (
           <Oneway flightProps={oneway} query={data} passenger={data?.searchQuery.paxInfo} />
         )}

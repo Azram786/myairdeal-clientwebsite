@@ -1002,9 +1002,12 @@ const FlightDetailsCard = ({
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
+      hour12: false
     };
-    return date.toLocaleString(undefined, options);
+    return date.toLocaleString('en-US', options);
   };
+  
+
 
   const departureTime = formatDateTime(startSegment.dt);
   const arrivalTime = formatDateTime(endSegment.at);
@@ -1029,7 +1032,7 @@ const FlightDetailsCard = ({
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row items-center justify-between md:justify-around py-4 border-b"
+                className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
               >
                 <div className="flex items-center">
                   <img
@@ -1196,9 +1199,9 @@ const FlightDetailsCard = ({
               />
               <div>
                 <h1 className="text-lg font-bold">{startSegment?.da.code}</h1>
-                <h1 className="text-sm text-gray-500">
+                {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
-                </h1>
+                </h1> */}
                 <h1 className="text-sm">{departureTime}</h1>
               </div>
             </div>
@@ -1223,7 +1226,7 @@ const FlightDetailsCard = ({
             <div className="flex md:text-start text-end  items-center mb-4 md:mb-0">
               <div>
                 <h1 className="text-lg font-bold">{endSegment?.aa.code}</h1>
-                <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1>
+                {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
                 <h1 className="text-sm">{arrivalTime}</h1>
               </div>
             </div>
@@ -1286,12 +1289,12 @@ const FlightDetailsCard = ({
               >
                 {showDetails ? (
                   <span className="text-black">
-                    Fare Details :{" "}
+                    {/* Fare Details :{" "} */}
                     <span className="text-[#007EC4]">Hide Details</span>
                   </span>
                 ) : (
                   <span className="text-black">
-                    Fare Details :{" "}
+                    {/* Fare Details :{" "} */}
                     <span className="text-[#007EC4]">View Details</span>
                   </span>
                 )}
