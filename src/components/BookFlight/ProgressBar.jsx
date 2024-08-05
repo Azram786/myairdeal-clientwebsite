@@ -21,7 +21,7 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
         {steps.map((step, index) => (
           <div key={index} className="flex items-center w-full relative">
             <div className="flex flex-col items-center">
-              <div
+              <div  
                 className={`relative flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 rounded-full cursor-pointer ${
                   index <= currentStep
                     ? "bg-blue-500 text-white shadow-lg"
@@ -29,7 +29,7 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
                 }`}
                 onClick={() => onStepClick(index)}
               >
-                {step.icon}
+                <span>{step.icon}</span>
                 {index <= currentStep && (
                   <div className="absolute bottom-[-10px] left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-blue-500"></div>
                 )}
