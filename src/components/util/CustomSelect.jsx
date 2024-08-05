@@ -44,6 +44,7 @@ const CustomSelect = ({
   return (
     <AsyncSelect
       isClearable={true}
+      className="cursor-context-menu"
       styles={customStyles}
       placeholder={<CustomPlaceholder icon={icon} text={placeholder} />}
       defaultOptions={defaultOptions}

@@ -21,7 +21,7 @@ const MultiCityForm = ({
         },
       ]);
     } else {
-      ReactToast("Maximum of 5 forms allowed");
+      ReactToast("Maximum of 6 forms allowed");
     }
   };
 

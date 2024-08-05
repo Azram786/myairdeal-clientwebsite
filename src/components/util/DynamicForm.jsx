@@ -105,8 +105,8 @@ const DynamicForm = ({
 
 
       <div className="flex md:w-[33.333%] flex-col md:flex-row ">
-        <div className="rounded flex ml-1 px-4 items-center border w-full">
-          <div className="flex items-center justify-between w-full">
+        <div className="rounded flex ml-1  items-center border w-full">
+          <div className="flex items-center justify-between px-1 w-full">
             <DatePicker
               minDate={formData.travelDate}
               selected={startDate}

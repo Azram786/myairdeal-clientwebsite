@@ -180,7 +180,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <div className="flex flex-col">
                 <span className="text-xs text-white">From</span>
                 <span className="text-xs font-semibold">
-                  {route.fromCityOrAirport.code}
+                  {route?.fromCityOrAirport?.code}
                 </span>
               </div>
               {/* <RiFlightTakeoffFill className="text-2xl" /> */}

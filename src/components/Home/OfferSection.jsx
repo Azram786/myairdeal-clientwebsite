@@ -240,7 +240,7 @@ const OfferSection = () => {
       className="h-full"
     >
       <div style={{ backgroundImage: `url(${background})` }} className="h-full">
-        <div className='md:px-16 px-3 py-6 mx-auto bg-gradient-to-b from-[#1966AB]/80 to-[#0E385E]/80 max-w-[1900px] min-w-[250px] overflow-hidden'>
+        <div className='md:px-16 px-3 py-10 mx-auto bg-gradient-to-b from-[#1966AB]/80 to-[#0E385E]/80 max-w-[1900px] min-w-[250px] overflow-hidden'>
           <div className='flex w-full justify-between'>
             <div className="flex flex-col text-white px-5 items-start gap-4 2xl:gap-6 ">
               <h2 className="font-semibold text-[1.3rem] md:text-4xl 2xl:text-[2.2rem] ">
