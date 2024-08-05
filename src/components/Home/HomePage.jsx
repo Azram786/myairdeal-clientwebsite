@@ -133,7 +133,7 @@ const HomePage = () => {
     toCityOrAirport: "",
     travelDate: new Date(),
     returnDate: new Date(),
-    isDirectFlight: true,
+    isDirectFlight: false,
     isConnectingFlight: true,
     pft: "REGULAR",
   });
