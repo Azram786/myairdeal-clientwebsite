@@ -1,12 +1,33 @@
-// libraries
-import Modal from "react-modal";
 
-//custom components
+
+// import PassengerSelector from "../Home/PassengerSelector";
+
+// const CustomModal = ({
+//   modalIsOpen,
+//   setModelIsOpen,
+//   formData,
+//   setFormData,
+// }) => {
+//   if (!modalIsOpen) return null;
+
+//   return (
+//     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
+//       <div className="bg-white w-[90vw] md:w-auto  rounded-lg relative lg:left-[20%] lg:top-[-10%]  p-3">
+//         <PassengerSelector
+//           formData={formData}
+//           onClose={() => setModelIsOpen(false)}
+//           setFormData={setFormData}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CustomModal;
+
+
+import { useEffect, useRef } from 'react';
 import PassengerSelector from "../Home/PassengerSelector";
-import { useEffect, useState } from "react";
-
-// Set the app element for accessibility
-Modal.setAppElement("#root");
 
 const CustomModal = ({
   modalIsOpen,
@@ -14,83 +35,42 @@ const CustomModal = ({
   formData,
   setFormData,
 }) => {
-  // state for getting screen size
-  const [screenSize, setScreenSize] = useState();
+  const modalRef = useRef(null);
 
-  // style for modal
-  const style = {
-    content: {
-      top:
-        screenSize === "small"
-          ? "80%"
-          : screenSize === "medium"
-            ? "53%"
-            : "70%",
-      left:
-        screenSize === "small"
-          ? "50%"
-          : screenSize === "medium"
-            ? "65%"
-            : "73%",
-      transform: "translate(-50%, -50%)",
-      width:
-        screenSize === "small"
-          ? "80vw"
-          : screenSize === "medium"
-            ? "60%"
-            : "45%",
-      height:
-        screenSize === "small"
-          ? "70vh"
-          : screenSize === "medium"
-            ? "50%"
-            : "50%",
-
-      border: "1px solid black",
-    },
-    overlay: {
-      background: "transparent",
-      position: "absolute",
-    },
-  };
-
-  //  updating screenSize state
-  const updateScreenSize = () => {
-    if (window.innerWidth < 640) {
-      setScreenSize("small");
-    } else if (window.innerWidth < 1024) {
-      setScreenSize("medium");
-    } else {
-      setScreenSize("large");
+  const handleClickOutside = (event) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      setModelIsOpen(false);
     }
   };
 
   useEffect(() => {
-    updateScreenSize();
-    window.addEventListener("resize", updateScreenSize);
+    if (modalIsOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
 
     return () => {
-      window.removeEventListener("resize", updateScreenSize);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
-  return (
-    <Modal
-      style={style}
-      isOpen={modalIsOpen}
-      onRequestClose={() => {
+  }, [modalIsOpen]);
 
-        setModelIsOpen(false)
-      }}
-    >
-      <PassengerSelector
-        formData={formData}
-        onClose={() => {
-          setModelIsOpen(false)
-        }}
-        setFormData={setFormData}
-      />
-    </Modal>
+  if (!modalIsOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
+      <div
+        ref={modalRef}
+        className="bg-white w-[90vw] md:w-auto rounded-lg relative lg:left-[20%] lg:top-[-10%] p-3"
+      >
+        <PassengerSelector
+          formData={formData}
+          onClose={() => setModelIsOpen(false)}
+          setFormData={setFormData}
+        />
+      </div>
+    </div>
   );
 };
 
 export default CustomModal;
+
+
