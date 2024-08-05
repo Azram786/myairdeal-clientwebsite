@@ -102,7 +102,7 @@ const AboutUs = () => {
           <div className='w-full flex justify-center'>
             <img src={image1} className='w-[250px] md:w-[350px]' alt="Flight booking app interface" width={350} />
           </div>
-          <div className='flex -mt-5 -mr-10 justify-center absolute -z-10'>
+          <div className='flex -mt-2 -mr-4 md:-mt-5 md:-mr-10 justify-center absolute -z-10'>
             <img src={shadow} alt="Decorative shadow" className='w-[250px] md:w-[350px]' width={350} />
           </div>
         </div>

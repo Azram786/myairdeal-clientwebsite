@@ -91,7 +91,7 @@
 
 
 
-import contactMain from "../../assets/home/contact/contactMain.png";
+import contactMain from "../../assets/home/contact/background.png";
 import { IoCallOutline } from "react-icons/io5";
 import { CiLocationOn, CiMail } from "react-icons/ci";
 import background from "../../assets/home/contact/svg/background.svg";
@@ -106,7 +106,7 @@ const Contact = () => {
         <div
           className="flex items-center justify-center"
           style={{
-            backgroundImage: `url(${background})`,
+            // backgroundImage: `url(${background})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
           }}

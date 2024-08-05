@@ -45,12 +45,12 @@ const WhyChooseUs = () => {
 
   return (
     <div className=" mx-auto py-12">
-      <div className="flex flex-col md:px-16 md:flex-row items-center">
+      <div className="flex flex-col  md:px-16 md:flex-row items-center">
         <div className="md:w-1/2 md:mb-0 mb-2 flex justify-center relative">
           <div className='w-full flex justify-center z-10'>
             <img src={girlimage} className='w-[250px] md:w-[350px]' alt="image-2" width={350} />
           </div>
-          <div className='flex -mt-5 -ml-10 justify-center absolute -z-10  '>
+          <div className='flex md:-mt-5 -mt-2 -ml-4  md:-ml-10 justify-center absolute -z-10  '>
             <img src={shadow} alt="shadow" className='w-[250px] md:w-[350px]' width={350}  />
           </div>
         </div>

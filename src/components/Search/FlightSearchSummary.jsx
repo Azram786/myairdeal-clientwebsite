@@ -95,11 +95,11 @@ const FlightSearchSummary = ({ data, tripType }) => {
       {/* <div className="flex flex-col md:flex-row items-center space-x-4"> */}
         <div className="flex w-full  flex-col items-center md:border-r md:px-2 ">
           <span className="text-xs  text-white">Departure</span>
-          <span className="text-lg font-semibold">{routeInfos[0].travelDate}</span>
+          <span className="text-lg font-semibold">{formatTravelDate(routeInfos[0].travelDate)}</span>
         </div>
         <div className="flex flex-col items-center md:border-r  md:px-2 w-full">
           <span className="text-xs text-white">Return</span>
-          <span className="text-lg font-semibold">{routeInfos[1]?.travelDate || 'N/A'}</span>
+          <span className="text-lg font-semibold">{formatTravelDate(routeInfos[1]?.travelDate) || 'N/A'}</span>
         </div>
         <div className="flex flex-col items-center md:border-r w-full overflow-x-auto">
           <span className="text-xs text-white">Passengers & Class</span>
