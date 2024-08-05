@@ -125,7 +125,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
             whileTap={{ scale: 0.85 }} className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-1/2">
             <div className="flex justify-center items-center">
               <motion.div
-                className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                className="w-4 h-4 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
                 variants={spinnerVariants}
                 animate="animate"
               />
@@ -152,7 +152,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
             >
               {secondLoading ? <div className="flex justify-center items-center">
                 <motion.div
-                  className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                  className="w-4 h-4 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
                   variants={spinnerVariants}
                   animate="animate"
                 />

@@ -9,8 +9,8 @@ const Banner = () => {
         alt="Banner"
       />
 
-      <div className="relative items-center h-full   left-[10%] flex flex-col justify-center  text-white  w-[30%] ">
-        <h3 className="font-bold text-[.9rem] md:text-[1.3rem] lg:text-3xl leading-[1.3] 2xl:text-[2.2rem] 2xl:leading-[1.4]">
+      <div className="relative items-start h-full   left-[10%] flex flex-col justify-center  text-white w-2/4 ">
+        <h3 className="font-bold text-[.9rem] md:text-[1.3rem] lg:text-3xl  2xl:text-[2.2rem] 2xl:leading-[1.4]">
           Make your travel wishlist, we'll do the rest
         </h3>
         <h4
@@ -19,6 +19,7 @@ const Banner = () => {
         >
           Special offers to suit your plan
         </h4>
+      <div> <button className="bg-[#01324D] px-6 rounded-md mt-4 py-2">Explore</button></div>
       </div>
     </div>
   );

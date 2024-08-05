@@ -51,7 +51,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
                         {["New Complaint", "Unresolved Complaint", "Write to management"].map((heading) => (
                             <label
                                 key={heading}
-                                className={` block text-center mb-1 border p-2 rounded-md cursor-pointer ${selectedHeading === heading ? 'border-blue-500' : 'border-gray-300'}`}
+                                className={` block text-center mb-1 border p-2 rounded-md cursor-pointer ${selectedHeading === heading ? 'border-[#007EC4]' : 'border-gray-300'}`}
                             >
                                 <input
                                     type="radio"

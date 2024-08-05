@@ -369,6 +369,7 @@ import BookingCard from "./BookingCards";
 import ReactToast from "../../util/ReactToast";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import RoundTripCard from "../Cards/RoundTripFlightCard";
 
 const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
   const [filteredOnward, setFilteredOnward] = useState([]);
@@ -559,7 +560,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
     return (
       <div>
         {flights.map((flight, index) => (
-          <FlightDetailsCard
+          <RoundTripCard
             key={index}
             flightDetails={flight}
             isSelected={
@@ -583,7 +584,8 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
     if (flights.length > 0 && flights[0].sI.length > 0) {
       const departureCity = flights[0].sI[0].da.city;
       const arrivalCity = flights[0].sI[0].aa.city;
-      return `${departureCity} - ${arrivalCity}`;
+      const departureTime = new Date(flights[0].sI[0].dt).toISOString().split('T')[0];
+      return <span className="flex flex-col"><p>{departureCity} - {arrivalCity}</p> <p className="text-xs">{departureTime}</p></span>;
     }
     return "";
   };
@@ -669,14 +671,14 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
       </div>
 
       {console.log(selectedOnwardFlight, selectedReturnFlight, "selected flights")}
-      <BookingCard
+      {(selectedOnwardFlight || selectedReturnFlight) && <BookingCard
         selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(
           Boolean
         )}
         totalPrice={calculateTotalBookingPrice()}
         onBook={() => handleBooking()}
         passenger={passenger}
-      />
+      />}
     </div>
   );
 };

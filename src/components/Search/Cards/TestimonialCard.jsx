@@ -4,7 +4,7 @@ const TestimonialCard = ({ image, name, position, text }) => {
   return (
     <div className="relative max-w-xs mx-auto m-6">
       {/* Background blue card */}
-      <div className="absolute top-4 -left-4 w-full h-full bg-blue-500 rounded-2xl transform rotate-1"></div>
+      <div className="absolute top-4 -left-4 w-full h-full bg-[#007EC4] rounded-2xl transform rotate-1"></div>
       {/* Foreground white card */}
       <div className="relative bg-white p-4 rounded-2xl shadow-lg">
         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">

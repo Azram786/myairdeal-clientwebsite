@@ -193,56 +193,58 @@ const PaymentPage = ({ passengersData, data }) => {
   }
 
   return (
-    <div className='flex flex-col w-full h-full justify-center  items-center '>
-      <h2 className="text-2xl font-bold mb-4">Payment Details</h2>
+    <div>
+      <div className='flex flex-col w-full h-full justify-center  items-center '>
       
-      <table className="w-full border-collapse border overflow-auto max-h-80 border-gray-300 mb-4">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border border-gray-300 p-2">Passenger</th>
-            <th className="border border-gray-300 p-2">Type</th>
-            <th className="border border-gray-300 p-2">Base Fare</th>
-            <th className="border border-gray-300 p-2">Meals</th>
-            <th className="border border-gray-300 p-2">Seat</th>
-            <th className="border border-gray-300 p-2">Baggage</th>
-            <th className="border border-gray-300 p-2">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {calculatePassengerDetails.map((passenger, index) => (
-            <tr key={index}>
-              <td className="border border-gray-300 p-2">{passenger.name}</td>
-              <td className="border border-gray-300 p-2">{passenger.type}</td>
-              <td className="border border-gray-300 p-2">₹{passenger.baseFare.toFixed(2)}</td>
-              <td className="border border-gray-300 p-2">₹{passenger.mealsCost.toFixed(2)}</td>
-              <td className="border border-gray-300 p-2">₹{passenger.seatsCost.toFixed(2)}</td>
-              <td className="border border-gray-300 p-2">₹{passenger.baggageCost.toFixed(2)}</td>
-              <td className="border border-gray-300 p-2 font-bold">₹{passenger.totalCost.toFixed(2)}</td>
+        <h2 className="text-2xl font-bold mb-4">Payment Details</h2>
+      
+        <table className="w-full border-collapse border overflow-auto max-h-80 border-gray-300 mb-4">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border border-gray-300 p-2">Passenger</th>
+              <th className="border border-gray-300 p-2">Type</th>
+              <th className="border border-gray-300 p-2">Base Fare</th>
+              <th className="border border-gray-300 p-2">Meals</th>
+              <th className="border border-gray-300 p-2">Seat</th>
+              <th className="border border-gray-300 p-2">Baggage</th>
+              <th className="border border-gray-300 p-2">Total</th>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr className="bg-gray-100">
-            <td colSpan={6} className="border border-gray-300 p-2 text-right font-bold">Total Amount:</td>
-            <td className="border border-gray-300 p-2 font-bold">₹{totalAmount.toFixed(2)}</td>
-          </tr>
-        </tfoot>
-      </table>
-
-      <button 
-        className='bg-blue-500 rounded-md text-white font-semibold text-xl px-5 py-2 mt-4 disabled:opacity-50 flex items-center justify-center'
-        onClick={openRazorpay}
-        disabled={isProcessing}
-      >
-        {isProcessing ? (
-          <>
-            <Spinner className="mr-2 h-4 w-4" />
-            Processing...
-          </>
-        ) : (
-          'Proceed to Payment'
-        )}
-      </button>
+          </thead>
+          <tbody>
+            {calculatePassengerDetails.map((passenger, index) => (
+              <tr key={index}>
+                <td className="border border-gray-300 p-2">{passenger.name}</td>
+                <td className="border border-gray-300 p-2">{passenger.type}</td>
+                <td className="border border-gray-300 p-2">₹{passenger.baseFare.toFixed(2)}</td>
+                <td className="border border-gray-300 p-2">₹{passenger.mealsCost.toFixed(2)}</td>
+                <td className="border border-gray-300 p-2">₹{passenger.seatsCost.toFixed(2)}</td>
+                <td className="border border-gray-300 p-2">₹{passenger.baggageCost.toFixed(2)}</td>
+                <td className="border border-gray-300 p-2 font-bold">₹{passenger.totalCost.toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr className="bg-gray-100">
+              <td colSpan={6} className="border border-gray-300 p-2 text-right font-bold">Total Amount:</td>
+              <td className="border border-gray-300 p-2 font-bold">₹{totalAmount.toFixed(2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+        <button
+          className='bg-[#007EC4] rounded-md text-white font-semibold text-xl px-5 py-2 mt-4 disabled:opacity-50 flex items-center justify-center'
+          onClick={openRazorpay}
+          disabled={isProcessing}
+        >
+          {isProcessing ? (
+            <>
+              <Spinner className="mr-2 h-4 w-4" />
+              Processing...
+            </>
+          ) : (
+            'Proceed to Payment'
+          )}
+        </button>
+      </div>
     </div>
   );
 };

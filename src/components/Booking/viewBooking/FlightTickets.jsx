@@ -70,25 +70,25 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
   };
 
   return (
-    <div className="flex flex-col gap-5 lg:flex-row justify-between items-end xl:p-6 p-2  border rounded-lg">
+    <div className="flex flex-col gap-5 lg:flex-row justify-between items-end xl:p-6 p-2 bg-red-200 border rounded-lg">
       <div className="w-full  xl:w-[75%] justify-between  flex  flex-col gap-2">
         {booking?.data?.itemInfos?.AIR?.tripInfos?.map((trip, index) => (
-          <div className="flex  lg:flex-row   items-center justify-between flex-col sm:flex-row border   p-5 gap-2 ">
-            <div className="flex  items-center justify-center md:justify-between  flex-row gap-4  xs:flex-row xs:item-start sm:flex-row md:flex-row lg:flex-row xl:flex-row sm:w-[60%]  ">
+          <div key={index} className="flex  lg:flex-row   items-center justify-between flex-col sm:flex-row border   p-5 gap-2 ">
+            <div key={index} className="flex w-full items-center justify-center md:justify-between  flex-col gap-4  xs:flex-row xs:item-start  md:flex-row lg:flex-row xl:flex-row sm:w-[60%]  ">
               <div className="flex border border-blue-400  rounded-xl  p-2">
 
                 {/* <img
                   src={FlightLogo}
                   className="h-16 w-16 rounded-lg p-1 object-contain mr-4 border border-blue-700"
                 /> */}
-                <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${trip.sI[0].fD.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={trip?.sI[0].fD?.aI?.code} className="w-10 h-10 mr-4" />
+                <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${trip.sI[0].fD.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={trip?.sI[0].fD?.aI?.code} className="w-10 h-10 " />
 
 
               </div>
 
-              <div className="flex rounded-lg    md:w-[90%]    sm:flex-row md:flex-row  gap-3    items-center ">
+              <div className="flex rounded-lg w-full flex-col  md:w-[90%]    sm:flex-col md:flex-row  gap-3    items-center ">
 
-                <div className="flex gap-4 md:gap-1  md:w-[70%] lg:w-[60%] flex-col  ">
+                <div className="flex w-full justify-around gap-4 md:gap-1  md:w-[70%] lg:w-[60%] md:flex-col flex-row ">
 
                   <div className=" text-lg font-semibold flex">
                     <span className="md:hidden tracking-widest"> {trip.sI[0].da.code}{" "}</span>
@@ -110,9 +110,8 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                 </div>
 
-
-                <div className="flex md:w-[30%]  lg:w-[40%]    space-x-4 ">
-                  <div className="flex flex-col w-full items-center gap-4 ">
+                <div className="w-full flex md:w-[30%]  lg:w-[40%]    space-x-4 ">
+                  <div className=" w-full  flex justify-around flex-row md:flex-col items-center gap-4 ">
                     <div className="  text-lg font-bold">
                       {formatTime(trip.sI[0].dt)}
                     </div>
@@ -128,7 +127,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
             </div>
 
-            <div className="flex sm:w-[40%]  justify-around md:w-1/2    gap-5   ">
+            <div className="flex w-full sm:w-[40%]  justify-around md:w-1/2    gap-5   ">
               <div className="flex flex-col justify-evenly   sm:flex-col gap-3  sm:w-1/2">
                 <div className="flex items-center gap-1">
                   <div className="text-[1.5rem] text-sky-600 bg-slate-300 p-1 rounded-md">
@@ -181,7 +180,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
       </div>
 
       <div className="flex  gap-1 flex-row   lg:w-[20%] xl:w-[25%] md:space-x-4 ">
-        <button
+        <button 
           onClick={() => DownloadInvoice()}
           className="bg-[#007EC4] text-white px-2 xl:px-4 py-1 xl:py-2 rounded-sm mb-4 md:mb-0"
         >
@@ -194,7 +193,11 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
           Details
         </button>
       </div>
+  
+
+      
     </div>
+
   );
 };
 

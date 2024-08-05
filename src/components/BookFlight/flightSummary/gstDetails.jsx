@@ -93,9 +93,10 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
   const inputClass = `block w-full max-w-md py-2 px-3 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`;
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden">
+    <div className="rounded-lg overflow-hidden">
       <div
-        className="p-4 bg-gray-50 cursor-pointer flex justify-between items-center"
+        // className="p-4 bg-gray-50 cursor-pointer flex justify-between items-center "
+        className="p-3 cursor-pointer flex justify-between items-center "
         onClick={toggleCard}
       >
         <div>
@@ -109,15 +110,15 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
         </div>
         <div>
           {expanded ? (
-            <FaChevronUp className="text-gray-500" />
+            <FaChevronUp />
           ) : (
-            <FaChevronDown className="text-gray-500" />
+            <FaChevronDown />
           )}
         </div>
       </div>
       {expanded && (
         <div className="p-4 bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 box-border">
             {[
               {
                 id: "gstNumber",
@@ -172,7 +173,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
               </div>
             ))}
           </div>
-          <div className="mt-6">
+          <div className="mt-6 box-border">
             <label
               htmlFor="address"
               className="block text-sm font-medium text-gray-700 mb-1"

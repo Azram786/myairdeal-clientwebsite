@@ -429,7 +429,7 @@ const UserProfile = () => {
                                     backgroundImage: `url(${world})`,
                                     backgroundSize: "cover",
                                 }}>
-                                <div className="rounded-full mx-auto mb-4 w-24 h-24 bg-white flex items-center justify-center text-blue-500 text-3xl font-bold uppercase">
+                                <div className="rounded-full mx-auto mb-4 w-24 h-24 bg-white flex items-center justify-center text-[#007EC4] text-3xl font-bold uppercase">
                                     {user.firstName.charAt(0)}
                                 </div>
                                 <h1 className="text-2xl font-bold uppercase">{user.firstName} {user.lastName}</h1>
@@ -508,7 +508,7 @@ const UserProfile = () => {
                                         </div>
                                     </div>
                                     {savingLoading ? <div className='flex justify-center items-center h-full w-full p-4'><motion.div
-                                        className="w-4 h-4 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                                        className="w-4 h-4 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
                                         variants={spinnerVariants}
                                         animate="animate"
                                     /></div> : <div className="flex   md:flex-col lg:flex-row gap-1 ">

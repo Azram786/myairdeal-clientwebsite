@@ -318,10 +318,10 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
               updatePassenger={updatePassenger}
               passport={formData.passport}
             />
-            <div className="w-full justify-end mt-2 flex">
+            <div className="w-full justify-between md:flex-row gap-3 flex-col mt-4 flex">
               <button
                 type="submit"
-                className="button text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+                className="button text-sm bg-[#007EC4] hover:bg-blue-600 text-white font-bold md:w-1/2 py-2 px-4 rounded "
               >
                 Save
               </button>
@@ -329,7 +329,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                 type="button"
                 disabled={loading}
                 onClick={handleModalOpen}
-                className="button text-sm bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                className="button text-sm bg-green-500 hover:bg-green-600 text-white font-bold py-2 md:w-1/2 rounded"
               >
                 {loading ? (
                 <div className="text-center text-white "><span className="italic">Loading...</span></div>

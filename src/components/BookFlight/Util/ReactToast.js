@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { toast } from 'sonner';
 
 
 const ReactToast = (message) => {
@@ -6,3 +6,6 @@ const ReactToast = (message) => {
 };
 
 export default ReactToast;
+
+
+

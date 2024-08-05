@@ -1029,7 +1029,7 @@ const FlightDetailsCard = ({
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row items-center justify-around py-4 border-b"
+                className="flex flex-col md:flex-row items-center justify-between md:justify-around py-4 border-b"
               >
                 <div className="flex items-center">
                   <img
@@ -1229,8 +1229,8 @@ const FlightDetailsCard = ({
             </div>
           </div>
 
-          <div className="flex flex-col w-full  overflow-x-auto ">
-            <div className="flex  mt-3 gap-2 overflow-x-auto items-start">
+          <div className="flex flex-col w-full   ">
+            <div className="flex  mt-3 gap-2 overflow-x-auto no-scroll items-start">
               {displayedPrices?.map((price, index) => (
                 <div
                   key={index}
@@ -1240,7 +1240,7 @@ const FlightDetailsCard = ({
                 p-1 mb-2 cursor-pointer 
                 ${
                   localSelectedPriceIndex === index
-                    ? "border border-blue-500 rounded-md"
+                    ? "border border-[#007EC4] rounded-md"
                     : "border border-gray-200 hover:border-blue-300 rounded-md"
                 }
               `}
@@ -1287,12 +1287,12 @@ const FlightDetailsCard = ({
                 {showDetails ? (
                   <span className="text-black">
                     Fare Details :{" "}
-                    <span className="text-blue-500">Hide Details</span>
+                    <span className="text-[#007EC4]">Hide Details</span>
                   </span>
                 ) : (
                   <span className="text-black">
                     Fare Details :{" "}
-                    <span className="text-blue-500">View Details</span>
+                    <span className="text-[#007EC4]">View Details</span>
                   </span>
                 )}
               </button>
@@ -1303,7 +1303,7 @@ const FlightDetailsCard = ({
         <div className="flex   justify-center items-end md:border-l-2 pl-3 ">
           <button
             className={`${
-              isSelected ? "bg-green-500" : "bg-blue-500"
+              isSelected ? "bg-green-500" : "bg-[#007EC4]"
             } text-white md:w-36 px-7 py-2 rounded-md mt-4 md:mt-0`}
             onClick={() => onSelect(localSelectedPriceIndex)}
           >
@@ -1326,7 +1326,7 @@ const FlightDetailsCard = ({
                 onClick={() => setActiveTab(tab)}
                 className={`py-2 px-4 shrink-0 text-sm ${
                   activeTab === tab
-                    ? "text-blue-500  font-bold border-b-2 border-blue-500"
+                    ? "text-[#007EC4]  font-bold border-b-2 border-[#007EC4]"
                     : "text-gray-500"
                 }`}
               >

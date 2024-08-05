@@ -61,7 +61,7 @@ const AddonsCard = ({
   return (
     <div className="">
       <div
-        className="p-4 border-b border-gray-300 cursor-pointer flex justify-between items-center"
+        className="p-3 border-b border-gray-300 cursor-pointer flex justify-between items-center"
         onClick={toggleCard}
       >
         <div>
@@ -72,9 +72,9 @@ const AddonsCard = ({
         </div>
         <div>
           {expanded ? (
-            <FaChevronUp className="text-gray-500" />
+            <FaChevronUp/>
           ) : (
-            <FaChevronDown className="text-gray-500" />
+            <FaChevronDown  />
           )}
         </div>
       </div>
@@ -91,9 +91,9 @@ const AddonsCard = ({
             >
               Seat Selection
             </button>
-            <button onClick={checkSeatSelection} disabled={checkLoading}>
+            {/* <button onClick={checkSeatSelection} disabled={checkLoading}>
               {checkLoading ? "Checking..." : "Check Seat Availability"}
-            </button>
+            </button> */}
             <button
               onClick={() => setActiveButton("addBagAndMeal")}
               className={`px-4 py-2 rounded ${
@@ -106,10 +106,11 @@ const AddonsCard = ({
             </button>
           </div>
           <div>
-            {Errors?.map((item) => (
+            {/* {Errors?.map((item) => (
               <div>Message : {item?.message}</div>
-            ))}
-            <div></div>
+            ))} */}
+            <div>
+            </div>
           </div>
           {activeButton === "seatSelection" && (
             <SeatSelection

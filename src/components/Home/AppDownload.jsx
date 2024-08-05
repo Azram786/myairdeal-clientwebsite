@@ -43,7 +43,7 @@ import mobile from "../../assets/home/mobile/mobile.png";
 
 const DownloadApp = () => {
   return (
-    <div className="max-w-6xl mx-auto p-6 font-poppins overflow-hidden relative m-5">
+    <div className="px-3 mx-auto p-6 font-poppins overflow-hidden relative m-5">
       <h1 className="text-3xl font-bold mb-8">Download our app</h1>
       <div className="relative flex flex-col md:flex-row items-center  bg-[#253B59] justify-between p-8 rounded-lg md:h-56">
         <div className=" w-full  flex  rounded-lg ">
@@ -54,11 +54,11 @@ const DownloadApp = () => {
             <p className="mb-6">
               Available for Android and iOS. It's Free! Download Now!
             </p>
-            <div className="flex gap-4">
-              <button className="bg-[#0f1e35] text-white border border-white py-2 px-6 rounded-full">
+            <div className="flex justify-around md:justify-start gap-4">
+              <button className="bg-[#0f1e35] text-white border border-white py-2 px-2 md:px-6 rounded-full">
                 Play Store
               </button>
-              <button className="bg-white text-[#0f1e35] py-2 px-6 rounded-full">
+              <button className="bg-white text-[#0f1e35] py-2 px-2 md:px-6 rounded-full">
                 App Store
               </button>
             </div>
