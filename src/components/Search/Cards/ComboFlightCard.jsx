@@ -800,6 +800,7 @@ import {
 } from "react-icons/fa";
 
 import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
+import FareToolTip from "./FareTooltip";
 
 const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
   const [showAllPrices, setShowAllPrices] = useState(false);
@@ -945,9 +946,10 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                         <div>₹{(details.fC.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
-                        <div className="flex items-center">
-                          Taxes and fees <FaInfoCircle className="ml-1 text-gray-500" />
-                        </div>
+                      <div className="flex items-center">
+                        Taxes and fees
+                        <FareToolTip taxDetails={details.afC.TAF} />
+                      </div>
                         <div>₹{details.fC.TAF.toFixed(2)} x {count}</div>
                         <div>₹{(details.fC.TAF * count).toFixed(2)}</div>
                       </div>

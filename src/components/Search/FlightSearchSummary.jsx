@@ -60,7 +60,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
           </span>
         </div>
       </div>
-      <div className="flex items-center  justify-center border-r ">
+      <div className="flex items-center  justify-center md:border-r ">
         {/* <div className="flex flex-col items-end">
           <span className="text-xs text-white">Departure Date</span>
           <span className="text-lg font-semibold">{routeInfos[0].travelDate}</span>

@@ -5,6 +5,7 @@ import {
   FaChevronDown,
   FaChevronUp,
 } from "react-icons/fa";
+import FareToolTip from "./FareTooltip";
 
 const RoundTripCard = ({
   logo,
@@ -208,10 +209,10 @@ const RoundTripCard = ({
                         <div>₹{(details.fC.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
-                        <div className="flex items-center">
-                          Taxes and fees{" "}
-                          <FaInfoCircle className="ml-1 text-gray-500" />
-                        </div>
+                      <div className="flex items-center">
+                        Taxes and fees
+                        <FareToolTip taxDetails={details.afC.TAF} />
+                      </div>
                         <div>
                           ₹{details.fC.TAF.toFixed(2)} x {count}
                         </div>
