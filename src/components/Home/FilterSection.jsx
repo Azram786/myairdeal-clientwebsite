@@ -351,7 +351,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         </div>
 
         {/* select country code and date section  */}
-        <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-col w-full gap-2 ">
           <div className="flex flex-col  md:flex-row bg-[#ffffff]  w-full  gap-2 ">
             {/* {select country section} */}
             <div
@@ -402,7 +402,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             {/* date picker section  */}
             <div className="flex flex-col md:flex-row     w-full  md:w-1/2 gap-2">
               <div className="  rounded   flex items-center border md:w-1/2  py-2 ">
-                <div className=" flex items-center justify-center md:justify-evenly   w-full">
+                <div className=" flex items-center justify-center md:justify-between   w-full ">
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}
@@ -460,7 +460,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
                 className="    flex items-center flex-col border relative rounded-md md:w-1/2  justify-center p-3 md:p-0  cursor-pointer"
               >
-                <div className="flex " onClick={() => setModelIsOpen(prev => !prev)}>
+                <div className="flex w-full  justify-center items-center  " onClick={() => setModelIsOpen(prev => !prev)}>
 
                   <div className=" text-[2rem]  ">
                     <MdAirlineSeatReclineExtra />
@@ -546,10 +546,11 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    isDirectFlight: e.target.checked,
+                    // isDirectFlight: e.target.checked,
+                    isConnectingFlight: !e.target.checked
                   }))
                 }
-                checked={formData?.isDirectFlight}
+                checked={!formData?.isConnectingFlight}
                 className="h-4 w-4 cursor-pointer"
               />
             </div>

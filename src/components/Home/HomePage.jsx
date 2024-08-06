@@ -133,7 +133,7 @@ const HomePage = () => {
     toCityOrAirport: "",
     travelDate: new Date(),
     returnDate: new Date(),
-    isDirectFlight: false,
+    isDirectFlight: true,
     isConnectingFlight: true,
     pft: "REGULAR",
   });
@@ -184,7 +184,7 @@ const HomePage = () => {
         toCityOrAirport: resentSearch.searchQuery.routeInfos[0]?.toCityOrAirport?.code || prevFormData.toCityOrAirport,
         travelDate: new Date(),
         returnDate: new Date(),
-        isDirectFlight: resentSearch.searchQuery.searchModifiers?.isDirectFlight ?? prevFormData.isDirectFlight,
+        isDirectFlight: true,
         isConnectingFlight: resentSearch.searchQuery.searchModifiers?.isConnectingFlight ?? prevFormData.isConnectingFlight,
         pft: resentSearch.searchQuery.searchModifiers?.pft || prevFormData.pft,
       }));
