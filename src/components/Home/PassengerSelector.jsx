@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import ReactToast from "../util/ReactToast";
 
-const PassengerSelector = ({ onClose, formData, setFormData }) => {
-  console.log({ formData, index: 1 })
+const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
+  const selectorRef = useRef(null);
   const handleCountChange = (type, count) => {
     if (type === "adult") {
       if (formData.CHILD + count <= 9 && formData.INFANT <= count)
@@ -63,12 +63,27 @@ const PassengerSelector = ({ onClose, formData, setFormData }) => {
     );
   };
 
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (selectorRef.current && !selectorRef.current.contains(event.target)) {
+        setModelIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setModelIsOpen]);
+
+
   return (
-    <div className=" md:p-5 flex  flex-col   
+    <div ref={selectorRef} className=" md:p-5 flex  flex-col   
       rounded-lg bg-white">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-semibold text-sm lg:text-lg">SELECT PASSENGER</h3>
-        <FaTimes className="cursor-pointer" onClick={onClose} />
+        <FaTimes className="cursor-pointer" onClick={() => setModelIsOpen(false)} />
       </div>
       <div className="flex flex-col md:flex-row gap-4">
         <div className="md:w-2/3">
@@ -118,7 +133,7 @@ const PassengerSelector = ({ onClose, formData, setFormData }) => {
           </div>
           <button
             className="bg-[#1F61BC] text-white rounded mt-4 p-1 md:p-2 w-full"
-            onClick={onClose}
+            onClick={() => setModelIsOpen(false)}
           >
             DONE
           </button>
