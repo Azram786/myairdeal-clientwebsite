@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 // icons
 import { RiFlightTakeoffFill, RiFlightTakeoffLine } from "react-icons/ri";
@@ -13,7 +13,7 @@ import CustomInput from "../util/DatePickerCustom";
 import DatePicker from "react-datepicker";
 import CustomSelect from "../util/CustomSelect";
 import MultiCityForm from "../util/MultiCityForm";
-import Modal from "../util/CustomModal";
+// import Modal from "../util/CustomModal";
 import ReactToast from "../util/ReactToast";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -22,13 +22,14 @@ import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
+import PassengerSelector from "./PassengerSelector";
 const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormData, setTypeOfTravel, typeOfTravel }) => {
 
 
 
-  const { resentSearch, lastSearch } = useSelector((state) => state.auth)
 
 
+  const passengerSelectorRef = useRef(null);
 
 
 
@@ -51,16 +52,12 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
   // state for filteration
 
-
+  console.log({ modalIsOpen })
   //changing type-of-travel
   const handleTypeOfTravelChange = (type) => {
     setTypeOfTravel(type);
   };
 
-  // modal
-  const openModalHandler = () => {
-    setModelIsOpen(true);
-  };
 
 
 
@@ -318,7 +315,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
   }, []);
 
   return (
-    <div className="flex flex-col items-center  min-h-[200px]  justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
+    <div className="flex flex-col items-center  min-h-[200px]   justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
       <div className="     md:rounded-xl w-[90%] mt-4 md:mt-0  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   ">
         {/* type of travel selecting section */}
 
@@ -363,8 +360,8 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             >
               <div className="flex   items-center border rounded p-2 md:w-1/2 ">
                 <div>
-                <RiFlightTakeoffLine className=" text-2xl md:text-3xl " />
-                  
+                  <RiFlightTakeoffLine className=" text-2xl md:text-3xl " />
+
                 </div>
                 <div className="w-full ">
                   <CustomSelect
@@ -460,24 +457,35 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               <div
                 //click handler
 
-                onClick={openModalHandler}
-                className="    flex items-center border rounded-md md:w-1/2  p-3 md:p-0  cursor-pointer"
+
+                className="    flex items-center flex-col border relative rounded-md md:w-1/2  justify-center p-3 md:p-0  cursor-pointer"
               >
-                <div className=" text-[2rem]  ">
-                  <MdAirlineSeatReclineExtra />
+                <div className="flex " onClick={() => setModelIsOpen(prev => !prev)}>
+
+                  <div className=" text-[2rem]  ">
+                    <MdAirlineSeatReclineExtra />
+                  </div>
+                  <div className="flex flex-col w-[80%] ">
+                    <h5 className="text-xs font-semibold text-gray-500 ">
+                      Passenger and Class
+                    </h5>
+                    <input
+                      className="font-bold outline-none cursor-pointer "
+                      type="text"
+                      value={`${Number(formData.ADULT) + Number(formData.CHILD) + Number(formData.INFANT)
+                        } | ${formData.cabinClass}`}
+                      readOnly
+                    />
+                  </div>
                 </div>
-                <div className="flex flex-col w-[80%] ">
-                  <h5 className="text-xs font-semibold text-gray-500 ">
-                    Passenger and Class
-                  </h5>
-                  <input
-                    className="font-bold outline-none cursor-pointer "
-                    type="text"
-                    value={`${Number(formData.ADULT) + Number(formData.CHILD) + Number(formData.INFANT)
-                      } | ${formData.cabinClass}`}
-                    readOnly
+
+                {modalIsOpen && <div className=" z-10 absolute top-[59px] right-[0px]  border-[2px] rounded-lg ">
+
+                  <PassengerSelector formData={formData}
+                    setModelIsOpen={setModelIsOpen}
+                    setFormData={setFormData}
                   />
-                </div>
+                </div>}
               </div>
             </div>
           </div>
@@ -494,7 +502,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         </div>
 
         {/* fare type with submit button section  */}
-        <div className=" md:items-center  flex flex-col md:flex-row mt-3   ">
+        <div className=" md:items-center  flex flex-col md:flex-row mt-3 mb-3   ">
           <div className="    flex  flex-col md:flex-row  md:w-3/4 gap-2 md:gap-0">
             <div className=" w-full flex justify-center md:w-1/3 ">
               <select
@@ -546,7 +554,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               />
             </div>
           </div>
-          <div className="  md:w-1/4 items-center  flex  justify-center ">
+          <div className="  md:w-1/4 items-center  flex  justify-center  ">
             <button
               disabled={Loading}
               // form submition
@@ -590,12 +598,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
           </select>
         </div>
       </div> */}
-      <Modal
-        formData={formData}
-        setFormData={setFormData}
-        modalIsOpen={modalIsOpen}
-        setModelIsOpen={setModelIsOpen}
-      />
+
     </div>
   );
 };
