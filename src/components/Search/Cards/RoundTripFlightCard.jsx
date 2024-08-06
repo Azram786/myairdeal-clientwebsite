@@ -88,9 +88,9 @@ const RoundTripCard = ({
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false
+      hour12: false,
     };
-    return date.toLocaleString('en-US', options);
+    return date.toLocaleString("en-US", options);
   };
 
   const departureTime = formatDateTime(startSegment.dt);
@@ -209,10 +209,10 @@ const RoundTripCard = ({
                         <div>₹{(details.fC.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
-                      <div className="flex items-center">
-                        Taxes and fees
-                        <FareToolTip taxDetails={details.afC.TAF} />
-                      </div>
+                        <div className="flex items-center">
+                          Taxes and fees
+                          <FareToolTip taxDetails={details.afC.TAF} />
+                        </div>
                         <div>
                           ₹{details.fC.TAF.toFixed(2)} x {count}
                         </div>
@@ -264,18 +264,18 @@ const RoundTripCard = ({
 
   return (
     <div className="border flex flex-col   rounded-lg m-4 bg-white shadow-md overflow-x-auto no-scroll ">
-      <div className="flex flex-col md:flex-row justify-between items-stretch p-3  mb-2">
+      <div className="flex flex-col md:flex-row  justify-between items-stretch p-3  mb-2">
         <div className="flex flex-col px-2 ">
-          <div className="flex justify-around">
-          <div className="md:hidden">
-          <img
-              src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-              onError={(e) => e.currentTarget.src = defaultAirline}
-              alt={startSegment?.fD?.aI?.code}
-              className="size-12 hidden mr-4"
-            />
-          </div>
-            <div className="md:flex-row  flex-col flex justify-center items-center mb-4 md:mb-0">
+          <div className="flex  gap-4  ">
+            <div className="md:hidden">
+              <img
+                src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                onError={(e) => (e.currentTarget.src = defaultAirline)}
+                alt={startSegment?.fD?.aI?.code}
+                className="size-12 hidden mr-4"
+              />
+            </div>
+            <div className="md:flex-row flex-col bg-yellow-400 flex justify-center items-center mb-4 md:mb-0">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                 alt={startSegment?.fD?.aI?.code}
@@ -294,9 +294,9 @@ const RoundTripCard = ({
               <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
                 <span className="">{convertToHoursMinutes(totalDuration)}</span>
                 <FaPlane className="mx-2 text-blue-800 text-3xl" />
-                <div className="flex items-center">
+                <div className="flex items-center  bg-green-400">
                   {isConnectionFlight ? (
-                    <span>
+                    <span className="flex-wrap">
                       {data.length - 1} stop{data.length > 2 ? "s" : ""}
                       {data.length === 2 && ` via ${data[0].aa.city}`}
                     </span>
@@ -316,9 +316,9 @@ const RoundTripCard = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between ">
             <div className="flex flex-col w-full  ">
-              <div className="flex   mt-3 gap-2 overflow-x-auto no-scroll items-center ">
+              <div className="flex flex-wrap  mt-3 gap-2 overflow-x-auto  no-scroll items-center ">
                 {displayedPrices?.map((price, index) => (
                   <div
                     key={index}
@@ -386,21 +386,19 @@ const RoundTripCard = ({
                   </button>
                 </div>
                 <div className=" flex items-end justify-end ">
-            <button
-            className={`${
-              isSelected ? "bg-green-500" : "bg-[#007EC4]"
-            } text-white md:w-20 px-7 py-2 rounded-md `}
-            onClick={() => onSelect(localSelectedPriceIndex)}
-          >
-            {isSelected ? "Selected" : "Select"}
-          </button>
+                  <button
+                    className={`${
+                      isSelected ? "bg-green-500" : "bg-[#007EC4]"
+                    } text-white md:w-20 px-7 py-2 rounded-md `}
+                    onClick={() => onSelect(localSelectedPriceIndex)}
+                  >
+                    {isSelected ? "Selected" : "Select"}
+                  </button>
+                </div>
+              </div>
             </div>
-        </div>
-            </div>
-            
           </div>
         </div>
-        
 
         {/* <div className="flex   justify-center items-end md:border-l-2 pl-3 ">
           

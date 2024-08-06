@@ -10,7 +10,6 @@
 // import axios from "axios";
 // import { useSelector } from "react-redux";
 
-
 // const HomePage = () => {
 //   const [loading, setLoading] = useState(true);
 //   const { token, resentSearch } = useSelector((state) => state.auth);
@@ -145,7 +144,7 @@ const HomePage = () => {
       travelDate: formData.travelDate,
     },
   ]);
-  console.log({ formData, dynamicFormData })
+  console.log({ formData, dynamicFormData });
 
   async function getResentSearch() {
     try {
@@ -176,38 +175,52 @@ const HomePage = () => {
     if (resentSearch?.searchQuery) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        cabinClass: resentSearch.searchQuery.cabinClass || prevFormData.cabinClass,
+        cabinClass:
+          resentSearch.searchQuery.cabinClass || prevFormData.cabinClass,
         ADULT: resentSearch.searchQuery.paxInfo.ADULT || prevFormData.ADULT,
         CHILD: resentSearch.searchQuery.paxInfo.CHILD || prevFormData.CHILD,
         INFANT: resentSearch.searchQuery.paxInfo.INFANT || prevFormData.INFANT,
-        fromCityOrAirport: resentSearch.searchQuery.routeInfos[0]?.fromCityOrAirport?.code || prevFormData.fromCityOrAirport,
-        toCityOrAirport: resentSearch.searchQuery.routeInfos[0]?.toCityOrAirport?.code || prevFormData.toCityOrAirport,
+        fromCityOrAirport:
+          resentSearch.searchQuery.routeInfos[0]?.fromCityOrAirport?.code ||
+          prevFormData.fromCityOrAirport,
+        toCityOrAirport:
+          resentSearch.searchQuery.routeInfos[0]?.toCityOrAirport?.code ||
+          prevFormData.toCityOrAirport,
         travelDate: new Date(),
         returnDate: new Date(),
-        isDirectFlight: resentSearch.searchQuery.searchModifiers?.isDirectFlight ?? prevFormData.isDirectFlight,
-        isConnectingFlight: resentSearch.searchQuery.searchModifiers?.isConnectingFlight ?? prevFormData.isConnectingFlight,
+        isDirectFlight:
+          resentSearch.searchQuery.searchModifiers?.isDirectFlight ??
+          prevFormData.isDirectFlight,
+        isConnectingFlight:
+          resentSearch.searchQuery.searchModifiers?.isConnectingFlight ??
+          prevFormData.isConnectingFlight,
         pft: resentSearch.searchQuery.searchModifiers?.pft || prevFormData.pft,
       }));
       if (resentSearch?.searchQuery?.routeInfos?.length === 1)
-        setTypeOfTravel("one-way")
-      setDynamicFormData(() => ([{
-        fromCity: "",
-        toCity: "",
-        travelDate: formData.travelDate,
-      }]))
+        setTypeOfTravel("one-way");
+      setDynamicFormData(() => [
+        {
+          fromCity: "",
+          toCity: "",
+          travelDate: formData.travelDate,
+        },
+      ]);
       if (resentSearch.searchQuery.routeInfos.length > 1) {
-        setTypeOfTravel("multi-city")
+        setTypeOfTravel("multi-city");
         setDynamicFormData(
-          resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => ({
-            fromCity: route.fromCityOrAirport.code,
-            toCity: route.toCityOrAirport.code,
-            travelDate: new Date(route.travelDate),
-          }))
+          resentSearch?.searchQuery?.routeInfos
+            ?.slice(1)
+            .map((route, index) => ({
+              fromCity: route.fromCityOrAirport.code,
+              toCity: route.toCityOrAirport.code,
+              travelDate: new Date(route.travelDate),
+            }))
         );
       }
-
     }
   }, [resentSearch]);
+
+  console.log({ resentSearch });
 
   return (
     <div>
@@ -228,7 +241,9 @@ const HomePage = () => {
             setTypeOfTravel={setTypeOfTravel}
           />
 
-          {token && <RecentSearch ResentSearchData={ResentSearchData} />}
+          {(token && resentSearch?.length !== 0 )&& (
+            <RecentSearch ResentSearchData={ResentSearchData} />
+          )}
 
           <OfferSection />
           <AboutUs />
@@ -245,4 +260,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

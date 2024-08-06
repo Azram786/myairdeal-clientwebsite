@@ -70,7 +70,7 @@ const RecentSearch = ({ ResentSearchData }) => {
             <h1 className='font-semibold px-4 text-start text-2xl'>Recent Search</h1>
             <div className='px-4 '>
                 <Slider {...settings}>
-                    {ResentSearchData.map((search, index) => {
+                    {ResentSearchData?.map((search, index) => {
 
                         return (
                             // <div key={index} className="p-2 h-[15vh]"
