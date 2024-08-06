@@ -460,7 +460,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                 //click handler
 
                 onClick={openModalHandler}
-                className="    flex items-center border rounded-md md:w-1/2  p-3 md:p-0  "
+                className="    flex items-center border rounded-md md:w-1/2  p-3 md:p-0  cursor-pointer"
               >
                 <div className=" text-[2rem]  ">
                   <MdAirlineSeatReclineExtra />
@@ -470,7 +470,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                     Passenger and Class
                   </h5>
                   <input
-                    className="font-bold outline-none "
+                    className="font-bold outline-none cursor-pointer "
                     type="text"
                     value={`${Number(formData.ADULT) + Number(formData.CHILD) + Number(formData.INFANT)
                       } | ${formData.cabinClass}`}
@@ -498,7 +498,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             <div className=" w-full flex justify-center md:w-1/3 ">
               <select
                 id="fare-type"
-                className=" outline-none border rounded-md md:w-auto p-2 w-3/4 md:p-1  bg-white"
+                className=" outline-none border rounded-md md:w-auto p-2 w-3/4 md:p-1 cursor-pointer  bg-white"
                 name="fare_type"
                 value={formData.pft}
                 onChange={(e) =>
@@ -519,15 +519,18 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             <div className="lg:w-1/3 flex justify-center">
               <select
                 name=""
-                className="border w-3/4  md:w-auto rounded-md l p-2 md:p-1    bg-white"
+                className="border w-3/4  md:w-auto rounded-md l p-2 md:p-1 cursor-pointer    bg-white"
                 id=""
               >
                 <option value="" disabled selected>
-                  select prefered airlines
+                  Select prefered airlines
                 </option>
                 <option value="">ethiad</option>
               </select>
+
             </div>
+
+
             <div className="flex gap-2 p-1 w-full justify-center items-center md:w-1/3  ">
               <label>Direct flights</label>
               <input
@@ -540,7 +543,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                   }))
                 }
                 checked={formData?.isDirectFlight}
-                className="h-4 w-4"
+                className="h-4 w-4 cursor-pointer"
               />
             </div>
           </div>
