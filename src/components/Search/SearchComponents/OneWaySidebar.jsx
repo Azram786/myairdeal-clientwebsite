@@ -245,13 +245,13 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
   };
 
   return (
-    <div className="md:w-1/4 text-xs md:text-base border p-4 m-2 shadow-md rounded-md md:min-h-screen">
+    <div className="md:w-1/5 text-xs md:text-base border p-4 m-2 shadow-md rounded-md md:min-h-screen">
       <div className="p-4">
         {/* Price filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Price</h3>
+          <h3 className="text-sm font-semibold mb-2">Price</h3>
           <div className="flex justify-between gap-2">
-            <span>₹100</span>
+            <span className='text-xs'>₹100</span>
             <input
               type="range"
               min="100"
@@ -261,13 +261,13 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
               id='priceRange'
               className="flex-1 price-range-slider range-slider"
             />
-            <span>₹{filters.maxPrice}</span>
+            <span className='text-xs'>₹{filters.maxPrice}</span>
           </div>
         </div>
 
         {/* Stops filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Stops</h3>
+          <h3 className="text-sm font-semibold mb-2">Stops</h3>
           <div className="grid w-full grid-cols-4 ">
             {/* {stops.map((stop, index) => (
               <label
@@ -292,7 +292,7 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
               <label
                 key={stop}
                 htmlFor={`stop-${stop}`}
-                className={`mb-1 border flex flex-col items-center justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === 3 ? 'rounded-r-md' : ''} ${
+                className={`mb-1 border flex text-xs flex-col items-center justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === 3 ? 'rounded-r-md' : ''} ${
                   filters.stops.includes(stop) ? 'bg-blue-200' : ''
                 } ${stopsCountMap[stop] === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
               >
@@ -304,7 +304,7 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
                   className="mr-2 hidden"
                   disabled={stopsCountMap[stop] === 0}
                 />
-                <span>{stop}</span>
+                <span className='text-xs'>{stop}</span>
                 <span className="md:text-[10px] text-[8px] text-gray-500">
                   {stopsCountMap[stop] > 0 ? `(${stopsCountMap[stop]})` : "(0)"}
                 </span>
@@ -315,7 +315,7 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
 
         {/* Departure Time filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Departure Time</h3>
+          <h3 className="text-sm font-semibold mb-2">Departure Time</h3>
           <div className='grid grid-cols-4 place-items-center gap-2 '>
             {[
               { icon: <PiMountains />, time: "00-06" },
@@ -325,7 +325,7 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500 border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters.departureTime.includes(time) ? 'bg-blue-200' : ''
                 }`}
                 onClick={() => handleTimeChange('departureTime', time)}
@@ -339,7 +339,7 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
 
         {/* Arrival Time filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Arrival Time</h3>
+          <h3 className="text-sm font-semibold mb-2">Arrival Time</h3>
           <div className='grid grid-cols-4 place-items-center gap-2 '>
             {[
               { icon: <PiMountains />, time: "00-06" },
@@ -349,7 +349,7 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500 text-xs border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters.arrivalTime.includes(time) ? 'bg-blue-200' : ''
                 }`}
                 onClick={() => handleTimeChange('arrivalTime', time)}
@@ -363,11 +363,11 @@ const OneWaySideBar = ({ flights, filters, setFilters, passenger, calculateTotal
 
         {/* Airlines filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Airlines</h3>
+          <h3 className="text-sm font-semibold mb-2">Airlines</h3>
           <div className="flex flex-col">
             {Object.entries(flightCountMap).map(([airline, count]) => (
               <span key={airline} className='flex justify-between items-center w-full'>
-                <label htmlFor={`airline-${airline}`} className="mb-1">
+                <label htmlFor={`airline-${airline}`} className="mb-1 text-xs">
                   {airline} <span className='text-gray-400'>({count})</span>
                 </label>
                 <input

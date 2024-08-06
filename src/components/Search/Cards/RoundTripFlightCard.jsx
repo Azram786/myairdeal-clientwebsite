@@ -5,6 +5,7 @@ import {
   FaChevronDown,
   FaChevronUp,
 } from "react-icons/fa";
+import FareToolTip from "./FareTooltip";
 
 const RoundTripCard = ({
   logo,
@@ -111,7 +112,7 @@ const RoundTripCard = ({
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className="w-full p-2">
+          <div className=" p-2">
             {data.map((segment, index) => (
               <div
                 key={index}
@@ -124,10 +125,10 @@ const RoundTripCard = ({
                     className="md:size-10 size-8 rounded-md mr-4"
                   />
                   <div>
-                    <div className="font-bold">
+                    <div className="font-bold text-sm">
                       {segment.fD.aI.name} {segment.fD.fN}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.da.city} → {segment.aa.city}{" "}
                       {formatDateTime(segment.dt).split(",")[0]}
                     </div>
@@ -135,41 +136,41 @@ const RoundTripCard = ({
                 </div>
                 <div className="flex items-center">
                   <div className="text-right mr-8">
-                    <div className="font-bold">
-                      {formatDateTime(segment.dt).split(",")[1].trim()}
+                    <div className="font-bold text-xs">
+                      {formatDateTime(segment.dt).split(",")[0].trim()}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.da.city}, {segment.da.country}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.da.name}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.da.terminal || "N/A"}
                     </div>
                   </div>
                   <div className="flex flex-col items-center mx-4">
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.stops === 0
                         ? "Non-Stop"
-                        : `${segment.stops} Stop(s)`}
+                        : `${segment.stops} Stops`}
                     </div>
-                    <FaPlane className="my-2 text-gray-400" />
-                    <div className="text-sm text-gray-500">
+                    <FaPlane className="my-2  text-gray-400" />
+                    <div className="text-xs text-gray-500">
                       {convertToHoursMinutes(segment.duration)}
                     </div>
                   </div>
                   <div className="text-left ml-8">
-                    <div className="font-bold">
-                      {formatDateTime(segment.at).split(",")[1].trim()}
+                    <div className="text-xs font-bold">
+                      {formatDateTime(segment.at).split(",")[0].trim()}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.aa.city}, {segment.aa.country}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.aa.name}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       {segment.aa.terminal || "N/A"}
                     </div>
                   </div>
@@ -180,8 +181,8 @@ const RoundTripCard = ({
         );
       case "Fare Details":
         return (
-          <div className="w-full p-2">
-            <div className="grid grid-cols-3 w-full border-b pb-2 mb-2">
+          <div className="flex flex-col  p-2">
+            <div className="grid grid-cols-3 w-full place-items-center text-sm border-b pb-2 mb-2">
               <div className="font-bold">TYPE</div>
               <div className="font-bold">Fare</div>
               <div className="font-bold">Total</div>
@@ -192,8 +193,8 @@ const RoundTripCard = ({
                   priceList[localSelectedPriceIndex]?.fd[passengerType];
                 if (details) {
                   return (
-                    <div key={passengerType} className="mb-4">
-                      <div className="grid grid-cols-3 w-full text-gray-600 mb-2">
+                    <div key={passengerType} className="mb-4  text-xs">
+                      <div className="grid grid-cols-3  w-full text-gray-600 mb-2">
                         <div>
                           Fare Details for {passengerType} (CB: {details.cB})
                         </div>
@@ -208,10 +209,10 @@ const RoundTripCard = ({
                         <div>₹{(details.fC.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
-                        <div className="flex items-center">
-                          Taxes and fees{" "}
-                          <FaInfoCircle className="ml-1 text-gray-500" />
-                        </div>
+                      <div className="flex items-center">
+                        Taxes and fees
+                        <FareToolTip taxDetails={details.afC.TAF} />
+                      </div>
                         <div>
                           ₹{details.fC.TAF.toFixed(2)} x {count}
                         </div>
@@ -223,7 +224,7 @@ const RoundTripCard = ({
               }
               return null;
             })}
-            <div className="grid grid-cols-3 w-full font-bold border-t pt-2">
+            <div className="grid grid-cols-3  text-sm font-bold border-t pt-2">
               <div>Total</div>
               <div></div>
               <div>
@@ -234,24 +235,24 @@ const RoundTripCard = ({
         );
       case "Fare Rules":
         return (
-          <div className="p-2">
+          <div className="p-2 text-xs">
             <h2 className="font-bold mb-2">Fare Rules</h2>
             <p>Insert fare rules information here.</p>
           </div>
         );
       case "Baggage Information":
         return (
-          <div className="grid p-2 grid-cols-3 w-full gap-4">
+          <div className="grid p-2 grid-cols-3 text-xs  gap-4">
             <div className="font-bold">SECTOR</div>
             <div className="font-bold">CHECKIN</div>
             <div className="font-bold">CABIN</div>
             {priceList.map((item, index) => (
               <React.Fragment key={index}>
-                <div>
+                <div className="text-xs">
                   {startSegment.da.code} - {endSegment.aa.code}
                 </div>
-                <div>Adult {item?.fd?.ADULT?.bI?.iB}</div>
-                <div>Adult {item?.fd?.ADULT?.bI?.cB}</div>
+                <div className="text-xs">Adult {item?.fd?.ADULT?.bI?.iB}</div>
+                <div className="text-xs">Adult {item?.fd?.ADULT?.bI?.cB}</div>
               </React.Fragment>
             ))}
           </div>
@@ -281,17 +282,17 @@ const RoundTripCard = ({
                 className="md:size-10 rounded-md  mr-4 md:flex hidden"
               />
               <div>
-                <h1 className="text-lg font-bold">{startSegment?.da.code}</h1>
+                <h1 className="text-base font-bold">{startSegment?.da.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
-                <h1 className="text-sm">{departureTime}</h1>
+                <h1 className="text-xs">{departureTime}</h1>
               </div>
             </div>
             <div className="flex items-center mb-4 md:mb-0">
               <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
               <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
-                <span>{convertToHoursMinutes(totalDuration)}</span>
+                <span className="">{convertToHoursMinutes(totalDuration)}</span>
                 <FaPlane className="mx-2 text-blue-800 text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (
@@ -308,9 +309,9 @@ const RoundTripCard = ({
             </div>
             <div className="flex  md:text-start text-end  items-center mb-4 md:mb-0">
               <div>
-                <h1 className="text-lg font-bold">{endSegment?.aa.code}</h1>
+                <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
-                <h1 className="text-sm">{arrivalTime}</h1>
+                <h1 className="text-xs">{arrivalTime}</h1>
               </div>
             </div>
           </div>
@@ -332,7 +333,7 @@ const RoundTripCard = ({
                   }
                 `}
                   >
-                    <div className="flex flex-col ">
+                    <div className="flex flex-col  text-xs">
                       <p className="font-semibold">
                         ₹ {calculateTotalPrice(index).toFixed(2)}
                       </p>

@@ -56,7 +56,7 @@ const Testimonials = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-blue-50">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-blue-50">
       <h2 className="text-center font-bold text-gray-500 text-base">Testimonials</h2>
       <h1 className="text-center text-xl sm:text-3xl font-bold mb-8">What Our Clients Say About Us</h1>
       <div className='px-4'>

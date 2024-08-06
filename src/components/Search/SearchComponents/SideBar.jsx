@@ -1042,13 +1042,13 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
   }
 
   return (
-    <div className="flex flex-row text-xs md:text-base md:w-1/4 border p-4 m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex flex-row text-xs md:text-base md:w-1/5 border p-4 m-2 shadow-md rounded-md min-h-screen">
       <div className="grid gap-2 w-full grid-cols-1">
         {/* Price slider */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Price</h3>
+          <h3 className="text-sm font-semibold mb-2">Price</h3>
           <div className="flex justify-between gap-2">
-            <span>₹100</span>
+            <span className='text-xs'>₹100</span>
             <input
               type="range"
               min={100}
@@ -1058,13 +1058,13 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
                id='priceRange'
               className="flex-1 price-range-slider range-slider"
             />
-            <span>₹{filters[activeTabIndex].maxPrice}</span>
+            <span className='text-xs'>₹{filters[activeTabIndex].maxPrice}</span>
           </div>
         </div>
         
         {/* Stops */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Stops</h3>
+          <h3 className="text-sm font-semibold mb-2">Stops</h3>
           <div className="grid w-full grid-cols-4 ">
             {stops.map((stop, index) => {
               const stopCount = Object.values(flightCountMap).reduce((acc, airline) => acc + (airline.stops[stop] || 0), 0);
@@ -1072,7 +1072,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
                 <label
                   key={stop}
                   htmlFor={`stop-${stop}`}
-                  className={`mb-1 border flex flex-col justify-center items-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
+                  className={`mb-1 border flex flex-col text-xs justify-center items-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
                     filters[activeTabIndex].stops.includes(stop) ? 'bg-blue-200' : ''
                   }`}
                 >
@@ -1093,7 +1093,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
 
         {/* Departure Time */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Departure Time from {departureCity}</h3>
+          <h3 className="text-sm font-semibold mb-2">Departure Time from {departureCity}</h3>
           <div className='grid grid-cols-4 place-items-center gap-2 '>
             {[
               { icon: <PiMountains />, time: "00-06" },
@@ -1103,7 +1103,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500 border flex text-xs flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters[activeTabIndex].departureTime.includes(time) ? 'bg-blue-200' : ''
                 }`}
                 onClick={() => handleTimeChange('departureTime', time)}
@@ -1117,7 +1117,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
 
         {/* Arrival Time */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Arrival Time at {arrivalCity}</h3>
+          <h3 className="text-sm font-semibold mb-2">Arrival Time at {arrivalCity}</h3>
           <div className='grid grid-cols-4 place-items-center gap-2 '>
             {[
               { icon: <PiMountains />, time: "00-06" },
@@ -1127,7 +1127,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500 border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters[activeTabIndex].arrivalTime.includes(time) ? 'bg-blue-200' : ''
                 }`}
                 onClick={() => handleTimeChange('arrivalTime', time)}
@@ -1141,11 +1141,11 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
 
         {/* Airlines */}
         <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-lg font-semibold mb-2">Airlines</h3>
+          <h3 className="text-sm font-semibold mb-2">Airlines</h3>
           <div className="flex flex-col">
             {Object.entries(flightCountMap).map(([airline, { count }]) => (
               <span key={airline} className='flex justify-between items-center w-full'>
-                <label htmlFor={`airline-${airline}`} className="mb-1">
+                <label htmlFor={`airline-${airline}`} className="mb-1 text-xs">
                   {airline} <span className='text-gray-400'>({count})</span>
                 </label>
                 <input
