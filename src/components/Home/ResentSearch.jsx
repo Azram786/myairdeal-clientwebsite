@@ -66,9 +66,9 @@ const RecentSearch = ({ ResentSearchData }) => {
         };
     }, [resentSearch, dispatch]);
     return (
-        <div className=" w-[90%]  text-center rounded-xl my-4  justify-center mx-auto flex flex-col gap-5">
+        <div className=" w-[90%]  text-center rounded-xl my-4 mb-10 justify-center mx-auto flex flex-col gap-5">
             <h1 className='font-semibold px-4 text-start text-2xl'>Recent Search</h1>
-            <div className='px-4'>
+            <div className='px-4 '>
                 <Slider {...settings}>
                     {ResentSearchData.map((search, index) => {
 

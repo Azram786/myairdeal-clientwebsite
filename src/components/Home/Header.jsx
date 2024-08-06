@@ -184,11 +184,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { logout } from "../../store/slices/aut.slice";
 import main_logo from "../../assets/home/logo/main_logo.png";
-import { IoPersonCircleOutline } from "react-icons/io5";
+import { IoNotificationsCircle, IoPersonCircleOutline } from "react-icons/io5";
 import { AiOutlineLogout } from "react-icons/ai";
 import { FiMenu } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import Avatar from '../../assets/home/banner/avatar.png'
+import { ImNotification } from "react-icons/im";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -217,7 +218,7 @@ const Header = () => {
     <>
       <Link
         to="/"
-        className={`font-semibold ${
+        className={`font-semibold text-center border-r px-3 ${
           location.pathname === "/" ? "text-[#1F61BC]" : "text-gray-600"
         } ${mobile ? "block py-2" : ""}`}
         onClick={() => mobile && setMobileMenuOpen(false)}
@@ -226,12 +227,23 @@ const Header = () => {
       </Link>
       <Link
         to="/view-booking"
-        className={`font-semibold ${
+        className={`font-semibold border-r px-3 ${
           location.pathname === "/view-booking" ? "text-[#1F61BC]" : "text-gray-600"
         } ${mobile ? "block py-2" : ""}`}
         onClick={() => mobile && setMobileMenuOpen(false)}
       >
         My Bookings
+      </Link>
+      <Link
+        to="#"
+        className={`font-semibold  px-2 ${
+          location.pathname === "/notifications" ? "text-[#1F61BC]" : "text-gray-600"
+        } ${mobile ? "block py-2" : ""}`}
+        onClick={() => mobile && setMobileMenuOpen(false)}
+      >
+        {/* Notifications */}
+  
+        <IoNotificationsCircle className="text-3xl "/>
       </Link>
     </>
   );
@@ -243,10 +255,10 @@ const Header = () => {
           <img src={main_logo} alt="logo" className="h-10 mr-2" />
           <h3 className="text-[#1F61BC] text-xl font-bold">My Air Deal</h3>
         </Link>
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center ">
           <NavLinks />
           {token ? (
-            <div className="relative">
+            <div className="relative px-1">
               <div
                 className="flex items-center cursor-pointer"
                 onClick={handleDropdownToggle}

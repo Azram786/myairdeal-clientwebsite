@@ -584,7 +584,11 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
     if (flights.length > 0 && flights[0].sI.length > 0) {
       const departureCity = flights[0].sI[0].da.city;
       const arrivalCity = flights[0].sI[0].aa.city;
-      const departureTime = new Date(flights[0].sI[0].dt).toISOString().split('T')[0];
+      const departureTime = new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }).format(new Date(flights[0].sI[0].dt)).split('/').join('-')
       return <span className="flex flex-col"><p>{departureCity} - {arrivalCity}</p> <p className="text-xs">{departureTime}</p></span>;
     }
     return "";

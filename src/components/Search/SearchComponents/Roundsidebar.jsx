@@ -333,13 +333,13 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
 
   const renderStopsSection = () => (
     <div className="mb-6 border-b border-gray-300 pb-4">
-      <h3 className="text-lg font-semibold mb-2">Stops</h3>
+      <h3 className="text-sm font-semibold mb-2">Stops</h3>
       <div className="grid w-full grid-cols-2 md:grid-cols-4">
         {stops.map((stop, index) => (
           <label
             key={stop}
             htmlFor={`stop-${stop}`}
-            className={`mb-1 border flex justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
+            className={`mb-1 border text-xs flex justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
               filters[activeDirection].stops.includes(stop) ? 'bg-blue-200' : ''
             }`}
           >
@@ -359,7 +359,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
 
   const renderTimeSection = (type, title) => (
     <div className="mb-6 border-b border-gray-300 pb-4">
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
+      <h3 className="text-sm font-semibold mb-2">{title}</h3>
       <div className="grid grid-cols-2 md:grid-cols-4 place-items-center gap-2">
         {[
           { icon: <PiMountains />, time: "00-06" },
@@ -369,7 +369,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
         ].map(({ icon, time }) => (
           <span
             key={time}
-            className={`border-gray-500 border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+            className={`border-gray-500 border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
               filters[activeDirection][type].includes(time) ? 'bg-blue-200' : ''
             }`}
             onClick={() => handleTimeChange(type, time)}
@@ -386,11 +386,11 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
     const airlineCounts = flightCountMap(activeDirection === 'onward' ? onwardData : returnData);
     return (
       <div className="mb-6 border-b border-gray-300 pb-4">
-        <h3 className="text-lg font-semibold mb-2">Airlines</h3>
+        <h3 className="text-sm font-semibold mb-2">Airlines</h3>
         <div className="flex flex-col">
           {Object.entries(airlineCounts).map(([airline, count]) => (
             <span key={airline} className="flex justify-between items-center w-full">
-              <label htmlFor={`airline-${airline}`} className="mb-1">
+              <label htmlFor={`airline-${airline}`} className="mb-1 text-xs">
                 {airline} <span className="text-gray-400">({count})</span>
               </label>
               <input
@@ -409,9 +409,9 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
 
   const renderPriceSection = () => (
     <div className="mb-6 border-b border-gray-300 pb-4">
-      <h3 className="text-lg font-semibold mb-2">Price</h3>
+      <h3 className="text-sm font-semibold mb-2">Price</h3>
       <div className="flex justify-between gap-2">
-        <span>₹100</span>
+        <span className='text-xs'>₹100</span>
         <input
           type="range"
           min="100"
@@ -421,20 +421,20 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
            id='priceRange'
               className="flex-1 price-range-slider range-slider"
         />
-        <span>₹{filters[activeDirection].maxPrice}</span>
+        <span className='text-xs'>₹{filters[activeDirection].maxPrice}</span>
       </div>
     </div>
   );
 
   const renderSpecialReturnSection = () => (
-    <div className="mb-6 border-b border-gray-300 pb-4">
-      <h3 className="text-lg font-semibold mb-2">Special Return</h3>
-      <label className="flex items-center">
+    <div className="mb-6 border-b border-gray-300  pb-4">
+      <h3 className="text-sm font-semibold mb-2">Special Return</h3>
+      <label className="flex text-xs items-center">
         <input
           type="checkbox"
           checked={filters.specialReturn}
           onChange={handleSpecialReturnChange}
-          className="mr-2"
+          className="mr-2 "
         />
         Special Return Flights
       </label>
@@ -442,19 +442,19 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   );
 
   return (
-    <div className="flex flex-row md:w-1/4 border  m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex flex-row md:w-1/5 border  m-2 shadow-md rounded-md min-h-screen">
       <div className="p-4 grid gap-2 grid-cols-1 w-full md:grid-cols-1">
         <div className='flex flex-col'>
           <div className="mb-6 border-b border-gray-300 pb-4">
-            <div className="flex flex-col md:flex-row justify-center items-center mb-4">
+            <div className="flex flex-col text-xs sm:flex-row justify-center items-center mb-4">
               <button
-                className={`px-4 py-2 ${activeDirection === "onward" ? "bg-[#007EC4] text-white" : "bg-gray-200"}`}
+                className={`px-4 sm:rounded-l  py-2 ${activeDirection === "onward" ? "bg-[#007EC4] text-white" : "bg-gray-200"}`}
                 onClick={() => setActiveDirection("onward")}
               >
                 {onwardData[0]?.sI[0]?.da?.code} - {onwardData[0]?.sI[0]?.aa?.code}
               </button>
               <button
-                className={`px-4 py-2 ${activeDirection === "return" ? "bg-[#007EC4] text-white" : "bg-gray-200"}`}
+                className={`px-4  sm:rounded-r py-2 ${activeDirection === "return" ? "bg-[#007EC4] text-white" : "bg-gray-200"}`}
                 onClick={() => setActiveDirection("return")}
               >
                 {returnData[0]?.sI[0]?.da?.code} - {returnData[0]?.sI[0]?.aa?.code}

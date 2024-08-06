@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 // icons
-import { RiFlightTakeoffFill } from "react-icons/ri";
+import { RiFlightTakeoffFill, RiFlightTakeoffLine } from "react-icons/ri";
 import { RiFlightLandLine } from "react-icons/ri";
 import { MdOutlineDateRange } from "react-icons/md";
 import { FaTimes } from "react-icons/fa";
@@ -318,7 +318,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
   }, []);
 
   return (
-    <div className="flex flex-col items-center  justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
+    <div className="flex flex-col items-center  min-h-[200px]  justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
       <div className="     md:rounded-xl w-[90%] mt-4 md:mt-0  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   ">
         {/* type of travel selecting section */}
 
@@ -363,7 +363,8 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             >
               <div className="flex   items-center border rounded p-2 md:w-1/2 ">
                 <div>
-                  <RiFlightLandLine className=" text-2xl md:text-3xl " />
+                <RiFlightTakeoffLine className=" text-2xl md:text-3xl " />
+                  
                 </div>
                 <div className="w-full ">
                   <CustomSelect
@@ -498,7 +499,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             <div className=" w-full flex justify-center md:w-1/3 ">
               <select
                 id="fare-type"
-                className=" outline-none border rounded-md md:w-auto p-2 w-3/4 md:p-1  bg-white"
+                className=" outline-none border cursor-pointer rounded-md md:w-auto p-2 w-3/4 md:p-1  bg-white"
                 name="fare_type"
                 value={formData.pft}
                 onChange={(e) =>
@@ -516,19 +517,19 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                 <option value="SENIOR_CITIZEN">Senior Citizen Fares</option>
               </select>
             </div>
-            <div className="lg:w-1/3 flex justify-center">
+            <div className="lg:w-1/3 flex justify-center cursor-pointer">
               <select
                 name=""
-                className="border w-3/4  md:w-auto rounded-md l p-2 md:p-1    bg-white"
+                className="border w-3/4  cursor-pointer  md:w-auto rounded-md l p-2 md:p-1    bg-white"
                 id=""
               >
-                <option value="" disabled selected>
-                  select prefered airlines
+                <option className="" value="" disabled selected>
+                  Select Prefered Airline
                 </option>
                 <option value="">ethiad</option>
               </select>
             </div>
-            <div className="flex gap-2 p-1 w-full justify-center items-center md:w-1/3  ">
+            <div className="flex gap-2 p-1 w-full  cursor-pointer justify-center items-center md:w-1/3  ">
               <label>Direct flights</label>
               <input
                 type="checkbox"

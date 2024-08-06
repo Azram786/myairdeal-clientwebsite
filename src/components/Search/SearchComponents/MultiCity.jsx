@@ -691,7 +691,12 @@ const MultiCity = ({ flightProps, passenger,query }) => {
           {flightProps.map((flights, tabIndex) => {
             const startCode = flights.length > 0 ? flights[0].sI[0].da.city : "Unknown";
             const endCode = flights.length > 0 ? flights[0].sI[flights[0].sI.length - 1].aa.city : "Unknown";
-            const dt=flights.length > 0 ? new Date(flights[0].sI[flights[0].sI.length - 1].dt).toISOString().split('T')[0] : "Unknown";
+            const dt=flights.length > 0 ? new Intl.DateTimeFormat('en-GB', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            }).format(new Date(flights[0].sI[flights[0].sI.length - 1].dt)).split('/').join('-'):'N/A'
+            
            
             return (
               <TabPane
