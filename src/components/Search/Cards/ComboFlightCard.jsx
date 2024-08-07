@@ -431,8 +431,6 @@
 
 // export default ComboFlightCard;
 
-
-
 // import React, { useState, useEffect } from "react";
 // import {
 //   FaPlane,
@@ -460,12 +458,12 @@
 //   const calculateTotalPrice = (priceIndex) => {
 //     const selectedPrice = priceList[priceIndex];
 //     if (!selectedPrice) return 0;
-  
+
 //     return Object.entries(selectedPrice.fd).reduce((total, [passengerType, details]) => {
 //       return total + (details.fC.TF * (passenger[passengerType] || 0));
 //     }, 0);
 //   };
-  
+
 //   const totalPrice = calculateTotalPrice(selectedPriceIndex);
 
 //   const convertToHoursMinutes = (durationInMinutes) => {
@@ -790,7 +788,6 @@
 
 // export default ComboFlightCard;
 
-
 import React, { useState } from "react";
 import {
   FaPlane,
@@ -799,10 +796,10 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 
-import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
+import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
 import FareToolTip from "./FareTooltip";
 
-const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
+const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
   const [showAllPrices, setShowAllPrices] = useState(false);
   const [selectedPriceIndex, setSelectedPriceIndex] = useState(0);
   const [selectedPrice, setSelectedPrice] = useState(0);
@@ -819,12 +816,15 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
   const calculateTotalPrice = (priceIndex) => {
     const selectedPrice = priceList[priceIndex];
     if (!selectedPrice) return 0;
-  
-    return Object.entries(selectedPrice.fd).reduce((total, [passengerType, details]) => {
-      return total + (details.fC.TF * (passenger[passengerType] || 0));
-    }, 0);
+
+    return Object.entries(selectedPrice.fd).reduce(
+      (total, [passengerType, details]) => {
+        return total + details.fC.TF * (passenger[passengerType] || 0);
+      },
+      0
+    );
   };
-  
+
   const totalPrice = calculateTotalPrice(selectedPriceIndex);
 
   const convertToHoursMinutes = (durationInMinutes) => {
@@ -856,7 +856,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
 
   const renderTabs = () => {
     switch (activeTab) {
-      case "Flight Details":
+      case "Flight Details ":
         return (
           <div className="w-full">
             {data.map((segment, index) => (
@@ -865,7 +865,12 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                 className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
               >
                 <div className="flex items-center">
-                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}  onError={(e) => e.currentTarget.src = defaultAirline} alt={segment?.fD?.aI?.code} className="w-10 h-10 mr-4" />
+                  <img
+                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                    onError={(e) => (e.currentTarget.src = defaultAirline)}
+                    alt={segment?.fD?.aI?.code}
+                    className="w-10 h-10 mr-4"
+                  />
                   <div>
                     <div className="font-bold text-sm">
                       {segment.fD.aI.name} {segment.fD.fN}
@@ -905,7 +910,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                   <div className="text-left ml-8">
                     <div className="font-bold">
                       {formatDateTime(segment.at).split(",")[1].trim()}
-                    </div>
+                    </div>  
                     <div className="text-xs text-gray-500">
                       {segment.aa.city}, {segment.aa.country}
                     </div>
@@ -931,26 +936,33 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
             </div>
             {Object.entries(passenger).map(([passengerType, count]) => {
               if (count > 0) {
-                const details = priceList[selectedPriceIndex]?.fd[passengerType];
+                const details =
+                  priceList[selectedPriceIndex]?.fd[passengerType];
                 if (details) {
                   return (
                     <div key={passengerType} className="mb-4">
                       <div className="grid grid-cols-3 w-full text-xs text-gray-600 mb-2">
-                        <div>Fare Details for {passengerType} (CB: {details.cc})</div>
+                        <div>
+                          Fare Details for {passengerType} (CB: {details.cc})
+                        </div>
                         <div></div>
                         <div></div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
                         <div>Base Price</div>
-                        <div>₹{details.fC.BF.toFixed(2)} x {count}</div>
+                        <div>
+                          ₹{details.fC.BF.toFixed(2)} x {count}
+                        </div>
                         <div>₹{(details.fC.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
-                      <div className="flex items-center">
-                        Taxes and fees
-                        <FareToolTip taxDetails={details.afC.TAF} />
-                      </div>
-                        <div>₹{details.fC.TAF.toFixed(2)} x {count}</div>
+                        <div className="flex items-center">
+                          Taxes and fees
+                          <FareToolTip taxDetails={details.afC.TAF} />
+                        </div>
+                        <div>
+                          ₹{details.fC.TAF.toFixed(2)} x {count}
+                        </div>
                         <div>₹{(details.fC.TAF * count).toFixed(2)}</div>
                       </div>
                     </div>
@@ -1000,69 +1012,74 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
   const displayedPrices = showAllPrices ? priceList : priceList;
 
   const isConnectionFlight = data.length > 1;
-  const totalDuration = data.reduce((sum, segment) => sum + segment.duration, 0);
+  const totalDuration = data.reduce(
+    (sum, segment) => sum + segment.duration,
+    0
+  );
 
   return (
     <>
       <div className="border p-4 rounded-lg m-2 justify-between items-center overflow-x-auto bg-white shadow-md">
-      <div className="flex   flex-col md:flex-row  justify-between items-stretch  mb-2">
-      <div className="flex flex-col w-full ">
-        <div className="flex justify-around">
-          <div className="md:hidden">
-          <img
-              src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-              onError={(e) => e.currentTarget.src = defaultAirline}
-              alt={startSegment?.fD?.aI?.code}
-              className="size-12 hidden mr-6"
-            />
-          </div>
-          <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
-            <img
-              src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-              onError={(e) => e.currentTarget.src = defaultAirline}
-              alt={startSegment?.fD?.aI?.code}
-              className="size-12 md:flex hidden  mr-6"
-            />
-            <div>
-              <h1 className="text-base font-bold">{startSegment.da.code}</h1>
-              {/* <h1 className="text-sm text-gray-500">{startSegment.da.city}</h1> */}
-              <h1 className="text-xs">{formatDateTime(startSegment.dt)}</h1>
-            </div>
-          </div>
-          <div className="flex items-center mb-4 md:mb-0">
-            <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
-            <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
-              <span>{convertToHoursMinutes(totalDuration)}</span>
-              <FaPlane className="mx-2 text-blue-800 text-3xl" />
-              <div className="flex items-center">
-                {isConnectionFlight ? (
-                  <span>
-                    {data.length - 1} stop{data.length > 2 ? 's' : ''}
-                    {data.length === 2 && ` via ${data[0].aa.city}`}
-                  </span>
-                ) : (
-                  <span>Non-stop flight</span>
-                )}
+        <div className="flex   flex-col md:flex-row  justify-between items-stretch  mb-2">
+          <div className="flex flex-col w-full ">
+            <div className="flex justify-around">
+              <div className="md:hidden">
+                <img
+                  src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                  onError={(e) => (e.currentTarget.src = defaultAirline)}
+                  alt={startSegment?.fD?.aI?.code}
+                  className="size-12 hidden mr-6"
+                />
+              </div>
+              <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
+                <img
+                  src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                  onError={(e) => (e.currentTarget.src = defaultAirline)}
+                  alt={startSegment?.fD?.aI?.code}
+                  className="size-12 md:flex hidden  mr-6"
+                />
+                <div>
+                  <h1 className="text-base font-bold">
+                    {startSegment.da.code}
+                  </h1>
+                  {/* <h1 className="text-sm text-gray-500">{startSegment.da.city}</h1> */}
+                  <h1 className="text-xs">{formatDateTime(startSegment.dt)}</h1>
+                </div>
+              </div>
+              <div className="flex items-center mb-4 md:mb-0">
+                <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
+                <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
+                  <span>{convertToHoursMinutes(totalDuration)}</span>
+                  <FaPlane className="mx-2 text-blue-800 text-3xl" />
+                  <div className="flex items-center">
+                    {isConnectionFlight ? (
+                      <span>
+                        {data.length - 1} stop{data.length > 2 ? "s" : ""}
+                        {data.length === 2 && ` via ${data[0].aa.city}`}
+                      </span>
+                    ) : (
+                      <span>Non-stop flight</span>
+                    )}
+                  </div>
+                </div>
+                <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
+              </div>
+              <div className="flex md:text-start text-end  items-center mb-4 md:mb-0">
+                <div>
+                  <h1 className="text-base font-bold">{endSegment.aa.code}</h1>
+                  {/* <h1 className="text-sm text-gray-500">{endSegment.aa.city}</h1> */}
+                  <h1 className="text-xs">{formatDateTime(endSegment.at)}</h1>
+                </div>
               </div>
             </div>
-            <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
-          </div>
-          <div className="flex md:text-start text-end  items-center mb-4 md:mb-0">
-            <div>
-              <h1 className="text-base font-bold">{endSegment.aa.code}</h1>
-              {/* <h1 className="text-sm text-gray-500">{endSegment.aa.city}</h1> */}
-              <h1 className="text-xs">{formatDateTime(endSegment.at)}</h1>
-            </div>
-          </div>
-        </div>
 
-        <div className="flex flex-col w-full  overflow-x-auto">
-          <div className="flex  mt-3 gap-2 overflow-x-auto items-start">
-            {displayedPrices.map((price, index) => (
-              <div
-                key={index}
-                onClick={() => setSelectedPrice(index)}
-                className={`
+            <div className="flex flex-col w-full  overflow-x-auto">
+              <div className="flex  mt-3 gap-2 overflow-x-auto items-start">
+                {displayedPrices.map((price, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedPrice(index)}
+                    className={`
                    text-xs text-start space-y-2 flex shrink-0 items-center min-w-24 md:w-fit
                 p-1 mb-2 cursor-pointer 
                   ${
@@ -1071,22 +1088,24 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                       : "border border-gray-200 hover:border-blue-300 rounded-md"
                   }
                 `}
-              >
-                <div className="flex flex-col w-full text-xs">
-                  <p className="font-semibold">₹ {calculateTotalPrice(index).toFixed(2)}</p>
-                  <p className="text-[10px]">
-                    <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700">
-                      {price?.fareIdentifier}
-                    </span>{" "}
-                    {price?.fd?.ADULT?.cc}
-                  </p>
-                  <p className="text-red-600 text-[10px]">
-                    Seats left: {price?.fd?.ADULT?.sR}
-                  </p>
-                </div>
-              </div>
-            ))}
-            {/* {priceList.length > 1 && (
+                  >
+                    <div className="flex flex-col w-full text-xs">
+                      <p className="font-semibold">
+                        ₹ {calculateTotalPrice(index).toFixed(2)}
+                      </p>
+                      <p className="text-[10px]">
+                        <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700">
+                          {price?.fareIdentifier}
+                        </span>{" "}
+                        {price?.fd?.ADULT?.cc}
+                      </p>
+                      <p className="text-red-600 text-[10px]">
+                        Seats left: {price?.fd?.ADULT?.sR}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                {/* {priceList.length > 1 && (
               <button
                 onClick={() => setShowAllPrices(!showAllPrices)}
                 className="text-blue-500 text-sm mt-2 flex items-center"
@@ -1102,27 +1121,27 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                 )}
               </button>
             )} */}
+              </div>
+              <div>
+                <button
+                  onClick={() => setShowDetails(!showDetails)}
+                  className="text-[#007EC4] text-sm mt-2"
+                >
+                  {showDetails ? (
+                    <span className="text-black">
+                      {/* Fare Details :{" "} */}
+                      <span className="text-[#007EC4]">Hide Details</span>
+                    </span>
+                  ) : (
+                    <span className="text-black">
+                      {/* Fare Details :{" "} */}
+                      <span className="text-[#007EC4]">View Details</span>
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
-          <div>
-            <button
-              onClick={() => setShowDetails(!showDetails)}
-              className="text-[#007EC4] text-sm mt-2"
-            >
-              {showDetails ? (
-                  <span className="text-black">
-                    {/* Fare Details :{" "} */}
-                    <span className="text-[#007EC4]">Hide Details</span>
-                  </span>
-                ) : (
-                  <span className="text-black">
-                    {/* Fare Details :{" "} */}
-                    <span className="text-[#007EC4]">View Details</span>
-                  </span>
-                )}
-            </button>
-          </div>
-        </div>
-      </div>
 
           <div className="flex justify-center items-end md:border-l-2 pl-3 ">
             <button
@@ -1133,8 +1152,6 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
             </button>
           </div>
         </div>
-
-        
 
         {showDetails && (
           <div className="mt-4 border-t overflow-x-auto border-gray-200 pt-4">

@@ -371,7 +371,12 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import RoundTripCard from "../Cards/RoundTripFlightCard";
 
-const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
+const RoundTrip = ({
+  onwardProps = [],
+  returnProps = [],
+  passenger,
+  query,
+}) => {
   const [filteredOnward, setFilteredOnward] = useState([]);
   const [filteredReturn, setFilteredReturn] = useState([]);
   const [activeDirection, setActiveDirection] = useState("onward");
@@ -419,14 +424,16 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
         console.error("Invalid flight data:", flight);
         return false;
       }
-  
+
       const directionFilters = filters[direction];
       const stops = flight.sI.length - 1;
       const airline = flight.sI[0]?.fD?.aI?.name || "";
       const departureTime = new Date(flight.sI[0].dt).getHours();
-      const arrivalTime = new Date(flight.sI[flight.sI.length - 1].at).getHours();
+      const arrivalTime = new Date(
+        flight.sI[flight.sI.length - 1].at
+      ).getHours();
       const price = calculateTotalPrice(flight);
-  
+
       const isInTimeRange = (time, ranges) => {
         if (ranges.length === 0) return true;
         return ranges.some((range) => {
@@ -439,7 +446,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
           }
         });
       };
-  
+
       return (
         price <= directionFilters.maxPrice &&
         (directionFilters.stops.length === 0 ||
@@ -502,7 +509,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
       try {
         let filteredOnwardFlights = applyFilters(onwardProps, "onward");
         let filteredReturnFlights = applyFilters(returnProps, "return");
-  
+
         if (filters.specialReturn) {
           const specialReturnPairs = applySpecialReturnFilter(
             filteredOnwardFlights,
@@ -511,14 +518,14 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
           filteredOnwardFlights = specialReturnPairs.map((pair) => pair.onward);
           filteredReturnFlights = specialReturnPairs.map((pair) => pair.return);
         }
-  
+
         console.log(
           filteredOnwardFlights,
           "filtered onward flights",
           filteredReturnFlights,
           "filtered return flights"
         );
-  
+
         setFilteredOnward(filteredOnwardFlights);
         setFilteredReturn(filteredReturnFlights);
       } catch (err) {
@@ -532,7 +539,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
         setSelectedReturnFlight(null);
       }
     };
-  
+
     fetchAndFilterFlights();
   }, [filters, onwardProps, returnProps]);
 
@@ -584,12 +591,22 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
     if (flights.length > 0 && flights[0].sI.length > 0) {
       const departureCity = flights[0].sI[0].da.city;
       const arrivalCity = flights[0].sI[0].aa.city;
-      const departureTime = new Intl.DateTimeFormat('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      }).format(new Date(flights[0].sI[0].dt)).split('/').join('-')
-      return <span className="flex flex-col"><p>{departureCity} - {arrivalCity}</p> <p className="text-xs">{departureTime}</p></span>;
+      const departureTime = new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+        .format(new Date(flights[0].sI[0].dt))
+        .split("/")
+        .join("-");
+      return (
+        <span className="flex flex-col">
+          <p>
+            {departureCity} - {arrivalCity}
+          </p>{" "}
+          <p className="text-xs">{departureTime}</p>
+        </span>
+      );
     }
     return "";
   };
@@ -630,8 +647,8 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
     ];
     console.log(data);
 
-    if(!token){
-      ReactToast('Please login first')
+    if (!token) {
+      ReactToast("Please login first");
       navigate("/sign-in");
       return;
     }
@@ -640,7 +657,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row mb-24">
+    <div className="flex flex-col md:flex-row mb-24  ">
       <RoundSideBar
         passenger={passenger}
         filters={filters}
@@ -651,9 +668,9 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
         setActiveDirection={setActiveDirection}
         calculateTotalPrice={calculateTotalPrice}
       />
-      <div className="flex flex-col  md:w-3/4">
+      <div className="flex flex-col md:w-3/4">
         <div className="flex">
-          <div className="w-1/2">
+          <div className="w-1/2  ">
             <h2 className="text-sm text-center md:text-xl font-semibold mb-2">
               {getRoute(filteredOnward)}
             </h2>
@@ -674,15 +691,21 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger,query }) => {
         </div>
       </div>
 
-      {console.log(selectedOnwardFlight, selectedReturnFlight, "selected flights")}
-      {(selectedOnwardFlight || selectedReturnFlight) && <BookingCard
-        selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(
-          Boolean
-        )}
-        totalPrice={calculateTotalBookingPrice()}
-        onBook={() => handleBooking()}
-        passenger={passenger}
-      />}
+      {console.log(
+        selectedOnwardFlight,
+        selectedReturnFlight,
+        "selected flights"
+      )}
+      {(selectedOnwardFlight || selectedReturnFlight) && (
+        <BookingCard
+          selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(
+            Boolean
+          )}
+          totalPrice={calculateTotalBookingPrice()}
+          onBook={() => handleBooking()}
+          passenger={passenger}
+        />
+      )}
     </div>
   );
 };

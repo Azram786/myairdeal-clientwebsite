@@ -108,72 +108,123 @@ const RoundTripCard = ({
     onSelect(index);
   };
 
+  const calculateLayoverTime = (segments) => {
+    if (segments.length <= 1) return null;
+    let totalLayoverTime = 0;
+    for (let i = 0; i < segments.length - 1; i++) {
+      const arrivalTime = new Date(segments[i].at);
+      const departureTime = new Date(segments[i + 1].dt);
+      totalLayoverTime += (departureTime - arrivalTime) / (1000 * 60);
+    }
+    const hours = Math.floor(totalLayoverTime / 60);
+    const minutes = Math.round(totalLayoverTime % 60);
+    return `${hours}h ${minutes}m`;
+  };
+
+  const getDayOfWeek = (dateTimeString) => {
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const datePart = dateTimeString.split("T")[0];
+    const date = new Date(datePart);
+    const dayNumber = date.getDay();
+    return daysOfWeek[dayNumber];
+  };
+
   const renderTabs = () => {
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className=" p-2">
+          <div className=" overflow-x-scroll p-2">
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
+                className="flex flex-col   justify-start px-4 "
               >
-                <div className="flex items-center">
-                  <img
-                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
-                    alt={segment?.fD?.aI?.code}
-                    className="md:size-10 size-8 rounded-md mr-4"
-                  />
-                  <div>
-                    <div className="font-bold text-sm">
-                      {segment.fD.aI.name} {segment.fD.fN}
+                <div className="text-sm w-full flex flex-col md:flex-row  text-black font-bold">
+                  {segment.da.city} → {segment.aa.city} 
+                  <span className="text-[10px] ml-2 text-gray-500">
+                    {" "}
+                    {formatDateTime(segment.dt).split(",")[0]},
+                    {getDayOfWeek(segment.dt)}
+                  </span>
+                </div>
+                <div className="flex justify-center mt-2  items-start">
+                  <div className=" min-w-16  items-start">
+                    <img
+                      src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                      alt={segment?.fD?.aI?.code}
+                      className="md:size-10 size-8 rounded-md mr-4"
+                    />
+                    <div className="">
+                      <div className="font-bold text-xs">
+                        {segment.fD.aI.name}
+                        <br /> {segment.fD.fN}
+                      </div>
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.city} → {segment.aa.city}{" "}
-                      {formatDateTime(segment.dt).split(",")[0]}
+                  </div>
+
+                  <div className=" w-full flex gap-1  items-start  ">
+                    <div className="text-left min-w-28 ">
+                      <div className="font-bold text-xs">
+                        {formatDateTime(segment.dt).split(",")[0].trim()}
+                      </div>
+                      <div className="text-[10px] max-w-28 text-gray-500">
+                        {segment.da.city}, {segment.da.country}
+                      </div>
+                      <div className="text-[10px] max-w-28  text-gray-500 line-clamp-1">
+                        {segment.da.name}
+                      </div>
+                      <div className="text-[10px] max-w-28 text-gray-500">
+                        {segment.da.terminal || "N/A"}
+                      </div>
+                    </div>
+
+                    <div className="mx-4 min-w-24  flex flex-col items-center ">
+                      <div className="text-[10px] text-gray-500">
+                        {segment.stops === 0
+                          ? "Non-Stop"
+                          : `${segment.stops} Stops`}
+                      </div>
+                      <FaPlane className="my-2  text-gray-400" />
+                      <div className="text-[10px] text-gray-500">
+                        {convertToHoursMinutes(segment.duration)}
+                      </div>
+                    </div>
+                    <div className=" text-left ml-4 min-w-28 max-w-28">
+                      <div className="text-xs font-bold">
+                        {formatDateTime(segment.at).split(",")[0].trim()}
+                      </div>
+                      <div className="text-[10px] text-gray-500">
+                        {segment.aa.city}, {segment.aa.country}
+                      </div>
+                      <div className="text-[10px] text-gray-500">
+                        {segment.aa.name}
+                      </div>
+                      <div className="text-[10px] text-gray-500">
+                        {segment.aa.terminal || "N/A"}
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <div className="text-right mr-8">
-                    <div className="font-bold text-xs">
-                      {formatDateTime(segment.dt).split(",")[0].trim()}
+                <div className="w-full flex justify-center">
+                  {index < data.length - 1 && (
+                    <div className="px-4  flex justify-around text-[10px]  py-1 mt-2 mb-4 md:w-1/ border border-gray-200 bg-gray-100 rounded-full ">
+                      <span className=" font-bold">
+                        Require to change Plane
+                      </span>
+                      <span>
+                        <span className="font-bold ml-4">Layover Time:</span>{" "}
+                        {calculateLayoverTime(segment, data[index + 1])}
+                      </span>
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.city}, {segment.da.country}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.name}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.terminal || "N/A"}
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-center mx-4">
-                    <div className="text-xs text-gray-500">
-                      {segment.stops === 0
-                        ? "Non-Stop"
-                        : `${segment.stops} Stops`}
-                    </div>
-                    <FaPlane className="my-2  text-gray-400" />
-                    <div className="text-xs text-gray-500">
-                      {convertToHoursMinutes(segment.duration)}
-                    </div>
-                  </div>
-                  <div className="text-left ml-8">
-                    <div className="text-xs font-bold">
-                      {formatDateTime(segment.at).split(",")[0].trim()}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.aa.city}, {segment.aa.country}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.aa.name}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.aa.terminal || "N/A"}
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -265,47 +316,47 @@ const RoundTripCard = ({
   return (
     <div className="border flex flex-col   rounded-lg m-4 bg-white shadow-md overflow-x-auto no-scroll ">
       <div className="flex flex-col md:flex-row  justify-between items-stretch p-3  mb-2">
-        <div className="flex flex-col px-2 ">
+        <div className="flex flex-col px-2  ">
           <div className="flex  gap-4  ">
-            <div className="md:hidden">
+            <div className="">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                 onError={(e) => (e.currentTarget.src = defaultAirline)}
                 alt={startSegment?.fD?.aI?.code}
-                className="size-12 hidden mr-4"
+                className="size-12 hidden min-w-24"
               />
             </div>
-            <div className="md:flex-row flex-col bg-yellow-400 flex justify-center items-center mb-4 md:mb-0">
+            <div className="md:flex-row flex-col   flex justify-center items-center mb-4 md:mb-0">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                 alt={startSegment?.fD?.aI?.code}
                 className="md:size-10 rounded-md  mr-4 md:flex hidden"
               />
-              <div>
-                <h1 className="text-base font-bold">{startSegment?.da.code}</h1>
+              <div className="">
+                <h1 className="text-base font-bold  min-w-20">{startSegment?.da.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
                 <h1 className="text-xs">{departureTime}</h1>
               </div>
             </div>
-            <div className="flex items-center mb-4 md:mb-0">
-              <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
-              <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
+            <div className="flex  max-w-32 items-center  mb-4 md:mb-0">
+              <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-16"></div>
+              <div className="flex flex-col gap-2 text-center items-center text-xs font-semibold text-gray-500">
                 <span className="">{convertToHoursMinutes(totalDuration)}</span>
                 <FaPlane className="mx-2 text-blue-800 text-3xl" />
-                <div className="flex items-center  bg-green-400">
+                <div className="flex items-center ">
                   {isConnectionFlight ? (
                     <span className="flex-wrap">
                       {data.length - 1} stop{data.length > 2 ? "s" : ""}
                       {data.length === 2 && ` via ${data[0].aa.city}`}
                     </span>
                   ) : (
-                    <span>Non-stop flight</span>
+                    <span className="text-[10px] w-max">Non-stop flight</span>
                   )}
                 </div>
               </div>
-              <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
+              <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-16"></div>
             </div>
             <div className="flex  md:text-start text-end  items-center mb-4 md:mb-0">
               <div>
@@ -316,9 +367,9 @@ const RoundTripCard = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-between ">
+          <div className="flex items-center  justify-between ">
             <div className="flex flex-col w-full  ">
-              <div className="flex flex-wrap  mt-3 gap-2 overflow-x-auto  no-scroll items-center ">
+              <div className="flex flex-wrap overflow-y-scroll  mt-3 gap-2 overflow-x-auto  no-scroll items-center ">
                 {displayedPrices?.map((price, index) => (
                   <div
                     key={index}
@@ -334,11 +385,11 @@ const RoundTripCard = ({
                 `}
                   >
                     <div className="flex flex-col  text-xs">
-                      <p className="font-semibold">
+                      <p className="font-semibold ">
                         ₹ {calculateTotalPrice(index).toFixed(2)}
                       </p>
-                      <p className="text-[10px]">
-                        <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700">
+                      <p className=" my-2 text-black text-[10px]">
+                        <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700 px-2 py-1 ">
                           {price?.fareIdentifier}
                         </span>{" "}
                         {price?.fd?.ADULT?.cc}
@@ -407,7 +458,7 @@ const RoundTripCard = ({
 
       {showDetails && (
         <div className=" border-t  border-gray-200 pt-4">
-          <div className="mb-2 overflow-x-auto no-scroll shrink-0 flex">
+          <div className="mb-2 overflow-x-auto no-scroll text-[10px]   shrink-0 flex">
             {[
               "Flight Details",
               "Fare Details",
@@ -417,7 +468,7 @@ const RoundTripCard = ({
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-2 px-4 shrink-0 text-sm ${
+                className={`py-2 px-3 shrink-0 text-[12px] ${
                   activeTab === tab
                     ? "text-[#007EC4]  font-bold border-b-2 border-[#007EC4]"
                     : "text-gray-500"

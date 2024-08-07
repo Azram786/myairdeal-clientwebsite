@@ -74,7 +74,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
       <div className="w-full  xl:w-[75%] justify-between  flex  flex-col gap-2">
         {booking?.data?.itemInfos?.AIR?.tripInfos?.map((trip, index) => (
           <div key={index} className="flex  lg:flex-row   items-center justify-between flex-col sm:flex-row border   p-5 gap-2 ">
-            <div key={index} className="flex w-full items-center justify-center md:justify-between  flex-col gap-4  xs:flex-row xs:item-start  md:flex-row lg:flex-row xl:flex-row sm:w-[60%]  ">
+            <div key={index} className="flex  w-full items-center justify-center md:justify-between  flex-col gap-4  xs:flex-row xs:item-start  md:flex-row lg:flex-row xl:flex-row sm:w-[60%]  ">
               <div className="flex border border-blue-400  rounded-xl  p-2">
 
                 {/* <img
@@ -88,21 +88,21 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
               <div className="flex rounded-lg w-full flex-col  md:w-[90%]    sm:flex-col md:flex-row  gap-3    items-center ">
 
-                <div className="flex w-full justify-around gap-4 md:gap-1  md:w-[70%] lg:w-[60%] md:flex-col flex-row ">
+                <div className="flex w-full justify-between gap-4 md:gap-1  md:w-[70%] lg:w-[60%] md:flex-col flex-row ">
 
-                  <div className=" text-lg font-semibold flex">
+                  <div className="text-base md:text-base font-semibold flex">
                     <span className="md:hidden tracking-widest"> {trip.sI[0].da.code}{" "}</span>
-                    <span className=" hidden md:block md:text-xl text-[.9rem]">{trip.sI[0].da.name}</span>
+                    <span className=" hidden md:block  ">{trip.sI[0].da.name}</span>
                   </div>
 
-                  <div className="text-lg font-semibold flex">
+                  <div className="text-base md:text-base font-semibold flex">
                     <span className="md:hidden tracking-widest">
                       {trip.sI.length === 1
                         ? trip.sI[0].aa.code
                         : trip.sI[trip.sI.length - 1].aa.code}{" "}
                     </span>
 
-                    <span className="hidden  md:block md:text-xl text-[1rem]">
+                    <span className="hidden  md:block ">
                       {trip.sI.length === 1
                         ? trip.sI[0].aa.name
                         : trip.sI[trip.sI.length - 1].aa.name}
@@ -110,13 +110,13 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                 </div>
 
-                <div className="w-full flex md:w-[30%]  lg:w-[40%]    space-x-4 ">
-                  <div className=" w-full  flex justify-around flex-row md:flex-col items-center gap-4 ">
-                    <div className="  text-lg font-bold">
+                <div className="w-full flex md:w-[30%] lg:w-[40%]     space-x-4 ">
+                  <div className=" w-full  flex justify-between flex-row md:flex-col items-center gap-4 ">
+                    <div className="  text-sm md:text-base font-bold">
                       {formatTime(trip.sI[0].dt)}
                     </div>
 
-                    <div className="text-lg font-bold">
+                    <div className="text-sm md:text-base font-bold">
                       {trip.sI.length === 1
                         ? formatTime(trip.sI[0].at)
                         : formatTime(trip.sI[trip.sI.length - 1].at)}
@@ -127,7 +127,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
             </div>
 
-            <div className="flex w-full sm:w-[40%]  justify-around md:w-1/2    gap-5   ">
+            <div className="flex w-full  sm:w-[40%]  justify-around md:w-1/2    gap-5   ">
               <div className="flex flex-col justify-evenly   sm:flex-col gap-3  sm:w-1/2">
                 <div className="flex items-center gap-1">
                   <div className="text-[1.5rem] text-sky-600 bg-slate-300 p-1 rounded-md">
@@ -135,7 +135,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Date</div>
-                    <div className="font-medium ">
+                    <div className="font-medium text-sm md:text-[15px]  ">
                       {formatDate(trip.sI[0].dt)}
                     </div>
                   </div>
@@ -146,7 +146,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Flight time</div>
-                    <div className="font-medium">
+                    <div className="font-medium text-sm md:text-[15px]">
                       {formatTime(trip.sI[0].dt)}
                     </div>
                   </div>
@@ -159,7 +159,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Gate</div>
-                    <div className="font-bold text-[1rem]">
+                    <div className="font-bold  text-sm md:text-[15px]">
                       {trip.sI[0].aa?.terminal || "N/A"}
                     </div>
                   </div>
@@ -170,7 +170,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Stops</div>
-                    <div className="font-medium">{trip.sI.length}</div>
+                    <div className="font-medium text-sm md:text-[15px]">{trip.sI.length}</div>
                   </div>
                 </div>
               </div>
@@ -182,12 +182,12 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
       <div className="flex  gap-1 flex-row   lg:w-[20%] xl:w-[25%] md:space-x-4 ">
         <button 
           onClick={() => DownloadInvoice()}
-          className="bg-[#007EC4] text-white px-2 xl:px-4 py-1 xl:py-2 rounded-sm mb-4 md:mb-0"
+          className="bg-[#007EC4] text-sm  text-white px-2 xl:px-4 py-1 xl:py- rounded-sm mb-4 md:mb-0"
         >
           Download Ticket
         </button>
         <button
-          className="text-[#007EC4] border border-[#007EC4] bg-white px-2 xl:px-4 py-1 xl:py-2 rounded-sm mb-4 md:mb-0 "
+          className="text-[#007EC4] text-sm border border-[#007EC4] bg-white px-2 xl:px-4 py-1 xl:py-2 rounded-sm mb-4 md:mb-0 "
           onClick={getSingleTripDetailHandler}
         >
           Details

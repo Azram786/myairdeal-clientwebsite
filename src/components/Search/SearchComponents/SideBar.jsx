@@ -1065,7 +1065,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
         {/* Stops */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-sm font-semibold mb-2">Stops</h3>
-          <div className="grid w-full grid-cols-4 ">
+          <div className="grid w-full sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 ">
             {stops.map((stop, index) => {
               const stopCount = Object.values(flightCountMap).reduce((acc, airline) => acc + (airline.stops[stop] || 0), 0);
               return (
@@ -1094,7 +1094,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
         {/* Departure Time */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-sm font-semibold mb-2">Departure Time from {departureCity}</h3>
-          <div className='grid grid-cols-4 place-items-center gap-2 '>
+          <div className='grid sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-2 '>
             {[
               { icon: <PiMountains />, time: "00-06" },
               { icon: <IoIosSunny />, time: "06-12" },
@@ -1118,7 +1118,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
         {/* Arrival Time */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-sm font-semibold mb-2">Arrival Time at {arrivalCity}</h3>
-          <div className='grid grid-cols-4 place-items-center gap-2 '>
+          <div className='grid sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-2 '>
             {[
               { icon: <PiMountains />, time: "00-06" },
               { icon: <IoIosSunny />, time: "06-12" },

@@ -7,6 +7,7 @@ const customStyles = {
     display: "flex",
     boxShadow: "none",
     border: "none",
+    cursor: "pointer"
   }),
 };
 
