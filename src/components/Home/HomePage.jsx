@@ -133,7 +133,7 @@ const HomePage = () => {
     toCityOrAirport: "",
     travelDate: new Date(),
     returnDate: new Date(),
-    isDirectFlight: false,
+    isDirectFlight: true,
     isConnectingFlight: true,
     pft: "REGULAR",
   });
@@ -171,7 +171,7 @@ const HomePage = () => {
 
     return () => clearTimeout(timer);
   }, []);
-
+  console.log({ resentSearch })
   useEffect(() => {
     if (resentSearch?.searchQuery) {
       setFormData((prevFormData) => ({
@@ -184,7 +184,7 @@ const HomePage = () => {
         toCityOrAirport: resentSearch.searchQuery.routeInfos[0]?.toCityOrAirport?.code || prevFormData.toCityOrAirport,
         travelDate: new Date(),
         returnDate: new Date(),
-        isDirectFlight: resentSearch.searchQuery.searchModifiers?.isDirectFlight ?? prevFormData.isDirectFlight,
+        isDirectFlight: true,
         isConnectingFlight: resentSearch.searchQuery.searchModifiers?.isConnectingFlight ?? prevFormData.isConnectingFlight,
         pft: resentSearch.searchQuery.searchModifiers?.pft || prevFormData.pft,
       }));
@@ -195,16 +195,20 @@ const HomePage = () => {
         toCity: "",
         travelDate: formData.travelDate,
       }]))
-      if (resentSearch.searchQuery.routeInfos.length > 1) {
-        setTypeOfTravel("multi-city")
-        setDynamicFormData(
-          resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => ({
-            fromCity: route.fromCityOrAirport.code,
-            toCity: route.toCityOrAirport.code,
-            travelDate: new Date(route.travelDate),
-          }))
-        );
-      }
+      if (resentSearch.searchQuery.routeInfos.length === 2 && resentSearch.searchQuery.routeInfos[0].toCityOrAirport.code === resentSearch.searchQuery.routeInfos[1].fromCityOrAirport.code) {
+        console.log("-----------------------------------------------")
+        setTypeOfTravel("round-trip")
+      } else
+        if (resentSearch.searchQuery.routeInfos.length > 1) {
+          setTypeOfTravel("multi-city")
+          setDynamicFormData(
+            resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => ({
+              fromCity: route.fromCityOrAirport.code,
+              toCity: route.toCityOrAirport.code,
+              travelDate: new Date(route.travelDate),
+            }))
+          );
+        }
 
     }
   }, [resentSearch]);

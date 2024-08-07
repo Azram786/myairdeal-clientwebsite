@@ -23,14 +23,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
 import PassengerSelector from "./PassengerSelector";
+import getCountryCode from "../util/getCity";
 const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormData, setTypeOfTravel, typeOfTravel }) => {
-
-
-
-
-
-  const passengerSelectorRef = useRef(null);
-
 
 
   const navigate = useNavigate()
@@ -52,7 +46,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
   // state for filteration
 
-  console.log({ modalIsOpen })
+
   //changing type-of-travel
   const handleTypeOfTravelChange = (type) => {
     setTypeOfTravel(type);
@@ -64,11 +58,13 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
   //set country code where from
   const setContryCodeFrom = (value) => {
+    console.log({ countryCodeFrom: value })
     setFormData((prev) => ({ ...prev, fromCityOrAirport: value }));
   };
 
   //set country code where to
   const setContryCodeTo = (value) => {
+    console.log({ contryCodeTo: value })
     if (formData.fromCityOrAirport === value && value !== "") {
       ReactToast("You cannot select the same airport twice");
     } else {
@@ -90,8 +86,9 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
       );
 
       const options = response.data.data.map((item) => ({
-        value: item.code,
-        label: `${item.city} - ${item.code}`,
+        value: `${item.code}-${item.city}`,
+        label: `${item.city}(${item.code})
+        -${item?.name}`,
       }));
 
       callback(options);
@@ -109,10 +106,13 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         }search/user-get-all-airports?search=${inputValue}`
       );
 
-      const options = response.data.data.map((item) => ({
-        value: item.code,
-        label: `${item.city} - ${item.code}`,
-      }));
+      const options = response.data.data.map((item) => {
+        return ({
+          value: `${item.code}-${item.city}`,
+          label: `${item.city}(${item.code})
+          -${item?.name}`,
+        })
+      });
 
       callback(options);
     } catch (error) {
@@ -132,8 +132,9 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
       const options = response.data.data.map((item) => {
 
         return ({
-          value: item.code,
-          label: `${item.city} - ${item.code}`,
+          value: `${item.code}-${item.city}`,
+          label: `${item.city}(${item.code})
+          -${item?.name}`,
         })
       });
 
@@ -191,9 +192,34 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
       }
 
       let query;
-
+      let saving;
       if (typeOfTravel === "one-way") {
         query = {
+          searchQuery: {
+            cabinClass: formData.cabinClass,
+            paxInfo: {
+              ADULT: formData.ADULT,
+              CHILD: formData.CHILD,
+              INFANT: formData.INFANT,
+            },
+            routeInfos: [
+              {
+                fromCityOrAirport: {
+                  code: getCountryCode(formData.fromCityOrAirport),
+                },
+                toCityOrAirport: {
+                  code: getCountryCode(formData.toCityOrAirport),
+                },
+                travelDate: formatDate(formData.travelDate),
+              },
+            ],
+            searchModifiers: {
+              isDirectFlight: formData.isDirectFlight,
+              isConnectingFlight: formData.isConnectingFlight,
+            },
+          },
+        };
+        saving = {
           searchQuery: {
             cabinClass: formData.cabinClass,
             paxInfo: {
@@ -230,6 +256,40 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             routeInfos: [
               {
                 fromCityOrAirport: {
+                  code: getCountryCode(formData.fromCityOrAirport),
+                },
+                toCityOrAirport: {
+                  code: getCountryCode(formData.toCityOrAirport),
+                },
+                travelDate: formatDate(formData.travelDate),
+              },
+              {
+                fromCityOrAirport: {
+                  code: getCountryCode(formData.toCityOrAirport),
+                },
+                toCityOrAirport: {
+                  code: getCountryCode(formData.fromCityOrAirport),
+                },
+                travelDate: formatDate(formData.returnDate),
+              },
+            ],
+            searchModifiers: {
+              isDirectFlight: formData.isDirectFlight,
+              isConnectingFlight: formData.isConnectingFlight,
+            },
+          },
+        };
+        saving = {
+          searchQuery: {
+            cabinClass: formData.cabinClass,
+            paxInfo: {
+              ADULT: formData.ADULT,
+              CHILD: formData.CHILD,
+              INFANT: formData.INFANT,
+            },
+            routeInfos: [
+              {
+                fromCityOrAirport: {
                   code: formData.fromCityOrAirport,
                 },
                 toCityOrAirport: {
@@ -256,6 +316,15 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
       } else {
         const dynamic = dynamicFormData.map((value) => ({
           fromCityOrAirport: {
+            code: getCountryCode(value.fromCity),
+          },
+          toCityOrAirport: {
+            code: getCountryCode(value.toCity),
+          },
+          travelDate: formatDate(value.travelDate),
+        }));
+        const dynamicLast = dynamicFormData.map((value) => ({
+          fromCityOrAirport: {
             code: value.fromCity,
           },
           toCityOrAirport: {
@@ -274,13 +343,36 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             },
             routeInfos: [{
               fromCityOrAirport: {
-                code: formData.fromCityOrAirport,
+                code: getCountryCode(formData.fromCityOrAirport),
               },
               toCityOrAirport: {
-                code: formData.toCityOrAirport,
+                code: getCountryCode(formData.toCityOrAirport),
               },
               travelDate: formatDate(formData.travelDate),
             }, ...dynamic],
+            searchModifiers: {
+              isDirectFlight: formData.isDirectFlight,
+              isConnectingFlight: formData.isConnectingFlight,
+            },
+          },
+        };
+        saving = {
+          searchQuery: {
+            cabinClass: formData.cabinClass,
+            paxInfo: {
+              ADULT: formData.ADULT,
+              CHILD: formData.CHILD,
+              INFANT: formData.INFANT,
+            },
+            routeInfos: [{
+              fromCityOrAirport: {
+                code: getCountryCode(formData.fromCityOrAirport),
+              },
+              toCityOrAirport: {
+                code: getCountryCode(formData.toCityOrAirport),
+              },
+              travelDate: formatDate(formData.travelDate),
+            }, ...dynamicLast],
             searchModifiers: {
               isDirectFlight: formData.isDirectFlight,
               isConnectingFlight: formData.isConnectingFlight,
@@ -291,7 +383,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
       console.log({ query })
       dispatch(setLastSearch(query))
-      dispatch(setResentSearch(query))
+      dispatch(setResentSearch(saving))
       const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -304,7 +396,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
       navigate(`/search`, { state: { query } });
     } catch (error) {
       setLoading(false);
-      // console.log(error)
+      console.log(error.message)
       ReactToast("Something went wrong");
     }
   };
@@ -351,7 +443,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         </div>
 
         {/* select country code and date section  */}
-        <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-col w-full gap-2 ">
           <div className="flex flex-col  md:flex-row bg-[#ffffff]  w-full  gap-2 ">
             {/* {select country section} */}
             <div
@@ -402,7 +494,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             {/* date picker section  */}
             <div className="flex flex-col md:flex-row     w-full  md:w-1/2 gap-2">
               <div className="  rounded   flex items-center border md:w-1/2  py-2 ">
-                <div className=" flex items-center justify-center md:justify-evenly   w-full">
+                <div className=" flex items-center justify-center md:justify-between   w-full ">
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}
@@ -460,7 +552,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
                 className="    flex items-center flex-col border relative rounded-md md:w-1/2  justify-center p-3 md:p-0  cursor-pointer"
               >
-                <div className="flex " onClick={() => setModelIsOpen(prev => !prev)}>
+                <div className="flex w-full  justify-center items-center  " onClick={() => setModelIsOpen(prev => !prev)}>
 
                   <div className=" text-[2rem]  ">
                     <MdAirlineSeatReclineExtra />
@@ -546,10 +638,11 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    isDirectFlight: e.target.checked,
+                    // isDirectFlight: e.target.checked,
+                    isConnectingFlight: !e.target.checked
                   }))
                 }
-                checked={formData?.isDirectFlight}
+                checked={!formData?.isConnectingFlight}
                 className="h-4 w-4 cursor-pointer"
               />
             </div>
