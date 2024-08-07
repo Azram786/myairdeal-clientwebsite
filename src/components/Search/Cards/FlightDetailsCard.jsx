@@ -921,6 +921,7 @@ import {
   FaChevronUp,
 } from "react-icons/fa";
 import FareToolTip from "./FareTooltip";
+import calculateDuration from "../../util/calculateDuration";
 
 const FlightDetailsCard = ({
   logo,
@@ -979,17 +980,26 @@ const FlightDetailsCard = ({
   const startSegment = data[0];
   const endSegment = data[data.length - 1];
 
+  // const convertToHoursMinutes = (durationInMinutes) => {
+  //   const hours = Math.floor(durationInMinutes / 60);
+  //   const minutes = durationInMinutes % 60;
+
+  //   if (hours === 0) {
+  //     return `${minutes}m`;
+  //   } else if (minutes === 0) {
+  //     return `${hours}h`;
+  //   } else {
+  //     return `${hours}h ${minutes}m`;
+  //   }
+  // };
+
+
+  // FOR 24 HOURS CONVERTION
+
   const convertToHoursMinutes = (durationInMinutes) => {
     const hours = Math.floor(durationInMinutes / 60);
     const minutes = durationInMinutes % 60;
-
-    if (hours === 0) {
-      return `${minutes}m`;
-    } else if (minutes === 0) {
-      return `${hours}h`;
-    } else {
-      return `${hours}h ${minutes}m`;
-    }
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   };
 
   const formatDateTime = (dateTimeString) => {
@@ -1010,13 +1020,10 @@ const FlightDetailsCard = ({
   
 
 
-  const departureTime = formatDateTime(startSegment.dt);
-  const arrivalTime = formatDateTime(endSegment.at);
+  const departureTime = startSegment.dt;
+  const arrivalTime = endSegment.at;
 
-  const totalDuration = data.reduce(
-    (sum, segment) => sum + segment.duration,
-    0
-  );
+  const totalDuration = calculateDuration(departureTime,arrivalTime)
 
   const displayedPrices = showAllPrices ? priceList : priceList;
 
@@ -1065,7 +1072,7 @@ const FlightDetailsCard = ({
                 <div className="flex flex-wr items-center md:w-2/3 justify-start">
                   <div className=" mr-8 w-1/3">
                     <div className="font-bold">
-                      {formatDateTime(segment.dt).split(",")[0].trim()}
+                      {formatDateTime(segment.dt)}
                     </div>
                     <div className="text-xs text-gray-500">
                       {segment.da.city}, {segment?.da?.country}
@@ -1085,12 +1092,13 @@ const FlightDetailsCard = ({
                     </div>
                     <FaPlane className="my-2 text-gray-400" />
                     <div className="text-xs text-gray-500">
-                      {convertToHoursMinutes(segment.duration)}
+                      {/* {convertToHoursMinutes(segment.duration)} */}
+                      {calculateDuration(segment.dt,segment.at)}
                     </div>
                   </div>
                   <div className="text-left w-1/3 ml-8">
                     <div className="font-bold">
-                      {formatDateTime(segment.at).split(",")[0].trim()}
+                      {formatDateTime(segment.at)}
                     </div>
                     <div className="text-xs text-gray-500">
                       {segment.aa.city}, {segment.aa.country}
@@ -1143,20 +1151,15 @@ const FlightDetailsCard = ({
                       <div className="grid grid-cols-3 w-full mb-1">
                         <div>Base Price</div>
                         <div>
-                          ₹{details.fC.BF.toFixed(2)} x {count}
+                          ₹{details?.fC?.BF?.toFixed(2)} x {count}
                         </div>
-                        <div>₹{(details.fC.BF * count).toFixed(2)}</div>
+                        <div>₹{(details?.fC?.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
-                        {/* <div className="flex items-center">
-                          Taxes and fees{" "}
-                          <FaInfoCircle className="ml-1 text-gray-500" />
-                        </div> */}
-
-                        
+                      
                       <div className="flex items-center">
                         Taxes and fees
-                        <FareToolTip taxDetails={details.afC.TAF} />
+                        <FareToolTip taxDetails={details?.afC?.TAF} />
                       </div>
                       
                         
@@ -1230,16 +1233,17 @@ const FlightDetailsCard = ({
               />
               <div>
                 <h1 className="text-base font-bold">{startSegment?.da.code}</h1>
-                {/* <h1 className="text-sm text-gray-500">
-                  {startSegment.da.city}
-                </h1> */}
-                <h1 className="text-xs">{departureTime}</h1>
+               
+                <h1 className="text-xs">{formatDateTime(startSegment?.dt)}</h1>
               </div>
             </div>
+
+      
             <div className="flex items-center mb-4 md:mb-0">
               <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
               <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
-                <span>{convertToHoursMinutes(totalDuration)}</span>
+                {/* <span>{convertToHoursMinutes(totalDuration)}</span> */}
+                <span>{totalDuration}</span>
                 <FaPlane className="mx-2 text-blue-800 text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (
@@ -1257,8 +1261,7 @@ const FlightDetailsCard = ({
             <div className="flex md:text-start text-end  items-center mb-4 md:mb-0">
               <div>
                 <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
-                {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
-                <h1 className="text-xs">{arrivalTime}</h1>
+                <h1 className="text-xs">{formatDateTime(endSegment.at)}</h1>
               </div>
             </div>
           </div>
@@ -1296,23 +1299,9 @@ const FlightDetailsCard = ({
                 </div>
               ))}
 
-              {/* {priceList?.length > 1 && (
-                <button
-                  onClick={() => setShowAllPrices(!showAllPrices)}
-                  className="text-blue-500 text-sm mt-2 flex items-center"
-                >
-                  {showAllPrices ? (
-                    <>
-                      Show less
-                    </>
-                  ) : (
-                    <>
-                       Show more
-                    </>
-                  )}
-                </button>
-              )} */}
+              
             </div>
+            {/* View Details Button */}
             <div>
               <button
                 onClick={() => setShowDetails(!showDetails)}
@@ -1320,12 +1309,12 @@ const FlightDetailsCard = ({
               >
                 {showDetails ? (
                   <span className="text-black">
-                    {/* Fare Details :{" "} */}
+                  
                     <span className="text-[#007EC4]">Hide Details</span>
                   </span>
                 ) : (
                   <span className="text-black">
-                    {/* Fare Details :{" "} */}
+                  
                     <span className="text-[#007EC4]">View Details</span>
                   </span>
                 )}
@@ -1333,7 +1322,7 @@ const FlightDetailsCard = ({
             </div>
           </div>
         </div>
-
+{/* select button */}
         <div className="flex   justify-center items-end md:border-l-2 pl-3 ">
           <button
             className={`${
@@ -1346,6 +1335,7 @@ const FlightDetailsCard = ({
         </div>
       </div>
 
+{/* show details section */}
       {showDetails && (
         <div className=" border-t  border-gray-200 pt-4">
           <div className="mb-2 overflow-x-auto shrink-0 flex">
@@ -1368,6 +1358,7 @@ const FlightDetailsCard = ({
               </button>
             ))}
           </div>
+{/* function for the cards */}
           {renderTabs()}
         </div>
       )}

@@ -801,6 +801,7 @@ import {
 
 import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
 import FareToolTip from "./FareTooltip";
+import calculateDuration from "../../util/calculateDuration";
 
 const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
   const [showAllPrices, setShowAllPrices] = useState(false);
@@ -850,8 +851,9 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
+      hour12: false
     };
-    return date.toLocaleString(undefined, options);
+    return date.toLocaleString('en-US', options);
   };
 
   const renderTabs = () => {
@@ -872,7 +874,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                     </div>
                     <div className="text-xs text-gray-500">
                       {segment.da.city} → {segment.aa.city}{" "}
-                      {formatDateTime(segment.dt).split(",")[0]}
+                      {formatDateTime(segment.dt)}
                     </div>
                   </div>
                 </div>
@@ -899,12 +901,13 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                     </div>
                     <FaPlane className="my-2 text-gray-400" />
                     <div className="text-xs text-gray-500">
-                      {convertToHoursMinutes(segment.duration)}
+                      {/* {convertToHoursMinutes(segment.duration)} */}
+                      {calculateDuration(segment.dt,segment.at)}
                     </div>
                   </div>
                   <div className="text-left ml-8">
                     <div className="font-bold">
-                      {formatDateTime(segment.at).split(",")[1].trim()}
+                      {formatDateTime(segment.at)}
                     </div>
                     <div className="text-xs text-gray-500">
                       {segment.aa.city}, {segment.aa.country}
@@ -1086,22 +1089,7 @@ const ComboFlightCard = ({flightDetails, onBooking, passenger }) => {
                 </div>
               </div>
             ))}
-            {/* {priceList.length > 1 && (
-              <button
-                onClick={() => setShowAllPrices(!showAllPrices)}
-                className="text-blue-500 text-sm mt-2 flex items-center"
-              >
-                {showAllPrices ? (
-                  <>
-                    <FaChevronUp className="mr-1" /> Show less
-                  </>
-                ) : (
-                  <>
-                    <FaChevronDown className="mr-1" /> Show more
-                  </>
-                )}
-              </button>
-            )} */}
+           
           </div>
           <div>
             <button

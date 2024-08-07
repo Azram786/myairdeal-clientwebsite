@@ -512,8 +512,10 @@ const Combo = ({ flightprops, passenger,query }) => {
         passenger={passenger}
       />
       <div className="flex-1 overflow-y-auto">
+      
         <Tabs defaultActiveKey="1">
-          <TabPane tab="All Combo flights" key="1">
+        {/* <h1>found {filteredFlights?.length} flights</h1> */}
+          <TabPane tab={`All Combo flights `} key="1">
             <div className="h-[680px] overflow-y-auto no-scroll">
               {filteredFlights.map((flight, index) => (
                 <div key={index} className="px-2 mb-2 rounded-lg relative">
@@ -528,6 +530,7 @@ const Combo = ({ flightprops, passenger,query }) => {
               ))}
             </div>
           </TabPane>
+          
         </Tabs>
       </div>
     </div>
