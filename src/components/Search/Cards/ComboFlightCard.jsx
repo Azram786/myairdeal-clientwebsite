@@ -1094,7 +1094,7 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                         ₹ {calculateTotalPrice(index).toFixed(2)}
                       </p>
                       <p className="text-[10px]">
-                        <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700">
+                        <span className="bg-gray-400 p-0.5 bg-opacity-50 rounded-md text-black">
                           {price?.fareIdentifier}
                         </span>{" "}
                         {price?.fd?.ADULT?.cc}
@@ -1154,8 +1154,8 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
         </div>
 
         {showDetails && (
-          <div className="mt-4 border-t overflow-x-auto border-gray-200 pt-4">
-            <div className="mb-2 flex">
+          <div className="mt-4 border-t overflow-x-auto   border-gray-200 pt-4">
+            <div className="mb-2   flex">
               {[
                 "Flight Details",
                 "Fare Details",
@@ -1165,7 +1165,7 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`py-2 px-4 text-sm ${
+                  className={`py-2  px-4 text-sm ${
                     activeTab === tab
                       ? "text-[#007EC4] font-bold border-b-2 border-[#007EC4]"
                       : "text-gray-500"

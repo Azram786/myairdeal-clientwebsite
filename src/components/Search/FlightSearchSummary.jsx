@@ -99,18 +99,17 @@ const FlightSearchSummary = ({ data, tripType }) => {
       </div>
       <div className="flex justify-center">
         <Link to="/">
-          <button className="border-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+          <button className="border-[#01324D] bg-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
             MODIFY SEARCH
           </button>
         </Link>
       </div>
     </div>
-  );
-
+  ); 
   const renderRoundTrip = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 md:grid-cols-6  place-items-center justify-between  bg-[#007EC4] text-white p-2 px-6">
-      <div className="flex w-full items-center space-x-4  justify-center md:border-r md:px-2">
-        <div className="flex flex-col">
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:grid-cols-5 lg:grid-cols-6  place-items-center  bg-[#007EC4] justify-between  text-white p-2 px-6">
+      <div className="flex w-full items-center space-x-4  justify-center md:border-r md:border-b-0 border-b md:px-2">
+        <div className="flex flex-col flex-wrap">
           <span className="text-xs text-white">From</span>
           <span className="text-xs font-semibold">
             {routeInfos[0].fromCityOrAirport.code}
@@ -128,19 +127,19 @@ const FlightSearchSummary = ({ data, tripType }) => {
         </div>
       </div>
       {/* <div className="flex flex-col md:flex-row items-center space-x-4"> */}
-      <div className="flex w-full  flex-col items-center md:border-r md:px-2 ">
+      <div className="flex w-full  flex-col items-center md:border-r md:border-b-0 border-b md:px-2 ">
         <span className="text-xs  text-white">Departure</span>
         <span className="text-xs font-semibold">
           {formatTravelDate(routeInfos[0].travelDate)}
         </span>
       </div>
-      <div className="flex flex-col items-center md:border-r  md:px-2 w-full">
+      <div className="flex flex-col items-center md:border-r md:border-b-0 border-b md:px-2 w-full">
         <span className="text-xs text-white">Return</span>
         <span className="text-xs font-semibold">
           {formatTravelDate(routeInfos[1]?.travelDate) || "N/A"}
         </span>
       </div>
-      <div className="flex flex-col items-center md:border-r w-full   overflow-x-auto no-scroll">
+      <div className="flex flex-col items-center md:border-r md:border-b-0 border-b w-full   overflow-x-auto no-scroll">
         <span className="text-xs text-white">Passengers & Class</span>
         {/* <span className="text-lg font-semibold">{`${passengers} ${passengers > 1 ? 'Passengers' : 'Passenger'} | ${cabinClass}`}</span> */}
         <span className="text-xs font-semibold">
@@ -155,12 +154,12 @@ const FlightSearchSummary = ({ data, tripType }) => {
           } | ${cabinClass}`}
         </span>
       </div>
-      <div className="flex flex-col items-center md:border-r  md:px-2 w-full">
+      <div className="flex flex-col items-center md:border-r md:border-b-0 border-b  md:px-2 w-full">
         <span className="text-xs text-white">Preferred Airline</span>
         <span className="text-xs font-semibold">{"None"}</span>
       </div>
       <Link to="/">
-        <button className="border-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+        <button className="border-[#01324D] bg-[#01324D] border  text-sm text-white px-4 py-2 rounded-md">
           MODIFY SEARCH
         </button>
       </Link>
@@ -237,7 +236,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
         </div>
         <div className="flex  justify-center items-center">
           <Link to="/">
-            <button className="border-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+            <button className="border-[#01324D] bg-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
               MODIFY SEARCH
             </button>
           </Link>

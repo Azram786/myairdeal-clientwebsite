@@ -1,14 +1,22 @@
 import React from "react";
 import Content from "./content";
-import background from "../../assets/service/world.png"
+import background from "../../assets/service/world.png";
 
 function Card(props) {
   return (
-    <div className="bg-white text-sky-950 rounded-xl p-6 shadow-md  w-52 h-60">
-    <img src={props?.imgURL} alt="plane" className="w-20 h-20 mx-auto mb-4 bg-sky-100 border-solid border-4 border-sky-900 rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm"  />
-    <h2 className="text-lg sm:text-2xl font-semibold mb-2">{props?.head}</h2>
-    <p className="text-base sm:text-lg   ">{props?.para}</p>
-  </div>
+
+      <div className="bg-white relative transition-transform transform hover:scale-105 duration-300 ease-in-out text-sky-950 rounded-xl p-6 shadow-md  w-52 h-60">
+        <img
+          src={props?.imgURL}
+          alt="plane"
+          className="w-20 h-20 mx-auto mb-4 bg-sky-100 border-solid border-4 border-sky-900 rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm"
+        />
+        <h2 className="text-lg sm:text-2xl font-semibold mb-2">
+          {props?.head}
+        </h2>
+        <p className="text-base sm:text-lg   ">{props?.para}</p>
+      </div>
+ 
   );
 }
 
@@ -24,17 +32,20 @@ function createCard(content) {
 }
 
 function Service() {
-    return (
-        <div
-          style={{ backgroundImage: `url(${background})` }}
-          className="bg-cover px-16 mx-auto text-center py-12">
-            <div className="text-white text-base font-bold mb-2">Services</div>
-          <div className="text-white text-xl sm:text-3xl font-bold mb-8">We Offer Best Services</div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 place-items-center justify-center">
-            {Content.map(createCard)}
-          </div>
-        </div>
-      );
+  return (
+    <div
+      style={{ backgroundImage: `url(${background})` }}
+      className="bg-cover px-16 mx-auto text-center py-12"
+    >
+      <div className="text-white text-base font-bold mb-2">Services</div>
+      <div className="text-white text-xl sm:text-3xl font-bold mb-8">
+        We Offer Best Services
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center justify-center">
+        {Content.map(createCard)}
+      </div>
+    </div>
+  );
 }
 
 export default Service;

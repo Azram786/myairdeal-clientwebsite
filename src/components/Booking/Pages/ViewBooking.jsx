@@ -79,7 +79,7 @@ const FlightBookings = () => {
             </button>
           </div>
         </div> */}
-        <div className="flex justify-between h-10 items-center mb-3 p-2 rounded-lg border lg:hidden">
+        <div className="flex justify-between  h-10 items-center mb-3 p-2 rounded-lg border lg:hidden">
           <select
             className="w-full py-2 px-3 border border-gray-300 rounded-md"
             value={bookingFilter}
@@ -93,7 +93,7 @@ const FlightBookings = () => {
         <div className="hidden lg:flex justify-between h-10 items-center mb-3 p-2 rounded-lg border">
           <div className="flex h-full w-full  justify-between">
             <button
-              className={`py-2 w-1/3 px-6 text-gray-600 border-b-2 ${bookingFilter === "UPCOMING"
+              className={`py-2 w-1/3 px-6 text-black  font-semibold  border-b-2 ${bookingFilter === "UPCOMING"
                 ? "border-blue-600"
                 : "border-transparent"
                 }`}
@@ -102,7 +102,7 @@ const FlightBookings = () => {
               Upcoming
             </button>
             <button
-              className={`py-2 w-1/3 px-6 text-gray-600 border-l-2 border-l-slate-300 border-b-2 ${bookingFilter === "COMPLETED"
+              className={`py-2 w-1/3 px-6 text-black border-l-2 font-semibold border-l-slate-300 border-b-2 ${bookingFilter === "COMPLETED"
                 ? "border-blue-600"
                 : "border-transparent"
                 }`}
@@ -111,7 +111,7 @@ const FlightBookings = () => {
               Completed
             </button>
             <button
-              className={`py-2 w-1/3 px-6 border-l-2 border-l-slate-300 text-gray-600 border-b-2 ${bookingFilter === "CANCELLED"
+              className={`py-2 w-1/3 px-6 border-l-2 border-l-slate-300 font-semibold text-black border-b-2 ${bookingFilter === "CANCELLED"
                 ? "border-blue-600"
                 : "border-transparent"
                 } `}
@@ -146,6 +146,7 @@ const FlightBookings = () => {
                       bookingFilter={bookingFilter}
                       bookingID={booking.bookingId}
                       booking={booking}
+                      length
                     />
                   ))
                 ) : (

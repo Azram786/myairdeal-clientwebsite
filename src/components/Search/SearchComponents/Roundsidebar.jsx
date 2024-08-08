@@ -332,14 +332,14 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   };
 
   const renderStopsSection = () => (
-    <div className="mb-6 border-b border-gray-300 pb-4">
+    <div className="mb-6 border-b  border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">Stops</h3>
-      <div className="grid w-full grid-cols-2 md:grid-cols-4">
+      <div className="grid w-full grid-cols-2 lg:grid-cols-4">
         {stops.map((stop, index) => (
           <label
             key={stop}
             htmlFor={`stop-${stop}`}
-            className={`mb-1 border text-xs flex justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
+            className={`mb-1 border text-xs  hover:bg-blue-100 flex justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
               filters[activeDirection].stops.includes(stop) ? 'bg-blue-200' : ''
             }`}
           >
@@ -360,7 +360,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   const renderTimeSection = (type, title) => (
     <div className="mb-6 border-b border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">{title}</h3>
-      <div className="grid grid-cols-2 md:grid-cols-4 place-items-center gap-2">
+      <div className="grid grid-cols-2 lg:grid-cols-4 place-items-center gap-2">
         {[
           { icon: <PiMountains />, time: "00-06" },
           { icon: <IoIosSunny />, time: "06-12" },
@@ -369,7 +369,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
         ].map(({ icon, time }) => (
           <span
             key={time}
-            className={`border-gray-500 border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+            className={`border-gray-500 border  hover:bg-blue-100 text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
               filters[activeDirection][type].includes(time) ? 'bg-blue-200' : ''
             }`}
             onClick={() => handleTimeChange(type, time)}
@@ -442,7 +442,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   );
 
   return (
-    <div className="flex flex-row md:w-1/5 border  m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex  flex-row w-full  lg-custom:w-full border shadow-md rounded-md min-h-screen">
       <div className="p-4 grid gap-2 grid-cols-1 w-full md:grid-cols-1">
         <div className='flex flex-col'>
           <div className="mb-6 border-b border-gray-300 pb-4">
