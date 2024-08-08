@@ -6,12 +6,14 @@ import {
   FaChevronUp,
 } from "react-icons/fa";
 import FareToolTip from "./FareTooltip";
+import calculateDuration from "../../util/calculateDuration";
 
 const RoundTripCard = ({
   logo,
   flightDetails,
   isSelected,
   selectedPriceIndex,
+  isSpecialReturnEnabled,
   onSelect,
   passenger,
 }) => {
@@ -21,6 +23,19 @@ const RoundTripCard = ({
   const [localSelectedPriceIndex, setLocalSelectedPriceIndex] = useState(
     selectedPriceIndex || 0
   );
+
+  const [filteredPriceList, setFilteredPriceList] = useState([]);
+
+  useEffect(() => {
+    if (flightDetails && flightDetails.totalPriceList) {
+      const filtered = isSpecialReturnEnabled
+        ? flightDetails.totalPriceList.filter(price => price.fareIdentifier === "SPECIAL_RETURN")
+        : flightDetails.totalPriceList.filter(price => price.fareIdentifier !== "SPECIAL_RETURN");
+      setFilteredPriceList(filtered);
+    }
+  }, [flightDetails, isSpecialReturnEnabled]);
+
+
 
   useEffect(() => {
     if (isSelected && selectedPriceIndex === null) {
@@ -93,13 +108,10 @@ const RoundTripCard = ({
     return date.toLocaleString('en-US', options);
   };
 
-  const departureTime = formatDateTime(startSegment.dt);
-  const arrivalTime = formatDateTime(endSegment.at);
+  const departureTime = startSegment.dt;
+  const arrivalTime = endSegment.at;
 
-  const totalDuration = data.reduce(
-    (sum, segment) => sum + segment.duration,
-    0
-  );
+  const totalDuration = calculateDuration(departureTime,arrivalTime)
 
   const displayedPrices = showAllPrices ? priceList : priceList;
 
@@ -137,41 +149,42 @@ const RoundTripCard = ({
                 <div className="flex items-center">
                   <div className="text-right mr-8">
                     <div className="font-bold text-xs">
-                      {formatDateTime(segment.dt).split(",")[0].trim()}
+                      {formatDateTime(segment.dt)}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {segment.da.city}, {segment.da.country}
+                      {segment?.da?.city}, {segment.da.country}
                     </div>
                     <div className="text-xs text-gray-500">
                       {segment.da.name}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {segment.da.terminal || "N/A"}
+                      {segment?.da?.terminal || "N/A"}
                     </div>
                   </div>
                   <div className="flex flex-col items-center mx-4">
                     <div className="text-xs text-gray-500">
                       {segment.stops === 0
                         ? "Non-Stop"
-                        : `${segment.stops} Stops`}
+                        : `${segment?.stops} Stops`}
                     </div>
                     <FaPlane className="my-2  text-gray-400" />
                     <div className="text-xs text-gray-500">
-                      {convertToHoursMinutes(segment.duration)}
+                      {/* {convertToHoursMinutes(segment.duration)} */}
+                      {calculateDuration(segment?.dt,segment?.at)}
                     </div>
                   </div>
                   <div className="text-left ml-8">
                     <div className="text-xs font-bold">
-                      {formatDateTime(segment.at).split(",")[0].trim()}
+                      {formatDateTime(segment?.at)}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {segment.aa.city}, {segment.aa.country}
+                      {segment?.aa?.city}, {segment?.aa?.country}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {segment.aa.name}
+                      {segment?.aa?.name}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {segment.aa.terminal || "N/A"}
+                      {segment?.aa?.terminal || "N/A"}
                     </div>
                   </div>
                 </div>
@@ -286,13 +299,14 @@ const RoundTripCard = ({
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
-                <h1 className="text-xs">{departureTime}</h1>
+                <h1 className="text-xs">{formatDateTime(startSegment?.dt)}</h1>
               </div>
             </div>
             <div className="flex items-center mb-4 md:mb-0">
               <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
-              <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
-                <span className="">{convertToHoursMinutes(totalDuration)}</span>
+              <div className="flex flex-col gap-4 text-center items-center text-xs  text-gray-500">
+                {/* <span className="">{convertToHoursMinutes(totalDuration)}</span> */}
+                <span className="">{totalDuration}</span>
                 <FaPlane className="mx-2 text-blue-800 text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (
@@ -311,7 +325,7 @@ const RoundTripCard = ({
               <div>
                 <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
-                <h1 className="text-xs">{arrivalTime}</h1>
+                <h1 className="text-xs">{formatDateTime(endSegment?.at)}</h1>
               </div>
             </div>
           </div>
@@ -319,7 +333,7 @@ const RoundTripCard = ({
           <div className="flex items-center justify-between">
             <div className="flex flex-col w-full  ">
               <div className="flex   mt-3 gap-2 overflow-x-auto no-scroll items-center ">
-                {displayedPrices?.map((price, index) => (
+                {filteredPriceList?.map((price, index) => (
                   <div
                     key={index}
                     onClick={() => handlePriceSelection(index)}

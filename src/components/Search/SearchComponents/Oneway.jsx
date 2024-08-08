@@ -15,7 +15,7 @@
 
 //   console.log(flightProps,"flight props");
 
-  
+
 //   const flightDetails = flightProps.map(flight => {
 //     return flight.sI.map(segment => {
 //         return {
@@ -68,14 +68,14 @@ import FlightDetailsCard from "../Cards/FlightDetailsCard";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import flightLogo from "../../../assets/home/logo/image 40.png";
 import OneWaySideBar from "./OneWaySidebar";
-import BookingCard from "./BookingCards"; 
+import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ReactToast from "../../util/ReactToast";
 
 const { TabPane } = Tabs;
 
-const Oneway = ({ flightProps, passenger,query }) => {
+const Oneway = ({ flightProps, passenger, query }) => {
   console.log("flightProps in Oneway:", flightProps);
 
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
@@ -179,15 +179,15 @@ const Oneway = ({ flightProps, passenger,query }) => {
       }));
       console.log("Processing bookings:", bookings);
 
-      if(!token){
-      ReactToast('Please login first')
-      navigate("/sign-in");
+      if (!token) {
+        ReactToast('Please login first')
+        navigate("/sign-in");
       }
-  
+
       navigate("/book-flight", { state: { bookings } });
     }
   };
-  
+
   const getTotalPrice = () => {
     if (selectedFlight.length > 0) {
       const selected = selectedFlight[0];
@@ -202,40 +202,41 @@ const Oneway = ({ flightProps, passenger,query }) => {
   console.log(filteredFlights, "filtered flights");
   return (
     <div className="flex md:flex-row flex-col">
-      <OneWaySideBar 
-        flights={flightProps} 
-        filters={filters} 
-        setFilters={setFilters} 
+      <OneWaySideBar
+        flights={flightProps}
+        filters={filters}
+        setFilters={setFilters}
         passenger={passenger}
         calculateTotalPrice={calculateTotalPrice}
       />
       <div className="flex-grow">
+        <h1 className="text-sm font-bold"> {filteredFlights.length} flights Found </h1>
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={
               <span className="flex gap-2">
-               <span className="flex flex-col justify-center ">
-      <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
-      <p className="text-[10px]">
-      {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric'
-}).format(new Date(filteredFlights[0].sI[0].dt)).split('/').join('-')}
-      </p>
-    </span>
-    <ArrowRightOutlined />
-    <span className="flex flex-col justify-center ">
-      <p>{filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa?.city}</p>
-      <p className="text-[10px]">
-        
-          {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric'
-}).format(new Date(filteredFlights[0].sI[filteredFlights[0]?.sI.length - 1].at)).split('/').join('-')}
-      </p>
-    </span>
+                <span className="flex flex-col justify-center ">
+                  <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
+                  <p className="text-[10px]">
+                    {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }).format(new Date(filteredFlights[0].sI[0].dt)).split('/').join('-')}
+                  </p>
+                </span>
+                <ArrowRightOutlined />
+                <span className="flex flex-col justify-center ">
+                  <p>{filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa?.city}</p>
+                  <p className="text-[10px]">
+
+                    {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }).format(new Date(filteredFlights[0].sI[filteredFlights[0]?.sI.length - 1].at)).split('/').join('-')}
+                  </p>
+                </span>
               </span>
             }
             key="1"
@@ -261,7 +262,7 @@ const Oneway = ({ flightProps, passenger,query }) => {
           </TabPane>
         </Tabs>
 
-        {console.log(selectedFlight,"djloe")}
+        {console.log(selectedFlight, "djloe")}
       </div>
       {selectedFlight.length > 0 && (
         <BookingCard
