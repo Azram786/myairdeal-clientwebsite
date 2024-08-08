@@ -195,11 +195,11 @@ const FlightSummary = ({ flightData, passenger }) => {
             </div>
             {currentStep === 0 ? (
               <>
-                <div className="  pb-4  ">
+                <div className="  pb-4 border border-gray-400  max-h-[50vh] overflow-scroll overflow-x-hidden ">
                   {data?.tripInfos?.map((item, index) => (
                     <div
                       key={index}
-                      className="border border-gray-300 rounded-lg p-2 mb-4"
+                      className=" rounded-lg p-2 mb-4 "
                     >
                       <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-200 p-2 rounded-t-lg">
                         <div className="text-base sm:text-lg font-bold flex items-center">
@@ -224,7 +224,7 @@ const FlightSummary = ({ flightData, passenger }) => {
                           {calculateTotalDuration(item.sI)}
                         </div>
                       </div>
-                      <div className="mt-4">
+                      <div className="mt-4 ">
                         {item.sI.map((segment, index) => (
                           <React.Fragment key={index}>
                             <div className="flex flex-col md:flex-row md:items-center   justify-between  mb-4 ">
