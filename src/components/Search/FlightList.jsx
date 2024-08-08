@@ -82,7 +82,7 @@
 //   }, []);
 
 
-  
+
 
 //   if (loading) {
 //     return (
@@ -168,7 +168,7 @@ const FlightList = () => {
   }, [query]);
 
   useEffect(() => {
-  
+
     const timer = setTimeout(() => {
       ReactToast('Session expired. Please search again.');
       navigate("/");
@@ -181,17 +181,17 @@ const FlightList = () => {
   const getData = async () => {
     try {
       const res = await axios.post(
-        `https://myairdeal-backend.onrender.com/search/flight`,
+        `${import.meta.env.VITE_SERVER_URL}search/flight`,
         data
       );
 
-      console.log(
-        res.data,
-        "tripInfos-----------------------------------------"
-      );
       const tripInfos = res.data.searchResult.tripInfos;
 
       console.log(tripInfos, "tripInfos");
+      if (!tripInfos) {
+        ReactToast("No flights found on this route")
+        return
+      }
 
       if (tripInfos.ONWARD && tripInfos.RETURN) {
         setTripType("roundtrip");
@@ -232,8 +232,8 @@ const FlightList = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header/>
-      { data && <div className="w-full py-5"><FlightSearchSummary data={data} tripType={tripType} /></div>}
+      <Header />
+      {data && <div className="w-full py-5"><FlightSearchSummary data={data} tripType={tripType} /></div>}
       <div className=" border p-4  gap-4 shadow-sm rounded-md flex flex-col">
         {tripType === "oneway" && (
           <Oneway flightProps={oneway} query={data} passenger={data?.searchQuery.paxInfo} />
@@ -257,7 +257,7 @@ const FlightList = () => {
           />
         )}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

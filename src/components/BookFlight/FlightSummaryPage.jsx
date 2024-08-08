@@ -24,6 +24,7 @@ import Spinner from "../Profile/Spinner";
 import Header from "../Home/Header";
 import Footer from "../Home/Footer";
 import FlightLanding from "../../assets/booking/viewDetailedBookings/flightLanding.svg"
+import ShowBaggageInfo from "./Util/ShowBaggageInfo";
 
 const FlightSummary = ({ flightData, passenger }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -33,6 +34,8 @@ const FlightSummary = ({ flightData, passenger }) => {
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
+
+ 
 
   // const [Passenger, setPassenger] = useState(null);
 
@@ -57,7 +60,7 @@ const FlightSummary = ({ flightData, passenger }) => {
   };
 
   const handleDataFromChild = (data) => {
-    console.log("first", data);
+
     setPassengerData(data);
   };
 
@@ -77,7 +80,7 @@ const FlightSummary = ({ flightData, passenger }) => {
       )
       .then((res) => {
         setLoading(false);
-        console.log(res.data, "response datattata");
+       
         setData(res.data);
       })
       .catch((error) => {
@@ -195,217 +198,203 @@ const FlightSummary = ({ flightData, passenger }) => {
             </div>
             {currentStep === 0 ? (
               <>
-                <div className="  pb-4 border border-gray-400  max-h-[50vh] overflow-scroll overflow-x-hidden ">
-                  {data?.tripInfos?.map((item, index) => (
-                    <div
-                      key={index}
-                      className=" rounded-lg p-2 mb-4 "
-                    >
-                      <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-200 p-2 rounded-t-lg">
-                        <div className="text-base sm:text-lg font-bold flex items-center">
-                          <span>{item.sI[0].da.city}</span>
-                          <FaArrowRight className="mx-2 hidden sm:inline" />
-                          <span>{item.sI[item.sI.length - 1].aa.city}</span>
-                          <div className="text-gray-600 text-sm mt-1 sm:mt-0 sm:ml-2">
-                            On{" "}
-                            {new Date(item.sI[0].dt).toLocaleDateString(
-                              "en-US",
-                              {
-                                weekday: "short",
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              }
-                            )}
-                          </div>
-                        </div>
-                        <div className=" text-base sm:text-lg font-semibold text-gray-600 flex items-center">
-                          <FaRegClock className="mr-2" />
-                          {calculateTotalDuration(item.sI)}
-                        </div>
-                      </div>
-                      <div className="mt-4 ">
-                        {item.sI.map((segment, index) => (
-                          <React.Fragment key={index}>
-                            <div className="flex flex-col md:flex-row md:items-center   justify-between  mb-4 ">
+                <div className={`pb-4 border border-gray-400  max-h-[50vh] ${data?.tripInfos.length > 1 && "overflow-scroll"} overflow-x-hidden`} >
+                  {data?.tripInfos?.map((item, index) => {
 
-
-                              <div className="md:w-[20%]  ">
-
-                                <div className="font-semibold  text-xs  rounded-md inline-flex md:flex md:h-full md:justify-center md:items-center md:flex-col items-center  s p-1 space-x-2">
-                                  <div className="w-8 h-8 md:h-14 md:w-14">
-
-                                    <img
-                                      src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
-                                      onError={(e) =>
-                                      (e.currentTarget.src =
-                                        defaultAirline)
-                                      }
-                                      alt={segment?.fD?.aI?.code}
-                                      className="w-full h-full object-contain "
-                                    />
-                                  </div>
-                                  <div>
-                                    <div>{segment.fD.aI.name}</div>
-                                    <div className="flex items-center space-x-1">
-                                      <span>
-                                        {segment.fD.aI.code}-
-                                        {segment.fD.fN}
-                                      </span>
-                                      <MdFlight className="w-3 h-3 rotate-45" />
-                                      <span>{segment.fD.eT}</span>
-                                    </div>
-                                  </div>
-                                </div>
-
-
-                              </div>
-                              <div className="flex md:w-[60%] ">
-
-                                <div className="flex-col w-1/3">
-                                  <div className="text-lg font-bold ">
-                                    {segment.da.code}
-                                  </div>
-                                  <div className="text-sm">
-                                    {segment.da.city}, {segment.da.country}
-                                  </div>
-                                  <div className="text-sm">
-                                    {segment.da.name}
-                                  </div>
-                                  <div className="text-sm">
-                                    {segment.da.terminal}
-                                  </div>
-                                  <div className="text-sm font-semibold">
-                                    {new Date(segment.dt).toLocaleTimeString(
-                                      [],
-                                      {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                        hour12: true,
-                                      }
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="flex-col items-center justify-center flex  w-1/3">
-                                  <div className="text-center flex ">
-                                    <span className="text-sm">
-                                      {(() => {
-                                        const totalMinutes = segment.duration;
-                                        const hours = Math.floor(
-                                          totalMinutes / 60
-                                        );
-                                        const minutes = totalMinutes % 60;
-                                        return `${hours}h ${minutes}m`;
-                                      })()}
-                                    </span>
-                                  </div>
-                                  {/* <div className="flex justify-center items-center">
-                                
-                                    <div className="flex-grow border-t-2 border-gray-500 hidden md:block"></div>
-
-                               
-                                    <img className=" mx-2" src={`${FlightLanding}`} alt="Airplane" />
-
-                                   
-                                    <div className="flex-grow border-t-2 border-gray-500 hidden md:block"></div>
-                                  </div> */}
-                                  <div className="flex items-center w-full">
-                                    <div className="w-2 h-2 rounded-full bg-gray-400"></div>
-                                    <div className="flex-grow h-px bg-gray-300"></div>
-                                    <div className="flex items-center mx-2">
-                                      <div className="w-16 h-px bg-gray-500"></div>
-                                      <img className="w-8 h-8 mx-2" src={FlightLanding} alt="Airplane" />
-                                      <div className="w-16 h-px bg-gray-500"></div>
-                                    </div>
-                                    <div className="flex-grow h-px bg-gray-300"></div>
-                                    <div className="w-2 h-2 rounded-full bg-gray-400"></div>
-                                  </div>
-
-
-                                  <div className="text-center text-sm">
-                                    {item.sI.length === 1
-                                      ? "Non Stop"
-                                      : "connection"}
-                                  </div>
-                                </div>
-                                <div className="flex-col w-1/3  text-right">
-                                  <div className="text-lg font-bold">
-                                    {segment.aa.code}
-                                  </div>
-                                  <div className="text-sm">
-                                    {segment.aa.city}, {segment.aa.country}
-                                  </div>
-                                  <div className="text-sm">
-                                    {segment.aa.name}
-                                  </div>
-                                  <div className="text-sm">
-                                    {segment.aa.terminal}
-                                  </div>
-                                  <div className="text-sm font-semibold">
-                                    {new Date(segment.at).toLocaleTimeString(
-                                      [],
-                                      {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                        hour12: true,
-                                      }
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="md:w-[15%] ">
-                                <div className="flex flex-col justify-center h-full items-center p-4">
-                                  {/* Bag Icon */}
-                                  <svg
-                                    className="w-12 h-12 mb-2"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path d="M12 2C10.35 2 9 3.35 9 5H7.5C6.12 5 5 6.12 5 7.5V18.5C5 19.88 6.12 21 7.5 21H16.5C17.88 21 19 19.88 19 18.5V7.5C19 6.12 17.88 5 16.5 5H15C15 3.35 13.65 2 12 2ZM12 4C12.55 4 13 4.45 13 5H11C11 4.45 11.45 4 12 4ZM7.5 7H16.5C16.78 7 17 7.22 17 7.5V8H7V7.5C7 7.22 7.22 7 7.5 7ZM7 10H17V18.5C17 18.78 16.78 19 16.5 19H7.5C7.22 19 7 18.78 7 18.5V10ZM9 12V14H15V12H9ZM9 16V18H15V16H9Z" />
-                                  </svg>
-
-                                  {/* Text Information */}
-                                  <div className="text-center text-sm">
-                                    <p className="text-gray-500 ">Included</p>
-                                    <p className="text-gray-500">Carry on bag</p>
-                                    <p className="font-bold">7kgs</p>
-
-                                    <a href="#" className="text-blue-500">Fare details</a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="text-sm text-gray-500 mt-4">
-                              <span>
-                                There is a Special No Meal fare Provided by
-                                the Airline
-                              </span>
-                              {index !== item.sI.length - 1 && (
-                                <div className="flex justify-between bg-blue-900 text-white p-3 rounded-md mt-4 mb-4">
-                                  <div className="text-sm">
-                                    Require to change plane
-                                  </div>
-                                  <div className="text-base font-medium">
-                                    <span className="text-sm">
-                                      {item.sI.length > 1 && (
-                                        <div className="text-center">
-                                          <span className="text-sm">
-                                            Total Layover Time:{" "}
-                                            {calculateLayoverTime(item.sI)}
-                                          </span>
-                                        </div>
-                                      )}
-                                    </span>
-                                  </div>
-                                </div>
+                 
+                    return (
+                      <div
+                        key={index}
+                        className=" rounded-lg p-2   "
+                      >
+                        <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-200 p-2 rounded-t-lg">
+                          <div className="text-base sm:text-lg font-bold flex items-center">
+                            <span>{item.sI[0].da.city}</span>
+                            <FaArrowRight className="mx-2 hidden sm:inline" />
+                            <span>{item.sI[item.sI.length - 1].aa.city}</span>
+                            <div className="text-gray-600 text-sm mt-1 sm:mt-0 sm:ml-2">
+                              On{" "}
+                              {new Date(item.sI[0].dt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  weekday: "short",
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                }
                               )}
                             </div>
-                          </React.Fragment>
-                        ))}
+                          </div>
+                          <div className=" text-base sm:text-lg font-semibold text-gray-600 flex items-center">
+                            <FaRegClock className="mr-2" />
+                            {calculateTotalDuration(item.sI)}
+                          </div>
+                        </div>
+                        <div className="mt-4 ">
+                          {item.sI.map((segment, index) => (
+                            <React.Fragment key={index}>
+                              <div className="flex flex-col">
+
+                                <div className="flex-col md:flex-row md:items-center   w-full justify-evenly  mb-4  flex">
+
+                                  <div className="md:w-[20%]  ">
+
+                                    <div className="font-semibold  text-xs  rounded-md inline-flex md:flex md:h-full md:justify-center md:items-center md:flex-col items-center  s p-1 space-x-2">
+                                      <div className="w-8 h-8 md:h-14 md:w-14">
+
+                                        <img
+                                          src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                                          onError={(e) =>
+                                          (e.currentTarget.src =
+                                            defaultAirline)
+                                          }
+                                          alt={segment?.fD?.aI?.code}
+                                          className="w-full h-full object-contain "
+                                        />
+                                      </div>
+                                      <div>
+                                        <div>{segment.fD.aI.name}</div>
+                                        <div className="flex items-center space-x-1">
+                                          <span>
+                                            {segment.fD.aI.code}-
+                                            {segment.fD.fN}
+                                          </span>
+                                          <MdFlight className="w-3 h-3 rotate-45" />
+                                          <span>{segment.fD.eT}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+
+                                  </div>
+                                  <div className="flex md:w-[70%]  ">
+
+                                    <div className="flex-col w-1/3">
+                                      <div className="text-lg font-bold ">
+                                        {segment.da.code}
+                                      </div>
+                                      <div className="text-sm">
+                                        {segment.da.city}, {segment.da.country}
+                                      </div>
+                                      <div className="text-sm">
+                                        {segment.da.name}
+                                      </div>
+                                      <div className="text-sm">
+                                        {segment.da.terminal}
+                                      </div>
+                                      <div className="text-sm font-semibold">
+                                        {new Date(segment.dt).toLocaleTimeString(
+                                          [],
+                                          {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: true,
+                                          }
+                                        )}
+                                      </div>
+                                    </div>
+                                    <div className="flex-col items-center justify-center flex  w-1/3">
+                                      <div className="text-center flex ">
+                                        <span className="text-sm">
+                                          {(() => {
+                                            const totalMinutes = segment.duration;
+                                            const hours = Math.floor(
+                                              totalMinutes / 60
+                                            );
+                                            const minutes = totalMinutes % 60;
+                                            return `${hours}h ${minutes}m`;
+                                          })()}
+                                        </span>
+                                      </div>
+                                 
+                                      <div className="flex items-center w-full">
+                                        <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                                        <div className="flex-grow h-px bg-gray-300"></div>
+                                        <div className="flex items-center mx-2">
+                                          <div className="w-16 h-px bg-gray-500"></div>
+                                          <img className="w-8 h-8 mx-2" src={FlightLanding} alt="Airplane" />
+                                          <div className="w-16 h-px bg-gray-500"></div>
+                                        </div>
+                                        <div className="flex-grow h-px bg-gray-300"></div>
+                                        <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                                      </div>
+
+
+                                      <div className="text-center text-sm">
+                                        {item.sI.length === 1
+                                          ? "Non Stop"
+                                          : item.sI.length + "Stops"}
+                                      </div>
+                                    </div>
+                                    <div className="flex-col w-1/3  text-right">
+                                      <div className="text-lg font-bold">
+                                        {segment.aa.code}
+                                      </div>
+                                      <div className="text-sm">
+                                        {segment.aa.city}, {segment.aa.country}
+                                      </div>
+                                      <div className="text-sm">
+                                        {segment.aa.name}
+                                      </div>
+                                      <div className="text-sm">
+                                        {segment.aa.terminal}
+                                      </div>
+                                      <div className="text-sm font-semibold">
+                                        {new Date(segment.at).toLocaleTimeString(
+                                          [],
+                                          {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: true,
+                                          }
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="flex w-full  justify-center items-center  ">
+                                  {/* Bag Icon */}
+                          
+
+
+                                  <ShowBaggageInfo item={item} />
+                                </div>
+
+
+                              </div>
+                              <div className="text-sm text-gray-500 mt-4">
+                                {/* <span>
+                                  There is a Special No Meal fare Provided by
+                                  the Airline
+                                </span> */}
+                                {index !== item.sI.length - 1 && (
+                                  <div className="flex justify-between bg-blue-900 text-white p-3 rounded-md mt-4 mb-4">
+                                    <div className="text-sm">
+                                      Require to change plane
+                                    </div>
+                                    <div className="text-base font-medium">
+                                      <span className="text-sm">
+                                        {item.sI.length > 1 && (
+                                          <div className="text-center">
+                                            <span className="text-sm">
+                                              Total Layover Time:{" "}
+                                              {calculateLayoverTime(item.sI)}
+                                            </span>
+                                          </div>
+                                        )}
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </React.Fragment>
+                          ))}
+                        </div>
+
                       </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
                 <div className="flex justify-center py-3 px-4">
                   <button
@@ -430,7 +419,7 @@ const FlightSummary = ({ flightData, passenger }) => {
               />
             ) : currentStep === 2 ? (
               <>
-                {console.log("hehe")}
+              
                 <Review
                   setCurrentStep={setCurrentStep}
                   data={data}
@@ -440,7 +429,7 @@ const FlightSummary = ({ flightData, passenger }) => {
               </>
             ) : currentStep === 3 ? (
               <>
-                {console.log("hehe")}
+                
                 <PaymentPage
                   data={data}
                   passengersData={passengersData}
@@ -574,7 +563,7 @@ const FlightSummary = ({ flightData, passenger }) => {
         )}
       </div>
       <Footer />
-    </div>
+    </div >
   );
 };
 
