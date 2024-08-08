@@ -12,23 +12,54 @@ const MultiCityForm = ({
 }) => {
   const dynamicFormIncreaseHandler = () => {
     if (dynamicFormData.length < 5) {
-      setDynamicFormData((prev) => [
-        ...prev,
-        {
-          fromCity: "",
+      // setDynamicFormData((prev) => [
+      //   ...prev,
+      //   {
+      //     fromCity: "",
+      //     toCity: "",
+      //     travelDate: formData.travelDate,
+      //   },
+      // ]);
+      setDynamicFormData((prev) => {
+        // Get the last entry in the array to access its toCity value
+        const lastEntry = prev[prev.length - 1];
+
+        // Create the new entry using the lastEntry's toCity value for fromCity
+        const newEntry = {
+          fromCity: lastEntry?.toCity || "",
           toCity: "",
           travelDate: formData.travelDate,
-        },
-      ]);
+        };
+
+        // Return the new state with the new entry appended
+        return [...prev, newEntry];
+      });
     } else {
       ReactToast("Maximum of 6 forms allowed");
     }
   };
 
+  // const handleFormDataChange = (index, data) => {
+  //   console.log({ data, index })
+  //   setDynamicFormData((prev) => {
+  //     const newData = [...prev];
+  //     newData[index] = { ...newData[index], ...data };
+  //     return newData;
+  //   });
+  // };
   const handleFormDataChange = (index, data) => {
     setDynamicFormData((prev) => {
       const newData = [...prev];
+
+      // Update the current index with the new data
       newData[index] = { ...newData[index], ...data };
+
+      // Check if the next index exists
+      if (index + 1 < newData.length && data.toCity) {
+        // Update the fromCity of the next object
+        newData[index + 1] = { ...newData[index + 1], fromCity: data.toCity };
+      }
+
       return newData;
     });
   };
@@ -59,6 +90,7 @@ const MultiCityForm = ({
             form={form}
             setForm={(data) => handleFormDataChange(index, data)}
             formData={formData}
+            index={index}
           />
         ))}
       </div>

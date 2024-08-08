@@ -65,9 +65,33 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
   //set country code where to
   const setContryCodeTo = (value) => {
     console.log({ contryCodeTo: value })
+
     if (formData.fromCityOrAirport === value && value !== "") {
+
       ReactToast("You cannot select the same airport twice");
     } else {
+      setDynamicFormData((prevFormData) => {
+
+        const newFormData = [...prevFormData];
+
+
+        if (newFormData[0]) {
+
+          newFormData[0] = {
+            ...newFormData[0],
+            fromCity: value,
+          };
+        } else {
+
+          newFormData[0] = {
+            fromCity: value,
+            toCity: "",
+            travelDate: formData.travelDate,
+          };
+        }
+
+        return newFormData;
+      });
       setFormData((prev) => ({
         ...prev,
         toCityOrAirport: value,

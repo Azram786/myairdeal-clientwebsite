@@ -13,6 +13,7 @@
 
 //   console.log(flightProps,"flight props");
 
+
 //   const flightDetails = flightProps.map(flight => {
 //     return flight.sI.map(segment => {
 //         return {
@@ -199,7 +200,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
       console.log("Processing bookings:", bookings);
 
       if (!token) {
-        ReactToast("Please login first");
+        ReactToast('Please login first')
         navigate("/sign-in");
       }
 
@@ -280,6 +281,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         )}
       </div>
       <div className="flex-grow">
+        <h1 className="text-sm font-bold"> {filteredFlights.length} flights Found </h1>
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={

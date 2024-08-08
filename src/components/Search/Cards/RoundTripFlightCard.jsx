@@ -4,9 +4,14 @@ import {
   FaInfoCircle,
   FaChevronDown,
   FaChevronUp,
+  FaSuitcase,
+  FaShoppingCart,
+  FaConciergeBell,
 } from "react-icons/fa";
+
 // import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import FareToolTip from "./FareTooltip";
+import calculateDuration from "../../util/calculateDuration";
 
 const RoundTripCard = ({
   logo,
@@ -15,14 +20,28 @@ const RoundTripCard = ({
   selectedPriceIndex,
   onSelect,
   passenger,
+  specialReturnMode,
+  baggageDetails, // New prop
+  mealDetails, // New prop
 }) => {
   const [showAllPrices, setShowAllPrices] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [showBaggageDetails, setShowBaggageDetails] = useState(false); // New state
+  const [showMealDetails, setShowMealDetails] = useState(false); // New state
+
+const toggleBaggageDetails = () => setShowBaggageDetails(!showBaggageDetails);
+const toggleMealDetails = () => setShowMealDetails(!showMealDetails);
+
+
   const [activeTab, setActiveTab] = useState("Flight Details");
   // const [showAllPrices, setShowAllPrices] = useState(false);
   const [localSelectedPriceIndex, setLocalSelectedPriceIndex] = useState(
     selectedPriceIndex || 0
   );
+
+  useEffect(() => {
+    setLocalSelectedPriceIndex(selectedPriceIndex || 0);
+  }, [selectedPriceIndex]);
 
   useEffect(() => {
     if (isSelected && selectedPriceIndex === null) {
@@ -95,15 +114,14 @@ const RoundTripCard = ({
     return date.toLocaleString("en-US", options);
   };
 
-  const departureTime = formatDateTime(startSegment.dt);
-  const arrivalTime = formatDateTime(endSegment.at);
+  const departureTime = startSegment.dt;
+  const arrivalTime = endSegment.at;
 
-  const totalDuration = data.reduce(
-    (sum, segment) => sum + segment.duration,
-    0
-  );
+  const totalDuration = calculateDuration(departureTime, arrivalTime);
 
-  const displayedPrices = showAllPrices ? priceList : priceList;
+  const displayedPrices = specialReturnMode
+    ? priceList.filter((price) => price.fareIdentifier === "SPECIAL_RETURN")
+    : priceList.filter((price) => price.fareIdentifier !== "SPECIAL_RETURN");
 
   const handlePriceSelection = (index) => {
     setLocalSelectedPriceIndex(index);
@@ -155,21 +173,19 @@ const RoundTripCard = ({
                   </span>
                 </div>
                 <div className="flex justify-center max-w-80  md:min-w-max mt-2  items-center md:items-start">
-                  
-                    <div className=" min-w-16 ml-12 md:ml-0 items-start">
-                      <img
-                        src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
-                        alt={segment?.fD?.aI?.code}
-                        className="md:size-10 size-8 rounded-md mr-0 md:mr-4"
-                      />
-                      <div className="">
-                        <div className="font-bold text-xs">
-                          {segment.fD.aI.name}
-                          <br /> {segment.fD.fN}
-                        </div>
+                  <div className=" min-w-16 ml-12 md:ml-0 items-start">
+                    <img
+                      src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                      alt={segment?.fD?.aI?.code}
+                      className="md:size-10 size-8 rounded-md mr-0 md:mr-4"
+                    />
+                    <div className="">
+                      <div className="font-bold text-xs">
+                        {segment.fD.aI.name}
+                        <br /> {segment.fD.fN}
                       </div>
                     </div>
-                  
+                  </div>
 
                   <div className=" w-full flex gap-1  items-start  ">
                     <div className="text-left min-w-28 ">
@@ -343,7 +359,7 @@ const RoundTripCard = ({
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
-                <h1 className="text-xs">{departureTime}</h1>
+                <h1 className="text-xs">{formatDateTime(startSegment?.dt)}</h1>
               </div>
             </div>
             <div className="flex  max-w-32 items-center  mb-4 md:mb-0">
@@ -368,7 +384,7 @@ const RoundTripCard = ({
               <div>
                 <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
-                <h1 className="text-xs">{arrivalTime}</h1>
+                <h1 className="text-xs">{formatDateTime(endSegment?.at)}</h1>
               </div>
             </div>
           </div>
