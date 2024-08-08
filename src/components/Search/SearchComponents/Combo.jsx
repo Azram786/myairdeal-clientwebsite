@@ -1,438 +1,32 @@
-// import React, { useEffect, useState } from "react";
-// import { Tabs, Button } from "antd";
-// import ComboFlightCard from "../../Cards/ComboFlightCard";
-// import flightLogo from "../../../assets/home/logo/image 40.png"
-// import ComboSideBar from "./ComboSidebar";
 
-
-// const { TabPane } = Tabs;
-
-// const Combo = ({ flightprops }) => {
-//   if (!flightprops || flightprops.length === 0) {
-//     return <h1>No flights available ..</h1>;
-//   }
-
-//   console.log("flightprops:", flightprops);
-
-//   const groupFlights = (flights) => {
-//     let groupedFlights = [];
-//     let currentGroup = [];
-
-//     flights.forEach((elem) => {
-//       if (elem.sn === 0 && currentGroup.length > 0) {
-//         groupedFlights.push(currentGroup);
-//         currentGroup = [];
-//       }
-//       currentGroup.push(elem);
-//     });
-
-//     if (currentGroup.length > 0) {
-//       groupedFlights.push(currentGroup);
-//     }
-
-//     return groupedFlights;
-//   };
-
-//   const findMaxPrice = (flights) => {
-//     return Math.max(...flights.map(flight => flight.totalPriceList[0].fd.ADULT.fC.TF));
-//   };
-
-//   const maxPrice = findMaxPrice(flightprops);
-
-//   const [filteredFlights, setFilteredFlights] = useState(flightprops);
-//   const [filters, setFilters] = useState({
-//     maxPrice: maxPrice, 
-//     stops: [],
-//     departureTime: [],
-//     arrivalTime: [],
-//     airlines: []
-//   });
-
-//   useEffect(() => {
-//     const newFilteredFlights = flightprops.filter(flight => {
-//       const price = flight.totalPriceList[0].fd.ADULT.fC.TF;
-//       const stops = flight.sI[0].stops;
-//       const departureHour = new Date(flight.sI[0].dt).getHours();
-//       const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
-//       const airline = flight.sI[0].fD.aI.name;
-  
-//       const priceMatch = price <= filters.maxPrice;
-//       const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString());
-//       const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
-//         const [start, end] = range.split('-').map(Number);
-//         return departureHour >= start && departureHour < end;
-//       });
-//       const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
-//         const [start, end] = range.split('-').map(Number);
-//         return arrivalHour >= start && arrivalHour < end;
-//       });
-//       const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
-  
-//       return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
-//     });
-  
-//     setFilteredFlights(newFilteredFlights);
-//   }, [filters, flightprops]);
-
-//   const startSegment = filteredFlights[0]?.sI[0];
-//   const endSegment = filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1];
-
-
-//   console.log(flightprops,"pros")
-
-
-//   return (
-//     <div className="flex flex-row h-screen">
-//       <ComboSideBar filters={filters} setFilters={setFilters} flights={flightprops} maxPrice={maxPrice}/>
-//       <div>
-//         <div>
-//           <Tabs defaultActiveKey="1">
-//             <TabPane tab="All Combo flights" key="1">
-//               {flightprops.map((segments, segIndex) => {
-//                 console.log(`segments[${segIndex}]:`, segments);
-//                 const { sI } = segments;
-//                 return (
-//                   <React.Fragment key={segIndex}>
-//                     {groupFlights(sI).map((group, groupIndex) => (
-//                       <div key={groupIndex} className="border shadow-xl p-4 mb-4 rounded-lg relative">
-//                         {group.map((elem, elemIndex) => (
-//                           <ComboFlightCard logo={flightLogo} key={elem.id || elemIndex} flightDetails={elem} />
-//                         ))}
-//                         <div className="flex justify-start">
-//                           <Button className="py-4 m-2" type="primary">Book now</Button>
-//                         </div>
-//                       </div>
-//                     ))}
-//                   </React.Fragment>
-//                 );
-//               })}
-//             </TabPane>
-//           </Tabs>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Combo;
-
-
-// import React, { useEffect, useState } from "react";
-// import { Tabs, Button } from "antd";
-// import { useNavigate } from 'react-router-dom';
-// import ComboFlightCard from "../Cards/ComboFlightCard";
-// import flightLogo from "../../../assets/home/logo/image 40.png"
-// import ComboSideBar from "./ComboSidebar";
-
-// const { TabPane } = Tabs;
-
-// const Combo = ({ flightprops,passenger }) => {
-//   if (!flightprops || flightprops.length === 0) {
-//     return <h1>No flights available ..</h1>;
-//   }
-
-//   const findMaxPrice = (flights) => {
-//     return Math.max(...flights.map(flight => flight.totalPriceList[0].fd.ADULT.fC.TF));
-//   };
-
-//   const maxPrice = findMaxPrice(flightprops);
-
-
-//   const [filteredFlights, setFilteredFlights] = useState(flightprops);
-//   const [filters, setFilters] = useState({
-//     maxPrice: maxPrice, 
-//     stops: [],
-//     departureTime: [],
-//     arrivalTime: [],
-//     airlines: []
-//   });
-
-//   const navigate=useNavigate()
-
-//   useEffect(() => {
-//     const newFilteredFlights = flightprops.filter(flight => {
-//       const price = flight.totalPriceList[0].fd.ADULT.fC.TF;
-//       const stops = flight.sI[0].stops;
-//       const departureHour = new Date(flight.sI[0].dt).getHours();
-//       const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
-//       const airline = flight.sI[0].fD.aI.name;
-  
-//       const priceMatch = price <= filters.maxPrice;
-//       const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString());
-//       const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
-//         const [start, end] = range.split('-').map(Number);
-//         return departureHour >= start && departureHour < end;
-//       });
-//       const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
-//         const [start, end] = range.split('-').map(Number);
-//         return arrivalHour >= start && arrivalHour < end;
-//       });
-//       const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
-  
-//       return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
-//     });
-  
-//     setFilteredFlights(newFilteredFlights);
-//   }, [filters, flightprops]);
-
-
-//   const handleBooking = (flightIndex, priceIndex) => {
-    
-//     const selectedFlight = filteredFlights[flightIndex];
-//     const selectedPrice = selectedFlight.totalPriceList[priceIndex];
-//     const priceId = selectedPrice.id;
-//     const data=[{flightDetails:selectedFlight,priceId}]
-
-//     navigate("/book-flight", { state: { bookings:data } });
-//   };
-
-//   return (
-//     <div className="flex flex-col md:flex-row md:h-screen">
-//       <ComboSideBar filters={filters} setFilters={setFilters} flights={flightprops} maxPrice={maxPrice} passenger={passenger}/>
-//       <div className="flex-1 overflow-y-auto">
-//         <Tabs defaultActiveKey="1">
-//           <TabPane tab="All Combo flights" key="1">
-//           {filteredFlights.map((flight, index) => (
-//         <div key={index} className="border shadow-xl p-4 mb-4 rounded-lg relative">
-//           <ComboFlightCard 
-//             key={index} 
-//             logo={flightLogo} 
-//             flightDetails={flight} 
-//             onBooking={(priceIndex) => handleBooking(index, priceIndex)}
-//             passenger={passenger}
-//           />
-//         </div>
-//       ))}
-//           </TabPane>
-//         </Tabs>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Combo;
-
-// import React, { useEffect, useState, useMemo } from "react";
-// import { Tabs } from "antd";
-// import { useNavigate } from 'react-router-dom';
-// import ComboFlightCard from "../Cards/ComboFlightCard";
-// import flightLogo from "../../../assets/home/logo/image 40.png"
-// import ComboSideBar from "./ComboSidebar";
-
-// const { TabPane } = Tabs;
-
-// const Combo = ({ flightprops, passenger }) => {
-//   if (!flightprops || flightprops.length === 0) {
-//     return <h1>No flights available ..</h1>;
-//   }
-
-//   const navigate = useNavigate();
-
-//   const calculateTotalPrice = useMemo(() => (flight) => {
-//     let total = 0;
-//     const priceList = flight.totalPriceList[0].fd;
-//     for (const passengerType in passenger) {
-//       if (priceList[passengerType]) {
-//         total += priceList[passengerType].fC.TF * passenger[passengerType];
-//       }
-//     }
-//     return total;
-//   }, [passenger]);
-
-//   const [filteredFlights, setFilteredFlights] = useState(flightprops);
-//   const [filters, setFilters] = useState({
-//     maxPrice: Math.max(...flightprops.map(calculateTotalPrice)),
-//     stops: [],
-//     departureTime: [],
-//     arrivalTime: [],
-//     airlines: []
-//   });
-
-//   useEffect(() => {
-//     const newFilteredFlights = flightprops.filter(flight => {
-//       const price = calculateTotalPrice(flight);
-//       const stops = flight.sI[0].stops;
-//       const departureHour = new Date(flight.sI[0].dt).getHours();
-//       const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
-//       const airline = flight.sI[0].fD.aI.name;
-
-//       const priceMatch = price <= filters.maxPrice;
-//       const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString());
-//       const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
-//         const [start, end] = range.split('-').map(Number);
-//         return departureHour >= start && departureHour < end;
-//       });
-//       const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
-//         const [start, end] = range.split('-').map(Number);
-//         return arrivalHour >= start && arrivalHour < end;
-//       });
-//       const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
-
-//       return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
-//     });
-
-//     setFilteredFlights(newFilteredFlights);
-//   }, [filters, flightprops, calculateTotalPrice]);
-
-//   const handleBooking = (flightIndex, priceIndex) => {
-//     const selectedFlight = filteredFlights[flightIndex];
-//     const selectedPrice = selectedFlight.totalPriceList[priceIndex];
-//     const priceId = selectedPrice.id;
-//     const data = [{ flightDetails: selectedFlight, priceId }];
-//     navigate("/book-flight", { state: { bookings: data } });
-//   };
-
-//   return (
-//     <div className="flex flex-col md:flex-row md:h-screen">
-//       <ComboSideBar
-//         filters={filters}
-//         setFilters={setFilters}
-//         flights={flightprops}
-//         passenger={passenger}
-//       />
-//       <div className="flex-1 overflow-y-auto">
-//         <Tabs defaultActiveKey="1">
-//           <TabPane tab="All Combo flights" key="1">
-//             {filteredFlights.map((flight, index) => (
-//               <div key={index} className="border shadow-xl p-4 mb-4 rounded-lg relative">
-//                 <ComboFlightCard
-//   key={index}
-//   logo={flightLogo}
-//   flightDetails={flight}
-//   onBooking={(priceIndex) => handleBooking(index, priceIndex)}
-//   passenger={passenger}
-//   totalPrice={calculateTotalPrice(flight)}
-// />
-//               </div>
-//             ))}
-//           </TabPane>
-//         </Tabs>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Combo;
-
-
-// import React, { useEffect, useState, useMemo } from "react";
-// import { Tabs } from "antd";
-// import { useNavigate } from 'react-router-dom';
-// import ComboFlightCard from "../Cards/ComboFlightCard";
-// import flightLogo from "../../../assets/home/logo/image 40.png"
-// import ComboSideBar from "./ComboSidebar";
-
-// const { TabPane } = Tabs;
-
-// const Combo = ({ flightprops, passenger }) => {
-//   if (!flightprops || flightprops.length === 0) {
-//     return <h1>No flights available ..</h1>;
-//   }
-
-//   const navigate = useNavigate();
-
-//   const calculateTotalPrice = useMemo(() => (flight) => {
-//     let total = 0;
-//     const priceList = flight.totalPriceList[0].fd;
-//     for (const passengerType in passenger) {
-//       if (priceList[passengerType]) {
-//         total += priceList[passengerType].fC.TF * passenger[passengerType];
-//       }
-//     }
-//     return total;
-//   }, [passenger]);
-
-//   const [filteredFlights, setFilteredFlights] = useState(flightprops);
-//   const [filters, setFilters] = useState({
-//     maxPrice: Math.max(...flightprops.map(calculateTotalPrice)),
-//     stops: [],
-//     departureTime: [],
-//     arrivalTime: [],
-//     airlines: []
-//   });
-
-//   useEffect(() => {
-//     const newFilteredFlights = flightprops.filter(flight => {
-//       const price = calculateTotalPrice(flight);
-//       const stops = flight.sI[0].stops;
-//       const departureHour = new Date(flight.sI[0].dt).getHours();
-//       const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
-//       const airline = flight.sI[0].fD.aI.name;
-
-//       const priceMatch = price <= filters.maxPrice;
-//       const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString());
-//       const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
-//         const [start, end] = range.split('-').map(Number);
-//         return departureHour >= start && departureHour < end;
-//       });
-//       const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
-//         const [start, end] = range.split('-').map(Number);
-//         return arrivalHour >= start && arrivalHour < end;
-//       });
-//       const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
-
-//       return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
-//     });
-
-//     setFilteredFlights(newFilteredFlights);
-//   }, [filters, flightprops, calculateTotalPrice]);
-
-//   const handleBooking = (flightIndex, priceIndex) => {
-//     const selectedFlight = filteredFlights[flightIndex];
-//     const selectedPrice = selectedFlight.totalPriceList[priceIndex];
-//     const priceId = selectedPrice.id;
-//     const data = [{ flightDetails: selectedFlight, priceId }];
-//     navigate("/book-flight", { state: { bookings: data } });
-//   };
-
-
-
-//   return (
-//     <div className="flex flex-col md:flex-row md:h-screen">
-//       <ComboSideBar
-//         filters={filters}
-//         setFilters={setFilters}
-//         flights={flightprops}
-//         passenger={passenger}
-//       />
-//       <div className="flex-1 overflow-y-auto">
-//         <Tabs defaultActiveKey="1">
-//           <TabPane tab="All Combo flights" key="1">
-//             {filteredFlights.map((flight, index) => (
-//               <div key={index} className="border shadow-xl p-4 mb-4 rounded-lg relative">
-//                 <ComboFlightCard
-//                   key={index}
-//                   flightDetails={flight}
-//                   onBooking={(priceIndex) => handleBooking(index, priceIndex)}
-//                   passenger={passenger}
-//                   totalPrice={calculateTotalPrice(flight)}
-//                 />
-//               </div>
-//             ))}
-//           </TabPane>
-//         </Tabs>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Combo;
-
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Tabs } from "antd";
-import { useNavigate } from 'react-router-dom';
-import ComboFlightCard from "../Cards/ComboFlightCard";
-import ComboSideBar from "./ComboSidebar";
+import FlightDetailsCard from "../Cards/FlightDetailsCard";
+import { ArrowRightOutlined } from "@ant-design/icons";
+import flightLogo from "../../../assets/home/logo/image 40.png";
+import OneWaySideBar from "./OneWaySidebar";
+import BookingCard from "./BookingCards";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ReactToast from "../../util/ReactToast";
+
 const { TabPane } = Tabs;
 
-const Combo = ({ flightprops, passenger,query }) => {
-  if (!flightprops || flightprops.length === 0) {
-    return <h1>No flights available ..</h1>;
-  }
-  const navigate = useNavigate();
+const Oneway = ({ flightProps, passenger, query }) => {
+  console.log("flightProps in Oneway:", flightProps);
+
+  const [filteredFlights, setFilteredFlights] = useState(flightProps);
+  const [filters, setFilters] = useState({
+    maxPrice: 100000,
+    stops: [],
+    departureTime: [],
+    arrivalTime: [],
+    airlines: []
+  });
+
   const token = useSelector((state) => state.auth.token);
+  const [selectedFlight, setSelectedFlight] = useState([{ flightIndex: 0, priceIndex: 0 }]);
+  const navigate = useNavigate();
 
   const calculateTotalPrice = useMemo(() => (flight) => {
     let total = 0;
@@ -445,93 +39,179 @@ const Combo = ({ flightprops, passenger,query }) => {
     return total;
   }, [passenger]);
 
-  const [filteredFlights, setFilteredFlights] = useState(flightprops);
-  const [filters, setFilters] = useState({
-    maxPrice: Math.max(...flightprops.map(calculateTotalPrice)),
-    stops: [],
-    departureTime: [],
-    arrivalTime: [],
-    airlines: []
-  });
+  const getStopsCount = (flight) => {
+    return flight.sI.length - 1;
+  };
+
+  // useEffect(() => {
+  //   console.log("Filters changed:", filters);
+  //   const newFilteredFlights = flightProps.filter(flight => {
+  //     console.log("Processing flight:", flight);
+  //     const price = calculateTotalPrice(flight);
+  //     const stops = getStopsCount(flight);
+  //     const departureHour = new Date(flight.sI[0].dt).getHours();
+  //     const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
+  //     const airline = flight.sI[0].fD.aI.name;
+
+  //     const priceMatch = price <= filters.maxPrice;
+  //     const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString()) || (stops >= 3 && filters.stops.includes("3+"));
+  //     const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
+  //       const [start, end] = range.split('-').map(Number);
+  //       return departureHour >= start && departureHour < end;
+  //     });
+  //     const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
+  //       const [start, end] = range.split('-').map(Number);
+  //       return arrivalHour >= start && arrivalHour < end;
+  //     });
+  //     const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
+
+  //     return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
+  //   });
+
+  //   console.log("New filtered flights:", newFilteredFlights);
+  //   setFilteredFlights(newFilteredFlights);
+  // }, [filters, flightProps, calculateTotalPrice]);
+
+  const isHourInRange = (hour, range) => {
+    const [start, end] = range.split('-').map(Number);
+    if (start < end) {
+      return hour >= start && hour < end;
+    } else {
+      return hour >= start || hour < end;
+    }
+  };
 
   useEffect(() => {
-    const newFilteredFlights = flightprops.filter(flight => {
+    console.log("Filters changed:", filters);
+    const newFilteredFlights = flightProps.filter(flight => {
+      console.log("Processing flight:", flight);
       const price = calculateTotalPrice(flight);
-      const stops = flight.sI.length - 1;
-      const stopCategory = stops >= 3 ? "3+" : stops.toString();
+      const stops = getStopsCount(flight);
       const departureHour = new Date(flight.sI[0].dt).getHours();
       const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
       const airline = flight.sI[0].fD.aI.name;
-  
+
       const priceMatch = price <= filters.maxPrice;
-      const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stopCategory);
-      const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
-        const [start, end] = range.split('-').map(Number);
-        if (start < end) {
-          return departureHour >= start && departureHour < end;
-        } else {
-          // Handle the case where the range crosses midnight
-          return departureHour >= start || departureHour < end;
-        }
-      });
-      const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
-        const [start, end] = range.split('-').map(Number);
-        if (start < end) {
-          return arrivalHour >= start && arrivalHour < end;
-        } else {
-          // Handle the case where the range crosses midnight
-          return arrivalHour >= start || arrivalHour < end;
-        }
-      });
+      const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString()) || (stops >= 3 && filters.stops.includes("3+"));
+      const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => isHourInRange(departureHour, range));
+      const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => isHourInRange(arrivalHour, range));
       const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
-  
+
       return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
     });
+
+    console.log("New filtered flights:", newFilteredFlights);
     setFilteredFlights(newFilteredFlights);
-  }, [filters, flightprops, calculateTotalPrice]);
+  }, [filters, flightProps, calculateTotalPrice]);
 
-  const handleBooking = (flightIndex, priceIndex) => {
-    const selectedFlight = filteredFlights[flightIndex];
-    const selectedPrice = selectedFlight.totalPriceList[priceIndex];
-    const priceId = selectedPrice.id;
-    const data = [{ flightDetails: selectedFlight, priceId }];
-
-    if(!token){
-      ReactToast('Please login first')
-      navigate("/sign-in");
-    }
-    navigate("/book-flight", { state: { bookings: data } });
+  const handleFlightSelection = (flightIndex, priceIndex) => {
+    setSelectedFlight([{ flightIndex, priceIndex }]);
   };
 
+  const handleBooking = () => {
+    if (selectedFlight.length > 0) {
+      const bookings = selectedFlight?.map(selected => ({
+        flightDetails: filteredFlights[selected.flightIndex].sI,
+        priceId: filteredFlights[selected.flightIndex].totalPriceList[selected.priceIndex].id
+      }));
+      console.log("Processing bookings:", bookings);
+
+      if (!token) {
+        ReactToast('Please login first')
+        navigate("/sign-in");
+      }
+
+      navigate("/book-flight", { state: { bookings } });
+    }
+  };
+
+  const getTotalPrice = () => {
+    if (selectedFlight.length > 0) {
+      const selected = selectedFlight[0];
+      const flight = filteredFlights[selected.flightIndex];
+      if (flight) {
+        return calculateTotalPrice(flight);
+      }
+    }
+    return 0;
+  };
+
+  console.log(filteredFlights, "filtered flights");
   return (
-    <div className="flex flex-col md:flex-row md:min-h-screen">
-      <ComboSideBar
+    <div className="flex md:flex-row flex-col">
+      <OneWaySideBar
+        flights={flightProps}
         filters={filters}
         setFilters={setFilters}
-        flights={flightprops}
         passenger={passenger}
+        calculateTotalPrice={calculateTotalPrice}
       />
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-grow">
         <Tabs defaultActiveKey="1">
-          <TabPane tab="All Combo flights" key="1">
-            <div className="h-[680px] overflow-y-auto no-scroll">
-              {filteredFlights.map((flight, index) => (
-                <div key={index} className="px-2 mb-2 rounded-lg relative">
-                  <ComboFlightCard
+          <TabPane
+            tab={
+              <span className="flex gap-2">
+                <span className="flex flex-col justify-center ">
+                  <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
+                  <p className="text-[10px]">
+                    {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }).format(new Date(filteredFlights[0].sI[0].dt)).split('/').join('-')}
+                  </p>
+                </span>
+                <ArrowRightOutlined />
+                <span className="flex flex-col justify-center ">
+                  <p>{filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa?.city}</p>
+                  <p className="text-[10px]">
+
+                    {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }).format(new Date(filteredFlights[0].sI[filteredFlights[0]?.sI.length - 1].at)).split('/').join('-')}
+                  </p>
+                </span>
+              </span>
+            }
+            key="1"
+          >
+            <div className="h-[630px] overflow-y-auto no-scroll">
+              {filteredFlights.length > 0 ? (
+                filteredFlights.map((flight, index) => (
+                  <FlightDetailsCard
                     key={index}
-                    flightDetails={flight}
-                    onBooking={(priceIndex) => handleBooking(index, priceIndex)}
                     passenger={passenger}
+                    logo={flightLogo}
+                    flightDetails={flight}
+                    isSelected={selectedFlight.some(selected => selected.flightIndex === index)}
+                    selectedPriceIndex={selectedFlight.find(selected => selected.flightIndex === index)?.priceIndex}
+                    onSelect={(priceIndex) => handleFlightSelection(index, priceIndex)}
                     totalPrice={calculateTotalPrice(flight)}
                   />
-                </div>
-              ))}
+                ))
+              ) : (
+                <p>No flights match the current filters.</p>
+              )}
             </div>
           </TabPane>
         </Tabs>
+
+        {console.log(selectedFlight, "djloe")}
       </div>
+      {selectedFlight.length > 0 && (
+        <BookingCard
+          passenger={passenger}
+          selectedPriceIndex={selectedFlight}
+          selectedFlights={selectedFlight.map(selected => filteredFlights[selected.flightIndex])}
+          totalPrice={getTotalPrice()}
+          onBook={handleBooking}
+          calculateTotalPrice={calculateTotalPrice}
+        />
+      )}
     </div>
   );
 };
 
-export default Combo;
+export default Oneway;

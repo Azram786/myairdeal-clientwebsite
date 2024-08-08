@@ -13,7 +13,7 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
   ];
 
   return (
-    <div className="flex justify-center mb-8">
+    <div className="flex justify-center mb-8 shadow-lg rounded-sm  border border-slate-50 w-full  py-4">
       <div className="flex items-center justify-between w-full max-w-4xl px-4 ml-8 sm:ml-16 md:ml-24">
         {" "}
         {/* Added ml-8 sm:ml-16 md:ml-24 */}
@@ -21,11 +21,10 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
           <div key={index} className="flex items-center w-full relative">
             <div className="flex flex-col items-center">
               <div
-                className={`relative flex items-center justify-center w-12 h-12 rounded-full cursor-pointer ${
-                  index <= currentStep
+                className={`relative flex items-center justify-center w-12 h-12 rounded-full cursor-pointer ${index <= currentStep
                     ? "bg-blue-500 text-white shadow-lg"
                     : "bg-gray-200 text-gray-600"
-                }`}
+                  }`}
                 onClick={() => onStepClick(index)}
               >
                 {step.icon}
@@ -34,11 +33,10 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
                 )}
               </div>
               <div
-                className={`mt-4 text-sm ${
-                  index <= currentStep
+                className={`mt-4 text-sm ${index <= currentStep
                     ? "font-bold text-blue-500"
                     : "text-gray-600"
-                }`}
+                  }`}
               >
                 {step.label}
               </div>
@@ -46,9 +44,8 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
             {index < steps.length - 1 && (
               <div className="flex-grow flex items-center">
                 <div
-                  className={`w-full h-1 ${
-                    index < currentStep ? "bg-blue-500" : "bg-gray-200"
-                  }`}
+                  className={`w-full h-1 ${index < currentStep ? "bg-blue-500" : "bg-gray-200"
+                    }`}
                 ></div>
               </div>
             )}
