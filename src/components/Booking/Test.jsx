@@ -1,341 +1,392 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { format } from "date-fns";
+import PassportDetails from "./passportDetails";
 import { useSelector } from "react-redux";
-import { motion } from "framer-motion";
-import { PiAirplaneInFlightDuotone } from "react-icons/pi";
-const SubmitAmendment = ({ singleBookingData }) => {
-  const { token } = useSelector((state) => state.auth);
-  const [bookingId] = useState(singleBookingData.order.bookingId);
-  const [fullBookingData, setFullbookingData] = useState({});
-  const [Loading, setLoading] = useState(true);
-  const [selectedTrips, setSelectedTrips] = useState([]);
-  const [selectedTravelers, setSelectedTravelers] = useState([]);
-  const [cancelWholeTicket, setCancelWholeTicket] = useState(false);
-  const [remarks, setRemarks] = useState("");
+import ModalHistoryData from "./modalHistoryData";
+import axios from "axios";
 
-  const getData = async () => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}booking/retrieve-booking`,
-        { bookingId },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setFullbookingData(response.data.data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error.message);
-      setLoading(false);
-    }
+const PassengerForm = ({ passenger, index, updatePassenger }) => {
+  //states
+  const [historyData, setHistoryData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+
+  const token = useSelector((state) => state.auth.token);
+  const [formData, setFormData] = useState({
+    title: passenger?.title || "",
+    firstName: passenger?.firstName || "",
+    lastName: passenger?.lastName || "",
+    dob: passenger?.dob || "",
+    passport: passenger?.passport || {
+      passportNumber: "",
+      nationality: "",
+      issueDate: "",
+      expiryDate: "",
+    },
+  });
+
+  // Fetch history data with loading state
+  const fetchHistoryData = () => {
+    setLoading(true);
+    axios
+      .get("https://myairdeal-backend.onrender.com/user/all-passengers", {
+        headers: { authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setHistoryData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching history data:", error);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
-    getData();
+    fetchHistoryData();
   }, []);
 
-  const spinnerVariants = {
-    animate: {
-      rotate: [0, 360],
-      transition: {
-        repeat: Infinity,
-        duration: 1,
-        ease: "linear",
-      },
-    },
+  const handleModalOpen = async () => {
+    fetchHistoryData();
+    setIsModalOpen(true);
   };
 
-  const handleTripSelection = (tripIndex) => {
-    if (cancelWholeTicket) return; // Prevent trip selection when whole ticket is selected
-    setSelectedTrips((prevSelectedTrips) => {
-      if (prevSelectedTrips.includes(tripIndex)) {
-        // Remove the trip and all related travelers
-        setSelectedTravelers((prevSelectedTravelers) =>
-          prevSelectedTravelers.filter((traveler) => !traveler.startsWith(`${tripIndex}-`))
-        );
-        return prevSelectedTrips.filter((index) => index !== tripIndex);
-      } else {
-        // Uncheck all passengers for this trip
-        setSelectedTravelers((prevSelectedTravelers) =>
-          prevSelectedTravelers.filter((traveler) => !traveler.startsWith(`${tripIndex}-`))
-        );
-        return [...prevSelectedTrips, tripIndex];
-      }
+  const handleSelectFromHistory = (selectedPassenger) => {
+    setFormData({
+      title: selectedPassenger.ti,
+      firstName: selectedPassenger.fN,
+      lastName: selectedPassenger.lN,
+      dob: selectedPassenger.dob,
+      // Add other fields as necessary
     });
+    // Update react-hook-form values
+    setValue("title", selectedPassenger.ti);
+    setValue("firstName", selectedPassenger.fN);
+    setValue("lastName", selectedPassenger.lN);
+    setValue("dob", selectedPassenger.dob);
+    // Add other fields as necessary
+    setIsModalOpen(false);
   };
 
-  const handleTravelerSelection = (tripIndex, travelerIndex) => {
-    if (cancelWholeTicket || selectedTrips.includes(tripIndex)) return; // Prevent traveler selection when whole ticket or trip is selected
-    const travelerKey = `${tripIndex}-${travelerIndex}`;
-    setSelectedTravelers((prevSelectedTravelers) => {
-      if (prevSelectedTravelers.includes(travelerKey)) {
-        return prevSelectedTravelers.filter((key) => key !== travelerKey);
-      } else {
-        return [...prevSelectedTravelers, travelerKey];
-      }
-    });
-  };
-
-  const handleCancelWholeTicket = () => {
-    if (cancelWholeTicket) {
-      setCancelWholeTicket(false);
-      setSelectedTrips([]);
-      setSelectedTravelers([]);
-    } else {
-      setCancelWholeTicket(true);
-      setSelectedTrips([]);
-      setSelectedTravelers([]);
-    }
-  };
-
-  const getFormattedData = () => {
-    if (cancelWholeTicket) {
-      return {
-        bookingId,
-        type: "CANCELLATION",
-        remarks,
-      };
-    }
-
-    const tripsData = selectedTrips.map((tripIndex) => {
-      const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
-      const tripData = {
-        src: trip?.sI[0].da.code,
-        dest: trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code,
-        departureDate: trip?.sI[0].dt,
-      };
-
-      const tripTravelers = selectedTravelers
-        .filter((traveler) => traveler.startsWith(`${tripIndex}-`))
-        .map((traveler) => {
-          const travelerIndex = parseInt(traveler.split("-")[1]);
-          const travelerData = fullBookingData?.itemInfos?.AIR?.travellerInfos[travelerIndex];
-          return {
-            fn: travelerData.fN,
-            ln: travelerData.lN,
-          };
-        });
-
-      if (tripTravelers.length > 0) {
-        tripData.travellers = tripTravelers;
-      }
-
-      return tripData;
-    });
-
-    // Include trips for travelers that don't have their trips selected
-    selectedTravelers.forEach((travelerKey) => {
-      const [tripIndex] = travelerKey.split("-").map(Number);
-      if (!selectedTrips.includes(tripIndex)) {
-        const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
-        const tripData = {
-          src: trip?.sI[0].da.code,
-          dest: trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code,
-          departureDate: trip?.sI[0].dt,
-        };
-
-        const tripTravelers = selectedTravelers
-          .filter((traveler) => traveler.startsWith(`${tripIndex}-`))
-          .map((traveler) => {
-            const travelerIndex = parseInt(traveler.split("-")[1]);
-            const travelerData = fullBookingData?.itemInfos?.AIR?.travellerInfos[travelerIndex];
-            return {
-              fn: travelerData.fN,
-              ln: travelerData.lN,
-            };
-          });
-
-        if (tripTravelers.length > 0) {
-          tripData.travellers = tripTravelers;
-        }
-
-        tripsData.push(tripData);
-      }
-    });
-
-    return {
-      bookingId,
-      type: "CANCELLATION",
-      remarks,
-      trips: tripsData,
+  const onSubmit = (data) => {
+    const payload = {
+      ti: data.title,
+      fN: data.firstName,
+      lN: data.lastName,
+      pt: passenger.passengerType,
+      dob: data.dob,
     };
+    setSubmittedData(payload);
+    setIsSubmitted(true);
   };
 
-  const submitAmendment = async () => {
-    const data = getFormattedData();
-    console.log({ data });
+  const [submittedData, setSubmittedData] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    if (isSubmitted && submittedData) {
+      setLoading(true);
+      axios
+        .put(
+          "https://myairdeal-backend.onrender.com/user/add-passenger",
+          submittedData,
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          setIsSubmitted(false);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setError(error);
+          setIsSubmitted(false);
+          setLoading(false);
+        });
+    }
+  }, [isSubmitted, submittedData]);
+
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    formState: { errors },
+    setValue,
+    reset,
+  } = useForm({
+    defaultValues: formData,
+  });
+
+  // Reset form when passenger data changes
+  useEffect(() => {
+    reset(formData);
+  }, [passenger, reset, formData]);
+
+  const departureDate = "2024-08-22T17:10";
+
+  const handleInputChange = async (name, value) => {
+    console.log(name, value);
+    console.log(name, value);
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    setValue(name, value);
+    await trigger(name);
+    updatePassenger(index, name, value); // Notify parent of change
+  };
+
+  const calculateDate = (years) => {
+    const date = new Date(departureDate);
+    date.setFullYear(date.getFullYear() - years);
+    return date.toISOString().split("T")[0];
+  };
+
+  const getMaxDate = (passengerType) => {
+    if (passengerType === "ADULT") return calculateDate(12);
+    if (passengerType === "CHILD") return calculateDate(2);
+    if (passengerType === "INFANT") return calculateDate(0);
+  };
+
+  const getMinDate = (passengerType) => {
+    if (passengerType === "ADULT") return calculateDate(60);
+    if (passengerType === "CHILD") return calculateDate(12);
+    if (passengerType === "INFANT") return calculateDate(2);
   };
 
   return (
-    <div className="px-4 py-4 flex justify-center items-center h-[50vh]">
-      <div className="px-4 py-4 h-[50vh]">
-        <div className="transition-padding duration-300">
-          {Loading ? (
-            <div className="flex justify-center items-center h-full">
-              <motion.div
-                className="w-12 h-12 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
-                variants={spinnerVariants}
-                animate="animate"
-              />
-            </div>
-          ) : (
-            <div>
-              <div className="mt-8">
-                <h3 className="text-xl font-bold mb-4">Select the Trips and Passengers to Cancel</h3>
-                <label className="flex items-center mt-2">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
-                    onChange={handleCancelWholeTicket}
-                    checked={cancelWholeTicket}
-                  />
-                  <span className="ml-3 text-[#3951b9] font-semibold">Cancel Whole Ticket</span>
+    <div className="rounded-lg  mb-4 bg-white ">
+      <div className="text-lg font-semibold mb-4">
+        {passenger.passengerType} {passenger.typeCount}
+      </div>
+      <div className="grid grid-cols-1 gap-6">
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="relative p-2">
+                <select
+                  {...register("title", { required: "Title is required" })}
+                  onChange={(e) =>
+                    handleInputChange(e.target.name, e.target.value)
+                  }
+                  value={formData.title}
+                  className="h-10 border w-full border-gray-300 rounded-lg py-1 px-2 text-sm focus:outline-none peer"
+                >
+                  <option value="" disabled>
+                    Select Title
+                  </option>
+                  {passenger.passengerType === "ADULT" && (
+                    <>
+                      <option value="MR">Mr</option>
+                      <option value="MRS">Mrs</option>
+                      <option value="MS">Ms</option>
+                    </>
+                  )}
+                  {(passenger.passengerType === "CHILD" ||
+                    passenger.passengerType === "INFANT") && (
+                      <>
+                        <option value="MS">Ms</option>
+                        <option value="MASTER">Master</option>
+                      </>
+                    )}
+                </select>
+                <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
+                  Title
                 </label>
-                <div className="space-y-6 bg-yellow-300">
-                  <div className="bg-yellow-700">
-                    <div>
-                      <div>
-                        <b>Source</b>: nithin
-                      </div>
-                      <div>
-                        <b>Destination</b>: nithin
-                      </div>
-                      <div>
-                        <b>Departure Date</b>: {/* Add departure date here */}
-                      </div>
-                      <div>
-                        <b>Flight Numbers</b>: {/* Add flight numbers here */}
-                      </div>
-                      <div>
-                        <b>Airlines</b>: {/* Add airlines here */}
-                      </div>
-                    </div>
-                    <div className="amendment-category-container">
-                      <div className="amendment-category">
-                        <h4></h4>
-                        <div>
-                          <b>Amendment Charges</b>: {/* Add amendment charges here */}
-                        </div>
-                        <div>
-                          <b>Refund Amount</b>: {/* Add refund amount here */}
-                        </div>
-                        <div>
-                          <b>Total Fare</b>: {/* Add total fare here */}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {fullBookingData?.itemInfos?.AIR?.tripInfos.map((trip, tripIndex) => (
-                  <div key={tripIndex} className="mt-4">
-                    {/* <label className="flex items-center mt-2">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
-                        onChange={() => handleTripSelection(tripIndex)}
-                        checked={selectedTrips.includes(tripIndex)}
-                        disabled={cancelWholeTicket}
-                      />
-                      <span className="ml-3 text-[#3951b9] font-semibold">
-                        Trip {tripIndex + 1} - {trip?.sI[0].da.code} to {trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code}
-                      </span>
-                    </label> */}
-                    <p className="text-[#3951b9] font-extrabold">
-                      {trip?.sI[0].da.code}
-                    </p>
-                    <p className="text-[#3951b9] font-extrabold flex items-center gap-3">
-                      <PiAirplaneInFlightDuotone />
-                    </p>
-                    <p className="text-[#3951b9] font-extrabold">
-                      Trip {tripIndex + 1} - {trip?.sI[0].da.code} to {trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code}
-                    </p>
-                    <label className="flex items-center mt-2">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
-                        onChange={() => handleTripSelection(tripIndex)}
-                        checked={selectedTrips.includes(tripIndex)}
-                        disabled={cancelWholeTicket}
-                      />
-                      <span className="ml-3 text-[#3951b9] font-semibold">
-                        Cancel this trip
-                      </span>
-                    </label>
-                    {fullBookingData?.itemInfos?.AIR?.travellerInfos.map((traveler, travelerIndex) => (
-                      // <div key={travelerIndex} className="ml-6 mt-2">
-                      //   <label className="flex items-center">
-                      //     <input
-                      //       type="checkbox"
-                      //       className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
-                      //       onChange={() => handleTravelerSelection(tripIndex, travelerIndex)}
-                      //       checked={selectedTravelers.includes(`${tripIndex}-${travelerIndex}`)}
-                      //       disabled={cancelWholeTicket || selectedTrips.includes(tripIndex)}
-                      //     />
-                      //     <span className="ml-3 text-[#3951b9] font-semibold">
-                      //       {traveler.fN} {traveler.lN}
-                      //     </span>
-                      //   </label>
-                      // </div>
-                      <div
-                        key={travelerIndex}
-                        className="flex items-center p-4 bg-blue-100 rounded-lg"
-                      >
-                        <div className="h-16 w-16 flex items-center justify-center bg-blue-500 text-white font-bold text-xl rounded-full mr-4">
-                          {traveler.fN.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                          <div className="text-md font-bold">
-                            {traveler.fN} {traveler.lN}
-                          </div>
-                          <div className="text-md font-bold">
-                            {traveler.dob}
-                          </div>
-                          <div className="text-md font-bold">
-                            {traveler.pt}
-                          </div>
-                        </div>
-                        <div className="ml-auto">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox h-6 w-6 text-[#ffeb3b] border-gray-300 rounded focus:ring-[#ffeb3b] focus:outline-none"
-                            onChange={() => handleTravelerSelection(tripIndex, travelerIndex)}
-                            checked={selectedTravelers.includes(`${tripIndex}-${travelerIndex}`)}
-                            disabled={cancelWholeTicket || selectedTrips.includes(tripIndex)}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-                <div className="mt-4">
-                  <label className="block text-[#3951b9] font-semibold mb-2">Remarks</label>
-                  <textarea
-                    className="form-textarea mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#ffeb3b] focus:ring focus:ring-[#ffeb3b] focus:ring-opacity-50"
-                    rows="3"
-                    value={remarks}
-                    onChange={(e) => setRemarks(e.target.value)}
-                  ></textarea>
-                </div>
-                <div className="mt-8">
-                  <button
-                    className="px-4 py-2 bg-[#3951b9] text-white font-semibold rounded-md hover:bg-[#ffeb3b] hover:text-[#3951b9] transition-colors"
-                    onClick={submitAmendment}
-                  >
-                    Submit Cancellation
-                  </button>
-                </div>
+                {errors.title && (
+                  <span className="text-red-500 text-xs">
+                    {errors.title.message}
+                  </span>
+                )}
+              </div>
+              {/* <div className="relative p-2">
+                <input
+                  type="text"
+                  {...register("firstName", {
+                    required: "First Name is required",
+                    minLength: { value: 2, message: "Minimum 2 characters" },
+                    maxLength: { value: 50, message: "Maximum 50 characters" },
+                    pattern: {
+                      value: /^[A-Za-z]+$/,
+                      message: "Only alphabets are allowed",
+                    },
+                  })}
+                  onChange={(e) =>
+                    handleInputChange(e.target.name, e.target.value)
+                  }
+                  value={formData.firstName}
+                  className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
+                />
+                <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
+                  First Name
+                </label>
+                {errors.firstName && (
+                  <span className="text-red-500 text-xs">
+                    {errors.firstName.message}
+                  </span>
+                )}
+              </div> */}
+              <div className="relative w-full max-w-sm ">
+                <input
+                  type="text"
+                  id="first-id"
+                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-500 peer"
+        
+
+
+                  {...register("firstName", {
+                    required: "First Name is required",
+                    minLength: { value: 2, message: "Minimum 2 characters" },
+                    maxLength: { value: 50, message: "Maximum 50 characters" },
+                    pattern: {
+                      value: /^[A-Za-z]+$/,
+                      message: "Only alphabets are allowed",
+                    },
+                  })}
+                  onChange={(e) =>
+                    handleInputChange(e.target.name, e.target.value)
+                  }
+                  value={formData.firstName}
+                />
+                <label
+                  htmlFor="first-id"
+                  className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                >
+                  First Name
+                </label>
+                {errors.firstName && (
+                  <span className="text-red-500 text-xs">
+                    {errors.firstName.message}
+                  </span>
+                )}
+              </div>
+              <div className="relative p-2">
+                <input
+                  type="text"
+                  {...register("lastName", {
+                    required: "Last Name is required",
+                    minLength: { value: 2, message: "Minimum 2 characters" },
+                    maxLength: { value: 50, message: "Maximum 50 characters" },
+                    pattern: {
+                      value: /^[A-Za-z]+$/,
+                      message: "Only alphabets are allowed",
+                    },
+                  })}
+                  onChange={(e) =>
+                    handleInputChange(e.target.name, e.target.value)
+                  }
+                  value={formData.lastName}
+                  className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
+                />
+                <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
+                  Last Name
+                </label>
+                {errors.lastName && (
+                  <span className="text-red-500 text-xs">
+                    {errors.lastName.message}
+                  </span>
+                )}
+              </div>
+              <div className="relative p-2">
+                <input
+                  type="date"
+                  {...register("dob", {
+                    required: "Date of Birth is required",
+                    validate: {
+                      validateDOB: (value) => {
+                        const selectedDate = new Date(value);
+                        const max = new Date(
+                          getMaxDate(passenger.passengerType)
+                        );
+                        const min = new Date(
+                          getMinDate(passenger.passengerType)
+                        );
+                        if (selectedDate > max) {
+                          return `${passenger.passengerType
+                            } must be born on or before ${format(
+                              max,
+                              "yyyy-MM-dd"
+                            )}`;
+                        }
+                        if (selectedDate < min) {
+                          return `${passenger.passengerType
+                            } must be born on or after ${format(
+                              min,
+                              "yyyy-MM-dd"
+                            )}`;
+                        }
+                        return true;
+                      },
+                    },
+                  })}
+                  min={getMinDate(passenger.passengerType)}
+                  max={getMaxDate(passenger.passengerType)}
+                  onChange={(e) =>
+                    handleInputChange(e.target.name, e.target.value)
+                  }
+                  value={formData.dob}
+                  className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
+                />
+                <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
+                  Date of Birth
+                </label>
+                {errors.dob && (
+                  <span className="text-red-500 text-xs">
+                    {errors.dob.message}
+                  </span>
+                )}
               </div>
             </div>
-          )}
+
+            <PassportDetails
+              passenger={passenger}
+              index={index}
+              updatePassenger={updatePassenger}
+              passport={formData.passport}
+            />
+            <div className="w-full justify-between md:flex-row gap-3 flex-col mt-4 flex">
+              <button
+                type="submit"
+                className="button text-sm bg-[#007EC4] hover:bg-blue-600 text-white font-bold md:w-1/2 py-2 px-4 rounded "
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={handleModalOpen}
+                className="button text-sm bg-green-500 hover:bg-green-600 text-white font-bold py-2 md:w-1/2 rounded"
+              >
+                {loading ? (
+                  <div className="text-center text-white "><span className="italic">Loading...</span></div>
+                ) : ("Select From History")}
+
+              </button>
+              <ModalHistoryData
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                historyData={historyData}
+                onSelect={handleSelectFromHistory}
+                loading={loading}
+              />
+
+              {error && (
+                <div className="text-center text-red-500 mt-4">
+                  Error: {error.message}
+                </div>
+              )}
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
 };
 
-export default SubmitAmendment;
+export default PassengerForm;
