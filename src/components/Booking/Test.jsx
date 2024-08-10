@@ -237,7 +237,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                   type="text"
                   id="first-id"
                   className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-500 peer"
-        
+
 
 
                   {...register("firstName", {
@@ -350,7 +350,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
               updatePassenger={updatePassenger}
               passport={formData.passport}
             />
-            <div className="w-full justify-between md:flex-row gap-3 flex-col mt-4 flex">
+            {/* <div className="w-full justify-between md:flex-row gap-3 flex-col mt-4 flex">
               <button
                 type="submit"
                 className="button text-sm bg-[#007EC4] hover:bg-blue-600 text-white font-bold md:w-1/2 py-2 px-4 rounded "
@@ -381,7 +381,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                   Error: {error.message}
                 </div>
               )}
-            </div>
+            </div> */}
           </form>
         </div>
       </div>
@@ -390,3 +390,12 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
 };
 
 export default PassengerForm;
+
+
+
+
+
+
+
+//                    
+

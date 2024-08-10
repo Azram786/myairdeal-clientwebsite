@@ -152,6 +152,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
           setPassengers={setPassengers}
           expanded={expandedCard.travellers}
           toggleCard={() => toggleCard("travellers")}
+          flightData={flightData}
         />
         <AddonsCard
           bookingId={bookingId}
