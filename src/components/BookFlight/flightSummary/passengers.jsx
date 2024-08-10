@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { format } from "date-fns";
-import PassportDetails from "./passportDetails";
+import { useForm, Controller } from "react-hook-form";
 import { useSelector } from "react-redux";
-import ModalHistoryData from "./modalHistoryData";
 import axios from "axios";
+import { MenuItem, Select, TextField, Button, FormHelperText } from "@mui/material";
+import PassportDetails from "./passportDetails";
+import ModalHistoryData from "./modalHistoryData";
+import { format } from "date-fns";
 
 const PassengerForm = ({ passenger, index, updatePassenger }) => {
-  //states
   const [historyData, setHistoryData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showReview, setShowReview] = useState(false);
+  const [error, setError] = useState(null);
 
   const token = useSelector((state) => state.auth.token);
   const [formData, setFormData] = useState({
@@ -27,7 +28,6 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
     },
   });
 
-  // Fetch history data with loading state
   const fetchHistoryData = () => {
     setLoading(true);
     axios
@@ -59,14 +59,11 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
       firstName: selectedPassenger.fN,
       lastName: selectedPassenger.lN,
       dob: selectedPassenger.dob,
-      // Add other fields as necessary
     });
-    // Update react-hook-form values
     setValue("title", selectedPassenger.ti);
     setValue("firstName", selectedPassenger.fN);
     setValue("lastName", selectedPassenger.lN);
     setValue("dob", selectedPassenger.dob);
-    // Add other fields as necessary
     setIsModalOpen(false);
   };
 
@@ -84,7 +81,6 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
 
   const [submittedData, setSubmittedData] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (isSubmitted && submittedData) {
@@ -113,9 +109,8 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
   }, [isSubmitted, submittedData]);
 
   const {
-    register,
+    control,
     handleSubmit,
-    trigger,
     formState: { errors },
     setValue,
     reset,
@@ -123,7 +118,6 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
     defaultValues: formData,
   });
 
-  // Reset form when passenger data changes
   useEffect(() => {
     reset(formData);
   }, [passenger, reset, formData]);
@@ -131,15 +125,12 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
   const departureDate = "2024-08-22T17:10";
 
   const handleInputChange = async (name, value) => {
-    console.log(name, value);
-    console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
     setValue(name, value);
-    await trigger(name);
-    updatePassenger(index, name, value); // Notify parent of change
+    updatePassenger(index, name, value);
   };
 
   const calculateDate = (years) => {
@@ -161,198 +152,191 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
   };
 
   return (
-    <div className="rounded-lg  mb-4 bg-white ">
-      <div className="text-lg font-semibold mb-4">
-        {passenger.passengerType} {passenger.typeCount}
-      </div>
-      <div className="grid grid-cols-1 gap-6">
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="relative p-2">
-                <select
-                  {...register("title", { required: "Title is required" })}
-                  onChange={(e) =>
-                    handleInputChange(e.target.name, e.target.value)
-                  }
-                  value={formData.title}
-                  className="h-10 border w-full border-gray-300 rounded-lg py-1 px-2 text-sm focus:outline-none peer"
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex gap-2 items-center">
+          <div className="font-semibold">
+            <h2>
+              {passenger.passengerType} {passenger.typeCount}
+            </h2>
+          </div>
+          <div>
+            <Controller
+              name="title"
+              control={control}
+              rules={{ required: "Title is required" }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  fullWidth
+                  error={!!errors.title}
+                  displayEmpty
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleInputChange("title", e.target.value);
+                  }}
                 >
-                  <option value="" disabled>
+                  <MenuItem value="" disabled>
                     Select Title
-                  </option>
-                  {passenger.passengerType === "ADULT" && (
-                    <>
-                      <option value="MR">Mr</option>
-                      <option value="MRS">Mrs</option>
-                      <option value="MS">Ms</option>
-                    </>
+                  </MenuItem>
+                  {passenger.passengerType === "ADULT" ? (
+                    [
+                      <MenuItem key="MR" value="MR">Mr</MenuItem>,
+                      <MenuItem key="MRS" value="MRS">Mrs</MenuItem>,
+                      <MenuItem key="MS" value="MS">Ms</MenuItem>
+                    ]
+                  ) : (
+                    [
+                      <MenuItem key="MS" value="MS">Ms</MenuItem>,
+                      <MenuItem key="MASTER" value="MASTER">Master</MenuItem>
+                    ]
                   )}
-                  {(passenger.passengerType === "CHILD" ||
-                    passenger.passengerType === "INFANT") && (
-                    <>
-                      <option value="MS">Ms</option>
-                      <option value="MASTER">Master</option>
-                    </>
-                  )}
-                </select>
-                <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
-                  Title
-                </label>
-                {errors.title && (
-                  <span className="text-red-500 text-xs">
-                    {errors.title.message}
-                  </span>
-                )}
-              </div>
-              <div className="relative p-2">
-                <input
-                  type="text"
-                  {...register("firstName", {
-                    required: "First Name is required",
-                    minLength: { value: 2, message: "Minimum 2 characters" },
-                    maxLength: { value: 50, message: "Maximum 50 characters" },
-                    pattern: {
-                      value: /^[A-Za-z]+$/,
-                      message: "Only alphabets are allowed",
-                    },
-                  })}
-                  onChange={(e) =>
-                    handleInputChange(e.target.name, e.target.value)
-                  }
-                  value={formData.firstName}
-                  className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
-                />
-                <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
-                  First Name
-                </label>
-                {errors.firstName && (
-                  <span className="text-red-500 text-xs">
-                    {errors.firstName.message}
-                  </span>
-                )}
-              </div>
-              <div className="relative p-2">
-                <input
-                  type="text"
-                  {...register("lastName", {
-                    required: "Last Name is required",
-                    minLength: { value: 2, message: "Minimum 2 characters" },
-                    maxLength: { value: 50, message: "Maximum 50 characters" },
-                    pattern: {
-                      value: /^[A-Za-z]+$/,
-                      message: "Only alphabets are allowed",
-                    },
-                  })}
-                  onChange={(e) =>
-                    handleInputChange(e.target.name, e.target.value)
-                  }
-                  value={formData.lastName}
-                  className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
-                />
-                <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
-                  Last Name
-                </label>
-                {errors.lastName && (
-                  <span className="text-red-500 text-xs">
-                    {errors.lastName.message}
-                  </span>
-                )}
-              </div>
-              <div className="relative p-2">
-                <input
-                  type="date"
-                  {...register("dob", {
-                    required: "Date of Birth is required",
-                    validate: {
-                      validateDOB: (value) => {
-                        const selectedDate = new Date(value);
-                        const max = new Date(
-                          getMaxDate(passenger.passengerType)
-                        );
-                        const min = new Date(
-                          getMinDate(passenger.passengerType)
-                        );
-                        if (selectedDate > max) {
-                          return `${
-                            passenger.passengerType
-                          } must be born on or before ${format(
-                            max,
-                            "yyyy-MM-dd"
-                          )}`;
-                        }
-                        if (selectedDate < min) {
-                          return `${
-                            passenger.passengerType
-                          } must be born on or after ${format(
-                            min,
-                            "yyyy-MM-dd"
-                          )}`;
-                        }
-                        return true;
-                      },
-                    },
-                  })}
-                  min={getMinDate(passenger.passengerType)}
-                  max={getMaxDate(passenger.passengerType)}
-                  onChange={(e) =>
-                    handleInputChange(e.target.name, e.target.value)
-                  }
-                  value={formData.dob}
-                  className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
-                />
-                <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
-                  Date of Birth
-                </label>
-                {errors.dob && (
-                  <span className="text-red-500 text-xs">
-                    {errors.dob.message}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <PassportDetails
-              passenger={passenger}
-              index={index}
-              updatePassenger={updatePassenger}
-              passport={formData.passport}
-            />
-            <div className="w-full justify-between md:flex-row gap-3 flex-col mt-4 flex">
-              <button
-                type="submit"
-                className="button text-sm bg-[#007EC4] hover:bg-blue-600 text-white font-bold md:w-1/2 py-2 px-4 rounded "
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                disabled={loading}
-                onClick={handleModalOpen}
-                className="button text-sm bg-green-500 hover:bg-green-600 text-white font-bold py-2 md:w-1/2 rounded"
-              >
-                {loading ? (
-                <div className="text-center text-white "><span className="italic">Loading...</span></div>
-              ):( "Select From History")}
-               
-              </button>
-              <ModalHistoryData
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                historyData={historyData}
-                onSelect={handleSelectFromHistory}
-                loading={loading}
-              />
-            
-              {error && (
-                <div className="text-center text-red-500 mt-4">
-                  Error: {error.message}
-                </div>
+                </Select>
               )}
-            </div>
-          </form>
+            />
+            {errors.title && (
+              <FormHelperText error>{errors.title.message}</FormHelperText>
+            )}
+          </div>
+          <div>
+            <Controller
+              name="firstName"
+              control={control}
+              rules={{
+                required: "First Name is required",
+                minLength: { value: 2, message: "Minimum 2 characters" },
+                maxLength: { value: 50, message: "Maximum 50 characters" },
+                pattern: {
+                  value: /^[A-Za-z]+$/,
+                  message: "Only alphabets are allowed",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="First Name"
+                  error={!!errors.firstName}
+                  helperText={errors.firstName?.message}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleInputChange("firstName", e.target.value);
+                  }}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <Controller
+              name="lastName"
+              control={control}
+              rules={{
+                required: "Last Name is required",
+                minLength: { value: 2, message: "Minimum 2 characters" },
+                maxLength: { value: 50, message: "Maximum 50 characters" },
+                pattern: {
+                  value: /^[A-Za-z]+$/,
+                  message: "Only alphabets are allowed",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Last Name"
+                  error={!!errors.lastName}
+                  helperText={errors.lastName?.message}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleInputChange("lastName", e.target.value);
+                  }}
+                />
+              )}
+            />
+          </div>
+          {/* <div>
+            <Controller
+              name="dob"
+              control={control}
+              rules={{
+                required: "Date of Birth is required",
+                validate: {
+                  validateDOB: (value) => {
+                    const selectedDate = new Date(value);
+                    const max = new Date(getMaxDate(passenger.passengerType));
+                    const min = new Date(getMinDate(passenger.passengerType));
+                    if (selectedDate > max) {
+                      return `${passenger.passengerType} must be born on or before ${format(max, "yyyy-MM-dd")}`;
+                    }
+                    if (selectedDate < min) {
+                      return `${passenger.passengerType} must be born on or after ${format(min, "yyyy-MM-dd")}`;
+                    }
+                    return true;
+                  },
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Date of Birth"
+                  type="date"
+                  InputLabelProps={{ shrink: true }}
+                  error={!!errors.dob}
+                  helperText={errors.dob?.message}
+                  inputProps={{
+                    min: getMinDate(passenger.passengerType),
+                    max: getMaxDate(passenger.passengerType),
+                  }}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleInputChange("dob", e.target.value);
+                  }}
+                />
+              )}
+            />
+          </div> */}
+          <div className="text-[.5rem]">
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleModalOpen}
+              disabled={loading}
+              style={{
+                fontSize: ".7rem"
+              }}
+            >
+              {loading ? "Loading..." : "Select from history"}
+            </Button>
+          </div>
         </div>
-      </div>
+        <PassportDetails
+          passenger={passenger}
+          index={index}
+          updatePassenger={updatePassenger}
+          passport={formData.passport}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={loading}
+        >
+          Save
+        </Button>
+      </form>
+      <ModalHistoryData
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        historyData={historyData}
+        onSelect={handleSelectFromHistory}
+        loading={loading}
+      />
+      {error && (
+        <div className="text-center text-red-500 mt-4">
+          Error: {error.message}
+        </div>
+      )}
     </div>
   );
 };

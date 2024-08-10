@@ -325,17 +325,10 @@ const FlightSearchSummary = ({ data, tripType }) => {
   );
   
   
-  
-
   const renderMultiCity = () => (
-    <details className="w-full md:block">
-      <summary className="flex items-center mx-2 md:mx-0 rounded-md justify-between bg-[#007EC4] text-white p-2 px-6 cursor-pointer">
-        <div className="flex space-x-2 text-sm items-center">
-          <span>Multi-City Details</span>
-          <MdExpandMore className="text-xl" />
-        </div>
-      </summary>
-      <div className="flex flex-col md:flex-row items-center gap-3 bg-[#007EC4] rounded-b-md mx-2 p-2 text-white">
+    <div>
+      {/* Grid layout for medium and larger screens */}
+      <div className="hidden md:flex flex-col md:flex-row items-center gap-3 bg-[#007EC4] p-2 text-white">
         <div className="md:w-1/2 w-[95%] justify-center overflow-x-auto md:border-r no-scroll flex">
           {routeInfos.map((route, index) => (
             <div
@@ -364,25 +357,20 @@ const FlightSearchSummary = ({ data, tripType }) => {
         </div>
         <div className="md:w-2/3 gap-3 grid md:grid-cols-3 grid-cols-1">
           <div className="flex justify-center md:border-r">
-            {/* Tooltip Section */}
-            <div className="relative group">
-              <span className="text-xs text-center text-white">
-                Passengers & Class
-              </span>
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold text-center">
+            <div className="flex flex-col items-center">
+              <span className="text-xs text-white">Passengers & Class</span>
+              <div className="relative group">
+                <span className="text-xs font-semibold line-clamp-1">
                   {`${paxInfo.ADULT} Adults ${
                     paxInfo.CHILD > 0
-                      ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""}`
+                      ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""} `
                       : ""
                   }${
                     paxInfo.INFANT > 0
-                      ? `, ${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""}`
+                      ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""} `
                       : ""
                   } | ${cabinClass}`}
                 </span>
-  
-                {/* Tooltip */}
                 <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   {`${paxInfo.ADULT} Adults, ${
                     paxInfo.CHILD > 0
@@ -414,8 +402,69 @@ const FlightSearchSummary = ({ data, tripType }) => {
           </div>
         </div>
       </div>
-    </details>
+  
+      {/* Dropdown for small screens */}
+      <div className="md:hidden mx-2 bg-[#007EC4] text-white p-2 rounded-md">
+        <details className="w-full">
+          <summary className="flex justify-between items-center cursor-pointer">
+            <span>Multi-City Details</span>
+            <MdExpandMore className="text-2xl" />
+          </summary>
+          <div className="mt-2 space-y-2">
+            {routeInfos.map((route, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between border-b pb-2"
+              >
+                <div className="flex flex-col">
+                  <span className="text-xs">From</span>
+                  <span className="text-xs font-semibold">
+                    {route?.fromCityOrAirport?.code}
+                  </span>
+                </div>
+                <span className="rotate-90">
+                  <MdFlight />
+                </span>
+                <div className="flex flex-col">
+                  <span className="text-xs">To</span>
+                  <span className="text-xs font-semibold">
+                    {route.toCityOrAirport.code}
+                  </span>
+                </div>
+              </div>
+            ))}
+            <div className="flex items-center justify-between border-b pb-2">
+              <span className="text-xs">Passengers & Class</span>
+              <span className="text-xs font-semibold">
+                {`${paxInfo.ADULT} Adults ${
+                  paxInfo.CHILD > 0
+                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""} `
+                    : ""
+                }${
+                  paxInfo.INFANT > 0
+                    ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""} `
+                    : ""
+                } | ${cabinClass}`}
+              </span>
+            </div>
+            <div className="flex items-center justify-between border-b pb-2">
+              <span className="text-xs">Preferred Airline</span>
+              <span className="text-xs font-semibold">None</span>
+            </div>
+            <div className="flex justify-center mt-2">
+              <Link to="/">
+                <button className="border-[#01324D] bg-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+                  MODIFY SEARCH
+                </button>
+              </Link>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
   );
+  
+  
 
   return (
     <div className="w-full ">

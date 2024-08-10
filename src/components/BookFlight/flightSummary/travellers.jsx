@@ -3,11 +3,13 @@ import PassengerForm from "./passengers";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 
+
 const TravellersCard = ({
   passengers,
   setPassengers,
   expanded,
   toggleCard,
+  flightData
 }) => {
   const {
     register,
@@ -49,9 +51,9 @@ const TravellersCard = ({
   };
 
   return (
-    <div className="border-purple-300 border-b p-3 ">
+    <div className=" shadow-lg  ">
       <div
-        className="justify-between cursor-pointer flex items-center"
+        className="justify-between cursor-pointerm shadow-sm p-3 flex items-center"
         onClick={toggleCard}
       >
         <div className="flex flex-col">
@@ -63,7 +65,7 @@ const TravellersCard = ({
         </div>
         {expanded ? <FaChevronUp /> : <FaChevronDown />}
       </div>
-      {expanded && (
+      <div>{expanded && (
         <>
           <div className="mt-4">
             {Array.isArray(passengers) &&
@@ -136,7 +138,8 @@ const TravellersCard = ({
             </form>
           </div>
         </>
-      )}
+      )}</div>
+
     </div>
   );
 };
