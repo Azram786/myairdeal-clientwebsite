@@ -75,7 +75,7 @@ const MultiCityForm = ({
   };
 
   return (
-    <div className="flex bg-[#ffffff] flex-col lg:flex-row w-full gap-2">
+    <div className="flex bg-white flex-col lg:flex-row w-full gap-2">
       <div className="lg:w-[75%] flex flex-col gap-3">
         {dynamicFormData?.map((form, index) => (
           <DynamicForm
@@ -95,7 +95,7 @@ const MultiCityForm = ({
         ))}
       </div>
 
-      <div className="flex md:justify-start gap-4 lg:w-[25%] items-center md:items-end justify-between ">
+      <div className="flex md:justify-start gap-4 lg:w-[25%]items-center md:items-end justify-between ">
         <button
           className="flex p-3 justify-center items-center bg-red-500 text-white rounded-md cursor-pointer"
           onClick={removeLastFormHandler}

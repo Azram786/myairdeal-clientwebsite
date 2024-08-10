@@ -1,138 +1,130 @@
-import React, { useEffect } from 'react';
-import Slider from 'react-slick';
+import React, { useEffect } from "react";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { FaPlane } from 'react-icons/fa';
+import { FaPlane } from "react-icons/fa";
 import "./ResentSearch.css";
-import { useDispatch, useSelector } from 'react-redux';
-import { clearResent, clearResentSearchFilter, setResentSearch, setResentSearchFromFilter, setResentSearchToFilter } from '../../store/slices/aut.slice';
-import { MdFlight } from 'react-icons/md';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearResent,
+  clearResentSearchFilter,
+  setResentSearch,
+  setResentSearchFromFilter,
+  setResentSearchToFilter,
+} from "../../store/slices/aut.slice";
+import { MdFlight } from "react-icons/md";
 
 const RecentSearch = ({ ResentSearchData }) => {
-    const dispatch = useDispatch();
-    const { resentSearch } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const { resentSearch } = useSelector((state) => state.auth);
 
-    useEffect(() => {
-        if (resentSearch) {
+  useEffect(() => {
+    if (resentSearch) {
+      // dispatch(clearResent())
+    }
+  }, [resentSearch, dispatch]);
 
-            // dispatch(clearResent())
-        }
-    }, [resentSearch, dispatch]);
+  const setResentStateHandler = (value) => {
+    console.log({ value });
+    dispatch(setResentSearch(value));
+  };
 
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1,
+        },
+      },
+    ],
+  };
 
-    const setResentStateHandler = (value) => {
-        console.log({ value })
-        dispatch(setResentSearch(value));
+  useEffect(() => {
+    let timer;
+    if (resentSearch) {
+      timer = setTimeout(() => {
+        dispatch(clearResent());
+      }, 2 * 60 * 1000); // 2 minutes in milliseconds
+    }
+
+    // Cleanup function to clear the timer if the component unmounts or resentSearch changes
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
     };
-
-    const settings = {
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    infinite: true,
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    initialSlide: 1
-                }
-            }
-        ]
-    };
-
-    useEffect(() => {
-        let timer;
-        if (resentSearch) {
-            timer = setTimeout(() => {
-                dispatch(clearResent());
-            }, 2 * 60 * 1000); // 2 minutes in milliseconds
-        }
-
-        // Cleanup function to clear the timer if the component unmounts or resentSearch changes
-        return () => {
-            if (timer) {
-                clearTimeout(timer);
-            }
-        };
-    }, [resentSearch, dispatch]);
-    return (
-        <div className=" w-[90%]  text-center rounded-xl my-4 mb-10 justify-center mx-auto flex flex-col gap-5">
-            <h1 className='font-semibold px-4 text-start text-2xl'>Recent Search</h1>
-            <div className='px-4 '>
-                <Slider {...settings}>
-                    {ResentSearchData?.map((search, index) => {
-
-                        return (
-                            // <div key={index} className="p-2 h-[15vh]"
-                            //     onClick={() => { setResentStateHandler(search) }}
-                            // >
-                            //     <div className="bg-blue-500 text-white rounded-lg h-full shadow-lg p-4 flex flex-col items-center justify-center space-y-2">
-                            //         <div className="flex justify-between w-full">
-                            //             <div className="text-center">
-                            //                 <div className="text-xl font-bold">{search?.searchQuery.routeInfos[0].fromCityOrAirport?.code || "N/A"}</div>
-                            //                 <div className="text-lg font-bold"> {search?.searchQuery.cabinClass}</div>
-                            //                 <div className="text-xs">{search?.searchQuery.searchModifiers.pft}</div>
-                            //             </div>
-                            //             <div className="text-center">
-                            //                 <FaPlane className="text-3xl" />
-                            //             </div>
-                            //             <div className="text-center">
-                            //                 <div className="text-xl font-bold">{search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}</div>
-                            //                 <div className="text-lg font-bold">Passengers{" :"}{Number(search?.searchQuery?.paxInfo.ADULT) + Number(search?.searchQuery?.paxInfo.INFANT) + Number(search?.searchQuery?.paxInfo.CHILD)}</div>
-                            //                 <div className="text-xs">{search?.searchQuery.routeInfos[0].travelDate}</div>
-                            //             </div>
-                            //         </div>
-                            //     </div>
-                            // </div>
-                            <div className=" rounded-2xl shadow-lg max-w-60 md:max-w-80 my-4   p-4 border border-[#007EC4] font-poppins cursor-pointer" onClick={() => { setResentStateHandler(search) }}>
-                                <div className="flex flex-col space-y-2">
-                                    <div className="flex flex-row justify-between items-center">
-                                        <div className="text-left w-[40%]">
-                                            <div className="text-xs font-bold">{search?.searchQuery.routeInfos[0].fromCityOrAirport?.code || "N/A"}</div>
-                                            <div className="text-xxs text-gray-500">{search?.searchQuery?.cabinClass || "N/A"}</div>
-                                            <div className="text-xs text-gray-400 mt-1">{search?.searchQuery.searchModifiers.isDirectFlight === true ? "Direct Flight" : "Indirect flight "}</div>
-                                        </div>
-                                        <div className="flex flex-col w-[20%] items-center ">
-                                            {/* <div className="w-10 h-10 rounded-md mb-1">
-                          <img
-                            src={flightLogo}
-                            alt="Flight Logo"
-                            className="w-full h-full object-cover"
-                          />
-                        </div> */}
-                                            {/* <div className="text-xs font-semibold">Air India</div> */}
-                                            <div className="relative  h-0.5 bg-gray-300 my-1">
-                                                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500">
-                                                    <MdFlight className="transform rotate-90 text-base" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="text-right w-[40%] ">
-                                            <div className="text-xs font-bold">{search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}</div>
-                                            {/* <div className="text-xxs text-gray-500">{search?.searchQuery.routeInfos[0].travelDate}</div> */}
-                                            <div className="text-xs">{search?.searchQuery.routeInfos[0].travelDate}</div>
-                                            <div className="text-xs text-gray-400 mt-1">{search?.searchQuery?.searchModifiers?.isConnectingFlight === true ? "Connection flight" : ""}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
-                </Slider>
+  }, [resentSearch, dispatch]);
+  return (
+    <div className=" w-[90%]  text-center rounded-xl my-4 mb-10 justify-center mx-auto flex flex-col gap-5">
+      <h1 className="font-semibold px-4 text-start text-2xl">Recent Search</h1>
+      <div className="px-4 ">
+      <Slider {...settings}>
+  {ResentSearchData?.map((search, index) => (
+    <div
+      key={index}
+      className="rounded-2xl shadow-lg max-w-60 md:max-w-80 my-4 p-4 border border-[#007EC4] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
+      onClick={() => {
+        setResentStateHandler(search);
+      }}
+    >
+      <div className="flex flex-col space-y-2">
+        <div className="flex flex-row justify-between items-center">
+          <div className="text-left w-[40%]">
+            <div className="text-xs font-bold">
+              {search?.searchQuery.routeInfos[0].fromCityOrAirport?.code || "N/A"}
             </div>
+            <div className="text-[10px] text-gray-500">
+              {search?.searchQuery?.cabinClass || "N/A"}
+            </div>
+            <div className="text-xs text-gray-400 mt-1">
+              {search?.searchQuery.searchModifiers.isDirectFlight === true
+                ? "Direct Flight"
+                : "Indirect flight "}
+            </div>
+          </div>
+          <div className="flex flex-col w-[20%] items-center">
+            <div className="relative h-0.5 bg-gray-300 my-1">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500">
+                <MdFlight className="transform rotate-90 text-base" />
+              </div>
+            </div>
+          </div>
+          <div className="text-right w-[40%]">
+            <div className="text-xs font-bold">
+              {search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}
+            </div>
+            <div className="text-xs">
+              {search?.searchQuery.routeInfos[0].travelDate}
+            </div>
+            <div className="text-xs text-gray-400 mt-1">
+              {search?.searchQuery?.searchModifiers?.isConnectingFlight === true
+                ? "Connection flight"
+                : ""}
+            </div>
+          </div>
         </div>
-
-    );
+      </div>
+    </div>
+  ))}
+</Slider>
+      </div>
+    </div>
+  );
 };
 
 export default RecentSearch;
@@ -261,7 +253,6 @@ export default RecentSearch;
 // };
 
 // export default RecentSearch;
-
 
 // import React from "react";
 // import { MdFlight } from "react-icons/md";

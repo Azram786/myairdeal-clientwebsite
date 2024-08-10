@@ -13,7 +13,6 @@
 
 //   console.log(flightProps,"flight props");
 
-
 //   const flightDetails = flightProps.map(flight => {
 //     return flight.sI.map(segment => {
 //         return {
@@ -200,7 +199,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
       console.log("Processing bookings:", bookings);
 
       if (!token) {
-        ReactToast('Please login first')
+        ReactToast("Please login first");
         navigate("/sign-in");
       }
 
@@ -235,7 +234,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
       <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
         {/* Filter icon for screens up to 1024px */}
         <button
-          className="absolute bottom-0 top-4 right-4 z-50 lg-custom:hidden"
+          className="absolute bottom-0 top-10 right-4 z-50 lg-custom:hidden"
           onClick={toggleSidebar}
         >
           <FaFilter className="w-6 h-6 z-10 text-blue-600" />
@@ -243,33 +242,36 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
         {/* Sidebar for larger screens and modal-like display for screens up to 1024px */}
         <div
-          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 bg-white transform ${
+          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 rounded-xl bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
           style={{
             maxWidth: "100%",
             maxHeight: "100%",
-            marginTop:"2%",
-            marginBottom:"2%",
+            marginTop: "2%",
+            marginBottom: "2%",
             height: "auto",
             width: "auto",
           }}
         >
           {/* Close button for modal */}
           <button
-            className="absolute top-4  right-4 z-50 text-blue-600 lg-custom:hidden"
+            className="absolute top-2 right-4 z-50 text-blue-600 lg-custom:hidden"
             onClick={() => setIsSidebarOpen(false)}
           >
             <FaTimes className="w-6 h-6" />
           </button>
-<div className="font-semibold p-2 text-base">Filters</div>
-          <OneWaySideBar
-        flights={flightProps}
-        filters={filters}
-        setFilters={setFilters}
-        passenger={passenger}
-        calculateTotalPrice={calculateTotalPrice}
-      />
+         
+            <div className="font-semibold p-2 text-left text-base">Filters</div>
+            <div className="rounded-xl flex flex-col items-center ">
+            <OneWaySideBar
+              flights={flightProps}
+              filters={filters}
+              setFilters={setFilters}
+              passenger={passenger}
+              calculateTotalPrice={calculateTotalPrice}
+            />
+          </div>
         </div>
 
         {/* Overlay for screens up to 1024px */}
@@ -281,7 +283,10 @@ const Oneway = ({ flightProps, passenger, query }) => {
         )}
       </div>
       <div className="flex-grow">
-        <h1 className="text-sm font-bold"> {filteredFlights.length} flights Found </h1>
+        <h1 className="text-sm font-bold">
+          {" "}
+          {filteredFlights.length} flights Found{" "}
+        </h1>
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={

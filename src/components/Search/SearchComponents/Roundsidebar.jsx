@@ -7,6 +7,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   const [stops] = useState(["0", "1", "2", "3+"]);
   const [maxPrices, setMaxPrices] = useState({ onward: 0, return: 0 });
   const [specialReturnAirlines, setSpecialReturnAirlines] = useState([]);
+  
 
   const calculateTotalPrice = (flight) => {
     let total = 0;
@@ -57,12 +58,23 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
     return acc;
   }, {});
 
+  const [tooltipPosition, setTooltipPosition] = useState(0);
+  const [showTooltip, setShowTooltip] = useState(false);
+  
   const handlePriceChange = (e) => {
+    const newValue = parseInt(e.target.value);
+    const thumbOffset = (newValue / maxPrices[activeDirection]) * 100;
+  
+    // Update tooltip position and visibility
+    setTooltipPosition(thumbOffset);
+    setShowTooltip(true);
+  
+    // Update filters state
     setFilters(prev => ({
       ...prev,
       [activeDirection]: {
         ...prev[activeDirection],
-        maxPrice: parseInt(e.target.value)
+        maxPrice: newValue
       }
     }));
   };
@@ -112,6 +124,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
         : [...prev.specialReturnAirlines, airline]
     }));
   };
+
 
   const renderStopsSection = () => (
     <div className="mb-6 border-b  border-gray-300 pb-4">
@@ -192,18 +205,30 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   const renderPriceSection = () => (
     <div className="mb-6 border-b border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">Price</h3>
-      <div className="flex justify-between gap-2">
-        <span className='text-xs'>₹100</span>
-        <input
-          type="range"
-          min="100"
-          max={maxPrices[activeDirection]}
-          value={filters[activeDirection].maxPrice}
-          onChange={handlePriceChange}
-          id='priceRange'
-          className="flex-1 price-range-slider range-slider"
-        />
-        <span className='text-xs'>₹{filters[activeDirection].maxPrice}</span>
+      <div className="relative flex justify-between gap-2">
+        <span className="text-xs">₹100</span>
+        <div className="relative flex-1">
+          <input
+            type="range"
+            min="100"
+            max={maxPrices[activeDirection]}
+            value={filters[activeDirection].maxPrice}
+            onChange={handlePriceChange}
+            onMouseEnter={() => setShowTooltip(true)}
+            onMouseLeave={() => setShowTooltip(false)}
+            id="priceRange"
+            className="w-full price-range-slider range-slider"
+          />
+          {showTooltip && (
+            <div
+              className="absolute bg-gray-700 text-white text-xs rounded px-2 py-1"
+              style={{ left: `calc(${tooltipPosition}% - 20px)`, top: '-30px' }}
+            >
+              ₹{filters[activeDirection].maxPrice}
+            </div>
+          )}
+        </div>
+        <span className="text-xs">₹{filters[activeDirection].maxPrice}</span>
       </div>
     </div>
   );

@@ -411,15 +411,17 @@ const RoundTrip = ({
           </button>
 
           <RoundSideBar
-            passenger={passenger}
-            filters={filters}
-            setFilters={setFilters}
-            onwardData={onwardProps}
-            returnData={returnProps}
-            activeDirection={activeDirection}
-            setActiveDirection={setActiveDirection}
-            calculateTotalPrice={calculateTotalPrice}
-          />
+        passenger={passenger}
+        filters={filters}
+        setFilters={setFilters}
+        onwardData={onwardProps}
+        returnData={returnProps}
+        activeDirection={activeDirection}
+        setActiveDirection={setActiveDirection}
+        calculateTotalPrice={calculateTotalPrice}
+        isSpecialReturn={isSpecialReturnActive}
+        setIspecialReturn={setIsSpecialReturnActive}
+      />
         </div>
 
         {/* Overlay for screens up to 1024px */}

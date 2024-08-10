@@ -329,7 +329,7 @@ const OneWaySideBar = ({
         {/* Departure Time filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-sm font-semibold mb-2">Departure Time</h3>
-          <div className="grid grid-cols-2 lg-custom:grid-cols-2 lg:grid-cols-4 place-items-center gap-2 ">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-2 ">
             {[
               { icon: <PiMountains />, time: "00-06" },
               { icon: <IoIosSunny />, time: "06-12" },

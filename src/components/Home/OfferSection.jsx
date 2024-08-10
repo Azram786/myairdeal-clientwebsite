@@ -270,7 +270,7 @@ const OfferSection = () => {
       </div>
     </div>
           </div>
-          <div className="h-full px-6 py-6 text-white grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="h-full px-6 py-6 text-white grid gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
             {offers.map((offer, index) => (
               <div
                 key={index}
@@ -279,7 +279,7 @@ const OfferSection = () => {
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                 }}
-                className="h-[55vh] w-full flex items-end rounded-[3%] transition-transform transform hover:scale-105 duration-300 ease-in-out"
+                className="h-[25vh] md:h-[55vh]  w-[180px] md:w-full flex items-end rounded-[3%] transition-transform transform hover:scale-105 duration-300 ease-in-out"
               >
                 <div className="mb-5 w-full px-5">
                   <div className="flex w-full items-end justify-between">
