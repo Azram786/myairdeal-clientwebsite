@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 import ReactToast from "../../util/ReactToast";
 
 const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
-  console.log({ flightData })
 
-  const [isDomestic, setIsDomestic] = useState(flightData?.conditions?.pcs || null)
-  const navigate = useNavigate();
+
+
+
   const [passengers, setPassengers] = useState([]);
   const [gstDetails, setGstDetails] = useState({
     gstNumber: "",
@@ -26,6 +26,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
     addons: false,
     gst: false,
   });
+
   const [isPassengersCompleted, setIsPassengersCompleted] = useState(false);
 
   const [numAdults, setNumAdults] = useState(
@@ -40,7 +41,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
 
   const createPassenger = useCallback(
     (type, count) => ({
-      title: type === "ADULT" ? "MR" : "",
+      title: "",
       firstName: "",
       lastName: "",
       passengerType: type,
@@ -95,7 +96,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
       (passenger) =>
         passenger.firstName &&
         passenger.lastName &&
-        passenger.dob &&
+        // passenger.dob &&
         passenger.email &&
         passenger.phone
     );
@@ -118,7 +119,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
       (passenger) =>
         passenger.firstName &&
         passenger.lastName &&
-        passenger.dob &&
+        // passenger.dob &&
         passenger.email &&
         passenger.phone
     );
@@ -133,7 +134,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
   const handleProceedToReview = useCallback(() => {
     const isValid = validateFormData(passengers, gstDetails);
 
-    console.log("isValid", isValid, gstDetails, "gst");
+
     if (isValid) {
       onData({ passengers, gstDetails });
       setCurrentStep((p) => p + 1);

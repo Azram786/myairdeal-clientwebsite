@@ -7,7 +7,8 @@ import PassportDetails from "./passportDetails";
 import ModalHistoryData from "./modalHistoryData";
 import { format } from "date-fns";
 
-const PassengerForm = ({ passenger, index, updatePassenger }) => {
+const PassengerForm = ({ passenger, index, updatePassenger, condition }) => {
+
   const [historyData, setHistoryData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,11 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
   const [error, setError] = useState(null);
 
   const token = useSelector((state) => state.auth.token);
+
+
+
+
+
   const [formData, setFormData] = useState({
     title: passenger?.title || "",
     firstName: passenger?.firstName || "",
@@ -27,6 +33,10 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
       expiryDate: "",
     },
   });
+
+
+
+
 
   const fetchHistoryData = () => {
     setLoading(true);
@@ -153,9 +163,9 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
   };
 
   return (
-    <div>
+    <div className="flex">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex gap-2 items-center">
+        <div className="flex  gap-2 items-center">
           <div className="font-semibold">
             <h2>
               {passenger.passengerType} {passenger.typeCount}
@@ -255,7 +265,8 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
               )}
             />
           </div>
-          {/* <div>
+          {/* */}
+          {condition?.dobe && <div>
             <Controller
               name="dob"
               control={control}
@@ -296,7 +307,30 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                 />
               )}
             />
-          </div> */}
+          </div>}
+
+        </div>
+        {condition && <PassportDetails
+          passenger={passenger}
+          index={index}
+          updatePassenger={updatePassenger}
+          passport={formData.passport}
+          condition={condition}
+        />}
+        <div className="flex mt-4 gap-3">
+
+          {/* <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={loading}
+          >
+            Save
+          </Button> */}
+          <div className="flex items-center">
+            <input type="checkbox" className="h-4 w-4" />
+            <label htmlFor="">save passenger details</label>
+          </div>
           <div className="text-[.5rem]">
             <Button
               variant="outlined"
@@ -310,21 +344,8 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
               {loading ? "Loading..." : "Select from history"}
             </Button>
           </div>
+
         </div>
-        <PassportDetails
-          passenger={passenger}
-          index={index}
-          updatePassenger={updatePassenger}
-          passport={formData.passport}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          disabled={loading}
-        >
-          Save
-        </Button>
       </form>
       <ModalHistoryData
         isOpen={isModalOpen}

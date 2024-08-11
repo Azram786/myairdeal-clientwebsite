@@ -64,7 +64,7 @@ const Login = () => {
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
-  
+
 
   useEffect(() => {
     let interval;

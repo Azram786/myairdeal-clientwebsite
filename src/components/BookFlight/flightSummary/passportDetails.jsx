@@ -1,9 +1,13 @@
-// import React, { useEffect } from "react";
-// import { useForm } from "react-hook-form";
+// import React, { useEffect, useState } from "react";
+// import { useForm, Controller } from "react-hook-form";
+// import { TextField } from "@mui/material";
+// import Select from 'react-select';
+// import { getCode, getName, getNames } from 'country-list';
+// import Flag from 'react-world-flags';
 
-// const PassportDetails = ({ passenger, index, updatePassenger }) => {
+// const PassportDetails = ({ passenger, index, updatePassenger, condition }) => {
 //   const {
-//     register,
+//     control,
 //     trigger,
 //     formState: { errors },
 //     setValue,
@@ -18,8 +22,41 @@
 //     },
 //   });
 
+//   const [selectedNationality, setSelectedNationality] = useState(null);
+
+//   const countryNames = getNames();
+
+//   const options = countryNames.map((country) => ({
+//     label: (
+//       <div className="flex items-center">
+//         <Flag code={getCode(country)} style={{ width: '20px', marginRight: '8px' }} />
+//         {country}
+//       </div>
+//     ),
+//     value: getCode(country),
+//   }));
+
 //   useEffect(() => {
-//     // Only reset if the passenger data has actually changed
+//     if (passenger?.nationality) {
+//       const countryCode = getCode(passenger.nationality) || passenger.nationality;
+//       const countryName = getName(countryCode) || passenger.nationality;
+//       setSelectedNationality({
+//         label: (
+//           <div className="flex items-center">
+//             <Flag code={countryCode} style={{ width: '20px', marginRight: '8px' }} />
+//             {countryName}
+//           </div>
+//         ),
+//         value: countryCode,
+//       });
+//       setValue('nationality', countryCode);
+//     } else {
+//       setSelectedNationality(null);
+//       setValue('nationality', '');
+//     }
+//   }, [passenger, setValue]);
+
+//   useEffect(() => {
 //     if (
 //       passenger?.passportNumber !== watch("passportNumber") ||
 //       passenger?.issueDate !== watch("issueDate") ||
@@ -35,130 +72,152 @@
 //     }
 //   }, [passenger, reset, watch]);
 
+//   const handleChange = (selectedOption, field) => {
+//     setSelectedNationality(selectedOption);
+//     const countryCode = selectedOption.value;
+//     handleInputChange('nationality', countryCode);
+//     field.onChange(countryCode);
+//   };
+
 //   const handleInputChange = (name, value) => {
 //     setValue(name, value);
 //     trigger(name);
 //     updatePassenger(index, name, value);
 //   };
 
+//   const CustomPlaceholder = ({ placeholder }) => (
+//     <div>
+//       <span>{placeholder}</span>
+//     </div>
+//   );
+
 //   return (
 //     <div className="mt-4">
 //       <div className="text-lg font-semibold mb-4">Add Passport Information</div>
-//       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-//         <div className="relative p-2 mt-2">
-//           <select
-//             {...register("nationality", {
-//               required: "Nationality is required",
-//               minLength: { value: 2, message: "Minimum 2 characters" },
-//               maxLength: { value: 50, message: "Maximum 50 characters" },
-//             })}
-//             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-//             value={watch("nationality")}
-//             className="peer w-full h-10 border border-gray-300 rounded-lg  px-2 py-1 text-sm focus:outline-none"
-//             aria-label="Nationality"
-//           >
-//             <option value="" disabled>
-//               Select Nationality
-//             </option>
-//             <option value="US">United States</option>
-//             <option value="CA">Canada</option>
-//             <option value="GB">United Kingdom</option>
-//             <option value="IN">India</option>
-//             <option value="AU">Australia</option>
-//             <option value="DE">Germany</option>
-//             <option value="FR">France</option>
-//             <option value="JP">Japan</option>
-//           </select>
-//           <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
-//             Nationality
-//           </label>
-//           {errors.nationality && (
-//             <span className="text-red-500 text-xs">
-//               {errors.nationality.message}
-//             </span>
+//       <div className="flex justify-between">
+//         <Controller
+//           name="nationality"
+//           control={control}
+//           rules={{
+//             required: "Nationality is required",
+//           }}
+//           render={({ field }) => (
+//             <Select
+//               value={selectedNationality}
+//               placeholder={<CustomPlaceholder placeholder={"Nationality"} />}
+//               options={options}
+//               onChange={(selectedOption) => handleChange(selectedOption, field)}
+//               styles={{
+//                 control: (provided, state) => ({
+//                   ...provided,
+//                   boxShadow: "none",
+//                   borderColor: errors.nationality ? 'red' : provided.borderColor,
+//                   borderRadius: '4px',
+//                   borderWidth: '1px',
+//                   height: '100%',
+//                   '&:hover': {
+//                     borderColor: state.isFocused ? '#2684FF' : provided.borderColor,
+//                   },
+//                 }),
+//                 indicatorSeparator: () => ({
+//                   display: 'none',
+//                 }),
+//                 dropdownIndicator: (provided) => ({
+//                   ...provided,
+//                   color: errors.nationality ? 'red' : provided.color,
+//                 }),
+//                 valueContainer: (provided) => ({
+//                   ...provided,
+//                   padding: '0 8px',
+//                 }),
+//               }}
+//             />
 //           )}
-//         </div>
+//         />
 
-//         <div className="relative p-2 mt-2">
-//           <input
-//             type="text"
-//             {...register("passportNumber", {
-//               required: "Passport Number is required",
-//               minLength: { value: 8, message: "Minimum 8 characters" },
-//               maxLength: { value: 15, message: "Maximum 15 characters" },
-//             })}
-//             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-//             value={watch("passportNumber")}
-//             className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-transparent"
-//             aria-label="Passport Number"
-//           />
-//           <label className=" absolute top-0 left-2 w-44 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
-//             Passport Number
-//           </label>
-
-//           {errors.passportNumber && (
-//             <span className="text-red-500 text-xs">
-//               {errors.passportNumber.message}
-//             </span>
+//         <Controller
+//           name="passportNumber"
+//           control={control}
+//           rules={{
+//             required: "Passport Number is required",
+//             minLength: { value: 8, message: "Minimum 8 characters" },
+//             maxLength: { value: 15, message: "Maximum 15 characters" },
+//           }}
+//           render={({ field }) => (
+//             <TextField
+//               {...field}
+//               label="Passport Number"
+//               error={!!errors.passportNumber}
+//               helperText={errors.passportNumber?.message}
+//               onChange={(e) => {
+//                 field.onChange(e);
+//                 handleInputChange("passportNumber", e.target.value);
+//               }}
+//             />
 //           )}
-//         </div>
+//         />
 
-//         <div className="relative p-2 mt-2">
-//           <input
-//             type="date"
-//             {...register("issueDate", {
+//         {condition?.pid && (
+//           <Controller
+//             name="issueDate"
+//             control={control}
+//             rules={{
 //               required: "Issue Date is required",
-//             })}
-//             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-//             value={watch("issueDate")}
-//             className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-gray-400"
-//             placeholder="YYYY-MM-DD"
-//             aria-label="Issue Date"
+//             }}
+//             render={({ field }) => (
+//               <TextField
+//                 {...field}
+//                 label="Issue Date"
+//                 type="date"
+//                 InputLabelProps={{ shrink: true }}
+//                 error={!!errors.issueDate}
+//                 helperText={errors.issueDate?.message}
+//                 onChange={(e) => {
+//                   field.onChange(e);
+//                   handleInputChange("issueDate", e.target.value);
+//                 }}
+//               />
+//             )}
 //           />
-//           <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
-//             Issue Date
-//           </label>
-//           {errors.issueDate && (
-//             <span className="text-red-500 text-xs">
-//               {errors.issueDate.message}
-//             </span>
-//           )}
-//         </div>
+//         )}
 
-//         <div className="relative p-2 mt-2">
-//           <input
-//             type="date"
-//             {...register("expiryDate", {
+//         {condition?.pped && (
+//           <Controller
+//             name="expiryDate"
+//             control={control}
+//             rules={{
 //               required: "Expiry Date is required",
-//             })}
-//             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-//             value={watch("expiryDate")}
-//             className="peer w-full h-10 border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none placeholder-gray-400"
-//             placeholder="YYYY-MM-DD"
-//             aria-label="Expiry Date"
+//             }}
+//             render={({ field }) => (
+//               <TextField
+//                 {...field}
+//                 label="Expiry Date"
+//                 type="date"
+//                 InputLabelProps={{ shrink: true }}
+//                 error={!!errors.expiryDate}
+//                 helperText={errors.expiryDate?.message}
+//                 onChange={(e) => {
+//                   field.onChange(e);
+//                   handleInputChange("expiryDate", e.target.value);
+//                 }}
+//               />
+//             )}
 //           />
-//           <label className="absolute top-0 left-2 text-gray-500 text-sm transition-transform duration-300 transform -translate-y-4 scale-75 origin-top-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600">
-//             Expiry Date
-//           </label>
-//           {errors.expiryDate && (
-//             <span className="text-red-500 text-xs">
-//               {errors.expiryDate.message}
-//             </span>
-//           )}
-//         </div>
+//         )}
 //       </div>
 //     </div>
 //   );
 // };
 
 // export default PassportDetails;
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Select from 'react-select';
-import { getCode, getNames } from 'country-list';
+import { getCode, getName, getNames } from 'country-list';
+import Flag from 'react-world-flags';
 
-const PassportDetails = ({ passenger, index, updatePassenger }) => {
+const PassportDetails = ({ passenger, index, updatePassenger, condition }) => {
   const {
     control,
     trigger,
@@ -174,6 +233,30 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
       nationality: passenger?.nationality || "",
     },
   });
+
+  const [selectedNationality, setSelectedNationality] = useState(null);
+
+  const countryNames = getNames();
+
+  const options = countryNames.map((country) => ({
+    label: country,
+    value: getCode(country),
+  }));
+
+  useEffect(() => {
+    if (passenger?.nationality) {
+      const countryCode = getCode(passenger.nationality) || passenger.nationality;
+      const countryName = getName(countryCode) || passenger.nationality;
+      setSelectedNationality({
+        label: countryName,
+        value: countryCode,
+      });
+      setValue('nationality', countryCode);
+    } else {
+      setSelectedNationality(null);
+      setValue('nationality', '');
+    }
+  }, [passenger, setValue]);
 
   useEffect(() => {
     if (
@@ -191,16 +274,11 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
     }
   }, [passenger, reset, watch]);
 
-  const countryNames = getNames();
-
-
-  const options = countryNames.map(country => ({
-    label: country,
-    value: getCode(country),
-  }));
-
-  const handleChange = (selectedOption) => {
-    onSelectCountry(selectedOption.value);
+  const handleChange = (selectedOption, field) => {
+    setSelectedNationality(selectedOption);
+    const countryCode = selectedOption.value;
+    handleInputChange('nationality', countryCode);
+    field.onChange(countryCode);
   };
 
   const handleInputChange = (name, value) => {
@@ -209,10 +287,31 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
     updatePassenger(index, name, value);
   };
 
+  const CustomPlaceholder = ({ placeholder }) => (
+    <div>
+      <span>{placeholder}</span>
+    </div>
+  );
+
+  const customFilterOption = (option, inputValue) => {
+    const { label, value } = option;
+    return (
+      label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      value.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+
+  const formatOptionLabel = ({ label, value }) => (
+    <div className="flex items-center">
+      <Flag code={value} style={{ width: '20px', marginRight: '8px' }} />
+      {label}
+    </div>
+  );
+
   return (
     <div className="mt-4">
       <div className="text-lg font-semibold mb-4">Add Passport Information</div>
-      <div className="flex">
+      <div className="flex justify-between">
         <Controller
           name="nationality"
           control={control}
@@ -220,25 +319,38 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
             required: "Nationality is required",
           }}
           render={({ field }) => (
-            <div className="">
-
-              <Select
-                options={options}
-                onChange={handleChange}
-                placeholder="Nationality"
-                styles={{
-                  control: (provided) => ({
-                    ...provided,
-                    display: "flex",
-                    boxShadow: "none",
-                    border: "none",
-                    cursor: "pointer",
-                   
-                  }),
-                }}
-              />
-
-            </div>
+            <Select
+              value={selectedNationality}
+              placeholder={<CustomPlaceholder placeholder={"Nationality"} />}
+              options={options}
+              onChange={(selectedOption) => handleChange(selectedOption, field)}
+              filterOption={customFilterOption}
+              formatOptionLabel={formatOptionLabel}
+              styles={{
+                control: (provided, state) => ({
+                  ...provided,
+                  boxShadow: "none",
+                  borderColor: errors.nationality ? 'red' : provided.borderColor,
+                  borderRadius: '4px',
+                  borderWidth: '1px',
+                  height: '100%',
+                  '&:hover': {
+                    borderColor: state.isFocused ? '#2684FF' : provided.borderColor,
+                  },
+                }),
+                indicatorSeparator: () => ({
+                  display: 'none',
+                }),
+                dropdownIndicator: (provided) => ({
+                  ...provided,
+                  color: errors.nationality ? 'red' : provided.color,
+                }),
+                valueContainer: (provided) => ({
+                  ...provided,
+                  padding: '0 8px',
+                }),
+              }}
+            />
           )}
         />
 
@@ -254,7 +366,6 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
             <TextField
               {...field}
               label="Passport Number"
-              fullWidth
               error={!!errors.passportNumber}
               helperText={errors.passportNumber?.message}
               onChange={(e) => {
@@ -265,51 +376,53 @@ const PassportDetails = ({ passenger, index, updatePassenger }) => {
           )}
         />
 
-        <Controller
-          name="issueDate"
-          control={control}
-          rules={{
-            required: "Issue Date is required",
-          }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Issue Date"
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              error={!!errors.issueDate}
-              helperText={errors.issueDate?.message}
-              onChange={(e) => {
-                field.onChange(e);
-                handleInputChange("issueDate", e.target.value);
-              }}
-            />
-          )}
-        />
+        {condition?.pid && (
+          <Controller
+            name="issueDate"
+            control={control}
+            rules={{
+              required: "Issue Date is required",
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Issue Date"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                error={!!errors.issueDate}
+                helperText={errors.issueDate?.message}
+                onChange={(e) => {
+                  field.onChange(e);
+                  handleInputChange("issueDate", e.target.value);
+                }}
+              />
+            )}
+          />
+        )}
 
-        <Controller
-          name="expiryDate"
-          control={control}
-          rules={{
-            required: "Expiry Date is required",
-          }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Expiry Date"
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              error={!!errors.expiryDate}
-              helperText={errors.expiryDate?.message}
-              onChange={(e) => {
-                field.onChange(e);
-                handleInputChange("expiryDate", e.target.value);
-              }}
-            />
-          )}
-        />
+        {condition?.pped && (
+          <Controller
+            name="expiryDate"
+            control={control}
+            rules={{
+              required: "Expiry Date is required",
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Expiry Date"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                error={!!errors.expiryDate}
+                helperText={errors.expiryDate?.message}
+                onChange={(e) => {
+                  field.onChange(e);
+                  handleInputChange("expiryDate", e.target.value);
+                }}
+              />
+            )}
+          />
+        )}
       </div>
     </div>
   );
