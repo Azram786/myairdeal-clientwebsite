@@ -249,26 +249,30 @@ const OfferSection = () => {
                 trip with us.
               </div>
             </div>
-            <div className="flex items-center rounded-lg w-full md:w-1/4 2xl:h-full relative">
-      <select
-        className="appearance-none flex justify-center text-white items-center p-2 pr-8 w-full outline-none sm:w-1/2 sm:mx-auto rounded-lg border border-white mt-1 font-roboto text-center font-light bg-transparent md:w-3/4 2xl:w-3/4 2xl:p-4"
-        name=""
-        id=""
-        defaultValue="i"
-      >
-        <option className="text-black bg-gray-100" value="i">
-          International
-        </option>
-        <option className="text-black bg-gray-100" value="d">
-          Domestic
-        </option>
-      </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
-        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-          <path d="M7 10l5 5 5-5H7z" />
-        </svg>
-      </div>
-    </div>
+            <div className="flex items-center border-2 rounded-lg w-full md:w-[20%] h-10 relative">
+              <select
+                className="appearance-none flex justify-center  text-white items-center px-7  w-full outline-none sm:w-1/2 sm:mx-auto rounded-lg text-center font-light bg-transparent md:w-3/4 2xl:w-3/4 2xl:p-4"
+                name=""
+                id=""
+                defaultValue="i"
+              >
+                <option className="text-black w-full bg-gray-100" value="i">
+                  International
+                </option>
+                <option className="text-black bg-gray-100" value="d">
+                  Domestic
+                </option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M7 10l5 5 5-5H7z" />
+                </svg>
+              </div>
+            </div>
           </div>
           <div className="h-full px-6 py-6 text-white grid gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
             {offers.map((offer, index) => (

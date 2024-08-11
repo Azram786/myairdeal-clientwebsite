@@ -71,11 +71,15 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs font-semibold line-clamp-1">
                 {`${paxInfo.ADULT} Adults ${
                   paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""} `
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      } `
                     : ""
                 }${
                   paxInfo.INFANT > 0
-                    ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""} `
+                    ? `,${paxInfo.INFANT} Infant${
+                        paxInfo.INFANT > 1 ? "s" : ""
+                      } `
                     : ""
                 } | ${cabinClass}`}
               </span>
@@ -116,7 +120,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
           </Link>
         </div>
       </div>
-  
+
       {/* Dropdown for small screens */}
       <div className="md:hidden mx-2 bg-[#007EC4] text-white p-2 rounded-md">
         <details className="w-full">
@@ -142,11 +146,15 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs font-semibold">
                 {`${paxInfo.ADULT} Adults ${
                   paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""} `
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      } `
                     : ""
                 }${
                   paxInfo.INFANT > 0
-                    ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""} `
+                    ? `,${paxInfo.INFANT} Infant${
+                        paxInfo.INFANT > 1 ? "s" : ""
+                      } `
                     : ""
                 } | ${cabinClass}`}
               </span>
@@ -217,7 +225,9 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs font-semibold line-clamp-1">
                 {`${paxInfo.ADULT} Adults${
                   paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""}`
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      }`
                     : ""
                 }${
                   paxInfo.INFANT > 0
@@ -231,13 +241,13 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 {`${paxInfo.ADULT} Adults${
                   paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""}`
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      }`
                     : ""
                 }, ${
                   paxInfo.INFANT > 0
-                    ? `${paxInfo.INFANT} Infant${
-                        paxInfo.INFANT > 1 ? "s" : ""
-                      }`
+                    ? `${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""}`
                     : "No Infants"
                 }, | ${cabinClass}`}
               </div>
@@ -258,7 +268,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
           </Link>
         </div>
       </div>
-  
+
       {/* Dropdown for small screens */}
       <div className="md:hidden mx-2 bg-[#007EC4] text-white p-2 rounded-md">
         <details className="w-full">
@@ -296,7 +306,9 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs font-semibold">
                 {`${paxInfo.ADULT} Adults${
                   paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""}`
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      }`
                     : ""
                 }${
                   paxInfo.INFANT > 0
@@ -323,8 +335,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
       </div>
     </div>
   );
-  
-  
+
   const renderMultiCity = () => (
     <div>
       {/* Grid layout for medium and larger screens */}
@@ -363,24 +374,32 @@ const FlightSearchSummary = ({ data, tripType }) => {
                 <span className="text-xs font-semibold line-clamp-1">
                   {`${paxInfo.ADULT} Adults ${
                     paxInfo.CHILD > 0
-                      ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""} `
+                      ? `, ${paxInfo.CHILD} Child${
+                          paxInfo.CHILD > 1 ? "ren" : ""
+                        } `
                       : ""
                   }${
                     paxInfo.INFANT > 0
-                      ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""} `
+                      ? `,${paxInfo.INFANT} Infant${
+                          paxInfo.INFANT > 1 ? "s" : ""
+                        } `
                       : ""
                   } | ${cabinClass}`}
                 </span>
                 <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   {`${paxInfo.ADULT} Adults, ${
                     paxInfo.CHILD > 0
-                      ? `${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""}`
+                      ? `${paxInfo.CHILD} Child${
+                          paxInfo.CHILD > 1 ? "ren" : ""
+                        }`
                       : "No Children"
                   }, ${
                     paxInfo.INFANT > 0
-                      ? `${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""}`
+                      ? `${paxInfo.INFANT} Infant${
+                          paxInfo.INFANT > 1 ? "s" : ""
+                        }`
                       : "No Infants"
-                  }`}
+                  },`}
                 </div>
               </div>
             </div>
@@ -402,7 +421,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
           </div>
         </div>
       </div>
-  
+
       {/* Dropdown for small screens */}
       <div className="md:hidden mx-2 bg-[#007EC4] text-white p-2 rounded-md">
         <details className="w-full">
@@ -438,11 +457,15 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs font-semibold">
                 {`${paxInfo.ADULT} Adults ${
                   paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""} `
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      } `
                     : ""
                 }${
                   paxInfo.INFANT > 0
-                    ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""} `
+                    ? `,${paxInfo.INFANT} Infant${
+                        paxInfo.INFANT > 1 ? "s" : ""
+                      } `
                     : ""
                 } | ${cabinClass}`}
               </span>
@@ -463,8 +486,6 @@ const FlightSearchSummary = ({ data, tripType }) => {
       </div>
     </div>
   );
-  
-  
 
   return (
     <div className="w-full ">

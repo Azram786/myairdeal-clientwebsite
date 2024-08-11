@@ -260,17 +260,17 @@ const BookingCard = ({ selectedFlights, onBook, passenger }) => {
   }, [selectedFlights, calculateTotalPrice]);
 
   const getFlightDetails = (flight) => {
-    const segments = flight?.sI;
-    const firstSegment = segments[0];
-    const lastSegment = segments[segments.length - 1];
+    const segments = flight?.sI || [];
+    const firstSegment = segments[0] || {};
+    const lastSegment = segments[segments.length - 1] || {};
     return {
-      departureCity: firstSegment?.da.code,
-      departureTime: firstSegment?.dt.substring(11, 16),
-      arrivalCity: lastSegment?.aa.code,
-      arrivalTime: lastSegment?.at.substring(11, 16),
-      airline: firstSegment?.fD.aI.name,
-      flightNumber: firstSegment?.fD.fN,
-      airlineCode: firstSegment?.fD.aI.code,
+      departureCity: firstSegment?.da?.code,
+      departureTime: firstSegment?.dt?.substring(11, 16),
+      arrivalCity: lastSegment?.aa?.code,
+      arrivalTime: lastSegment?.at?.substring(11, 16),
+      airline: firstSegment?.fD?.aI?.name,
+      flightNumber: firstSegment?.fD?.fN,
+      airlineCode: firstSegment?.fD?.aI?.code,
     };
   };
 

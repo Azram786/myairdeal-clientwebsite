@@ -35,6 +35,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
         headers: { authorization: `Bearer ${token}` },
       })
       .then((response) => {
+        // console.log(response.data,"Data Data Data")
         setHistoryData(response.data);
         setLoading(false);
       })

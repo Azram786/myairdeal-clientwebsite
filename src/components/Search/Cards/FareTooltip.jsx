@@ -93,11 +93,11 @@ const FareToolTip = ({ taxDetails }) => {
       >
         <div className="grid grid-cols-2 gap-1 text-xs">
           <span>Airline GST:</span>
-          <span>₹{AGST.toFixed(2)}</span>
+          <span>₹{AGST?.toFixed(2) || "N/A"}</span>
           <span>Other Taxes:</span>
-          <span>₹{OT.toFixed(2)}</span>
+          <span>₹{OT?.toFixed(2) || "N/A"}</span>
           <span>YR:</span>
-          <span>₹{YR.toFixed(2)}</span>
+          <span>₹{YR?.toFixed(2) || "N/A"}</span>
         </div>
       </div>
     </div>

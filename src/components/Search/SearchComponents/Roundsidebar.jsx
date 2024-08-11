@@ -65,11 +65,11 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
     const newValue = parseInt(e.target.value);
     const thumbOffset = (newValue / maxPrices[activeDirection]) * 100;
   
-    // Update tooltip position and visibility
+    //tooltip for price
     setTooltipPosition(thumbOffset);
     setShowTooltip(true);
   
-    // Update filters state
+    
     setFilters(prev => ({
       ...prev,
       [activeDirection]: {
