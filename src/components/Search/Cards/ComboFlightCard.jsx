@@ -6,7 +6,7 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 
-import defaultAirline from '../../../assets/home/logo/defaultAirline.png'
+import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
 import FareToolTip from "./FareTooltip";
 import calculateDuration from "../../util/calculateDuration";
 
@@ -65,7 +65,7 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
 
   const renderTabs = () => {
     switch (activeTab) {
-      case "Flight Details":
+      case "Flight Details ":
         return (
           <div className="w-full">
             {data.map((segment, index) => (
@@ -74,7 +74,12 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                 className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
               >
                 <div className="flex items-center">
-                  <img src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`} onError={(e) => e.currentTarget.src = defaultAirline} alt={segment?.fD?.aI?.code} className="w-10 h-10 mr-4" />
+                  <img
+                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                    onError={(e) => (e.currentTarget.src = defaultAirline)}
+                    alt={segment?.fD?.aI?.code}
+                    className="w-10 h-10 mr-4"
+                  />
                   <div>
                     <div className="font-bold text-sm">
                       {segment.fD.aI.name} {segment.fD.fN}
@@ -141,18 +146,23 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
             </div>
             {Object.entries(passenger).map(([passengerType, count]) => {
               if (count > 0) {
-                const details = priceList[selectedPriceIndex]?.fd[passengerType];
+                const details =
+                  priceList[selectedPriceIndex]?.fd[passengerType];
                 if (details) {
                   return (
                     <div key={passengerType} className="mb-4">
                       <div className="grid grid-cols-3 w-full text-xs text-gray-600 mb-2">
-                        <div>Fare Details for {passengerType} (CB: {details.cc})</div>
+                        <div>
+                          Fare Details for {passengerType} (CB: {details.cc})
+                        </div>
                         <div></div>
                         <div></div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
                         <div>Base Price</div>
-                        <div>₹{details.fC.BF.toFixed(2)} x {count}</div>
+                        <div>
+                          ₹{details.fC.BF.toFixed(2)} x {count}
+                        </div>
                         <div>₹{(details.fC.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
@@ -210,7 +220,10 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
   const displayedPrices = showAllPrices ? priceList : priceList;
 
   const isConnectionFlight = data.length > 1;
-  const totalDuration = data.reduce((sum, segment) => sum + segment.duration, 0);
+  const totalDuration = data.reduce(
+    (sum, segment) => sum + segment.duration,
+    0
+  );
 
   return (
     <>
@@ -221,7 +234,7 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
               <div className="md:hidden">
                 <img
                   src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-                  onError={(e) => e.currentTarget.src = defaultAirline}
+                  onError={(e) => (e.currentTarget.src = defaultAirline)}
                   alt={startSegment?.fD?.aI?.code}
                   className="size-12 hidden mr-6"
                 />
@@ -229,12 +242,14 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
               <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
                 <img
                   src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-                  onError={(e) => e.currentTarget.src = defaultAirline}
+                  onError={(e) => (e.currentTarget.src = defaultAirline)}
                   alt={startSegment?.fD?.aI?.code}
                   className="size-12 md:flex hidden  mr-6"
                 />
                 <div>
-                  <h1 className="text-base font-bold">{startSegment.da.code}</h1>
+                  <h1 className="text-base font-bold">
+                    {startSegment.da.code}
+                  </h1>
                   {/* <h1 className="text-sm text-gray-500">{startSegment.da.city}</h1> */}
                   <h1 className="text-xs">{formatDateTime(startSegment.dt)}</h1>
                 </div>
@@ -247,7 +262,7 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                   <div className="flex items-center">
                     {isConnectionFlight ? (
                       <span>
-                        {data.length - 1} stop{data.length > 2 ? 's' : ''}
+                        {data.length - 1} stop{data.length > 2 ? "s" : ""}
                         {data.length === 2 && ` via ${data[0].aa.city}`}
                       </span>
                     ) : (
@@ -282,9 +297,11 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                 `}
                   >
                     <div className="flex flex-col w-full text-xs">
-                      <p className="font-semibold">₹ {calculateTotalPrice(index).toFixed(2)}</p>
+                      <p className="font-semibold">
+                        ₹ {calculateTotalPrice(index).toFixed(2)}
+                      </p>
                       <p className="text-[10px]">
-                        <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700">
+                        <span className="bg-gray-400 p-0.5 bg-opacity-50 rounded-md text-black">
                           {price?.fareIdentifier}
                         </span>{" "}
                         {price?.fd?.ADULT?.cc}
@@ -295,7 +312,22 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                     </div>
                   </div>
                 ))}
-
+                {/* {priceList.length > 1 && (
+              <button
+                onClick={() => setShowAllPrices(!showAllPrices)}
+                className="text-blue-500 text-sm mt-2 flex items-center"
+              >
+                {showAllPrices ? (
+                  <>
+                    <FaChevronUp className="mr-1" /> Show less
+                  </>
+                ) : (
+                  <>
+                    <FaChevronDown className="mr-1" /> Show more
+                  </>
+                )}
+              </button>
+            )} */}
               </div>
               <div>
                 <button
@@ -331,8 +363,8 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
 
 
         {showDetails && (
-          <div className="mt-4 border-t overflow-x-auto border-gray-200 pt-4">
-            <div className="mb-2 flex">
+          <div className="mt-4 border-t overflow-x-auto   border-gray-200 pt-4">
+            <div className="mb-2   flex">
               {[
                 "Flight Details",
                 "Fare Details",
@@ -342,7 +374,8 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`py-2 px-4 text-sm ${activeTab === tab
+                  className={`py-2  px-4 text-sm ${
+                    activeTab === tab
                       ? "text-[#007EC4] font-bold border-b-2 border-[#007EC4]"
                       : "text-gray-500"
                     }`}

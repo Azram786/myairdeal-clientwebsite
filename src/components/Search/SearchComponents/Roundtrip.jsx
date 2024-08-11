@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import RoundTripCard from "../Cards/RoundTripFlightCard";
 import RoundSideBar from "./Roundsidebar";
 import BookingCard from "./BookingCards";
 import ReactToast from "../../util/ReactToast";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import RoundTripCard from "../Cards/RoundTripFlightCard";
+import { FaFilter, FaTimes } from "react-icons/fa";
 
-const RoundTrip = ({ onwardProps = [], returnProps = [], passenger, query }) => {
+const RoundTrip = ({
+  onwardProps = [],
+  returnProps = [],
+  passenger,
+  query,
+}) => {
   const [filteredOnward, setFilteredOnward] = useState([]);
   const [filteredReturn, setFilteredReturn] = useState([]);
   const [activeDirection, setActiveDirection] = useState("onward");
@@ -19,7 +25,14 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger, query }) => 
   const [isSpecialReturnActive, setIsSpecialReturnActive] = useState(false);
 
   console.log(specialReturnOnward, specialReturnReturn, "-0-0-0-0-0-0-0-")
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const [activeSection, setActiveSection] = useState("onward");
+
+  const handleToggleSection = (section) => {
+    setActiveSection(section);
+  };
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
@@ -63,7 +76,9 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger, query }) => 
       const stops = flight.sI.length - 1;
       const airline = flight.sI[0]?.fD?.aI?.name || "";
       const departureTime = new Date(flight.sI[0].dt).getHours();
-      const arrivalTime = new Date(flight.sI[flight.sI.length - 1].at).getHours();
+      const arrivalTime = new Date(
+        flight.sI[flight.sI.length - 1].at
+      ).getHours();
       const price = calculateTotalPrice(flight);
 
       const isInTimeRange = (time, ranges) => {
@@ -316,7 +331,7 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger, query }) => 
     console.log(data);
 
     if (!token) {
-      ReactToast('Please login first')
+      ReactToast("Please login first");
       navigate("/sign-in");
       return;
     }
@@ -363,8 +378,39 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger, query }) => 
 
 
   return (
-    <div className="flex flex-col md:flex-row mb-24">
-      <RoundSideBar
+    <div className=" flex flex-wrap flex-col  md:flex-row mb-24  ">
+      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
+        {/* Filter icon for screens up to 1024px */}
+        <button
+          className="absolute bottom-0 top-4 right-4 z-50 lg-custom:hidden"
+          onClick={toggleSidebar}
+        >
+          <FaFilter className="w-6 h-6 z-10 text-blue-600" />
+        </button>
+
+        {/* Sidebar for larger screens and modal-like display for screens up to 1024px */}
+        <div
+          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 bg-white transform ${
+            isSidebarOpen ? "translate-x-0" : "translate-x-full"
+          } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100%",
+            marginTop:"2%",
+            marginBottom:"2%",
+            height: "auto",
+            width: "auto",
+          }}
+        >
+          {/* Close button for modal */}
+          <button
+            className="absolute top-4  right-4 z-50 text-blue-600 lg-custom:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          >
+            <FaTimes className="w-6 h-6" />
+          </button>
+
+          <RoundSideBar
         passenger={passenger}
         filters={filters}
         setFilters={setFilters}
@@ -376,24 +422,52 @@ const RoundTrip = ({ onwardProps = [], returnProps = [], passenger, query }) => 
         isSpecialReturn={isSpecialReturnActive}
         setIspecialReturn={setIsSpecialReturnActive}
       />
-      <div className="flex flex-col md:w-3/4">
-        <div className="flex">
-          <div className="w-1/2">
-            <h2 className="text-sm text-center md:text-xl font-semibold mb-2">
+        </div>
+
+        {/* Overlay for screens up to 1024px */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+      </div>
+      <div className="flex flex-wrap mx-0 flex-col w-full lg-custom:w-[80%]">
+        <div className="flex flex-wrap">
+          <div className="w-full lg-custom:w-1/2">
+            <h2
+              className={`text-sm text-center lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
+                activeSection === "onward" ? "bg-blue-200" : "bg-white"
+              } lg-custom:bg-white`}
+              onClick={() => handleToggleSection("onward")}
+            >
               {getRoute(filteredOnward)}
             </h2>
           </div>
-          <div className="w-1/2">
-            <h2 className="text-sm text-center md:text-xl font-semibold mb-2">
+          <div className="w-full lg-custom:w-1/2">
+            <h2
+              className={`text-sm text-center lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
+                activeSection === "return" ? "bg-blue-200" : "bg-white"
+              } lg-custom:bg-white`}
+              onClick={() => handleToggleSection("return")}
+            >
               {getRoute(filteredReturn)}
             </h2>
           </div>
         </div>
-        <div className="flex h-[850px]">
-          <div className="w-1/2 overflow-y-auto no-scroll">
+        <div className="flex h-[850px] flex-col lg-custom:flex-row">
+          <div
+            className={`w-full lg-custom:w-1/2 overflow-y-auto no-scroll ${
+              activeSection === "onward" ? "block" : "hidden"
+            } lg-custom:block`}
+          >
             {renderFlightSection(filteredOnward, "onward")}
           </div>
-          <div className="w-1/2 overflow-y-auto no-scroll">
+          <div
+            className={`w-full lg-custom:w-1/2 overflow-y-auto no-scroll ${
+              activeSection === "return" ? "block" : "hidden"
+            } lg-custom:block`}
+          >
             {renderFlightSection(filteredReturn, "return")}
           </div>
         </div>

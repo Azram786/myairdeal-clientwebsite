@@ -37,18 +37,18 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
             </div>
             <div className="w-full  ">
 
-              <div className="text-xl font-bold uppercase ">
+              <div className="text-base md:text-lg font-bold uppercase ">
                 {/* {user?.firstName} {user?.lastName} */}
                 {singleBookingData?.gstInfo?.registeredName || user.firstName}
               </div>
-              <div className="text-lg  lg:text-xl  flex-col md:flex-row font-semibold flex w-full justify-between">
+              <div className="text-base  lg:text-lg  flex-col md:flex-row font-semibold flex w-full justify-between">
                 <div className=" flex ">
                   <p className="text-white">ID:</p>
                   <span className="text-slate-200 px-2">{singleBookingData?.order.bookingId}</span>
                 </div>
                 <div className="text-semibold flex ">
-                  <div className="text-xl lg:text-2xl ">Price:</div>
-                  <div className="text-xl lg:text-2xl flex flex-wrap">
+                  <div className="text-lg lg:text-xl ">Price:</div>
+                  <div className="text-lg lg:text-xl flex flex-wrap">
                     ₹{" "}
                     <span className="">
                       {
@@ -91,7 +91,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                     </div>
                   </div>
 
-                  <div className="flex w-full h-full  justify-between items-center ">
+                  <div className="flex w-full  h-full  justify-between items-center ">
                     <div className="w-1/3 flex text-center flex-col gap-1 h-full">
                       <div className="font-bold text-md">
                         <span>{value.sI[0].da.code}</span>
@@ -154,7 +154,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                     </div>
                   </div>
                 </div>
-                <div className="w-full flex flex-col lg:items-center justify-center lg:justify-start">
+                <div className="w-full  flex flex-col lg:items-center justify-center lg:justify-start">
                   <div className="justify-center p-2 bg-[#D0E7F4]  rounded-lg flex items-center gap-3">
                     <h1 className=" md:text-xl lg:text-2xl font-semibold text-gray-800 ">
                       Total Duration
@@ -163,7 +163,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                   </div>
                   <div className="flex md:flex-col lg:w-full justify-center md:justify-between px-1 mt-1 lg:mt-4">
 
-                    <div className="flex flex-wrap md:justify-between sm:items-center mb-2  flex-col md:flex-row w-full  justify-center md:items-center">
+                    <div className="flex my-2 flex-wrap md:justify-between sm:items-center mb-2 flex-col md:flex-row w-full  justify-center md:items-center">
                       <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
                           <MdDateRange />
@@ -172,7 +172,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                           <div className="text-[#495049] text-sm  md:text-base font-semibold">
                             Departure Date
                           </div>
-                          <div className="font-semibold text-sm md:text-lg">
+                          <div className="font-semibold text-sm ">
                             {dateDateFormatChanger(value.sI[0].dt)}
                           </div>
                         </div>
@@ -185,7 +185,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                           <div className="text-[#495049] text-sm md:text-base font-semibold">
                             Departure Time
                           </div>
-                          <div className="font-semibold text-sm md:text-lg">
+                          <div className="font-semibold text-sm ">
                             {timeFormatChanger(value.sI[0].dt)}
                           </div>
                         </div>
@@ -198,7 +198,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                           <div className="text-[#495049] text-sm md:text-base font-semibold">
                             Arrival time
                           </div>
-                          <div className="font-semibold text-sm md:text-lg">
+                          <div className="font-semibold text-sm">
                             {value.sI.length === 1
                               ? timeFormatChanger(value.sI[0].at)
                               : timeFormatChanger(value.sI[value.sI.length - 1].at)}
@@ -206,7 +206,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-wrap md:justify-between mb-2 flex-col md:flex-row w-full  sm:items-center   justify-center md:items-center">
+                    <div className="flex my-2 flex-wrap md:justify-between mb-2 flex-col md:flex-row w-full  sm:items-center   justify-center md:items-center">
                       <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 ">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
                           <BsDoorClosedFill />
@@ -215,7 +215,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                           <div className="text-[#495049] text-sm  md:text-base font-semibold">
                             Terminal
                           </div>
-                          <div className="font-semibold text-sm md:text-lg">
+                          <div className="font-semibold text-sm ">
                             {value.sI[0].da.terminal
                               ? value.sI[0].da.terminal
                               : "NA"}
@@ -230,7 +230,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                           <div className="text-[#495049] text-sm md:text-base font-semibold">
                             Stops
                           </div>
-                          <div className="font-semibold text-sm md:text-lg">
+                          <div className="font-semibold text-sm ">
                             {value.sI.length - 1}
                           </div>
                         </div>
@@ -243,7 +243,7 @@ const ViewDetailedBookingCard = ({ singleBookingData, searchQuery, amendment }) 
                           <div className="text-[#495049] text-sm md:text-base font-semibold">
                             Seat Class
                           </div>
-                          <div className="font-semibold text-sm md:text-lg">
+                          <div className="font-semibold text-sm">
                             {searchQuery.cabinClass}
                           </div>
                         </div>

@@ -1042,7 +1042,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
   }
 
   return (
-    <div className="flex flex-row text-xs md:text-base md:w-1/5 border p-4 m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex flex-row text-xs md:text-base w-[80%] border p-4 m-2 shadow-md rounded-md min-h-screen">
       <div className="grid gap-2 w-full grid-cols-1">
         {/* Price slider */}
         <div className="mb-6 border-b border-gray-300 pb-4">
@@ -1065,14 +1065,14 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
         {/* Stops */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-sm font-semibold mb-2">Stops</h3>
-          <div className="grid w-full grid-cols-4 ">
+          <div className="grid grid-flow-row w-full  grid-cols-4 md:grid-cols-2 lg:grid-cols-4 ">
             {stops.map((stop, index) => {
               const stopCount = Object.values(flightCountMap).reduce((acc, airline) => acc + (airline.stops[stop] || 0), 0);
               return (
                 <label
                   key={stop}
                   htmlFor={`stop-${stop}`}
-                  className={`mb-1 border flex flex-col text-xs justify-center items-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
+                  className={`mb-1 border flex hover:bg-blue-100 flex-col text-xs justify-center items-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
                     filters[activeTabIndex].stops.includes(stop) ? 'bg-blue-200' : ''
                   }`}
                 >
@@ -1094,7 +1094,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
         {/* Departure Time */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-sm font-semibold mb-2">Departure Time from {departureCity}</h3>
-          <div className='grid grid-cols-4 place-items-center gap-2 '>
+          <div className='grid grid-cols-4 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-2 '>
             {[
               { icon: <PiMountains />, time: "00-06" },
               { icon: <IoIosSunny />, time: "06-12" },
@@ -1103,7 +1103,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 border flex text-xs flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500 border hover:bg-blue-100 flex text-xs flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters[activeTabIndex].departureTime.includes(time) ? 'bg-blue-200' : ''
                 }`}
                 onClick={() => handleTimeChange('departureTime', time)}
@@ -1118,7 +1118,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
         {/* Arrival Time */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-sm font-semibold mb-2">Arrival Time at {arrivalCity}</h3>
-          <div className='grid grid-cols-4 place-items-center gap-2 '>
+          <div className='grid grid-cols-4 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-2 '>
             {[
               { icon: <PiMountains />, time: "00-06" },
               { icon: <IoIosSunny />, time: "06-12" },
@@ -1127,7 +1127,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500 border hover:bg-blue-100 text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters[activeTabIndex].arrivalTime.includes(time) ? 'bg-blue-200' : ''
                 }`}
                 onClick={() => handleTimeChange('arrivalTime', time)}

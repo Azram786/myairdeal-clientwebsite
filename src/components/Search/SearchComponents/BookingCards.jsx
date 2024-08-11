@@ -275,7 +275,7 @@ const BookingCard = ({ selectedFlights, onBook, passenger }) => {
   };
 
   return (
-    <div className="fixed left-0 bottom-0 w-full bg-[#0A223D]  text-white p-2">
+    <div className="fixed left-0 bottom-0 w-full bg-[#0A223D]  text-white p-2 z-50">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className='w-[55%] md:w-[70%] flex overflow-x-auto no-scroll gap-2'>
           {selectedFlights.map((flight, index) => {

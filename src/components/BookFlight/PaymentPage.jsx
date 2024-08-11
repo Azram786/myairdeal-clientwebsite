@@ -191,47 +191,142 @@ const PaymentPage = ({ passengersData, data }) => {
      </div>
     );
   }
+  const [paymentMethod, setPaymentMethod] = useState(''); // State to manage selected payment method
+
+  const handlePaymentMethodChange = (e) => {
+    setPaymentMethod(e.target.value);
+  };
 
   return (
     <div>
-      <div className='flex flex-col w-full h-full justify-center  items-center '>
+      <div className='flex flex-col w-full h-full justify-center mb-8 items-center '>
       
-        <h2 className="text-2xl font-bold mb-4">Payment Details</h2>
+        <h2 className="text-2xl text-left border-b-2 w-full  leading-10 font-bold mb-4">Payment </h2>
+        <div className="w-full text-left">
+      <div className="w-full text-left mb-4">
+        <p className="text-base">Pay with:</p>
+        <select
+          value={paymentMethod}
+          onChange={handlePaymentMethodChange}
+          className="w-full p-2 text-base border border-gray-300 rounded"
+        >
+          <option value="">Select Payment Method</option>
+          <option value="card">Card</option>
+          <option value="bank">Bank</option>
+          <option value="transfer">Transfer</option>
+        </select>
+      </div>
+
+      {/* Card Payment Fields */}
+      {paymentMethod === 'card' && (
+        <div className="w-full text-left">
+          <p className="text-base font-semibold">Card Number:</p>
+          <input
+            type="number"
+            placeholder="Enter Card Number"
+            className="w-full p-2 border border-gray-300 text-sm rounded mb-4"
+          />
+
+          <p className="text-base font-semibold">Expiry Date:</p>
+          <input
+            type="number"
+            placeholder="MM/YY"
+            className="w-full p-2 border border-gray-300 rounded mb-4 text-sm"
+          />
+
+          <p className="text-base font-semibold">CVV:</p>
+          <input
+            type="password"
+            placeholder="CVV"
+            className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
+          />
+        </div>
+      )}
+
+      {/* Bank Payment Fields */}
+      {paymentMethod === 'bank' && (
+        <div className="w-full text-left">
+          <p className="text-base font-semibold">Account Number:</p>
+          <input
+            type="text"
+            placeholder="Enter Account Number"
+            className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
+          />
+
+          <p className="text-base font-semibold">Bank Name:</p>
+          <input
+            type="text"
+            placeholder="Enter Bank Name"
+            className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
+          />
+
+          <p className="text-base font-semibold">IFSC Code:</p>
+          <input
+            type="text"
+            placeholder="Enter IFSC Code"
+            className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
+          />
+        </div>
+      )}
+
+      {/* Transfer Payment Fields */}
+      {paymentMethod === 'transfer' && (
+        <div className="w-full text-left">
+          <p className="text-base font-semibold">UPI ID:</p>
+          <input
+            type="text"
+            placeholder="Enter UPI ID"
+            className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
+          />
+
+          <p className="text-base font-semibold">Reference Number:</p>
+          <input
+            type="text"
+            placeholder="Enter Reference Number"
+            className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
+          />
+        </div>
+      )}
+    </div>
+        <p className='text-sm '>Your personal data will be used to process your order,support your experince throughout this website,and for other purposes described in our privacy policy.</p>
+        
       
-        <table className="w-full border-collapse border overflow-auto max-h-80 border-gray-300 mb-4">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 p-2">Passenger</th>
-              <th className="border border-gray-300 p-2">Type</th>
-              <th className="border border-gray-300 p-2">Base Fare</th>
-              <th className="border border-gray-300 p-2">Meals</th>
-              <th className="border border-gray-300 p-2">Seat</th>
-              <th className="border border-gray-300 p-2">Baggage</th>
-              <th className="border border-gray-300 p-2">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {calculatePassengerDetails.map((passenger, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-2">{passenger.name}</td>
-                <td className="border border-gray-300 p-2">{passenger.type}</td>
-                <td className="border border-gray-300 p-2">₹{passenger.baseFare.toFixed(2)}</td>
-                <td className="border border-gray-300 p-2">₹{passenger.mealsCost.toFixed(2)}</td>
-                <td className="border border-gray-300 p-2">₹{passenger.seatsCost.toFixed(2)}</td>
-                <td className="border border-gray-300 p-2">₹{passenger.baggageCost.toFixed(2)}</td>
-                <td className="border border-gray-300 p-2 font-bold">₹{passenger.totalCost.toFixed(2)}</td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr className="bg-gray-100">
-              <td colSpan={6} className="border border-gray-300 p-2 text-right font-bold">Total Amount:</td>
-              <td className="border border-gray-300 p-2 font-bold">₹{totalAmount.toFixed(2)}</td>
-            </tr>
-          </tfoot>
-        </table>
+      
+        {/* <table className="w-full border-collapse border overflow-auto max-h-80 border-gray-300 mb-4 shadow-lg rounded-lg">
+  <thead>
+    <tr className="bg-gray-200 text-gray-700 uppercase text-xs leading-normal">
+      <th className="border border-gray-300 p-3 text-left">Passenger</th>
+      <th className="border border-gray-300 p-3 text-left">Type</th>
+      <th className="border border-gray-300 p-3 text-left">Base Fare</th>
+      <th className="border border-gray-300 p-3 text-left">Meals</th>
+      <th className="border border-gray-300 p-3 text-left">Seat</th>
+      <th className="border border-gray-300 p-3 text-left">Baggage</th>
+      <th className="border border-gray-300 p-3 text-left">Total</th>
+    </tr>
+  </thead>
+  <tbody className="text-gray-600 text-sm font-light">
+    {calculatePassengerDetails.map((passenger, index) => (
+      <tr key={index} className="border-b border-gray-300 hover:bg-gray-100">
+        <td className="border border-gray-300 p-3">{passenger.name}</td>
+        <td className="border border-gray-300 p-3">{passenger.type}</td>
+        <td className="border border-gray-300 p-3">₹{passenger.baseFare.toFixed(2)}</td>
+        <td className="border border-gray-300 p-3">₹{passenger.mealsCost.toFixed(2)}</td>
+        <td className="border border-gray-300 p-3">₹{passenger.seatsCost.toFixed(2)}</td>
+        <td className="border border-gray-300 p-3">₹{passenger.baggageCost.toFixed(2)}</td>
+        <td className="border border-gray-300 p-3 font-bold text-gray-900">₹{passenger.totalCost.toFixed(2)}</td>
+      </tr>
+    ))}
+  </tbody>
+  <tfoot>
+    <tr className="bg-gray-200 text-gray-700 uppercase text-xs leading-normal">
+      <td colSpan={6} className="border border-gray-300 p-3 text-right font-bold">Total Amount:</td>
+      <td className="border border-gray-300 p-3 font-bold text-gray-900">₹{totalAmount.toFixed(2)}</td>
+    </tr>
+  </tfoot>
+</table> */}
+
         <button
-          className='bg-[#007EC4] rounded-md text-white font-semibold text-xl px-5 py-2 mt-4 disabled:opacity-50 flex items-center justify-center'
+          className='bg-[#007EC4] rounded-md mb-4 text-white font-semibold text-sm md:text-base px-5 py-2 mt-4 disabled:opacity-50 flex items-center justify-center'
           onClick={openRazorpay}
           disabled={isProcessing}
         >

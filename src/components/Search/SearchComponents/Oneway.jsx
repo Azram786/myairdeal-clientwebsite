@@ -11,10 +11,7 @@
 //   const startSegment = flightProps[0];
 //   const endSegment = flightProps[flightProps.length - 1];
 
-
-
 //   console.log(flightProps,"flight props");
-
 
 //   const flightDetails = flightProps.map(flight => {
 //     return flight.sI.map(segment => {
@@ -27,8 +24,6 @@
 // }).flat();
 
 // console.log(flightDetails, "flight details")
-
-
 
 //   return (
 //     <div className="flex flex-row h-screen">
@@ -61,7 +56,6 @@
 
 // export default Oneway;
 
-
 import React, { useState, useEffect, useMemo } from "react";
 import { Tabs } from "antd";
 import FlightDetailsCard from "../Cards/FlightDetailsCard";
@@ -72,6 +66,7 @@ import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ReactToast from "../../util/ReactToast";
+import { FaFilter, FaTimes } from "react-icons/fa";
 
 const { TabPane } = Tabs;
 
@@ -84,23 +79,26 @@ const Oneway = ({ flightProps, passenger, query }) => {
     stops: [],
     departureTime: [],
     arrivalTime: [],
-    airlines: []
+    airlines: [],
   });
 
   const token = useSelector((state) => state.auth.token);
   const [selectedFlight, setSelectedFlight] = useState([{ flightIndex: 0, priceIndex: 0 }]);
   const navigate = useNavigate();
 
-  const calculateTotalPrice = useMemo(() => (flight) => {
-    let total = 0;
-    const priceList = flight.totalPriceList[0].fd;
-    for (const passengerType in passenger) {
-      if (priceList[passengerType]) {
-        total += priceList[passengerType].fC.TF * passenger[passengerType];
+  const calculateTotalPrice = useMemo(
+    () => (flight) => {
+      let total = 0;
+      const priceList = flight.totalPriceList[0].fd;
+      for (const passengerType in passenger) {
+        if (priceList[passengerType]) {
+          total += priceList[passengerType].fC.TF * passenger[passengerType];
+        }
       }
-    }
-    return total;
-  }, [passenger]);
+      return total;
+    },
+    [passenger]
+  );
 
   const getStopsCount = (flight) => {
     return flight.sI.length - 1;
@@ -136,7 +134,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
   // }, [filters, flightProps, calculateTotalPrice]);
 
   const isHourInRange = (hour, range) => {
-    const [start, end] = range.split('-').map(Number);
+    const [start, end] = range.split("-").map(Number);
     if (start < end) {
       return hour >= start && hour < end;
     } else {
@@ -146,21 +144,39 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   useEffect(() => {
     console.log("Filters changed:", filters);
-    const newFilteredFlights = flightProps.filter(flight => {
+    const newFilteredFlights = flightProps.filter((flight) => {
       console.log("Processing flight:", flight);
       const price = calculateTotalPrice(flight);
       const stops = getStopsCount(flight);
       const departureHour = new Date(flight.sI[0].dt).getHours();
-      const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
+      const arrivalHour = new Date(
+        flight.sI[flight.sI.length - 1].at
+      ).getHours();
       const airline = flight.sI[0].fD.aI.name;
 
       const priceMatch = price <= filters.maxPrice;
-      const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString()) || (stops >= 3 && filters.stops.includes("3+"));
-      const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => isHourInRange(departureHour, range));
-      const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => isHourInRange(arrivalHour, range));
-      const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
+      const stopsMatch =
+        filters.stops.length === 0 ||
+        filters.stops.includes(stops.toString()) ||
+        (stops >= 3 && filters.stops.includes("3+"));
+      const departureMatch =
+        filters.departureTime.length === 0 ||
+        filters.departureTime.some((range) =>
+          isHourInRange(departureHour, range)
+        );
+      const arrivalMatch =
+        filters.arrivalTime.length === 0 ||
+        filters.arrivalTime.some((range) => isHourInRange(arrivalHour, range));
+      const airlineMatch =
+        filters.airlines.length === 0 || filters.airlines.includes(airline);
 
-      return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
+      return (
+        priceMatch &&
+        stopsMatch &&
+        departureMatch &&
+        arrivalMatch &&
+        airlineMatch
+      );
     });
 
     console.log("New filtered flights:", newFilteredFlights);
@@ -173,14 +189,17 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const handleBooking = () => {
     if (selectedFlight.length > 0) {
-      const bookings = selectedFlight?.map(selected => ({
+      const bookings = selectedFlight?.map((selected) => ({
         flightDetails: filteredFlights[selected.flightIndex].sI,
-        priceId: filteredFlights[selected.flightIndex].totalPriceList[selected.priceIndex].id
+        priceId:
+          filteredFlights[selected.flightIndex].totalPriceList[
+            selected.priceIndex
+          ].id,
       }));
       console.log("Processing bookings:", bookings);
 
       if (!token) {
-        ReactToast('Please login first')
+        ReactToast("Please login first");
         navigate("/sign-in");
       }
 
@@ -198,19 +217,76 @@ const Oneway = ({ flightProps, passenger, query }) => {
     }
     return 0;
   };
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   console.log(filteredFlights, "filtered flights");
   return (
     <div className="flex md:flex-row flex-col">
-      <OneWaySideBar
+      {/* <OneWaySideBar
         flights={flightProps}
         filters={filters}
         setFilters={setFilters}
         passenger={passenger}
         calculateTotalPrice={calculateTotalPrice}
-      />
+      /> */}
+      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
+        {/* Filter icon for screens up to 1024px */}
+        <button
+          className="absolute bottom-0 top-10 right-4 z-50 lg-custom:hidden"
+          onClick={toggleSidebar}
+        >
+          <FaFilter className="w-6 h-6 z-10 text-blue-600" />
+        </button>
+
+        {/* Sidebar for larger screens and modal-like display for screens up to 1024px */}
+        <div
+          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 rounded-xl bg-white transform ${
+            isSidebarOpen ? "translate-x-0" : "translate-x-full"
+          } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100%",
+            marginTop: "2%",
+            marginBottom: "2%",
+            height: "auto",
+            width: "auto",
+          }}
+        >
+          {/* Close button for modal */}
+          <button
+            className="absolute top-2 right-4 z-50 text-blue-600 lg-custom:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          >
+            <FaTimes className="w-6 h-6" />
+          </button>
+         
+            <div className="font-semibold p-2 text-left text-base">Filters</div>
+            <div className="rounded-xl flex flex-col items-center ">
+            <OneWaySideBar
+              flights={flightProps}
+              filters={filters}
+              setFilters={setFilters}
+              passenger={passenger}
+              calculateTotalPrice={calculateTotalPrice}
+            />
+          </div>
+        </div>
+
+        {/* Overlay for screens up to 1024px */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+      </div>
       <div className="flex-grow">
-        <h1 className="text-sm font-bold"> {filteredFlights.length} flights Found </h1>
+        <h1 className="text-sm font-bold">
+          {" "}
+          {filteredFlights.length} flights Found{" "}
+        </h1>
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={
@@ -218,23 +294,41 @@ const Oneway = ({ flightProps, passenger, query }) => {
                 <span className="flex flex-col justify-center ">
                   <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
                   <p className="text-[10px]">
-                    {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric'
-                    }).format(new Date(filteredFlights[0].sI[0].dt)).split('/').join('-')}
+                    {filteredFlights[0]?.sI[0] &&
+                      new Intl.DateTimeFormat("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
+                        .format(new Date(filteredFlights[0].sI[0].dt))
+                        .split("/")
+                        .join("-")}
                   </p>
                 </span>
                 <ArrowRightOutlined />
                 <span className="flex flex-col justify-center ">
-                  <p>{filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa?.city}</p>
+                  <p>
+                    {
+                      filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]
+                        ?.aa?.city
+                    }
+                  </p>
                   <p className="text-[10px]">
-
-                    {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric'
-                    }).format(new Date(filteredFlights[0].sI[filteredFlights[0]?.sI.length - 1].at)).split('/').join('-')}
+                    {filteredFlights[0]?.sI[0] &&
+                      new Intl.DateTimeFormat("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
+                        .format(
+                          new Date(
+                            filteredFlights[0].sI[
+                              filteredFlights[0]?.sI.length - 1
+                            ].at
+                          )
+                        )
+                        .split("/")
+                        .join("-")}
                   </p>
                 </span>
               </span>
@@ -249,9 +343,17 @@ const Oneway = ({ flightProps, passenger, query }) => {
                     passenger={passenger}
                     logo={flightLogo}
                     flightDetails={flight}
-                    isSelected={selectedFlight.some(selected => selected.flightIndex === index)}
-                    selectedPriceIndex={selectedFlight.find(selected => selected.flightIndex === index)?.priceIndex}
-                    onSelect={(priceIndex) => handleFlightSelection(index, priceIndex)}
+                    isSelected={selectedFlight.some(
+                      (selected) => selected.flightIndex === index
+                    )}
+                    selectedPriceIndex={
+                      selectedFlight.find(
+                        (selected) => selected.flightIndex === index
+                      )?.priceIndex
+                    }
+                    onSelect={(priceIndex) =>
+                      handleFlightSelection(index, priceIndex)
+                    }
                     totalPrice={calculateTotalPrice(flight)}
                   />
                 ))
@@ -268,7 +370,9 @@ const Oneway = ({ flightProps, passenger, query }) => {
         <BookingCard
           passenger={passenger}
           selectedPriceIndex={selectedFlight}
-          selectedFlights={selectedFlight.map(selected => filteredFlights[selected.flightIndex])}
+          selectedFlights={selectedFlight.map(
+            (selected) => filteredFlights[selected.flightIndex]
+          )}
           totalPrice={getTotalPrice()}
           onBook={handleBooking}
           calculateTotalPrice={calculateTotalPrice}
