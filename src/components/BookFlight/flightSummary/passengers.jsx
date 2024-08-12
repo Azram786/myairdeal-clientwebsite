@@ -72,9 +72,9 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
       <form>
         <div className="flex gap-2 items-center">
           <div className="font-semibold">
-            <h2>
+            <div className="text-base mx-4">
               {passenger.passengerType} {passenger.typeCount}
-            </h2>
+            </div>
           </div>
           <div>
             <Controller
@@ -188,6 +188,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
                       if (selectedDate < min) {
                         return `${passenger.passengerType} must be born on or after ${format(min, "yyyy-MM-dd")}`;
                       }
+                      return true;
                       return true;
                     },
                   },

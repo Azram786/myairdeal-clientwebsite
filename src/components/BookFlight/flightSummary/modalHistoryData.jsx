@@ -9,14 +9,14 @@ const ModalHistoryData = ({
 }) => {
   if (!isOpen) return null;
 
-  console.log("Modal is open. History Data:", historyData); // Log data for debugging
+  console.log("Modal is open. History Data:", historyData); 
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
       <div className="relative bg-white rounded-lg shadow-lg p-6 max-w-full  max-h-[70vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+          className="absolute top-5 right-2 text-white w-8 h-8 bg-red-700 items-center flex rounded-full justify-center "
         >
           <svg
             className="w-6 h-6"
@@ -33,10 +33,10 @@ const ModalHistoryData = ({
             />
           </svg>
         </button>
-        <h2 className="text-xl font-semibold">Select From History</h2>
+        <h2 className="text-base md:text-xl font-semibold">Select From History</h2>
         <div className="mt-4">
           {loading ? (
-            <div className="flex justify-center items-center h-32">
+            <div className="flex justify-center items-center w-96 h-96">
               <div className="w-8 h-8 border-t-2 border-blue-600 border-solid rounded-full animate-spin"></div>
             </div>
           ) : historyData.passengers.length > 0 ? (

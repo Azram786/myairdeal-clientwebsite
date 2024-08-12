@@ -117,6 +117,7 @@ const FlightDetailsCard = ({
     setLocalSelectedPriceIndex(index);
     onSelect(index);
   };
+
   const getDayOfWeek = (dateTimeString) => {
     const daysOfWeek = [
       "Sunday",
@@ -128,8 +129,11 @@ const FlightDetailsCard = ({
       "Saturday",
     ];
     const datePart = dateTimeString.split("T")[0];
+
     const date = new Date(datePart);
+
     const dayNumber = date.getDay();
+
     return daysOfWeek[dayNumber];
   };
 
@@ -162,6 +166,7 @@ const FlightDetailsCard = ({
                       />
                       <div>
                         <div className="font-bold text-sm">
+                          <span className="text-[10px] text-gray-600">{flightDetails.totalPriceList[0].fd.ADULT.cc}</span> <br/>
                           {segment.fD.aI.name} {segment.fD.fN}
                         </div>
                         <div className="text-xs text-gray-500">
@@ -175,6 +180,7 @@ const FlightDetailsCard = ({
                     <div className="flex mt-2 items-center w-full  md:w-[70%] justify-around gap-0 md:gap-8">
                       <div className=" w-24 md:min-w-[30%]">
                         <div className="font-bold text-xs w-max md:text-sm">
+                          
                           {formatDateTime(segment.dt)}
                         </div>
                         <div className="text-xs  text-gray-500">
@@ -321,7 +327,7 @@ const FlightDetailsCard = ({
     <div className="border flex flex-col  rounded-lg m-4 shadow-md ">
       <div className="flex flex-col md:flex-row flex-wrap justify-between items-stretch p-3  mb-2">
         <div className="flex flex-col justify-around  border-none lg:border-r-2 pr-2 w-full lg:w-[80%]  ">
-          <div className="flex justify-around items-center  mx-auto w-full">
+          <div className="flex justify-around items-center   w-max">
             <div className="md:hidden">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
@@ -331,11 +337,11 @@ const FlightDetailsCard = ({
               />
             </div>
 
-            <div className="md:flex-row  flex-col flex justify-center items-center mb-4 md:mb-0">
+            <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                 alt={startSegment?.fD?.aI?.code}
-                className="md:size-12 rounded-md  mr-6 md:flex hidden"
+                className="md:size-12  rounded-md  mr-6 md:flex hidden"
               />
               <div className="flex flex-col">
                 <h1 className="text-base font-bold">{startSegment?.da.code}</h1>

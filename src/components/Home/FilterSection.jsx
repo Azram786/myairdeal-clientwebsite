@@ -408,11 +408,14 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
       console.log({ query })
       dispatch(setLastSearch(query))
       dispatch(setResentSearch(saving))
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      if (token) {
+
+        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      }
 
 
 

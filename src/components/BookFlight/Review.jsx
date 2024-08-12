@@ -269,7 +269,7 @@ import ProgressBar from "./ProgressBar";
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
   console.log(setCurrentStep, data, passengersData, "passenger");
-  console.log(data, "DATA FROM REVIEW");
+
 
   const renderValue = (value) => value || "N/A";
 

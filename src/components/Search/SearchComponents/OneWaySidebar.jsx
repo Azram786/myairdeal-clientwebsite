@@ -249,6 +249,12 @@ const OneWaySideBar = ({
     }));
   };
 
+  const Tooltip = ({ value }) => (
+    <div className="absolute transform -translate-x-1/2 -translate-y-8 bg-gray-700 text-white text-xs rounded-md px-2 py-1">
+      ₹{value}
+    </div>
+  );
+
   return (
     <div className="w-[80%] text-xs md:text-base border p-4 m-2 shadow-md rounded-md md:min-h-screen">
       <div className="p-4">
@@ -258,14 +264,15 @@ const OneWaySideBar = ({
           <div className="flex justify-between gap-2">
             <span className="text-xs">₹100</span>
             <input
-              type="range"
-              min="100"
-              max={maxPrice}
-              value={filters.maxPrice}
-              onChange={handlePriceChange}
-              id="priceRange"
-              className="flex-1 price-range-slider range-slider"
-            />
+  type="range"
+  min="100"
+  max={maxPrice}
+  value={filters.maxPrice}
+  onChange={handlePriceChange}
+  id="priceRange"
+  className="flex-1 price-range-slider range-slider"
+  title={`₹${filters.maxPrice}`}
+/>
             <span className="text-xs">₹{filters.maxPrice}</span>
           </div>
         </div>

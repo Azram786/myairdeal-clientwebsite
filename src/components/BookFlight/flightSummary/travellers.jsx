@@ -1,3 +1,5 @@
+
+
 import React, { useState, useRef } from "react";
 import PassengerForm from "./passengers";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
@@ -18,19 +20,23 @@ const TravellersCard = ({
     handleSubmit,
     setValue,
     trigger,
-    formState: { errors, isValid },
+    formState: { errors },
     getValues,
     control,
   } = useForm({
     defaultValues: {
       email: passengers[0]?.email || "",
-      phone: passengers[0]?.phone ? `+${passengers[0].dialCode}${passengers[0].phone}` : "",
+      phone: passengers[0]?.phone
+        ? `+${passengers[0].dialCode}${passengers[0].phone}`
+        : "",
       dialCode: passengers[0]?.dialCode || "",
     },
     mode: "onChange",
   });
 
-  const [condition, setCondition] = useState(flightData?.conditions?.pcs || null);
+  const [condition, setCondition] = useState(
+    flightData?.conditions?.pcs || null
+  );
   const [loading, setLoading] = useState(false);
   const passengerRefs = useRef([]);
 
@@ -54,7 +60,7 @@ const TravellersCard = ({
     }
   };
 
-  const validateContactDetails = async (data) => {
+  const validateContactDetails = async () => {
     setLoading(true);
     let isValid = true;
 
@@ -64,7 +70,8 @@ const TravellersCard = ({
     // Validate passenger forms
     const passengerFormsValid = await Promise.all(
       passengers.map(async (passenger, index) => {
-        const passengerFormValid = await passengerRefs.current[index].validateForm();
+        const passengerFormValid =
+          await passengerRefs.current[index].validateForm();
         return passengerFormValid;
       })
     );
@@ -72,14 +79,15 @@ const TravellersCard = ({
     isValid = contactDetailsValid && passengerFormsValid.every(Boolean);
 
     if (isValid) {
-      console.log("All forms are valid. Submitting data:", data);
-      // Proceed with form submission
-      // Add your submission logic here
+      console.log("All forms are valid. Submitting data.");
+      // Form is valid, return true
+      setLoading(false);
+      return true;
     } else {
       console.log("Please fill out all required fields for all passengers.");
+      setLoading(false);
+      return false;
     }
-
-    setLoading(false);
   };
 
   return (
@@ -116,9 +124,11 @@ const TravellersCard = ({
                 ))}
             </div>
             <div className="mt-4">
-              <h3 className="font-semibold text-sm mb-2">Contact Details</h3>
+              <h3 className="font-semibold text-sm md:text-base mb-2 mx-4">
+                Contact Details
+              </h3>
               <form
-                className="flex md:flex-row flex-col gap-2 justify-center"
+                className="flex md:flex-row flex-col gap-2 flex-wrap mb-4 justify-center"
                 onSubmit={handleSubmit(validateContactDetails)}
               >
                 <TextField
@@ -150,8 +160,11 @@ const TravellersCard = ({
                   rules={{
                     required: "Phone number is required",
                     validate: (value) => {
-                      return value.length >= 10 || "Phone number must be at least 10 digits";
-                    }
+                      return (
+                        value.length >= 10 ||
+                        "Phone number must be at least 10 digits"
+                      );
+                    },
                   }}
                   render={({ field }) => (
                     <PhoneInput
@@ -164,16 +177,16 @@ const TravellersCard = ({
                         const dialCode = `+${country.dialCode}`;
                         const phoneNumber = value.slice(country.dialCode.length);
 
-                        // Update form state
-                        setValue("phone", formattedValue);
-                        setValue("dialCode", dialCode);
+                        // // Update form state
+                        // setValue("phone", formattedValue);
+                        // setValue("dialCode", dialCode);
 
-                        // Update passengers state
-                        updateContactDetails("phone", phoneNumber);
-                        updateContactDetails("dialCode", dialCode);
+                        // // Update passengers state
+                        // updateContactDetails("phone", phoneNumber);
+                        // updateContactDetails("dialCode", dialCode);
 
                         // Trigger validation
-                        trigger("phone");
+                        // trigger("phone");
                       }}
                       containerClass="custom-container"
                       buttonClass="custom-button"
@@ -196,10 +209,8 @@ const TravellersCard = ({
                 <br />
                 <button
                   type="submit"
-                  disabled={!isValid || loading}
-                  className={`text-white text-sm h-12 px-5 rounded ${
-                    isValid && !loading ? "bg-[#007EC4]" : "bg-gray-400 cursor-not-allowed"
-                  }`}
+                  className={`text-white text-sm h-12 px-5 rounded
+                    bg-blue-400`}
                 >
                   {loading ? "Saving..." : "Save"}
                 </button>

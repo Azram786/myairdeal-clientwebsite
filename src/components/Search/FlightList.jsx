@@ -152,7 +152,7 @@ const FlightList = () => {
   const { query } = location.state || {};
   const [data, setData] = useState(query);
   const navigate = useNavigate();
-
+  const [isSessionExpired, setIsSessionExpired] = useState(false);
   const [tripType, setTripType] = useState("");
   const [oneway, setOneWay] = useState([]);
   const [roundWay, setRoundWay] = useState([]);
@@ -167,14 +167,12 @@ const FlightList = () => {
     }
   }, [query]);
 
+
   useEffect(() => {
-
     const timer = setTimeout(() => {
-      ReactToast('Session expired. Please search again.');
-      navigate("/");
-    }, 1800000);
+      setIsSessionExpired(true); 
+    },  1800000); 
 
-    // Clean up the timer when the component unmounts
     return () => clearTimeout(timer);
   }, [navigate]);
 
@@ -258,8 +256,39 @@ const FlightList = () => {
         )}
       </div>
       <Footer />
+      <SessionExpiredPopup
+        isOpen={isSessionExpired}
+        onClose={() => setIsSessionExpired(false)}
+      />
     </div>
   );
 };
 
 export default FlightList;
+
+//Session popup
+const SessionExpiredPopup = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+
+  const handleSearchAgain = () => {
+    onClose();
+    navigate('/'); 
+  };
+
+  return (
+    isOpen && (
+      <div className="fixed z-50 inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
+        <div className="bg-white p-6 rounded shadow-lg text-center">
+          <h3 className=" font-bold mb-4 text-base">Session Expired</h3>
+          <p className="mb-6 text-sm">Your session has expired. Please search again.</p>
+          <button
+            onClick={handleSearchAgain}
+            className="bg-blue-500 text-white py-2 px-4 rounded text-sm"
+          >
+            Search Again
+          </button>
+        </div>
+      </div>
+    )
+  );
+};

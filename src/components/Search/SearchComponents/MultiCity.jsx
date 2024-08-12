@@ -220,7 +220,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
           />
         )}
       </div>
-      <div className="flex-grow pb-20 ">
+      <div className=" flex-grow pb-20 ">
         <Tabs className="m-0" defaultActiveKey="0" onChange={handleTabChange}>
           {flightProps.map((flights, tabIndex) => {
             const startCode =
@@ -247,7 +247,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
               <TabPane
                 className=""
                 tab={
-                  <span className="flex flex-col justify-start items-center ">
+                  <span className="flex  flex-col justify-start items-center ">
                     <p className="space-x-1">
                       {" "}
                       <span>{startCode}</span>{" "}
@@ -298,8 +298,8 @@ const MultiCity = ({ flightProps, passenger, query }) => {
       </div>
 
       {console.log(selectedFlights[0].priceIndex, "heoo")}
-      {(selectedFlights[0].priceIndex != null ||
-        selectedFlights[1].priceIndex != null) && (
+      {(selectedFlights[0]?.priceIndex != null ||
+        selectedFlights[1]?.priceIndex != null) && (
         <BookingCard
           selectedFlights={selectedFlights
             .map((selected, index) =>

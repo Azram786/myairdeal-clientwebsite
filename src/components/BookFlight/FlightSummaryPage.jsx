@@ -23,10 +23,10 @@ import ReactToast from "./Util/ReactToast";
 import Spinner from "../Profile/Spinner";
 import Header from "../Home/Header";
 import Footer from "../Home/Footer";
-import FlightLanding from "../../assets/booking/viewDetailedBookings/flightLanding.svg"
+import FlightLanding from "../../assets/booking/viewDetailedBookings/flightLanding.svg";
 import ShowBaggageInfo from "./Util/ShowBaggageInfo";
 
-const FlightSummary = ({ flightData, passenger }) => {
+const FlightSummary = ({ flightData }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState(null);
   const [passengersData, setPassengerData] = useState([]);
@@ -34,8 +34,6 @@ const FlightSummary = ({ flightData, passenger }) => {
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
-
- 
 
   // const [Passenger, setPassenger] = useState(null);
 
@@ -46,7 +44,9 @@ const FlightSummary = ({ flightData, passenger }) => {
   const bookingArray = useMemo(() => {
     return bookings ? bookings.map((item) => item.priceId) : [];
   }, [bookings]);
-
+  const [passengers, setPassengers] = useState([]);
+  console.log("nithin----------------------------[[[[[[[[[[[[[[[[[[[[");
+  console.log({ flightData, passengers }, "REVIEW PAGE");
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
       navigate("/search");
@@ -60,8 +60,8 @@ const FlightSummary = ({ flightData, passenger }) => {
   };
 
   const handleDataFromChild = (data) => {
-
     setPassengerData(data);
+    console.log(passengersData, "Passenger data");
   };
 
   const getData = async () => {
@@ -80,7 +80,7 @@ const FlightSummary = ({ flightData, passenger }) => {
       )
       .then((res) => {
         setLoading(false);
-       
+
         setData(res.data);
       })
       .catch((error) => {
@@ -168,8 +168,6 @@ const FlightSummary = ({ flightData, passenger }) => {
     return `${hours}h ${minutes}m`;
   }
 
-
-
   if (Loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -179,17 +177,18 @@ const FlightSummary = ({ flightData, passenger }) => {
       </div>
     );
   }
+  console.log({ dumbSwarna: passengers });
 
   return (
-    <div className=" min-h-screen my-auto " >
+    <div className=" min-h-screen my-auto">
       <Header />
       <div className="  sm:text-sm md:text-lg w-[80vw]  mx-auto pt-4 ">
-
-        <div className="flex flex-col w-full   md:flex-row gap-4   
-           ">
+        <div
+          className="flex flex-col w-full   md:flex-row gap-4   
+           "
+        >
           {/* Left section */}
           <div className="w-full md:w-[75%] rounded-lg     space-y-4">
-
             <div className=" w-full ">
               <ProgressBar
                 currentStep={currentStep}
@@ -198,15 +197,14 @@ const FlightSummary = ({ flightData, passenger }) => {
             </div>
             {currentStep === 0 ? (
               <>
-                <div className={`pb-4 border border-gray-400  max-h-[50vh] ${data?.tripInfos.length > 1 && "overflow-scroll"} overflow-x-hidden`} >
+                <div
+                  className={`pb-4 border border-gray-400  max-h-[50vh] ${
+                    data?.tripInfos.length > 1 && "overflow-scroll"
+                  } overflow-x-hidden`}
+                >
                   {data?.tripInfos?.map((item, index) => {
-
-                 
                     return (
-                      <div
-                        key={index}
-                        className=" rounded-lg p-2   "
-                      >
+                      <div key={index} className=" rounded-lg p-2   ">
                         <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-200 p-2 rounded-t-lg">
                           <div className="text-base sm:text-lg font-bold flex items-center">
                             <span>{item.sI[0].da.city}</span>
@@ -234,19 +232,15 @@ const FlightSummary = ({ flightData, passenger }) => {
                           {item.sI.map((segment, index) => (
                             <React.Fragment key={index}>
                               <div className="flex flex-col">
-
                                 <div className="flex-col md:flex-row md:items-center   w-full justify-evenly  mb-4  flex">
-
                                   <div className="md:w-[20%]  ">
-
                                     <div className="font-semibold  text-xs  rounded-md inline-flex md:flex md:h-full md:justify-center md:items-center md:flex-col items-center  s p-1 space-x-2">
                                       <div className="w-8 h-8 md:h-14 md:w-14">
-
                                         <img
                                           src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
                                           onError={(e) =>
-                                          (e.currentTarget.src =
-                                            defaultAirline)
+                                            (e.currentTarget.src =
+                                              defaultAirline)
                                           }
                                           alt={segment?.fD?.aI?.code}
                                           className="w-full h-full object-contain "
@@ -256,19 +250,15 @@ const FlightSummary = ({ flightData, passenger }) => {
                                         <div>{segment.fD.aI.name}</div>
                                         <div className="flex items-center space-x-1">
                                           <span>
-                                            {segment.fD.aI.code}-
-                                            {segment.fD.fN}
+                                            {segment.fD.aI.code}-{segment.fD.fN}
                                           </span>
                                           <MdFlight className="w-3 h-3 rotate-45" />
                                           <span>{segment.fD.eT}</span>
                                         </div>
                                       </div>
                                     </div>
-
-
                                   </div>
                                   <div className="flex md:w-[70%]  ">
-
                                     <div className="flex-col w-1/3">
                                       <div className="text-lg font-bold ">
                                         {segment.da.code}
@@ -283,21 +273,21 @@ const FlightSummary = ({ flightData, passenger }) => {
                                         {segment.da.terminal}
                                       </div>
                                       <div className="text-sm font-semibold">
-                                        {new Date(segment.dt).toLocaleTimeString(
-                                          [],
-                                          {
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            hour12: true,
-                                          }
-                                        )}
+                                        {new Date(
+                                          segment.dt
+                                        ).toLocaleTimeString([], {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          hour12: true,
+                                        })}
                                       </div>
                                     </div>
                                     <div className="flex-col items-center justify-center flex  w-1/3">
                                       <div className="text-center flex ">
                                         <span className="text-sm">
                                           {(() => {
-                                            const totalMinutes = segment.duration;
+                                            const totalMinutes =
+                                              segment.duration;
                                             const hours = Math.floor(
                                               totalMinutes / 60
                                             );
@@ -306,19 +296,22 @@ const FlightSummary = ({ flightData, passenger }) => {
                                           })()}
                                         </span>
                                       </div>
-                                 
+
                                       <div className="flex items-center w-full">
                                         <div className="w-2 h-2 rounded-full bg-gray-400"></div>
                                         <div className="flex-grow h-px bg-gray-300"></div>
                                         <div className="flex items-center mx-2">
                                           <div className="w-16 h-px bg-gray-500"></div>
-                                          <img className="w-8 h-8 mx-2" src={FlightLanding} alt="Airplane" />
+                                          <img
+                                            className="w-8 h-8 mx-2"
+                                            src={FlightLanding}
+                                            alt="Airplane"
+                                          />
                                           <div className="w-16 h-px bg-gray-500"></div>
                                         </div>
                                         <div className="flex-grow h-px bg-gray-300"></div>
                                         <div className="w-2 h-2 rounded-full bg-gray-400"></div>
                                       </div>
-
 
                                       <div className="text-center text-sm">
                                         {item.sI.length === 1
@@ -340,14 +333,13 @@ const FlightSummary = ({ flightData, passenger }) => {
                                         {segment.aa.terminal}
                                       </div>
                                       <div className="text-sm font-semibold">
-                                        {new Date(segment.at).toLocaleTimeString(
-                                          [],
-                                          {
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            hour12: true,
-                                          }
-                                        )}
+                                        {new Date(
+                                          segment.at
+                                        ).toLocaleTimeString([], {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          hour12: true,
+                                        })}
                                       </div>
                                     </div>
                                   </div>
@@ -355,13 +347,9 @@ const FlightSummary = ({ flightData, passenger }) => {
 
                                 <div className="flex w-full  justify-center items-center  ">
                                   {/* Bag Icon */}
-                          
-
 
                                   <ShowBaggageInfo item={item} />
                                 </div>
-
-
                               </div>
                               <div className="text-sm text-gray-500 mt-4">
                                 {/* <span>
@@ -391,9 +379,8 @@ const FlightSummary = ({ flightData, passenger }) => {
                             </React.Fragment>
                           ))}
                         </div>
-
                       </div>
-                    )
+                    );
                   })}
                 </div>
                 <div className="flex justify-center py-3 px-4">
@@ -416,31 +403,32 @@ const FlightSummary = ({ flightData, passenger }) => {
                 flightData={data}
                 onData={handleDataFromChild}
                 setCurrentStep={setCurrentStep}
+                passengers={passengers}
+                setPassengers={setPassengers}
               />
             ) : currentStep === 2 ? (
               <>
-              
                 <Review
                   setCurrentStep={setCurrentStep}
                   data={data}
                   passengersData={passengersData}
-                // updatePssenger={updatePssenger}
+                  // updatePssenger={updatePssenger}
                 />
               </>
             ) : currentStep === 3 ? (
               <>
-                
                 <PaymentPage
                   data={data}
                   passengersData={passengersData}
-                // updatePssenger={updatePssenger}
+
+                  // updatePssenger={updatePssenger}
                 />
               </>
             ) : null}
           </div>
           {/* Right Section */}
           <div className="md:w-[25%] h-full rounded-lg space-y-4 p-5 shadow-md bg-white">
-            <div className="w-full max-w-full rounded-lg ">
+            <div className="w-full max-w-full rounded-lg  ">
               <div className="flex items-center justify-between border-b border-gray-300 pb-4">
                 <div>
                   <span className="font-bold text-lg md:text-xl lg:text-2xl">
@@ -451,7 +439,7 @@ const FlightSummary = ({ flightData, passenger }) => {
               <div className="text-gray-700 mt-4 md:mt-6 space-y-4 md:space-y-6">
                 <div className="pt-3">
                   <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
-                    <span>Base fare</span>
+                    <span className="text-sm md:text-base ">Base fare</span>
                     <span>
                       ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
                     </span>
@@ -461,48 +449,55 @@ const FlightSummary = ({ flightData, passenger }) => {
                       className="flex justify-between text-xs md:text-sm lg:text-base font-medium cursor-pointer"
                       onClick={toggleTaxes}
                     >
-                      <span className="flex items-center justify-center"> Taxes and fees   {taxesExpanded ? (
-                        <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
-                      ) : (
-                        <FaChevronDown className="ml-2 text-xs md:text-sm lg:text-base" />
-                      )}</span>
+                      <span className="flex items-center justify-centertext-sm md:text-base">
+                        {" "}
+                        Taxes and fees{" "}
+                        {taxesExpanded ? (
+                          <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
+                        ) : (
+                          <FaChevronDown className="ml-2 text-xs md:text-sm lg:text-base" />
+                        )}
+                      </span>
                       <div className="flex items-center">
                         <span>
                           ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.TAF}
                         </span>
-
                       </div>
                     </div>
                     <div
-                      className={`transition-max-height duration-300 ease-in-out ${taxesExpanded ? "max-h-[500px]" : "max-h-0"
-                        } overflow-y-auto`}
+                      className={`transition-max-height duration-300 ease-in-out ${
+                        taxesExpanded ? "max-h-[500px]" : "max-h-0"
+                      } overflow-y-auto`}
                     >
                       {taxesExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
                           <div className="flex justify-between">
                             <span>Airline GST</span>
                             <span>
-                              ₹ {
-                                data?.totalPriceInfo?.totalFareDetail?.afC
-                                  ?.TAF?.AGST
+                              ₹{" "}
+                              {
+                                data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
+                                  ?.AGST
                               }
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span>Other Taxes</span>
                             <span>
-                              ₹ {
-                                data?.totalPriceInfo?.totalFareDetail?.afC
-                                  ?.TAF?.OT
+                              ₹{" "}
+                              {
+                                data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
+                                  ?.OT
                               }
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span>YR</span>
                             <span>
-                              ₹ {
-                                data?.totalPriceInfo?.totalFareDetail?.afC
-                                  ?.TAF?.YR
+                              ₹{" "}
+                              {
+                                data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
+                                  ?.YR
                               }
                             </span>
                           </div>
@@ -510,26 +505,41 @@ const FlightSummary = ({ flightData, passenger }) => {
                       )}
                     </div>
                   </div>
+                  <div>
+                    <p>Additional Charges</p>
+                    {passengers[0]?.selectedMeal &&
+                    passengers[0]?.selectedMeal.length > 0 ? (
+                      <div className="flex text-sm justify-between">
+                        <div>{passengers[0]?.selectedMeal[0]?.meal?.desc}</div>
+                        <div>₹{passengers[0]?.selectedMeal[0]?.meal?.amount}</div>
+                      </div>
+                    ) : (
+                      "None"
+                    )}
+                  </div>
                   <div className="mt-2">
                     <div
                       className="flex justify-between text-xs md:text-sm lg:text-base font-bold cursor-pointer"
                       onClick={toggleAmount}
                     >
-                      <span className="flex justify-center items-center">Amount to Pay {amountExpanded ? (
-                        <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
-                      ) : (
-                        <FaChevronDown className="ml-2 text-xs md:text-sm lg:text-base" />
-                      )}</span>
+                      <span className="flex justify-center items-center">
+                        Amount to Pay{" "}
+                        {amountExpanded ? (
+                          <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
+                        ) : (
+                          <FaChevronDown className="ml-2 text-xs md:text-sm lg:text-base" />
+                        )}
+                      </span>
                       <div className="flex items-center">
                         <span>
                           ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.TF}
                         </span>
-
                       </div>
                     </div>
                     <div
-                      className={`transition-max-height duration-300 ease-in-out ${amountExpanded ? "max-h-[500px]" : "max-h-0"
-                        } overflow-y-auto`}
+                      className={`transition-max-height duration-300 ease-in-out ${
+                        amountExpanded ? "max-h-[500px]" : "max-h-0"
+                      } overflow-y-auto`}
                     >
                       {amountExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
@@ -557,13 +567,12 @@ const FlightSummary = ({ flightData, passenger }) => {
           </div>
         </div>
 
-
         {data?.conditions?.st && (
           <SessionTimer sessionTimeout={data?.conditions?.st} />
         )}
       </div>
       <Footer />
-    </div >
+    </div>
   );
 };
 
