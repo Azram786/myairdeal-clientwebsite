@@ -11,7 +11,7 @@ const AddonsCard = ({
   setPassengers,
   expanded,
   toggleCard,
-  data,
+  flightData,
   bookingId,
 }) => {
   const [activeButton, setActiveButton] = useState("");
@@ -20,12 +20,12 @@ const AddonsCard = ({
   const [Errors, setErrors] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
-  console.log(passengers, "Hello");
-  console.log(bookingId, "bookingId");
-
+  // console.log(passengers, "Hello");
+  // console.log(bookingId, "bookingId");
+  console.log({ passengers, name: "nithin" });
   const checkSeatSelection = async () => {
     setCheckLoading(true);
-  
+
     try {
       const response = await axios.post(
         "https://myairdeal-backend.onrender.com/booking/seat-map",
@@ -38,28 +38,23 @@ const AddonsCard = ({
           },
         }
       );
-  
-  
-  
-      if (response.status === 200) {
-        console.log("Seat Map Data:", response.data);
-        setSeatMapData(response?.data);
+
+      if (response.status == 200) {
+        setSeatMapData(response?.flightData);
       } else if (response.status === 400) {
-        console.log("Error Response Data:", response.data);
         setSeatMapData("Seat Map is not available");
       }
-  
+      console.log("Seat Map Data:", response);
       setCheckLoading(false);
     } catch (error) {
       console.error("SeatMapError:", error);
       setCheckLoading(false);
-      setErrors(error?.response?.data?.errors);
+      setErrors(error?.response?.flightData?.errors);
     }
   };
-  
 
   const [isSeatMapAvailable, setIsMapAvailable] = useState(
-    data?.conditions?.isa
+    flightData?.conditions?.isa
   );
 
   useEffect(() => {
@@ -77,17 +72,10 @@ const AddonsCard = ({
             Select additional services for your flight.
           </div>
         </div>
-        <div>
-          {expanded ? (
-            <FaChevronUp/>
-          ) : (
-            <FaChevronDown  />
-          )}
-        </div>
+        <div>{expanded ? <FaChevronUp /> : <FaChevronDown />}</div>
       </div>
       {
-      expanded &&
-       (
+        // expanded &&
         <div className="p-4">
           <div className="flex space-x-4 mb-4">
             <button
@@ -118,27 +106,26 @@ const AddonsCard = ({
             {/* {Errors?.map((item) => (
               <div>Message : {item?.message}</div>
             ))} */}
-            <div>
-            </div>
+            <div></div>
           </div>
           {activeButton === "seatSelection" && (
             <SeatSelection
               seatMapData={seatMapData}
               passengers={passengers}
               setPassengers={setPassengers}
-              flightReviewData={data}
+              flightReviewData={flightData}
               isSeatMapAvailable={isSeatMapAvailable}
             />
           )}
           {activeButton === "addBagAndMeal" && (
             <BagAndMeal
               setPassenger={setPassengers}
-              flightData={data}
+              flightData={flightData}
               passengers={passengers}
             />
           )}
         </div>
-      )}
+      }
     </div>
   );
 };

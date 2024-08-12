@@ -202,6 +202,7 @@ const AddDetails = ({
   passengers,
   setPassengers,
 }) => {
+  console.log({ passengers, niht: "nithihihsihdihdihdihhdi" });
   const [gstDetails, setGstDetails] = useState({
     gstNumber: "",
     companyName: "",
@@ -313,6 +314,8 @@ const AddDetails = ({
         toggleCard={() =>
           setExpandedCard((prev) => ({ ...prev, addons: !prev.addons }))
         }
+        flightData={flightData}
+        passengers={passengers}
       />
       <GstDetails
         expanded={expandedCard.gst}
@@ -341,4 +344,3 @@ const AddDetails = ({
 };
 
 export default AddDetails;
-

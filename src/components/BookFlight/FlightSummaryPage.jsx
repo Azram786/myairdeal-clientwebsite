@@ -36,7 +36,7 @@ const FlightSummary = ({ flightData }) => {
   const token = useSelector((state) => state.auth.token);
 
   // const [Passenger, setPassenger] = useState(null);
-
+  console.log({ data });
   const location = useLocation();
   const [seatMapData, setSeatMapData] = useState(null); // For seat map API
   const { bookings } = location.state || {};

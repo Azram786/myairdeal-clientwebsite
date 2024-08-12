@@ -1,208 +1,14 @@
-// import React, { useEffect, useState } from "react";
 
-// const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
-//   const [flightId, setFlightId] = useState("");
-//   const [baggageOptions, setBaggage] = useState([]);
-//   const [mealOptions, setMeals] = useState([]);
-
-//   useEffect(() => {
-//     const firstFlightId = flightData.tripInfos[0].sI[0].id;
-//     setFlightId(firstFlightId);
-//     const baggageOptions = flightData?.tripInfos[0]?.sI[0]?.ssrInfo.BAGGAGE;
-//     const mealOptions = flightData?.tripInfos[0]?.sI[0]?.ssrInfo.MEAL;
-//     setBaggage(baggageOptions);
-//     setMeals(mealOptions);
-//   }, [flightData]);
-
-//   console.log(baggageOptions,"baggage option")
-
-//   const updateAddonSelection = (passengerIndex, type, value) => {
-//     setPassenger((prevPassengers) => {
-//       const newPassengers = [...prevPassengers];
-//       if (type === "meal") {
-//         newPassengers[passengerIndex] = {
-//           ...newPassengers[passengerIndex],
-//           selectedMeal: { code: value, key: flightId },
-//         };
-//       } else if (type === "baggage") {
-//         newPassengers[passengerIndex] = {
-//           ...newPassengers[passengerIndex],
-//           selectedBaggage: { code: value, key: flightId },
-//         };
-//       }
-//       return newPassengers;
-//     });
-//   };
-
-//   return (
-//     <form>
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-//         {/* Passenger Details */}
-//         <div className="w-full">
-//           <h3 className="font-semibold text-lg mb-2">Passenger Details</h3>
-//           <div className="space-y-2">
-//             {passengers.map((passenger, index) => (
-//               <div key={index} className="flex items-center space-x-2">
-//                 <span className="text-sm">{`${passenger.passengerType} ${passenger.typeCount}`}</span>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//         {/* Baggage Selections */}
-//         <div className="w-full">
-//           <h3 className="font-semibold text-sm mb-2">Select Baggage</h3>
-//           {passengers.map((passenger, index) => (
-//             <select
-//               key={index}
-//               value={passenger?.selectedBaggage?.code || ""}
-//               onChange={(e) =>
-//                 updateAddonSelection(index, "baggage", e.target.value)
-//               }
-//               className="mt-1 block border w-full py-2 text-base border-gray-300 focus:outline-none sm:text-sm rounded-md"
-//             >
-//               <option value="">Select a Baggage</option>
-//               {baggageOptions?.map((baggage) => (
-//                 <option key={baggage.code} value={baggage.code}>
-//                   {baggage.desc} - ₹{baggage.amount}
-//                 </option>
-//               ))}
-//             </select>
-//           ))}
-//         </div>
-//         {/* Meal Selections */}
-//         <div className="w-full">
-//           <h3 className="font-semibold text-sm mb-2">Select Meal</h3>
-//           {passengers.map((passenger, index) => (
-//             <select
-//               key={index}
-//               value={passenger?.selectedMeal?.code || ""}
-//               onChange={(e) =>
-//                 updateAddonSelection(index, "meal", e.target.value)
-//               }
-//               className="mt-1 block border w-full py-2 text-base border-gray-300 focus:outline-none sm:text-sm rounded-md"
-//             >
-//               <option value="">Select a meal</option>
-//               {mealOptions?.map((meal) => (
-//                 <option key={meal.code} value={meal.code}>
-//                   {meal.desc} - ₹{meal.amount}
-//                 </option>
-//               ))}
-//             </select>
-//           ))}
-//         </div>
-//       </div>
-//     </form>
-//   );
-// };
-
-// export default BagAndMeal;
-
-// import React, { useEffect, useState } from "react";
-
-// const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
-//   const [flightId, setFlightId] = useState("");
-//   const [baggageOptions, setBaggage] = useState([]);
-//   const [mealOptions, setMeals] = useState([]);
-
-//   useEffect(() => {
-//     const firstFlightId = flightData.tripInfos[0].sI[0].id;
-//     setFlightId(firstFlightId);
-//     const baggageOptions = flightData?.tripInfos[0]?.sI[0]?.ssrInfo.BAGGAGE;
-//     const mealOptions = flightData?.tripInfos[0]?.sI[0]?.ssrInfo.MEAL;
-//     setBaggage(baggageOptions);
-//     setMeals(mealOptions);
-//   }, [flightData]);
-
-//   console.log(baggageOptions,"baggage option")
-
-//   const updateAddonSelection = (passengerIndex, type, value) => {
-//     setPassenger((prevPassengers) => {
-//       const newPassengers = [...prevPassengers];
-//       if (type === "meal") {
-//         newPassengers[passengerIndex] = {
-//           ...newPassengers[passengerIndex],
-//           selectedMeal: { code: value, key: flightId },
-//         };
-//       } else if (type === "baggage") {
-//         newPassengers[passengerIndex] = {
-//           ...newPassengers[passengerIndex],
-//           selectedBaggage: { code: value, key: flightId },
-//         };
-//       }
-//       return newPassengers;
-//     });
-//   };
-
-//   return (
-//     <form>
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-//         {/* Passenger Details */}
-//         <div className="w-full">
-//           <h3 className="font-semibold text-lg mb-2">Passenger Details</h3>
-//           <div className="space-y-2">
-//             {passengers.map((passenger, index) => (
-//               <div key={index} className="flex items-center space-x-2">
-//                 <span className="text-sm">{`${passenger.passengerType} ${passenger.typeCount}`}</span>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//         {/* Baggage Selections */}
-//         <div className="w-full">
-//           <h3 className="font-semibold text-sm mb-2">Select Baggage</h3>
-//           {passengers.map((passenger, index) => (
-//             <select
-//               key={index}
-//               value={passenger?.selectedBaggage?.code || ""}
-//               onChange={(e) =>
-//                 updateAddonSelection(index, "baggage", e.target.value)
-//               }
-//               className="mt-1 block border w-full py-2 text-base border-gray-300 focus:outline-none sm:text-sm rounded-md"
-//             >
-//               <option value="">Select a Baggage</option>
-//               {baggageOptions?.map((baggage) => (
-//                 <option key={baggage.code} value={baggage.code}>
-//                   {baggage.desc} - ₹{baggage.amount}
-//                 </option>
-//               ))}
-//             </select>
-//           ))}
-//         </div>
-//         {/* Meal Selections */}
-//         <div className="w-full">
-//           <h3 className="font-semibold text-sm mb-2">Select Meal</h3>
-//           {passengers.map((passenger, index) => (
-//             <select
-//               key={index}
-//               value={passenger?.selectedMeal?.code || ""}
-//               onChange={(e) =>
-//                 updateAddonSelection(index, "meal", e.target.value)
-//               }
-//               className="mt-1 block border w-full py-2 text-base border-gray-300 focus:outline-none sm:text-sm rounded-md"
-//             >
-//               <option value="">Select a meal</option>
-//               {mealOptions?.map((meal) => (
-//                 <option key={meal.code} value={meal.code}>
-//                   {meal.desc} - ₹{meal.amount}
-//                 </option>
-//               ))}
-//             </select>
-//           ))}
-//         </div>
-//       </div>
-//     </form>
-//   );
-// };
-
-// export default BagAndMeal;
 
 import React, { useState, useEffect } from "react";
 
 const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
+  console.log({passengers})
   // console.log(flightData, "DAT DAT DATA");
   const [flightOptions, setFlightOptions] = useState([]);
 
   useEffect(() => {
+    console.log({ flightData });
     const options = flightData.tripInfos.flatMap((trip) =>
       trip.sI.map((segment) => ({
         id: segment.id,
@@ -347,7 +153,7 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
                     Select Meal
                   </h3>
                   <div className="space-y-2">
-                    {passengers.map((passenger, index) => (
+                    {passengers?.map((passenger, index) => (
                       <div key={index}>
                         <div className="text-sm md:text-base font-semibold">
                           {`${passenger.passengerType} ${passenger.typeCount}`}
@@ -381,7 +187,7 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
                           ))}
                         </select>
                       </div>
-                    ))}
+                    )) || "N/A"}
                   </div>
                 </div>
               ) : (
