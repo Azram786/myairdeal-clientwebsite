@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import PassengerForm from "./passengers";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { Controller, useForm } from "react-hook-form";
@@ -14,24 +13,26 @@ const TravellersCard = ({
   toggleCard,
   flightData,
 }) => {
-
-  console.log({ passengers })
   const {
     register,
     handleSubmit,
     setValue,
     trigger,
-    formState: { errors },
+    formState: { errors, isValid },
     getValues,
     control,
   } = useForm({
     defaultValues: {
       email: passengers[0]?.email || "",
-      phone: passengers[0]?.phone || "",
+      phone: passengers[0]?.phone ? `+${passengers[0].dialCode}${passengers[0].phone}` : "",
+      dialCode: passengers[0]?.dialCode || "",
     },
+    mode: "onChange",
   });
 
   const [condition, setCondition] = useState(flightData?.conditions?.pcs || null);
+  const [loading, setLoading] = useState(false);
+  const passengerRefs = useRef([]);
 
   const updatePassenger = (index, field, value) => {
     const updatedPassengers = passengers.map((passenger, i) =>
@@ -46,12 +47,39 @@ const TravellersCard = ({
       [field]: value,
     }));
     setPassengers(updatedPassengers);
-    setValue(field, value);
+    if (field === "phone" || field === "dialCode") {
+      // Don't update form state here for phone/dialCode, it's handled in onChange
+    } else {
+      setValue(field, value);
+    }
   };
 
-  const validateContactDetails = async () => {
-    await trigger();
-  
+  const validateContactDetails = async (data) => {
+    setLoading(true);
+    let isValid = true;
+
+    // Validate contact details
+    const contactDetailsValid = await trigger();
+
+    // Validate passenger forms
+    const passengerFormsValid = await Promise.all(
+      passengers.map(async (passenger, index) => {
+        const passengerFormValid = await passengerRefs.current[index].validateForm();
+        return passengerFormValid;
+      })
+    );
+
+    isValid = contactDetailsValid && passengerFormsValid.every(Boolean);
+
+    if (isValid) {
+      console.log("All forms are valid. Submitting data:", data);
+      // Proceed with form submission
+      // Add your submission logic here
+    } else {
+      console.log("Please fill out all required fields for all passengers.");
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -78,8 +106,10 @@ const TravellersCard = ({
                 passengers.map((passenger, index) => (
                   <PassengerForm
                     key={index}
+                    ref={(el) => (passengerRefs.current[index] = el)}
                     passenger={passenger}
                     index={index}
+                    flightData={flightData}
                     updatePassenger={updatePassenger}
                     condition={condition}
                   />
@@ -95,7 +125,6 @@ const TravellersCard = ({
                   type="email"
                   name="email"
                   label="Email"
-                  // placeholder="Email"
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -112,21 +141,17 @@ const TravellersCard = ({
                     },
                   })}
                   onChange={(e) => updateContactDetails("email", e.target.value)}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
                 />
-                {errors.email && (
-                  <span className="text-red-500 text-xs">
-                    {errors.email.message}
-                  </span>
-                )}
                 <Controller
                   name="phone"
                   control={control}
                   rules={{
                     required: "Phone number is required",
-                    pattern: {
-                      value: /^\+?\d{7,14}$/,
-                      message: "Phone number must be between 7 and 14 digits",
-                    },
+                    validate: (value) => {
+                      return value.length >= 10 || "Phone number must be at least 10 digits";
+                    }
                   }}
                   render={({ field }) => (
                     <PhoneInput
@@ -134,9 +159,21 @@ const TravellersCard = ({
                       country={"in"}
                       enableSearch
                       searchPlaceholder="Search for a country"
-                      onChange={(value) => {
-                        field.onChange(value);
-                        updateContactDetails("phone", value);
+                      value={getValues("phone")}
+                      onChange={(value, country, e, formattedValue) => {
+                        const dialCode = `+${country.dialCode}`;
+                        const phoneNumber = value.slice(country.dialCode.length);
+
+                        // Update form state
+                        setValue("phone", formattedValue);
+                        setValue("dialCode", dialCode);
+
+                        // Update passengers state
+                        updateContactDetails("phone", phoneNumber);
+                        updateContactDetails("dialCode", dialCode);
+
+                        // Trigger validation
+                        trigger("phone");
                       }}
                       containerClass="custom-container"
                       buttonClass="custom-button"
@@ -147,6 +184,7 @@ const TravellersCard = ({
                         autoFocus: true,
                         className: "custom-input",
                       }}
+                      isValid={!errors.phone}
                     />
                   )}
                 />
@@ -158,10 +196,12 @@ const TravellersCard = ({
                 <br />
                 <button
                   type="submit"
-                  disabled={Object.keys(errors).length > 0}
-                  className="bg-[#007EC4] text-white text-sm h-12 px-5 rounded"
+                  disabled={!isValid || loading}
+                  className={`text-white text-sm h-12 px-5 rounded ${
+                    isValid && !loading ? "bg-[#007EC4]" : "bg-gray-400 cursor-not-allowed"
+                  }`}
                 >
-                  Save
+                  {loading ? "Saving..." : "Save"}
                 </button>
               </form>
             </div>
@@ -173,4 +213,3 @@ const TravellersCard = ({
 };
 
 export default TravellersCard;
-

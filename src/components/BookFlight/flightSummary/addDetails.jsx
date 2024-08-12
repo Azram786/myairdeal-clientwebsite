@@ -54,6 +54,7 @@ const AddDetails = ({
       nationality: "",
       issueDate: "",
       expiryDate: "",
+
       typeCount: count,
     }),
     []
