@@ -505,17 +505,40 @@ const FlightSummary = ({ flightData }) => {
                       )}
                     </div>
                   </div>
-                  <div>
-                    <p>Additional Charges</p>
-                    {passengers[0]?.selectedMeal &&
-                    passengers[0]?.selectedMeal.length > 0 ? (
-                      <div className="flex text-sm justify-between">
-                        <div>{passengers[0]?.selectedMeal[0]?.meal?.desc}</div>
-                        <div>₹{passengers[0]?.selectedMeal[0]?.meal?.amount}</div>
-                      </div>
-                    ) : (
-                      "None"
-                    )}
+                  <div className="flex flex-col">
+                    <div className=" mt-2 text-sm md:text-base font-medium">
+                      Meals ,Baggage and Seats
+                    </div>
+                    <div className="text-xs md:text-sm">
+                      {passengers[0]?.selectedMeal &&
+                      passengers[0]?.selectedMeal.length > 0 ? (
+                        <div className="flex  justify-between">
+                          <div>
+                            {passengers[0]?.selectedMeal[0]?.meal?.desc}
+                          </div>
+                          <div>
+                            ₹{passengers[0]?.selectedMeal[0]?.meal?.amount}
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="text-xs md:text-sm">
+                      {passengers[0]?.selectedBaggage &&
+                      passengers[0]?.selectedBaggage.length > 0 ? (
+                        <div className="flex  justify-between">
+                          <div>
+                            {passengers[0]?.selectedBaggage[0]?.meal?.desc}
+                          </div>
+                          <div>
+                            ₹{passengers[0]?.selectedBaggage[0]?.meal?.amount}
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </div>
                   <div className="mt-2">
                     <div

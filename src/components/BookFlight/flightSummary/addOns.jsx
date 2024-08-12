@@ -25,7 +25,7 @@ const AddonsCard = ({
 
   const checkSeatSelection = async () => {
     setCheckLoading(true);
-
+  
     try {
       const response = await axios.post(
         "https://myairdeal-backend.onrender.com/booking/seat-map",
@@ -38,11 +38,17 @@ const AddonsCard = ({
           },
         }
       );
-
-      if (response.status == 200) {
+  
+  
+  
+      if (response.status === 200) {
+        console.log("Seat Map Data:", response.data);
         setSeatMapData(response?.data);
+      } else if (response.status === 400) {
+        console.log("Error Response Data:", response.data);
+        setSeatMapData("Seat Map is not available");
       }
-      console.log("Seat Map Data:", response);
+  
       setCheckLoading(false);
     } catch (error) {
       console.error("SeatMapError:", error);
@@ -50,6 +56,7 @@ const AddonsCard = ({
       setErrors(error?.response?.data?.errors);
     }
   };
+  
 
   const [isSeatMapAvailable, setIsMapAvailable] = useState(
     data?.conditions?.isa
@@ -79,7 +86,7 @@ const AddonsCard = ({
         </div>
       </div>
       {
-      // expanded &&
+      expanded &&
        (
         <div className="p-4">
           <div className="flex space-x-4 mb-4">
