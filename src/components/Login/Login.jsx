@@ -23,10 +23,6 @@ const spinnerVariants = {
   },
 };
 
-
-
-
-
 const StyledPhoneInput = ({ value, onChange }) => {
   return (
     <motion.div

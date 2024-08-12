@@ -55,6 +55,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
       nationality: "",
       issueDate: "",
       expiryDate: "",
+
       typeCount: count,
     }),
     []
