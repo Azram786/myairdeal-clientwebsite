@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect, useCallback } from "react";
 import TravellersDetails from "./travellers";
 import AddonsCard from "./addOns";
@@ -8,12 +5,14 @@ import GstDetails from "./gstDetails";
 import { useNavigate } from "react-router-dom";
 import ReactToast from "../../util/ReactToast";
 
-const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
-
-
-
-
-  const [passengers, setPassengers] = useState([]);
+const AddDetails = ({
+  bookingId,
+  flightData,
+  onData,
+  setCurrentStep,
+  passengers,
+  setPassengers,
+}) => {
   const [gstDetails, setGstDetails] = useState({
     gstNumber: "",
     companyName: "",
@@ -103,16 +102,21 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
     setIsPassengersCompleted(isCompleted);
   }, [passengers]);
 
-  const toggleCard = useCallback((card) => {
-    if ((card === "addons" || card === "gst") && !isPassengersCompleted) {
-      ReactToast("Please complete all passenger details before proceeding to Add-ons.");
-      return;
-    }
-    setExpandedCard((prevState) => ({
-      ...prevState,
-      [card]: !prevState[card],
-    }));
-  }, [isPassengersCompleted]);
+  const toggleCard = useCallback(
+    (card) => {
+      if ((card === "addons" || card === "gst") && !isPassengersCompleted) {
+        ReactToast(
+          "Please complete all passenger details before proceeding to Add-ons."
+        );
+        return;
+      }
+      setExpandedCard((prevState) => ({
+        ...prevState,
+        [card]: !prevState[card],
+      }));
+    },
+    [isPassengersCompleted]
+  );
 
   const validateFormData = (passengers, gstDetails) => {
     const isPassengersValid = passengers.every(
@@ -134,19 +138,18 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
   const handleProceedToReview = useCallback(() => {
     const isValid = validateFormData(passengers, gstDetails);
 
-
     if (isValid) {
       onData({ passengers, gstDetails });
       setCurrentStep((p) => p + 1);
     } else {
-
-      ReactToast("Please fill out all required fields correctly before proceeding to review.")
-
+      ReactToast(
+        "Please fill out all required fields correctly before proceeding to review."
+      );
     }
   }, [passengers, gstDetails, onData, setCurrentStep]);
 
   return (
-    <div className="mx-auto    rounded-lg font-poppins max-w-full overflow-x-hidden">
+    <div className="mx-auto  h-screen  rounded-lg font-poppins max-w-full overflow-x-hidden">
       <div className="flex flex-col">
         <TravellersDetails
           passengers={passengers}
@@ -174,7 +177,7 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
       <div className="mt-6 max-w-full mx-auto flex justify-center items-center px-4">
         <button
           onClick={handleProceedToReview}
-          className="bg-[#007ec4] w-full sm:w-auto text-white px-4 py-2 rounded text-base sm:text-lg"
+          className="bg-[#007ec4] w-full sm:w-auto  text-white px-4 py-2 rounded text-base sm:text-lg"
         >
           Proceed To Review
         </button>

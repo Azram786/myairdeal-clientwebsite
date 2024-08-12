@@ -167,9 +167,9 @@ const PassengerForm = ({ passenger, index, updatePassenger, condition }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex  gap-2 items-center">
           <div className="font-semibold">
-            <h2>
+            <div className="text-base mx-4">
               {passenger.passengerType} {passenger.typeCount}
-            </h2>
+            </div>
           </div>
           <div>
             <Controller
@@ -317,7 +317,7 @@ const PassengerForm = ({ passenger, index, updatePassenger, condition }) => {
           passport={formData.passport}
           condition={condition}
         />}
-        <div className="flex mt-4 gap-3">
+        <div className=" mx-4 flex mt-4 gap-3">
 
           {/* <Button
             type="submit"
@@ -329,7 +329,7 @@ const PassengerForm = ({ passenger, index, updatePassenger, condition }) => {
           </Button> */}
           <div className="flex items-center">
             <input type="checkbox" className="h-4 w-4" />
-            <label htmlFor="">save passenger details</label>
+            <label className="text-sm ml-2" htmlFor="">Save passenger details</label>
           </div>
           <div className="text-[.5rem]">
             <Button

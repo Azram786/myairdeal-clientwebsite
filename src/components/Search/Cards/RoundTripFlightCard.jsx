@@ -24,12 +24,12 @@ const RoundTripCard = ({
   baggageDetails, 
   mealDetails,
 }) => {
-  console.log(flightDetails,
-    isSelected,
-    selectedPriceIndex,
-    onSelect,
-    passenger,
-    specialReturnMode,"ROUNDTRIP")
+  // console.log(flightDetails,
+  //   isSelected,
+  //   selectedPriceIndex,
+  //   onSelect,
+  //   passenger,
+  //   specialReturnMode,"ROUNDTRIP")
   const [showAllPrices, setShowAllPrices] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [showBaggageDetails, setShowBaggageDetails] = useState(false); // New state

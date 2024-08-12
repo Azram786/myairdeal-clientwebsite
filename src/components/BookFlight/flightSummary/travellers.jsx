@@ -86,9 +86,9 @@ const TravellersCard = ({
                 ))}
             </div>
             <div className="mt-4">
-              <h3 className="font-semibold text-sm mb-2">Contact Details</h3>
+              <h3 className="font-semibold text-sm md:text-base mb-2 mx-4">Contact Details</h3>
               <form
-                className="flex md:flex-row flex-col gap-2 justify-center"
+                className="flex md:flex-row flex-col gap-2 flex-wrap mb-4 justify-center"
                 onSubmit={handleSubmit(validateContactDetails)}
               >
                 <TextField
