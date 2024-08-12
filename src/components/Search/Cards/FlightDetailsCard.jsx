@@ -8,7 +8,7 @@ import {
 import { GiRollingSuitcase } from "react-icons/gi";
 import FareToolTip from "./FareTooltip";
 import calculateDuration from "../../util/calculateDuration";
-
+import defaultAirline from '../../../assets/booking/viewBookings/flightLogo.png'
 const FlightDetailsCard = ({
   logo,
   flightDetails,
