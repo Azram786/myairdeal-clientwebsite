@@ -64,11 +64,11 @@ const DownloadApp = () => {
               </button>
             </div>
           </section>
-          <div className="absolute md:flex hidden right-20  -top-20 z-50 ">
+          <div className="absolute md:flex hidden right-1 lg-custom:right-16  lg:right-20  -top-20 z-50 ">
             <img
               src={mobile}
               alt="Mobile app preview"
-              className=" w-[280px] h-auto "
+              className=" w-[200px] ml-2 lg-custom:w-[280px] h-auto "
               //   style={{ maxHeight: "100%", objectFit: "contain" }}
             />
           </div>

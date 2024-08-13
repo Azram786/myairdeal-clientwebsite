@@ -117,7 +117,7 @@ const AddonsCard = ({
           )}
           {activeButton === "addBagAndMeal" && (
             <BagAndMeal
-              setPassenger={setPassengers}
+              setPassengers={setPassengers}
               flightData={flightData}
               passengers={passengers}
             />

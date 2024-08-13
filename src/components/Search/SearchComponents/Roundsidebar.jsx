@@ -127,7 +127,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
 
 
   const renderStopsSection = () => (
-    <div className="mb-6 border-b  border-gray-300 pb-4">
+    <div className="mb-6 border-b  rounded-md border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">Stops</h3>
       <div className="grid w-full grid-cols-2 lg:grid-cols-4">
         {stops.map((stop, index) => (
@@ -256,7 +256,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   );
 
   return (
-    <div className="flex  flex-row w-full  lg-custom:w-full border shadow-md rounded-md min-h-screen">
+    <div className="flex  flex-row w-[full]  lg-custom:w-full h-screen overflow-y-auto border shadow-md  min-h-screen">
       <div className="p-4 grid gap-2 grid-cols-1 w-full md:grid-cols-1">
         <div className='flex flex-col'>
           <div className="mb-6 border-b border-gray-300 pb-4">

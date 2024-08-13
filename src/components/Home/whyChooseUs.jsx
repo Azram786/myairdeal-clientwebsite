@@ -55,7 +55,7 @@ const WhyChooseUs = () => {
           </div>
         </div>
 
-        <div className="md:w-1/2 w-[90%] md:mt-0 mt-2">
+        <div className="md:w-1/2 w-[90%] ml-4 md:mt-0 mt-2">
           <h2 className="text-base font-sans text-gray-500 font-bold">Why Choose Us?</h2>
           <h1 className="text-xl sm:text-3xl  font-bold font-sans mb-2">98% of Client Satisfied <br/>with our Service</h1>
 

@@ -150,6 +150,7 @@ const AddDetails = ({
         toggleCard={() => toggleCard('addons')}
         flightData={flightData}
         passengers={passengers}
+        setPassengers={setPassengers}
       />
       <GstDetails
         expanded={expandedCard.gst}

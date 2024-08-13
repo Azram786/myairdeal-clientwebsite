@@ -160,7 +160,7 @@ const RoundTripCard = ({
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className=" max-w-screen md:min-w-max overflow-x-scroll p-0 pb-2 pl-2 md:p-2">
+          <div className="overflow-x-scroll w-full p-0 pb-2 pl-2 md:p-2">
             {data.map((segment, index) => (
               <div key={index} className="flex flex-col  justify-start px-4 ">
                 <div className="text-sm w-full   flex flex-col md:flex-row  text-black font-bold">
@@ -187,9 +187,9 @@ const RoundTripCard = ({
                     </div>
                   </div>
 
-                  <div className=" w-full flex gap-1  items-start  ">
-                    <div className="text-left min-w-28 ">
-                      <div className="font-bold text-xs flex-wrap">
+                  <div className="   w-full flex gap-1  items-start  ">
+                    <div className="text-left w-max  sm:min-w-28 ">
+                      <div className="font-bold max-w-20 sm:w-max text-xs flex-wrap">
                         {formatDateTime(segment.dt)}
                         {/* {getDayOfWeek(segment.dt)} */}
                       </div>
@@ -204,7 +204,7 @@ const RoundTripCard = ({
                       </div>
                     </div>
 
-                    <div className="mx-4 min-w-24  flex flex-col items-center ">
+                    <div className="mx-4 w-max sm:min-w-24  flex flex-col items-center ">
                       <div className="text-[10px] text-gray-500">
                         {segment.stops === 0
                           ? "Non-Stop"
@@ -216,8 +216,8 @@ const RoundTripCard = ({
                       </div>
                     </div>
 
-                    <div className=" text-left ml-4 min-w-28 ">
-                      <div className="text-xs font-bold">
+                    <div className=" text-left ml-4 w-max sm:min-w-28 ">
+                      <div className="text-xs font-bold max-w-20 sm:w-max">
                         {formatDateTime(segment.at)}
                       </div>
                       <div className="text-[10px] text-gray-500">
@@ -333,13 +333,13 @@ const RoundTripCard = ({
   };
   const visiblePrices = showAllPrices
     ? displayedPrices
-    : displayedPrices.slice(0, 3);
+    : displayedPrices.slice(0, 2);
 
   return (
-    <div className="border flex flex-col rounded-lg m-4 bg-white sm:max-screen-sm md:w-screen-md lg_max-w-lg shadow-md overflow-x-auto no-scroll ">
+    <div className="border flex flex-col rounded-lg m-4 bg-white sm:max-screen-sm md:w-screen-md shadow-md overflow-x-scroll w-full  ">
       <div className="flex flex-col md:flex-row  justify-between items-stretch p-3  mb-2">
-        <div className="flex flex-col  px-2  justify-center lg-custom:justify-normal w-full">
-          <div className="flex gap-4  ">
+        <div className="flex flex-col  justify-center lg-custom:justify-normal w-full">
+          <div className="flex gap-4 items-center justify-center md:justify-none ">
             <div className="">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
@@ -361,7 +361,7 @@ const RoundTripCard = ({
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
-                <h1 className="text-xs">{formatDateTime(startSegment?.dt)}</h1>
+                <h1 className="w-[50px] sm:w-max  text-xs">{formatDateTime(startSegment?.dt)}</h1>
               </div>
             </div>
             <div className="flex  max-w-32 items-center  mb-4 md:mb-0">
@@ -386,12 +386,12 @@ const RoundTripCard = ({
               <div>
                 <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
-                <h1 className="text-xs">{formatDateTime(endSegment?.at)}</h1>
+                <h1 className="w-[50px] sm:w-max   text-xs">{formatDateTime(endSegment?.at)}</h1>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center  justify-between ">
+          <div className="flex items-center  justify-between w-full ">
             <div className="flex flex-col w-full ">
               <div className="relative border-[1px] border-[#007EC4]  m-2 rounded-md">
                 <div className="flex flex-wrap gap-2  overflow-x-auto  mt-3 p-2 items-center">
@@ -425,7 +425,7 @@ ${
                     </div>
                   ))}
 
-                  {displayedPrices.length > 3 && (
+                  {displayedPrices.length > 2 && (
                     <button
                       onClick={() => setShowAllPrices(!showAllPrices)}
                       className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#007EC4] text-white rounded-md py-1 px-2 flex items-center justify-center"
@@ -491,8 +491,8 @@ ${
       </div>
 
       {showDetails && (
-        <div className="px-0 md:px-4 border-t justify-center lg-custom:justify-normal  border-gray-200 pt-4">
-          <div className="mb-2 overflow-x-auto no-scroll text-[10px] ml-0  md:ml-4  shrink-0 flex">
+        <div className="px-0 md:px-4 border-t justify-center lg-custom:justify-normal overflow-x-scroll w-full border-gray-200 pt-4">
+          <div className="mb-2 text-[10px] ml-0 shrink-0 flex ">
             {[
               "Flight Details",
               "Fare Details",
@@ -502,7 +502,7 @@ ${
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-2 px-3 shrink-0 text-[12px] ${
+                className={`py-2 px-2 shrink-0 text-[12px] ${
                   activeTab === tab
                     ? "text-[#007EC4]  font-bold border-b-2 border-[#007EC4]"
                     : "text-gray-500"

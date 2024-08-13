@@ -24,18 +24,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
 import PassengerSelector from "./PassengerSelector";
 import getCountryCode from "../util/getCity";
-const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormData, setTypeOfTravel, typeOfTravel }) => {
+const FilterSection = ({
+  formData,
+  setFormData,
+  dynamicFormData,
+  setDynamicFormData,
+  setTypeOfTravel,
+  typeOfTravel,
+}) => {
+  const navigate = useNavigate();
 
-
-  const navigate = useNavigate()
-
-
-
-
-  const { token } = useSelector((state) => state.auth)
+  const { token } = useSelector((state) => state.auth);
   const [Loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   //filter state for country code
   const [countryCodeone, setCountryCodeOne] = useState("IN");
@@ -46,43 +48,33 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
   // state for filteration
 
-
   //changing type-of-travel
   const handleTypeOfTravelChange = (type) => {
     setTypeOfTravel(type);
   };
 
-
-
-
-
   //set country code where from
   const setContryCodeFrom = (value) => {
-    console.log({ countryCodeFrom: value })
+    console.log({ countryCodeFrom: value });
     setFormData((prev) => ({ ...prev, fromCityOrAirport: value }));
   };
 
   //set country code where to
   const setContryCodeTo = (value) => {
-    console.log({ contryCodeTo: value })
+    console.log({ contryCodeTo: value });
 
     if (formData.fromCityOrAirport === value && value !== "") {
-
       ReactToast("You cannot select the same airport twice");
     } else {
       setDynamicFormData((prevFormData) => {
-
         const newFormData = [...prevFormData];
 
-
         if (newFormData[0]) {
-
           newFormData[0] = {
             ...newFormData[0],
             fromCity: value,
           };
         } else {
-
           newFormData[0] = {
             fromCity: value,
             toCity: "",
@@ -96,7 +88,6 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         ...prev,
         toCityOrAirport: value,
       }));
-
     }
   };
 
@@ -105,7 +96,8 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
   const getCountriesHandlerOne = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL
+        `${
+          import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
@@ -126,16 +118,17 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
   const getCountriesHandlerTwo = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL
+        `${
+          import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
       const options = response.data.data.map((item) => {
-        return ({
+        return {
           value: `${item.code}-${item.city}`,
           label: `${item.city}(${item.code})
           -${item?.name}`,
-        })
+        };
       });
 
       callback(options);
@@ -147,41 +140,44 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
   //select tag default value
   const fetchDefaultOptions = async () => {
-
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL
+        `${
+          import.meta.env.VITE_SERVER_URL
         }search/airport-country-code?countrycode=IN`
       );
       const options = response.data.data.map((item) => {
-
-        return ({
+        return {
           value: `${item.code}-${item.city}`,
           label: `${item.city}(${item.code})
           -${item?.name}`,
-        })
+        };
       });
 
-
-
       setDefaultOptions(options);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const submitHandler = async () => {
     try {
-      setLoading(true)
-      if (formData.fromCityOrAirport === formData.toCityOrAirport && formData.fromCityOrAirport !== "" && formData.fromCityOrAirport !== "") {
+      setLoading(true);
+      if (
+        formData.fromCityOrAirport === formData.toCityOrAirport &&
+        formData.fromCityOrAirport !== "" &&
+        formData.fromCityOrAirport !== ""
+      ) {
         ReactToast("You cannot select the same airport twice");
-        return
+        return;
       }
       const validateFormData = (data) => {
-
-
         // Validate common fields
-        if (!data.cabinClass || !data.ADULT || !data.fromCityOrAirport || !data.toCityOrAirport || !data.travelDate) {
+        if (
+          !data.cabinClass ||
+          !data.ADULT ||
+          !data.fromCityOrAirport ||
+          !data.toCityOrAirport ||
+          !data.travelDate
+        ) {
           return false;
         }
 
@@ -209,7 +205,10 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         return;
       }
 
-      if (typeOfTravel === "multi-city" && !validateDynamicFormData(dynamicFormData)) {
+      if (
+        typeOfTravel === "multi-city" &&
+        !validateDynamicFormData(dynamicFormData)
+      ) {
         setLoading(false);
         ReactToast("Please fill in all required fields for each trip");
         return;
@@ -365,15 +364,18 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               CHILD: formData.CHILD,
               INFANT: formData.INFANT,
             },
-            routeInfos: [{
-              fromCityOrAirport: {
-                code: getCountryCode(formData.fromCityOrAirport),
+            routeInfos: [
+              {
+                fromCityOrAirport: {
+                  code: getCountryCode(formData.fromCityOrAirport),
+                },
+                toCityOrAirport: {
+                  code: getCountryCode(formData.toCityOrAirport),
+                },
+                travelDate: formatDate(formData.travelDate),
               },
-              toCityOrAirport: {
-                code: getCountryCode(formData.toCityOrAirport),
-              },
-              travelDate: formatDate(formData.travelDate),
-            }, ...dynamic],
+              ...dynamic,
+            ],
             searchModifiers: {
               isDirectFlight: formData.isDirectFlight,
               isConnectingFlight: formData.isConnectingFlight,
@@ -388,15 +390,18 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               CHILD: formData.CHILD,
               INFANT: formData.INFANT,
             },
-            routeInfos: [{
-              fromCityOrAirport: {
-                code: getCountryCode(formData.fromCityOrAirport),
+            routeInfos: [
+              {
+                fromCityOrAirport: {
+                  code: getCountryCode(formData.fromCityOrAirport),
+                },
+                toCityOrAirport: {
+                  code: getCountryCode(formData.toCityOrAirport),
+                },
+                travelDate: formatDate(formData.travelDate),
               },
-              toCityOrAirport: {
-                code: getCountryCode(formData.toCityOrAirport),
-              },
-              travelDate: formatDate(formData.travelDate),
-            }, ...dynamicLast],
+              ...dynamicLast,
+            ],
             searchModifiers: {
               isDirectFlight: formData.isDirectFlight,
               isConnectingFlight: formData.isConnectingFlight,
@@ -405,59 +410,62 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         };
       }
 
-      console.log({ query })
-      dispatch(setLastSearch(query))
-      dispatch(setResentSearch(saving))
+      console.log({ query });
+      dispatch(setLastSearch(query));
+      dispatch(setResentSearch(saving));
       if (token) {
-
-        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`,
+          query,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
+        );
       }
-
-
 
       setLoading(false);
       navigate(`/search`, { state: { query } });
     } catch (error) {
       setLoading(false);
-      console.log(error.message)
+      console.log(error.message);
       ReactToast("Something went wrong");
     }
   };
-
 
   useEffect(() => {
     fetchDefaultOptions();
   }, []);
 
   return (
-    <div className="flex flex-col items-center  min-h-[200px]   justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
+    <div className=" flex flex-col items-center  min-h-[200px]   justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
       <div className="     md:rounded-xl w-[90%] mt-4 md:mt-0  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   ">
         {/* type of travel selecting section */}
 
         <div className="flex justify-center md:justify-stretch  text-white ">
           <button
-            className={`bg-[#007EC4] text-sm md:text-base rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#01324D]"
-              }`}
+            className={`bg-[#007EC4] text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
+              typeOfTravel === "one-way" && "bg-[#01324D]"
+            }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
           >
             One way
           </button>
           <button
-            className={`bg-[#007EC4] text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#01324D]"
-              } `}
+            className={`bg-[#007EC4] text-sm md:text-base md:p-3 p-2 border-2 ${
+              typeOfTravel === "round-trip" && "bg-[#01324D]"
+            } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
           >
             Round trip
           </button>
           <button
-            className={` bg-[#007EC4] text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#01324D]"
-              }`}
+            className={` bg-[#007EC4] text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${
+              typeOfTravel === "multi-city" && "bg-[#01324D]"
+            }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
           >
@@ -466,21 +474,19 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         </div>
 
         <div>
-          <h3 className="font-semibold my-0 text-base md:text-lg">Where are you flying?</h3>
+          <h3 className="font-semibold my-0 text-base md:text-lg">
+            Where are you flying?
+          </h3>
         </div>
 
         {/* select country code and date section  */}
         <div className="flex flex-col w-full gap-2 ">
-          <div className="flex flex-col  md:flex-row bg-[#ffffff]  w-full  gap-2 ">
+          <div className="flex flex-col  lg-custom:flex-row   w-full  gap-2 ">
             {/* {select country section} */}
-            <div
-              className="flex flex-col md:w-1/2 md:flex-row  relative gap-2 md:gap-2
-         justify-between "
-            >
+            <div className="flex  flex-col lg-custom:w-1/2 md:flex-row  relative gap-2 md:gap-2 justify-between ">
               <div className="flex   text-sm md:text-base  items-center border rounded p-2 md:w-1/2 ">
                 <div>
                   <RiFlightTakeoffLine className=" text-2xl md:text-3xl " />
-
                 </div>
                 <div className="w-full ">
                   <CustomSelect
@@ -511,7 +517,6 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                     loadOptions={getCountriesHandlerTwo}
                     placeholder="Where To ?"
                     defaultOptions={defaultOptions}
-
                     value={formData.toCityOrAirport}
                   />
                 </div>
@@ -519,9 +524,9 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             </div>
 
             {/* date picker section  */}
-            <div className="flex flex-col md:flex-row    w-full  md:w-1/2 gap-2">
+            <div className="flex flex-col md:flex-row    w-full  lg-custom:w-1/2 gap-2">
               <div className="  rounded   flex items-center border md:w-1/2  py-2 ">
-                <div className=" flex items-center text-sm md:text-base justify-between   w-full ">
+                <div className="flex items-center text-sm md:text-base justify-center gap-4   w-full ">
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}
@@ -576,11 +581,12 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               <div
                 //click handler
 
-
                 className="     text-sm md:text-base flex items-center flex-col border relative rounded-md md:w-1/2  justify-center p-3 md:p-0  cursor-pointer"
               >
-                <div className="flex w-full  justify-center items-center  " onClick={() => setModelIsOpen(prev => !prev)}>
-
+                <div
+                  className="flex w-full  justify-center items-center  "
+                  onClick={() => setModelIsOpen((prev) => !prev)}
+                >
                   <div className=" text-[2rem]  ">
                     <MdAirlineSeatReclineExtra />
                   </div>
@@ -591,20 +597,25 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                     <input
                       className="pl-1 font-bold outline-none cursor-pointer "
                       type="text"
-                      value={`${Number(formData.ADULT) + Number(formData.CHILD) + Number(formData.INFANT)
-                        } | ${formData.cabinClass}`}
+                      value={`${
+                        Number(formData.ADULT) +
+                        Number(formData.CHILD) +
+                        Number(formData.INFANT)
+                      } | ${formData.cabinClass}`}
                       readOnly
                     />
                   </div>
                 </div>
 
-                {modalIsOpen && <div className=" z-10 absolute top-[59px] right-[0px]  border-[2px] rounded-lg ">
-
-                  <PassengerSelector formData={formData}
-                    setModelIsOpen={setModelIsOpen}
-                    setFormData={setFormData}
-                  />
-                </div>}
+                {modalIsOpen && (
+                  <div className=" z-10 absolute items-center top-[59px] right-0 left-0 md:-left-80  border-[2px] rounded-lg ">
+                    <PassengerSelector
+                      formData={formData}
+                      setModelIsOpen={setModelIsOpen}
+                      setFormData={setFormData}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -621,8 +632,8 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         </div>
 
         {/* fare type with submit button section  */}
-        <div className=" md:items-center  flex flex-col md:flex-row mt-3 mb-3   ">
-          <div className="    flex  flex-col md:flex-row  md:w-3/4 gap-2 md:gap-0">
+        <div className=" md:items-center  flex flex-col lg-custom:flex-row mt-3 mb-3   ">
+          <div className=" justify-around w-full  flex  flex-col md:flex-row gap-2 lg-custom::gap-0">
             <div className="text-sm md:text-base w-full flex justify-center md:w-1/3 ">
               <select
                 id="fare-type"
@@ -655,7 +666,6 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                 </option>
                 <option value="">ethiad</option>
               </select>
-
             </div>
             <div className=" text-sm md:text-base flex gap-2 p-1 w-full  cursor-pointer justify-center items-center md:w-1/3  ">
               <label>Direct flights</label>
@@ -666,7 +676,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                   setFormData((prev) => ({
                     ...prev,
                     // isDirectFlight: e.target.checked,
-                    isConnectingFlight: !e.target.checked
+                    isConnectingFlight: !e.target.checked,
                   }))
                 }
                 checked={!formData?.isConnectingFlight}
@@ -679,7 +689,8 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               disabled={Loading}
               // form submition
               onClick={submitHandler}
-              className=" flex items-center  space-x-2  text-white bg-[#01324D] p-3 rounded"
+              className=" flex items-center mt-2 
+              space-x-2  text-white bg-[#01324D] p-3 rounded"
             >
               <FaTelegramPlane className="text-white text-lg" />
               <span>{Loading ? "Searching..." : "Search Flights"}</span>
@@ -688,8 +699,6 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         </div>
 
         {/* {custom-modal} */}
-
-
       </div>
       {/* <div
         className="  flex flex-col md:flex-row
@@ -718,7 +727,6 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
           </select>
         </div>
       </div> */}
-
     </div>
   );
 };

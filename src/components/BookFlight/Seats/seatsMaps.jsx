@@ -222,12 +222,9 @@
 
 // export default SeatMap;
 
-
-
 // import React, { useEffect, useState } from "react";
 // import ReactToast from "../Util/ReactToast";
 // import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
-
 
 // const SeatMap = ({
 //   Passengers,
@@ -483,7 +480,6 @@
 
 // export default SeatMap;
 
-
 import React, { useEffect, useState } from "react";
 import ReactToast from "../Util/ReactToast";
 import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
@@ -502,7 +498,9 @@ const SeatMap = ({
   const [sInfo, setSInfo] = useState([]);
 
   // Filter out infants from passengers
-  const adultPassengers = Passengers.filter(passenger => passenger.passengerType !== "INFANT");
+  const adultPassengers = Passengers.filter(
+    (passenger) => passenger.passengerType !== "INFANT"
+  );
 
   useEffect(() => {
     if (flightData && booking && flightId) {
@@ -598,7 +596,7 @@ const SeatMap = ({
 
   const renderSeatMap = () => {
     if (!sData || !sInfo) {
-      return <div>Loading seat map...</div>;
+      return <div className="text-sm font-semibold">Loading Seat Map...</div>;
     }
 
     const rows = [];
@@ -624,14 +622,16 @@ const SeatMap = ({
   };
 
   return (
-    <div className="container mx-auto ">
+    <div className="container ">
       <div className="flex flex-col gap-6 md:flex-row w-full justify-around">
         {/* First portion for displaying the data - make it sticky */}
-        <div className="md:sticky md:top-0 md:self-start md:min-h-screen bg-white md:w-1/4 border-r-2 flex flex-col">
-          <div className="flex-grow overflow-y-auto">
-            <div className="px-3 py-2">
-              <p className="font-semibold">Seat Selection</p>
-              <div className="border-b flex py-2 justify-between">
+        <div className="md:sticky md:top-0 md:self-start md:min-h-screen bg-white md:w-[40%] border-r-2 flex flex-col">
+          <div className="w-full  flex-grow overflow-y-auto">
+            <div className=" px-3 py-2">
+              <p className="text-sm md:text-base font-semibold">
+                Seat Selection
+              </p>
+              <div className="border-b flex flex-wrap py-2 justify-between">
                 <div className="rounded-md size-12 bg-slate-500">
                   <img
                     src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${flightDetails?.flightCode}.png`}
@@ -642,7 +642,7 @@ const SeatMap = ({
                 </div>
                 <div>
                   <p className="font-semibold">{flightDetails?.airline}</p>
-                  <span className="w-full flex gap-2 justify-center">
+                  <span className="w-full text-sm  flex gap-2 justify-center">
                     <p>
                       {flightDetails?.departure} - {flightDetails?.arrival}
                     </p>
@@ -651,20 +651,20 @@ const SeatMap = ({
                 </div>
               </div>
             </div>
-            <div className="mt-6 md:max-h-[calc(100vh-300px)] overflow-y-auto custom-scrollbar">
+            <div className="mt-6 md:max-h-[calc(100vh-300px)] w-full   overflow-y-auto custom-scrollbar">
               <div className="grid w-full grid-cols-3">
                 <div className="flex flex-col justify-start items-center">
-                  <h1 className="font-semibold">Passengers</h1>
+                  <h1 className=" text-sm font-semibold">Passengers</h1>
                   <div className="flex flex-col">
                     {adultPassengers.map((person, index) => (
-                      <p key={index} className="truncate w-20">
+                      <p key={index} className="truncate w-max text-xs">
                         {person?.firstName} {person?.lastName}
                       </p>
                     ))}
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-center">
-                  <h1 className="font-semibold">Seat</h1>
+                  <h1 className=" text-sm font-semibold">Seat</h1>
                   <div className="flex flex-col">
                     {selectedSeats?.map((seat) => (
                       <p key={seat?.code} className="truncate">
@@ -674,7 +674,7 @@ const SeatMap = ({
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-center">
-                  <h1 className="font-semibold">Fee</h1>
+                  <h1 className="text-sm font-semibold">Fee</h1>
                   <div>
                     {selectedSeats?.map((seat) => (
                       <p key={seat?.code} className="truncate">
@@ -687,24 +687,28 @@ const SeatMap = ({
             </div>
           </div>
           {/* Total and Proceed button - always visible */}
-          <div className="mt-auto flex flex-col items-center justify-center p-4 bg-white">
-            <div className="grid grid-cols-3 w-full">
+          <div className="mt-auto flex flex-col items-center p-4 bg-white">
+            <div className="flex justify-between w-full">
               <div>
-                <h2 className="font-semibold">Total</h2>
+                <h2 className="text-sm md:text-base font-semibold">Total</h2>
               </div>
               <div>{`    `}</div>
-              <div>
+              <div className="text-sm md:text-base">
                 ₹ {selectedSeats.reduce((sum, seat) => sum + seat.amount, 0)}/-
               </div>
             </div>
             <button
               onClick={handleProceed}
-              className={`mt-3 w-[60%] bg-green-500 text-white px-6 py-2 ${
-                selectedSeats.length === 0 || selectedSeats.length !== adultPassengers.length
+              className={`mt-3 w-[60%]  text-white text-sm md:text-mase px-6 py-2 ${
+                selectedSeats.length === 0 ||
+                selectedSeats.length !== adultPassengers.length
                   ? "cursor-not-allowed bg-opacity-50"
                   : "cursor-pointer hover:bg-green-600"
               } rounded-md transition-colors duration-200`}
-              disabled={selectedSeats.length === 0 || selectedSeats.length !== adultPassengers.length}
+              disabled={
+                selectedSeats.length === 0 ||
+                selectedSeats.length !== adultPassengers.length
+              }
             >
               Proceed
             </button>
@@ -717,24 +721,24 @@ const SeatMap = ({
         </div>
 
         {/*  Third Portion to display the Identifiers*/}
-        <div className="text-sm md:sticky md:top-0 md:self-start md:min-h-screen border-l-2 md:w-1/4 flex flex-col space-y-3 items-center md:items-start  p-4">
+        <div className="text-sm md:sticky md:top-0 md:self-start md:min-h-screen border-l-2 md:w-[20%] flex flex-col  items-center md:items-start  p-4">
           <h1 className="font-semibold">Seat Status</h1>
-          <div className="w-full grid grid-cols-2 md:grid-cols-1">
-            <div className="w-full sm:w-1/2 flex items-center ml-4 md:ml-0 mb-3">
+          <div className="w-32 grid grid-cols-2 gap-y-4 md:grid-cols-1">
+            <div className="flex justify-center items-center">
               <span className="inline-block w-4 h-4 bg-white border mr-2"></span>
-              <p>Available</p>
+              <p className="ml-4">Available</p>
             </div>
-            <div className="w-full sm:w-1/2 flex items-center ml-4 md:ml-0 mb-3">
+            <div className="flex justify-center items-center">
               <span className="inline-block w-4 h-4 bg-gray-400 mr-2"></span>
-              <p>Booked</p>
+              <p className="ml-4">Booked</p>
             </div>
-            <div className="w-full sm:w-1/2 flex items-center ml-4 md:ml-0 mb-3">
-              <span className="inline-block w-4 h-4 bg-white border-t-8 border-t-green-500 mr-2 border border-slate-100"></span>
-              <p>Extra Legroom</p>
+            <div className="flex justify-center items-center">
+              <span className="inline-block w-4 h-4 bg-white border-t-8 border-t-green-500 border border-slate-100 mr-2"></span>
+              <p className="ml-4">Extra Legroom</p>
             </div>
-            <div className="w-full sm:w-1/2 flex items-center ml-4 md:ml-0 mb-3">
+            <div className="flex justify-center items-center">
               <span className="inline-block w-4 h-4 bg-[#007EC4] mr-2"></span>
-              <p>Selected</p>
+              <p className="ml-4">Selected</p>
             </div>
           </div>
         </div>
