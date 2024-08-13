@@ -6,6 +6,7 @@ const ModalHistoryData = ({
   historyData,
   loading,
   onSelect,
+  DATAindex
 }) => {
   if (!isOpen) return null;
 
@@ -59,7 +60,7 @@ const ModalHistoryData = ({
                   <tr
                     key={index}
                     className=" hover:bg-gray-400 hover:font-semibold hover:cursor-pointer"
-                    onClick={() => onSelect(item)}
+                    onClick={() => onSelect(DATAindex, item)}
                   >
                     <td className="py-2 px-4 border-b">{item.ti || "N/A"}</td>
                     <td className="py-2 px-4 border-b">{item.fN || "N/A"}</td>
