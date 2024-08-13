@@ -60,21 +60,24 @@ const Testimonials = () => {
       <h2 className="text-center font-bold text-gray-500 text-base">Testimonials</h2>
       <h1 className="text-center text-xl sm:text-3xl font-bold mb-8">What Our Clients Say About Us</h1>
       <div className='px-4'>
-        <Slider {...settings}>
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="p-4 mt-3">
-              <div className="bg-white rounded-lg shadow-lg p-4 relative">
-                <img src={testimonial?.image || Avatar} alt={testimonial.name} className="w-16 h-16 rounded-full mx-auto absolute -top-6 left-1/2 transform -translate-x-1/2" />
-                <div className="pt-8 text-center">
-                  <h3 className="text-xl font-semibold">{testimonial.name}</h3>
-                  <p className="text-gray-500">{testimonial.role}</p>
-                  <p className="mt-2 text-gray-700">{testimonial.text}</p>
-                </div>
-              </div>
+      <Slider {...settings}>
+      {testimonials.map((testimonial, index) => (
+        <div key={index} className="p-4 mt-3">
+          <div className="bg-white rounded-lg shadow-lg p-4 relative transition-transform transform hover:scale-105 duration-300 ease-in-out">
+            <img 
+              src={testimonial.image || Avatar} 
+              alt={testimonial.name} 
+              className="w-16 h-16 rounded-full mx-auto absolute -top-6 left-1/2 transform -translate-x-1/2" 
+            />
+            <div className="pt-8 text-center">
+              <h3 className="text-xl font-semibold">{testimonial.name}</h3>
+              <p className="text-gray-500">{testimonial.role}</p>
+              <p className="mt-2 text-gray-700">{testimonial.text}</p>
             </div>
-            // <TestimonialCard />
-          ))}
-        </Slider>
+          </div>
+        </div>
+      ))}
+    </Slider>
       </div>
     </div>
   );

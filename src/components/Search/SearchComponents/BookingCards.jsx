@@ -260,22 +260,22 @@ const BookingCard = ({ selectedFlights, onBook, passenger }) => {
   }, [selectedFlights, calculateTotalPrice]);
 
   const getFlightDetails = (flight) => {
-    const segments = flight?.sI;
-    const firstSegment = segments[0];
-    const lastSegment = segments[segments.length - 1];
+    const segments = flight?.sI || [];
+    const firstSegment = segments[0] || {};
+    const lastSegment = segments[segments.length - 1] || {};
     return {
-      departureCity: firstSegment?.da.code,
-      departureTime: firstSegment?.dt.substring(11, 16),
-      arrivalCity: lastSegment?.aa.code,
-      arrivalTime: lastSegment?.at.substring(11, 16),
-      airline: firstSegment?.fD.aI.name,
-      flightNumber: firstSegment?.fD.fN,
-      airlineCode: firstSegment?.fD.aI.code,
+      departureCity: firstSegment?.da?.code,
+      departureTime: firstSegment?.dt?.substring(11, 16),
+      arrivalCity: lastSegment?.aa?.code,
+      arrivalTime: lastSegment?.at?.substring(11, 16),
+      airline: firstSegment?.fD?.aI?.name,
+      flightNumber: firstSegment?.fD?.fN,
+      airlineCode: firstSegment?.fD?.aI?.code,
     };
   };
 
   return (
-    <div className="fixed left-0 bottom-0 w-full bg-[#0A223D]  text-white p-2">
+    <div className="fixed left-0 bottom-0 w-full bg-[#0A223D]  text-white p-2 z-50">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className='w-[55%] md:w-[70%] flex overflow-x-auto no-scroll gap-2'>
           {selectedFlights.map((flight, index) => {

@@ -1,19 +1,18 @@
 
-
-
 import React, { useState, useEffect, useCallback } from "react";
 import TravellersDetails from "./travellers";
 import AddonsCard from "./addOns";
 import GstDetails from "./gstDetails";
-import { useNavigate } from "react-router-dom";
 import ReactToast from "../../util/ReactToast";
 
-const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
-  console.log({ flightData })
-
-  const [isDomestic, setIsDomestic] = useState(flightData?.conditions?.pcs || null)
-  const navigate = useNavigate();
-  const [passengers, setPassengers] = useState([]);
+const AddDetails = ({
+  bookingId,
+  flightData,
+  onData,
+  setCurrentStep,
+  passengers,
+  setPassengers,
+}) => {
   const [gstDetails, setGstDetails] = useState({
     gstNumber: "",
     companyName: "",
@@ -21,11 +20,13 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
     email: "",
     phone: "",
   });
+
   const [expandedCard, setExpandedCard] = useState({
-    travellers: false,
+    travellers: true,
     addons: false,
     gst: false,
   });
+
   const [isPassengersCompleted, setIsPassengersCompleted] = useState(false);
 
   const [numAdults, setNumAdults] = useState(
@@ -38,25 +39,35 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
     flightData?.searchQuery?.paxInfo?.INFANT
   );
 
+  const isInternational = flightData?.conditions?.isa;
+
   const createPassenger = useCallback(
-    (type, count) => ({
-      title: type === "ADULT" ? "MR" : "",
-      firstName: "",
-      lastName: "",
-      passengerType: type,
-      email: "",
-      phone: "",
-      dob: "",
-      SelectedSeat: [],
-      selectedBaggage: [],
-      selectedMeal: [],
-      passportNumber: "",
-      nationality: "",
-      issueDate: "",
-      expiryDate: "",
-      typeCount: count,
-    }),
-    []
+    (type, count) => {
+      const basePassenger = {
+        title: "",
+        firstName: "",
+        lastName: "",
+        passengerType: type,
+        dob: "",
+        SelectedSeat: [],
+        selectedBaggage: [],
+        selectedMeal: [],
+        typeCount: count,
+      };
+
+      if (isInternational) {
+        return {
+          ...basePassenger,
+          passportNumber: "",
+          nationality: "",
+          issueDate: "",
+          expiryDate: "",
+        };
+      }
+
+      return basePassenger;
+    },
+    [isInternational]
   );
 
   const generatePassengers = useCallback(
@@ -88,97 +99,79 @@ const AddDetails = ({ bookingId, flightData, onData, setCurrentStep }) => {
       numInfants
     );
     setPassengers(newPassengers);
-  }, [numAdults, numChildren, numInfants, generatePassengers]);
+  }, [numAdults, numChildren, numInfants, generatePassengers, setPassengers]);
 
-  useEffect(() => {
-    const isCompleted = passengers.every(
-      (passenger) =>
-        passenger.firstName &&
-        passenger.lastName &&
-        passenger.dob &&
-        passenger.email &&
-        passenger.phone
-    );
-    setIsPassengersCompleted(isCompleted);
-  }, [passengers]);
-
-  const toggleCard = useCallback((card) => {
-    if ((card === "addons" || card === "gst") && !isPassengersCompleted) {
-      ReactToast("Please complete all passenger details before proceeding to Add-ons.");
-      return;
-    }
-    setExpandedCard((prevState) => ({
-      ...prevState,
-      [card]: !prevState[card],
-    }));
-  }, [isPassengersCompleted]);
-
-  const validateFormData = (passengers, gstDetails) => {
-    const isPassengersValid = passengers.every(
-      (passenger) =>
-        passenger.firstName &&
-        passenger.lastName &&
-        passenger.dob &&
-        passenger.email &&
-        passenger.phone
-    );
-
-    const isGstValid =
-      !expandedCard.gst ||
-      (gstDetails.gstNumber && gstDetails.companyName && gstDetails.address);
-
-    return isPassengersValid && isGstValid;
-  };
-
-  const handleProceedToReview = useCallback(() => {
-    const isValid = validateFormData(passengers, gstDetails);
-
-    console.log("isValid", isValid, gstDetails, "gst");
+  const handleProceedToReview = useCallback(async () => {
+    const isValid = await document
+      .getElementById("travellers-form")
+      ?.validateContactDetails();
     if (isValid) {
       onData({ passengers, gstDetails });
       setCurrentStep((p) => p + 1);
     } else {
-
-      ReactToast("Please fill out all required fields correctly before proceeding to review.")
-
+      ReactToast(
+        "Please fill out all required fields correctly before proceeding to review."
+      );
     }
   }, [passengers, gstDetails, onData, setCurrentStep]);
 
+  const [contactDetails, setContactDetails] = useState({
+    email: "",
+    phoneNumber: null
+  })
+  console.log(contactDetails)
+  const toggleCard = (cardName) => {
+    if (cardName === 'travellers' || isPassengersCompleted) {
+      setExpandedCard((prev) => ({
+        ...prev,
+        [cardName]: !prev[cardName],
+      }));
+    } else {
+      ReactToast("Please complete passenger details first.");
+    }
+  };
+
   return (
-    <div className="mx-auto    rounded-lg font-poppins max-w-full overflow-x-hidden">
-      <div className="flex flex-col">
-        <TravellersDetails
-          passengers={passengers}
-          setPassengers={setPassengers}
-          expanded={expandedCard.travellers}
-          toggleCard={() => toggleCard("travellers")}
-        />
-        <AddonsCard
-          bookingId={bookingId}
-          passengers={passengers}
-          setPassengers={setPassengers}
-          data={flightData}
-          expanded={expandedCard.addons}
-          toggleCard={() => toggleCard("addons")}
-          isDisabled={!isPassengersCompleted}
-        />
-        <GstDetails
-          gstDetails={gstDetails}
-          setGstDetails={setGstDetails}
-          expanded={expandedCard.gst}
-          toggleCard={() => toggleCard("gst")}
-        />
-      </div>
-      <div className="mt-6 max-w-full mx-auto flex justify-center items-center px-4">
+    <div className="shadow-lg ">
+      <TravellersDetails
+        expanded={expandedCard.travellers}
+        toggleCard={() => toggleCard('travellers')}
+        passengers={passengers}
+        setPassengers={setPassengers}
+        flightData={flightData}
+        setIsPassengersCompleted={setIsPassengersCompleted}
+        isInternational={isInternational}
+        contactDetails={contactDetails}
+        setContactDetails={setContactDetails}
+      />
+      <AddonsCard
+        expanded={expandedCard.addons}
+        toggleCard={() => toggleCard('addons')}
+        flightData={flightData}
+        passengers={passengers}
+      />
+      <GstDetails
+        expanded={expandedCard.gst}
+        toggleCard={() => toggleCard('gst')}
+        gstDetails={gstDetails}
+        setGstDetails={setGstDetails}
+      />
+      <div className="flex justify-between mt-5">
+        <button
+          onClick={() => setCurrentStep((p) => p - 1)}
+          className="bg-gray-400 text-white py-2 px-4 rounded"
+        >
+          Previous
+        </button>
         <button
           onClick={handleProceedToReview}
-          className="bg-[#007ec4] w-full sm:w-auto text-white px-4 py-2 rounded text-base sm:text-lg"
+          className="bg-blue-400 text-white py-2 px-4 rounded"
         >
-          Proceed To Review
+          Proceed to Review
         </button>
       </div>
     </div>
   );
 };
 
-export default React.memo(AddDetails);
+export default AddDetails;

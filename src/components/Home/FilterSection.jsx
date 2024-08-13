@@ -408,11 +408,14 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
       console.log({ query })
       dispatch(setLastSearch(query))
       dispatch(setResentSearch(saving))
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      if (token) {
+
+        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`, query, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      }
 
 
 
@@ -437,7 +440,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
 
         <div className="flex justify-center md:justify-stretch  text-white ">
           <button
-            className={`bg-[#007EC4] rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#01324D]"
+            className={`bg-[#007EC4] text-sm md:text-base rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#01324D]"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
@@ -445,7 +448,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             One way
           </button>
           <button
-            className={`bg-[#007EC4] md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#01324D]"
+            className={`bg-[#007EC4] text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#01324D]"
               } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
@@ -453,7 +456,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             Round trip
           </button>
           <button
-            className={` bg-[#007EC4] rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#01324D]"
+            className={` bg-[#007EC4] text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#01324D]"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
@@ -463,7 +466,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         </div>
 
         <div>
-          <h3 className="font-semibold my-0">Where are you flying?</h3>
+          <h3 className="font-semibold my-0 text-base md:text-lg">Where are you flying?</h3>
         </div>
 
         {/* select country code and date section  */}
@@ -474,7 +477,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               className="flex flex-col md:w-1/2 md:flex-row  relative gap-2 md:gap-2
          justify-between "
             >
-              <div className="flex   items-center border rounded p-2 md:w-1/2 ">
+              <div className="flex   text-sm md:text-base  items-center border rounded p-2 md:w-1/2 ">
                 <div>
                   <RiFlightTakeoffLine className=" text-2xl md:text-3xl " />
 
@@ -498,7 +501,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               <div className="md:flex  hidden sm:items-center  justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2  -translate-y-1/2 bg-black w-8 h-8 rounded-full ">
                 <GoArrowSwitch />
               </div>
-              <div className="flex md:ml-2 items-center border rounded p-2 md:w-1/2 ">
+              <div className="flex md:ml-2   text-sm md:text-base items-center border rounded p-2 md:w-1/2 ">
                 <div>
                   <RiFlightLandLine className=" text-2xl md:text-3xl " />
                 </div>
@@ -516,9 +519,9 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
             </div>
 
             {/* date picker section  */}
-            <div className="flex flex-col md:flex-row     w-full  md:w-1/2 gap-2">
+            <div className="flex flex-col md:flex-row    w-full  md:w-1/2 gap-2">
               <div className="  rounded   flex items-center border md:w-1/2  py-2 ">
-                <div className=" flex items-center justify-center md:justify-between   w-full ">
+                <div className=" flex items-center text-sm md:text-base justify-between   w-full ">
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}
@@ -574,7 +577,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                 //click handler
 
 
-                className="    flex items-center flex-col border relative rounded-md md:w-1/2  justify-center p-3 md:p-0  cursor-pointer"
+                className="     text-sm md:text-base flex items-center flex-col border relative rounded-md md:w-1/2  justify-center p-3 md:p-0  cursor-pointer"
               >
                 <div className="flex w-full  justify-center items-center  " onClick={() => setModelIsOpen(prev => !prev)}>
 
@@ -586,7 +589,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                       Passenger and Class
                     </h5>
                     <input
-                      className="font-bold outline-none cursor-pointer "
+                      className="pl-1 font-bold outline-none cursor-pointer "
                       type="text"
                       value={`${Number(formData.ADULT) + Number(formData.CHILD) + Number(formData.INFANT)
                         } | ${formData.cabinClass}`}
@@ -620,7 +623,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
         {/* fare type with submit button section  */}
         <div className=" md:items-center  flex flex-col md:flex-row mt-3 mb-3   ">
           <div className="    flex  flex-col md:flex-row  md:w-3/4 gap-2 md:gap-0">
-            <div className=" w-full flex justify-center md:w-1/3 ">
+            <div className="text-sm md:text-base w-full flex justify-center md:w-1/3 ">
               <select
                 id="fare-type"
                 className=" outline-none border cursor-pointer rounded-md md:w-auto p-2 w-3/4 md:p-1  bg-white"
@@ -641,7 +644,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
                 <option value="SENIOR_CITIZEN">Senior Citizen Fares</option>
               </select>
             </div>
-            <div className="lg:w-1/3 flex justify-center cursor-pointer">
+            <div className=" text-sm md:text-base lg:w-1/3 flex justify-center cursor-pointer">
               <select
                 name=""
                 className="border w-3/4  cursor-pointer  md:w-auto rounded-md l p-2 md:p-1    bg-white"
@@ -654,7 +657,7 @@ const FilterSection = ({ formData, setFormData, dynamicFormData, setDynamicFormD
               </select>
 
             </div>
-            <div className="flex gap-2 p-1 w-full  cursor-pointer justify-center items-center md:w-1/3  ">
+            <div className=" text-sm md:text-base flex gap-2 p-1 w-full  cursor-pointer justify-center items-center md:w-1/3  ">
               <label>Direct flights</label>
               <input
                 type="checkbox"

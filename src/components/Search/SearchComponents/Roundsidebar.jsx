@@ -7,6 +7,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   const [stops] = useState(["0", "1", "2", "3+"]);
   const [maxPrices, setMaxPrices] = useState({ onward: 0, return: 0 });
   const [specialReturnAirlines, setSpecialReturnAirlines] = useState([]);
+  
 
   const calculateTotalPrice = (flight) => {
     let total = 0;
@@ -57,12 +58,23 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
     return acc;
   }, {});
 
+  const [tooltipPosition, setTooltipPosition] = useState(0);
+  const [showTooltip, setShowTooltip] = useState(false);
+  
   const handlePriceChange = (e) => {
+    const newValue = parseInt(e.target.value);
+    const thumbOffset = (newValue / maxPrices[activeDirection]) * 100;
+  
+    //tooltip for price
+    setTooltipPosition(thumbOffset);
+    setShowTooltip(true);
+  
+    
     setFilters(prev => ({
       ...prev,
       [activeDirection]: {
         ...prev[activeDirection],
-        maxPrice: parseInt(e.target.value)
+        maxPrice: newValue
       }
     }));
   };
@@ -113,16 +125,18 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
     }));
   };
 
+
   const renderStopsSection = () => (
-    <div className="mb-6 border-b border-gray-300 pb-4">
+    <div className="mb-6 border-b  border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">Stops</h3>
-      <div className="grid w-full grid-cols-2 md:grid-cols-4">
+      <div className="grid w-full grid-cols-2 lg:grid-cols-4">
         {stops.map((stop, index) => (
           <label
             key={stop}
             htmlFor={`stop-${stop}`}
-            className={`mb-1 border text-xs flex justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${filters[activeDirection].stops.includes(stop) ? 'bg-blue-200' : ''
-              }`}
+            className={`mb-1 border text-xs  hover:bg-blue-100 flex justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
+              filters[activeDirection].stops.includes(stop) ? 'bg-blue-200' : ''
+            }`}
           >
             <input
               type="checkbox"
@@ -141,7 +155,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   const renderTimeSection = (type, title) => (
     <div className="mb-6 border-b border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">{title}</h3>
-      <div className="grid grid-cols-2 md:grid-cols-4 place-items-center gap-2">
+      <div className="grid grid-cols-2 lg:grid-cols-4 place-items-center gap-2">
         {[
           { icon: <PiMountains />, time: "00-06" },
           { icon: <IoIosSunny />, time: "06-12" },
@@ -150,8 +164,9 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
         ].map(({ icon, time }) => (
           <span
             key={time}
-            className={`border-gray-500 border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${filters[activeDirection][type].includes(time) ? 'bg-blue-200' : ''
-              }`}
+            className={`border-gray-500 border  hover:bg-blue-100 text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+              filters[activeDirection][type].includes(time) ? 'bg-blue-200' : ''
+            }`}
             onClick={() => handleTimeChange(type, time)}
           >
             {icon}
@@ -190,18 +205,30 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   const renderPriceSection = () => (
     <div className="mb-6 border-b border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">Price</h3>
-      <div className="flex justify-between gap-2">
-        <span className='text-xs'>₹100</span>
-        <input
-          type="range"
-          min="100"
-          max={maxPrices[activeDirection]}
-          value={filters[activeDirection].maxPrice}
-          onChange={handlePriceChange}
-          id='priceRange'
-          className="flex-1 price-range-slider range-slider"
-        />
-        <span className='text-xs'>₹{filters[activeDirection].maxPrice}</span>
+      <div className="relative flex justify-between gap-2">
+        <span className="text-xs">₹100</span>
+        <div className="relative flex-1">
+          <input
+            type="range"
+            min="100"
+            max={maxPrices[activeDirection]}
+            value={filters[activeDirection].maxPrice}
+            onChange={handlePriceChange}
+            onMouseEnter={() => setShowTooltip(true)}
+            onMouseLeave={() => setShowTooltip(false)}
+            id="priceRange"
+            className="w-full price-range-slider range-slider"
+          />
+          {showTooltip && (
+            <div
+              className="absolute bg-gray-700 text-white text-xs rounded px-2 py-1"
+              style={{ left: `calc(${tooltipPosition}% - 20px)`, top: '-30px' }}
+            >
+              ₹{filters[activeDirection].maxPrice}
+            </div>
+          )}
+        </div>
+        <span className="text-xs">₹{filters[activeDirection].maxPrice}</span>
       </div>
     </div>
   );
@@ -229,7 +256,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   );
 
   return (
-    <div className="flex flex-row md:w-1/5 border m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex  flex-row w-full  lg-custom:w-full border shadow-md rounded-md min-h-screen">
       <div className="p-4 grid gap-2 grid-cols-1 w-full md:grid-cols-1">
         <div className='flex flex-col'>
           <div className="mb-6 border-b border-gray-300 pb-4">

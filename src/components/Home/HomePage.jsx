@@ -44,7 +44,7 @@ const HomePage = () => {
       travelDate: formData.travelDate,
     },
   ]);
-  console.log({ formData, dynamicFormData })
+  console.log({ formData, dynamicFormData });
 
   async function getResentSearch() {
     try {
@@ -75,12 +75,17 @@ const HomePage = () => {
     if (resentSearch?.searchQuery) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        cabinClass: resentSearch.searchQuery.cabinClass || prevFormData.cabinClass,
+        cabinClass:
+          resentSearch.searchQuery.cabinClass || prevFormData.cabinClass,
         ADULT: resentSearch.searchQuery.paxInfo.ADULT || prevFormData.ADULT,
         CHILD: resentSearch.searchQuery.paxInfo.CHILD || prevFormData.CHILD,
         INFANT: resentSearch.searchQuery.paxInfo.INFANT || prevFormData.INFANT,
-        fromCityOrAirport: resentSearch.searchQuery.routeInfos[0]?.fromCityOrAirport?.code || prevFormData.fromCityOrAirport,
-        toCityOrAirport: resentSearch.searchQuery.routeInfos[0]?.toCityOrAirport?.code || prevFormData.toCityOrAirport,
+        fromCityOrAirport:
+          resentSearch.searchQuery.routeInfos[0]?.fromCityOrAirport?.code ||
+          prevFormData.fromCityOrAirport,
+        toCityOrAirport:
+          resentSearch.searchQuery.routeInfos[0]?.toCityOrAirport?.code ||
+          prevFormData.toCityOrAirport,
         travelDate: new Date(),
         returnDate: new Date(),
         isDirectFlight: true,
@@ -112,6 +117,8 @@ const HomePage = () => {
 
     }
   }, [resentSearch]);
+
+  console.log({ resentSearch });
 
   return (
     <div>
@@ -149,4 +156,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

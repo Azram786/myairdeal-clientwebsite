@@ -39,9 +39,9 @@ const CustomSelect = ({
   console.log({ myFormData, value })
 
   //----------------**important**-----------------------------------------
-  // i know  this code sucks if you need any help in future contact 8075391294
+  // i know  this code sucks 
   // i wrote this in 15 days so useless states are here and there 
-  // but if it works dont touch 
+  // but if it works dont touch  
   return (
     <AsyncSelect
       isClearable={true}

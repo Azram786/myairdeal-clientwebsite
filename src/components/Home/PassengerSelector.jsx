@@ -79,8 +79,8 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
 
 
   return (
-    <div ref={selectorRef} className=" md:p-5 flex  flex-col   
-      rounded-lg bg-white">
+    <div ref={selectorRef} className="pb-4 md:p-5 flex  flex-col   
+      rounded-lg bg-white  px-2">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-semibold text-sm lg:text-lg">SELECT PASSENGER</h3>
         <FaTimes className="cursor-pointer" onClick={() => setModelIsOpen(false)} />

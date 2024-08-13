@@ -11,7 +11,7 @@ const AddonsCard = ({
   setPassengers,
   expanded,
   toggleCard,
-  data,
+  flightData,
   bookingId,
 }) => {
   const [activeButton, setActiveButton] = useState("");
@@ -20,8 +20,6 @@ const AddonsCard = ({
   const [Errors, setErrors] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
-  console.log(passengers, "Hello");
-  console.log(bookingId, "bookingId");
 
   const checkSeatSelection = async () => {
     setCheckLoading(true);
@@ -40,19 +38,21 @@ const AddonsCard = ({
       );
 
       if (response.status == 200) {
-        setSeatMapData(response?.data);
+        setSeatMapData(response?.flightData);
+      } else if (response.status === 400) {
+        setSeatMapData("Seat Map is not available");
       }
-      console.log("Seat Map Data:", response);
+      
       setCheckLoading(false);
     } catch (error) {
       console.error("SeatMapError:", error);
       setCheckLoading(false);
-      setErrors(error?.response?.data?.errors);
+      setErrors(error?.response?.flightData?.errors);
     }
   };
 
   const [isSeatMapAvailable, setIsMapAvailable] = useState(
-    data?.conditions?.isa
+    flightData?.conditions?.isa
   );
 
   useEffect(() => {
@@ -70,20 +70,15 @@ const AddonsCard = ({
             Select additional services for your flight.
           </div>
         </div>
-        <div>
-          {expanded ? (
-            <FaChevronUp/>
-          ) : (
-            <FaChevronDown  />
-          )}
-        </div>
+        <div>{expanded ? <FaChevronUp /> : <FaChevronDown />}</div>
       </div>
-      {expanded && (
+      {
+        expanded &&
         <div className="p-4">
           <div className="flex space-x-4 mb-4">
             <button
               onClick={() => setActiveButton("seatSelection")}
-              className={`px-4 py-2 rounded ${
+              className={`text-sm md:text-base px-4 py-2 rounded ${
                 activeButton === "seatSelection"
                   ? "bg-[#007ec4] text-white"
                   : "bg-gray-200 text-gray-700"
@@ -96,7 +91,7 @@ const AddonsCard = ({
             </button> */}
             <button
               onClick={() => setActiveButton("addBagAndMeal")}
-              className={`px-4 py-2 rounded ${
+              className={`text-sm md:text-base px-4 py-2 rounded ${
                 activeButton === "addBagAndMeal"
                   ? "bg-[#007ec4] text-white"
                   : "bg-gray-200 text-gray-700"
@@ -109,27 +104,26 @@ const AddonsCard = ({
             {/* {Errors?.map((item) => (
               <div>Message : {item?.message}</div>
             ))} */}
-            <div>
-            </div>
+            <div></div>
           </div>
           {activeButton === "seatSelection" && (
             <SeatSelection
               seatMapData={seatMapData}
               passengers={passengers}
               setPassengers={setPassengers}
-              flightReviewData={data}
+              flightReviewData={flightData}
               isSeatMapAvailable={isSeatMapAvailable}
             />
           )}
           {activeButton === "addBagAndMeal" && (
             <BagAndMeal
               setPassenger={setPassengers}
-              flightData={data}
+              flightData={flightData}
               passengers={passengers}
             />
           )}
         </div>
-      )}
+      }
     </div>
   );
 };

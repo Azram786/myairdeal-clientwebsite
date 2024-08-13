@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { FaPlane, FaInfoCircle, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {
+  FaPlane,
+  FaInfoCircle,
+  FaChevronDown,
+  FaChevronUp,
+  FaSuitcase,
+  FaShoppingCart,
+  FaConciergeBell,
+} from "react-icons/fa";
+
+// import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import FareToolTip from "./FareTooltip";
 import calculateDuration from "../../util/calculateDuration";
 
@@ -10,15 +20,29 @@ const RoundTripCard = ({
   selectedPriceIndex,
   onSelect,
   passenger,
-  specialReturnMode
+  specialReturnMode,
+  baggageDetails, 
+  mealDetails,
 }) => {
+  // console.log(flightDetails,
+  //   isSelected,
+  //   selectedPriceIndex,
+  //   onSelect,
+  //   passenger,
+  //   specialReturnMode,"ROUNDTRIP")
   const [showAllPrices, setShowAllPrices] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [showBaggageDetails, setShowBaggageDetails] = useState(false); // New state
+  const [showMealDetails, setShowMealDetails] = useState(false); // New state
+
+  const toggleBaggageDetails = () => setShowBaggageDetails(!showBaggageDetails);
+  const toggleMealDetails = () => setShowMealDetails(!showMealDetails);
+
   const [activeTab, setActiveTab] = useState("Flight Details");
+  // const [showAllPrices, setShowAllPrices] = useState(false);
   const [localSelectedPriceIndex, setLocalSelectedPriceIndex] = useState(
     selectedPriceIndex || 0
   );
-
 
   useEffect(() => {
     setLocalSelectedPriceIndex(selectedPriceIndex || 0);
@@ -90,93 +114,136 @@ const RoundTripCard = ({
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false
+      hour12: false,
     };
-    return date.toLocaleString('en-US', options);
+    return date.toLocaleString("en-US", options);
   };
 
   const departureTime = startSegment.dt;
   const arrivalTime = endSegment.at;
 
-  const totalDuration = calculateDuration(departureTime, arrivalTime)
+  const totalDuration = calculateDuration(departureTime, arrivalTime);
 
   const displayedPrices = specialReturnMode
-    ? priceList.filter(price => price.fareIdentifier === "SPECIAL_RETURN")
-    : priceList.filter(price => price.fareIdentifier !== "SPECIAL_RETURN");
+    ? priceList.filter((price) => price.fareIdentifier === "SPECIAL_RETURN")
+    : priceList.filter((price) => price.fareIdentifier !== "SPECIAL_RETURN");
 
   const handlePriceSelection = (index) => {
     setLocalSelectedPriceIndex(index);
     onSelect(index);
   };
-
+  const calculateLayoverTime = (currentSegment, nextSegment) => {
+    const currentArrival = new Date(currentSegment.at);
+    const nextDeparture = new Date(nextSegment.dt);
+    const layoverMinutes = (nextDeparture - currentArrival) / (1000 * 60);
+    const hours = Math.floor(layoverMinutes / 60);
+    const minutes = Math.floor(layoverMinutes % 60);
+    return `${hours}h ${minutes}m`;
+  };
+  const getDayOfWeek = (dateTimeString) => {
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const datePart = dateTimeString.split("T")[0];
+    const date = new Date(datePart);
+    const dayNumber = date.getDay();
+    return daysOfWeek[dayNumber];
+  };
 
   const renderTabs = () => {
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className=" p-2">
+          <div className=" max-w-screen md:min-w-max overflow-x-scroll p-0 pb-2 pl-2 md:p-2">
             {data.map((segment, index) => (
-              <div
-                key={index}
-                className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
-              >
-                <div className="flex items-center">
-                  <img
-                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
-                    alt={segment?.fD?.aI?.code}
-                    className="md:size-10 size-8 rounded-md mr-4"
-                  />
-                  <div>
-                    <div className="font-bold text-sm">
-                      {segment.fD.aI.name} {segment.fD.fN}
+              <div key={index} className="flex flex-col  justify-start px-4 ">
+                <div className="text-sm w-full   flex flex-col md:flex-row  text-black font-bold">
+                  {segment.da.city} → {segment.aa.city}
+                  <span className="text-[10px]  ml-2 text-gray-500">
+                    {" "}
+                    {formatDateTime(segment.dt).split(",")[0]},
+                    {getDayOfWeek(segment.dt)}
+                  </span>
+                </div>
+                <div className="flex justify-center   mt-2  items-center md:items-start">
+                  <div className=" min-w-16 ml-12 md:ml-0 items-start">
+                    <img
+                      src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                      alt={segment?.fD?.aI?.code}
+                      className="md:size-10 size-8 rounded-md mr-0 md:mr-4"
+                    />
+                    <div className="">
+                      <div className="font-bold text-xs">
+                     <span className="text-[10px] text-gray-600">{flightDetails.totalPriceList[0].fd.ADULT.cc}</span> <br/>
+                        {segment.fD.aI.name}
+                        <br /> {segment.fD.fN}
+                      </div>
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.city} → {segment.aa.city}{" "}
-                      {formatDateTime(segment.dt).split(",")[0]}
+                  </div>
+
+                  <div className=" w-full flex gap-1  items-start  ">
+                    <div className="text-left min-w-28 ">
+                      <div className="font-bold text-xs flex-wrap">
+                        {formatDateTime(segment.dt)}
+                        {/* {getDayOfWeek(segment.dt)} */}
+                      </div>
+                      <div className="text-[10px] max-w-28 text-gray-500">
+                        {segment.da.city}, {segment.da.country}
+                      </div>
+                      <div className="text-[10px] max-w-28  text-gray-500 line-clamp-1">
+                        {segment.da.name}
+                      </div>
+                      <div className="text-[10px] max-w-28 text-gray-500">
+                        {segment.da.terminal || "N/A"}
+                      </div>
+                    </div>
+
+                    <div className="mx-4 min-w-24  flex flex-col items-center ">
+                      <div className="text-[10px] text-gray-500">
+                        {segment.stops === 0
+                          ? "Non-Stop"
+                          : `${segment.stops} Stops`}
+                      </div>
+                      <FaPlane className="my-2  text-gray-400" />
+                      <div className="text-[10px] text-gray-500">
+                        {convertToHoursMinutes(segment.duration)}
+                      </div>
+                    </div>
+
+                    <div className=" text-left ml-4 min-w-28 ">
+                      <div className="text-xs font-bold">
+                        {formatDateTime(segment.at)}
+                      </div>
+                      <div className="text-[10px] text-gray-500">
+                        {segment.aa.city}, {segment.aa.country}
+                      </div>
+                      <div className="text-[10px] line-clamp-1 text-gray-500">
+                        {segment.aa.name}
+                      </div>
+                      <div className="text-[10px] text-gray-500">
+                        {segment.aa.terminal || "N/A"}
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <div className="text-right mr-8">
-                    <div className="font-bold text-xs">
-                      {formatDateTime(segment.dt)}
+                <div className="w-full flex justify-center">
+                  {index < data.length - 1 && (
+                    <div className="px-4  flex justify-around text-[10px]  py-1 mt-2 mb-4 md:w-1/ border border-gray-200 bg-gray-200 rounded-full ">
+                      <span className=" font-bold">
+                        Require to change Plane
+                      </span>
+                      <span>
+                        <span className="font-bold ml-4">Layover Time:</span>{" "}
+                        {calculateLayoverTime(segment, data[index + 1])}
+                      </span>
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.city}, {segment.da.country}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.name}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.terminal || "N/A"}
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-center mx-4">
-                    <div className="text-xs text-gray-500">
-                      {segment.stops === 0
-                        ? "Non-Stop"
-                        : `${segment.stops} Stops`}
-                    </div>
-                    <FaPlane className="my-2  text-gray-400" />
-                    <div className="text-xs text-gray-500">
-                      {/* {convertToHoursMinutes(segment.duration)} */}
-                      {calculateDuration(segment.dt, segment.at)}
-                    </div>
-                  </div>
-                  <div className="text-left ml-8">
-                    <div className="text-xs font-bold">
-                      {formatDateTime(segment.at)}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.aa.city}, {segment.aa.country}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.aa.name}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.aa.terminal || "N/A"}
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -184,7 +251,7 @@ const RoundTripCard = ({
         );
       case "Fare Details":
         return (
-          <div className="flex flex-col  p-2">
+          <div className="flex flex-col p-2">
             <div className="grid grid-cols-3 w-full place-items-center text-sm border-b pb-2 mb-2">
               <div className="font-bold">TYPE</div>
               <div className="font-bold">Fare</div>
@@ -196,9 +263,9 @@ const RoundTripCard = ({
                   priceList[localSelectedPriceIndex]?.fd[passengerType];
                 if (details) {
                   return (
-                    <div key={passengerType} className="mb-4  text-xs">
+                    <div key={passengerType} className="mb-4  pl-4 text-xs">
                       <div className="grid grid-cols-3  w-full text-gray-600 mb-2">
-                        <div>
+                        <div className="w-max ">
                           Fare Details for {passengerType} (CB: {details.cB})
                         </div>
                         <div></div>
@@ -227,7 +294,7 @@ const RoundTripCard = ({
               }
               return null;
             })}
-            <div className="grid grid-cols-3  text-sm font-bold border-t pt-2">
+            <div className="grid grid-cols-3  text-sm font-bold border-t pt-2 pl-4">
               <div>Total</div>
               <div></div>
               <div>
@@ -238,23 +305,23 @@ const RoundTripCard = ({
         );
       case "Fare Rules":
         return (
-          <div className="p-2 text-xs">
+          <div className="py-2 pl-6 text-xs ">
             <h2 className="font-bold mb-2">Fare Rules</h2>
             <p>Insert fare rules information here.</p>
           </div>
         );
       case "Baggage Information":
         return (
-          <div className="grid p-2 grid-cols-3 text-xs  gap-4">
+          <div className="grid py-2 grid-cols-3 text-xs pl-6 gap-4">
             <div className="font-bold">SECTOR</div>
             <div className="font-bold">CHECKIN</div>
             <div className="font-bold">CABIN</div>
             {priceList.map((item, index) => (
               <React.Fragment key={index}>
-                <div className="text-xs">
+                <div className="text-xs max-w-16 ">
                   {startSegment.da.code} - {endSegment.aa.code}
                 </div>
-                <div className="text-xs">Adult {item?.fd?.ADULT?.bI?.iB}</div>
+                <div className="text-xs  ">Adult {item?.fd?.ADULT?.bI?.iB}</div>
                 <div className="text-xs">Adult {item?.fd?.ADULT?.bI?.cB}</div>
               </React.Fragment>
             ))}
@@ -264,52 +331,56 @@ const RoundTripCard = ({
         return null;
     }
   };
+  const visiblePrices = showAllPrices
+    ? displayedPrices
+    : displayedPrices.slice(0, 3);
 
   return (
-    <div className="border flex flex-col   rounded-lg m-4 bg-white shadow-md overflow-x-auto no-scroll ">
-      <div className="flex flex-col md:flex-row justify-between items-stretch p-3  mb-2">
-        <div className="flex flex-col px-2 ">
-          <div className="flex justify-around">
-            <div className="md:hidden">
+    <div className="border flex flex-col rounded-lg m-4 bg-white sm:max-screen-sm md:w-screen-md lg_max-w-lg shadow-md overflow-x-auto no-scroll ">
+      <div className="flex flex-col md:flex-row  justify-between items-stretch p-3  mb-2">
+        <div className="flex flex-col  px-2  justify-center lg-custom:justify-normal w-full">
+          <div className="flex gap-4  ">
+            <div className="">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-                onError={(e) => e.currentTarget.src = defaultAirline}
+                onError={(e) => (e.currentTarget.src = defaultAirline)}
                 alt={startSegment?.fD?.aI?.code}
-                className="size-12 hidden mr-4"
+                className="size-12 hidden min-w-24"
               />
             </div>
-            <div className="md:flex-row  flex-col flex justify-center items-center mb-4 md:mb-0">
+            <div className="md:flex-row flex-col   flex justify-center items-center mb-4 md:mb-0">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                 alt={startSegment?.fD?.aI?.code}
-                className="md:size-10 rounded-md  mr-4 md:flex hidden"
+                className="md:size-16 lg-custom:size-12 rounded-md mr-8 lg-custom:mr-4 md:flex hidden"
               />
-              <div>
-                <h1 className="text-base font-bold">{startSegment?.da.code}</h1>
+              <div className="">
+                <h1 className="text-base font-bold  min-w-20">
+                  {startSegment?.da.code}
+                </h1>
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
                 <h1 className="text-xs">{formatDateTime(startSegment?.dt)}</h1>
               </div>
             </div>
-            <div className="flex items-center mb-4 md:mb-0">
-              <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
-              <div className="flex flex-col gap-4 text-center items-center text-xs  text-gray-500">
-                {/* <span className="">{convertToHoursMinutes(totalDuration)}</span> */}
-                <span className="">{totalDuration}</span>
+            <div className="flex  max-w-32 items-center  mb-4 md:mb-0">
+              <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-16"></div>
+              <div className="flex flex-col gap-2 text-center items-center text-xs font-semibold text-gray-500">
+                <span className="">   <span>{totalDuration}</span></span>
                 <FaPlane className="mx-2 text-blue-800 text-3xl" />
-                <div className="flex items-center">
+                <div className="flex items-center ">
                   {isConnectionFlight ? (
-                    <span>
+                    <span className="flex-wrap">
                       {data.length - 1} stop{data.length > 2 ? "s" : ""}
                       {data.length === 2 && ` via ${data[0].aa.city}`}
                     </span>
                   ) : (
-                    <span>Non-stop flight</span>
+                    <span className="text-[10px] w-max">Non-stop flight</span>
                   )}
                 </div>
               </div>
-              <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
+              <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-16"></div>
             </div>
             <div className="flex  md:text-start text-end  items-center mb-4 md:mb-0">
               <div>
@@ -320,56 +391,67 @@ const RoundTripCard = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col w-full  ">
-              <div className="flex   mt-3 gap-2 overflow-x-auto no-scroll items-center ">
-                {displayedPrices.map((price, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handlePriceSelection(index)}
-                    className={`
-                  text-xs text-start space-y-2 flex shrink-0 items-center min-w-24 md:w-fit
-                  p-1 mb-2 cursor-pointer
-                  ${localSelectedPriceIndex === index
-                        ? "border border-[#007EC4] rounded-md"
-                        : "border border-gray-200 hover:border-blue-300 rounded-md"
-                      }
-                `}
-                  >
-                    <div className="flex flex-col  text-xs">
-                      <p className="font-semibold">
-                        ₹ {calculateTotalPrice(index).toFixed(2)}
-                      </p>
-                      <p className="text-[10px]">
-                        <span className="bg-yellow-800 p-0.5 bg-opacity-50 rounded-md text-gray-700">
-                          {price?.fareIdentifier}
-                        </span>{" "}
-                        {price?.fd?.ADULT?.cc}
-                      </p>
-                      <p className="text-red-600 text-[10px]">
-                        Seats left: {price?.fd?.ADULT?.sR}
-                      </p>
+          <div className="flex items-center  justify-between ">
+            <div className="flex flex-col w-full ">
+              <div className="relative border-[1px] border-[#007EC4]  m-2 rounded-md">
+                <div className="flex flex-wrap gap-2  overflow-x-auto  mt-3 p-2 items-center">
+                  {visiblePrices?.map((price, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handlePriceSelection(index)}
+                      className={`
+                        text-xs text-start min-w-36 space-y-2 flex-shrink-0  md:w-fit p-1 mb-2 cursor-pointer
+${
+                localSelectedPriceIndex === index
+                  ? "border-[4px] border-[#007EC4] rounded-md"
+                  : "border border-gray-200 hover:border-blue-300 rounded-md"
+              }
+            `}
+                    >
+                      <div className="flex flex-col text-xs">
+                        <p className="font-semibold">
+                          ₹ {calculateTotalPrice(index).toFixed(2)}
+                        </p>
+                        <p className="my-2 text-black flex flex-wrap items-center text-[10px]">
+                          <span className="bg-gray-400 p-0.5 bg-opacity-50 mr-1  rounded-md text-black px-2 py-1">
+                            {price?.fareIdentifier}
+                          </span>{" "}
+                          {price?.fd?.ADULT?.cc}
+                        </p>
+                        <p className="text-red-600 text-[10px]">
+                          Seats left: {price?.fd?.ADULT?.sR}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-                {/* {priceList?.length > 1 && (
-                  <button
-                    onClick={() => setShowAllPrices(!showAllPrices)}
-                    className="text-blue-500 text-sm mt-2 flex items-center"
-                  >
-                    {showAllPrices ? (
-                      <>
-                        Show less
-                      </>
-                    ) : (
-                      <>
-                         Show more
-                      </>
-                    )}
-                  </button>
-                )} */}
+                  ))}
+
+                  {displayedPrices.length > 3 && (
+                    <button
+                      onClick={() => setShowAllPrices(!showAllPrices)}
+                      className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#007EC4] text-white rounded-md py-1 px-2 flex items-center justify-center"
+                      style={{ bottom: "-1.5rem" }}
+                    >
+                      <p className="mr-2 text-xs">
+                        {showAllPrices ? "Show Less" : "Show More"}
+                      </p>
+                      {showAllPrices ? (
+                        <FaChevronUp
+                          className={`w-4 h-4 transition-transform duration-300 ${
+                            showAllPrices ? "rotate-0" : "rotate-180"
+                          }`}
+                        />
+                      ) : (
+                        <FaChevronDown
+                          className={`w-4 h-4 transition-transform duration-300 ${
+                            showAllPrices ? "rotate-180" : "rotate-0"
+                          }`}
+                        />
+                      )}
+                    </button>
+                  )}
+                </div>
               </div>
-              <div className="flex md:flex-row flex-col items-center justify-between">
+              <div className="flex md:flex-row flex-col  items-start md:items-center md:justify-between justify-start">
                 <div className="w-2/3 text-xs">
                   <button
                     onClick={() => setShowDetails(!showDetails)}
@@ -390,8 +472,9 @@ const RoundTripCard = ({
                 </div>
                 <div className=" flex items-end justify-end ">
                   <button
-                    className={`${isSelected ? "bg-green-500" : "bg-[#007EC4]"
-                      } text-white md:w-20 px-7 py-2 rounded-md `}
+                    className={`${
+                      isSelected ? "bg-green-500" : "bg-[#007EC4]"
+                    } text-white md:w-20 px-7 py-2 rounded-md `}
                     onClick={() => onSelect(localSelectedPriceIndex)}
                   >
                     {isSelected ? "Selected" : "Select"}
@@ -399,10 +482,8 @@ const RoundTripCard = ({
                 </div>
               </div>
             </div>
-
           </div>
         </div>
-
 
         {/* <div className="flex   justify-center items-end md:border-l-2 pl-3 ">
           
@@ -410,8 +491,8 @@ const RoundTripCard = ({
       </div>
 
       {showDetails && (
-        <div className=" border-t  border-gray-200 pt-4">
-          <div className="mb-2 overflow-x-auto no-scroll shrink-0 flex">
+        <div className="px-0 md:px-4 border-t justify-center lg-custom:justify-normal  border-gray-200 pt-4">
+          <div className="mb-2 overflow-x-auto no-scroll text-[10px] ml-0  md:ml-4  shrink-0 flex">
             {[
               "Flight Details",
               "Fare Details",
@@ -421,10 +502,11 @@ const RoundTripCard = ({
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-2 px-4 shrink-0 text-sm ${activeTab === tab
+                className={`py-2 px-3 shrink-0 text-[12px] ${
+                  activeTab === tab
                     ? "text-[#007EC4]  font-bold border-b-2 border-[#007EC4]"
                     : "text-gray-500"
-                  }`}
+                }`}
               >
                 {tab}
               </button>
