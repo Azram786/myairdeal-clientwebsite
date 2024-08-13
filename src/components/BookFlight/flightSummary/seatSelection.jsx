@@ -68,6 +68,7 @@ const SeatSelection = ({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           title="Your booking is protected by MY AIR DEAL"
+         
         >
           
             <SeatMap

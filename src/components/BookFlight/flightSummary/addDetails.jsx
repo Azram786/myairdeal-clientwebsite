@@ -316,6 +316,7 @@ const AddDetails = ({
         }
         flightData={flightData}
         passengers={passengers}
+        setPassengers={setPassengers}
       />
       <GstDetails
         expanded={expandedCard.gst}

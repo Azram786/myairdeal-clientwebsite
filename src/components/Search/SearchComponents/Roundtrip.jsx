@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import RoundTripCard from "../Cards/RoundTripFlightCard";
 import { FaFilter, FaTimes } from "react-icons/fa";
+import { GiSettingsKnobs } from "react-icons/gi";
+import { BsFillFilterSquareFill } from "react-icons/bs";
+
 
 const RoundTrip = ({
   onwardProps = [],
@@ -18,13 +21,19 @@ const RoundTrip = ({
   const [activeDirection, setActiveDirection] = useState("onward");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedOnwardFlight, setSelectedOnwardFlight] = useState({ ...onwardProps[0], selectedPriceIndex: 0 });
-  const [selectedReturnFlight, setSelectedReturnFlight] = useState({ ...returnProps[0], selectedPriceIndex: 0 });
+  const [selectedOnwardFlight, setSelectedOnwardFlight] = useState({
+    ...onwardProps[0],
+    selectedPriceIndex: 0,
+  });
+  const [selectedReturnFlight, setSelectedReturnFlight] = useState({
+    ...returnProps[0],
+    selectedPriceIndex: 0,
+  });
   const [specialReturnOnward, setSpecialReturnOnward] = useState([]);
   const [specialReturnReturn, setSpecialReturnReturn] = useState([]);
   const [isSpecialReturnActive, setIsSpecialReturnActive] = useState(false);
 
-  console.log(specialReturnOnward, specialReturnReturn, "-0-0-0-0-0-0-0-")
+  console.log(specialReturnOnward, specialReturnReturn, "-0-0-0-0-0-0-0-");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
@@ -85,12 +94,18 @@ const RoundTrip = ({
         if (ranges.length === 0) return true;
         return ranges.some((range) => {
           const [start, end] = range.split("-").map(Number);
-          return (start < end) ? (time >= start && time < end) : (time >= start || time < end);
+          return start < end
+            ? time >= start && time < end
+            : time >= start || time < end;
         });
       };
 
-      const hasSpecialReturn = flight.totalPriceList.some(price => price.fareIdentifier === "SPECIAL_RETURN");
-      const hasNonSpecialReturn = flight.totalPriceList.some(price => price.fareIdentifier !== "SPECIAL_RETURN");
+      const hasSpecialReturn = flight.totalPriceList.some(
+        (price) => price.fareIdentifier === "SPECIAL_RETURN"
+      );
+      const hasNonSpecialReturn = flight.totalPriceList.some(
+        (price) => price.fareIdentifier !== "SPECIAL_RETURN"
+      );
 
       // Hide flights with only special return price lists from initial rendering
       if (!hasNonSpecialReturn) {
@@ -104,8 +119,10 @@ const RoundTrip = ({
 
       return (
         price <= directionFilters.maxPrice &&
-        (directionFilters.stops.length === 0 || directionFilters.stops.includes(stops.toString())) &&
-        (directionFilters.airlines.length === 0 || directionFilters.airlines.includes(airline)) &&
+        (directionFilters.stops.length === 0 ||
+          directionFilters.stops.includes(stops.toString())) &&
+        (directionFilters.airlines.length === 0 ||
+          directionFilters.airlines.includes(airline)) &&
         isInTimeRange(departureTime, directionFilters.departureTime) &&
         isInTimeRange(arrivalTime, directionFilters.arrivalTime) &&
         (filters.specialReturnAirlines.length === 0 ||
@@ -126,20 +143,25 @@ const RoundTrip = ({
         setFilteredReturn(filteredReturnFlights);
 
         // Store special return flights for onward journey
-        const specialOnward = onwardProps.filter(flight =>
-          flight.totalPriceList.some(price => price.fareIdentifier === "SPECIAL_RETURN")
+        const specialOnward = onwardProps.filter((flight) =>
+          flight.totalPriceList.some(
+            (price) => price.fareIdentifier === "SPECIAL_RETURN"
+          )
         );
         setSpecialReturnOnward(specialOnward);
 
         // Store special return flights for return journey
-        const specialReturn = returnProps.filter(flight =>
-          flight.totalPriceList.some(price => price.fareIdentifier === "SPECIAL_RETURN")
+        const specialReturn = returnProps.filter((flight) =>
+          flight.totalPriceList.some(
+            (price) => price.fareIdentifier === "SPECIAL_RETURN"
+          )
         );
         setSpecialReturnReturn(specialReturn);
-
       } catch (err) {
         console.error("Error filtering flights:", err);
-        setError("An error occurred while loading flight information. Please try again.");
+        setError(
+          "An error occurred while loading flight information. Please try again."
+        );
       } finally {
         setIsLoading(false);
         // setSelectedOnwardFlight(null);
@@ -154,15 +176,20 @@ const RoundTrip = ({
     if (flights.length > 0 && flights[0].sI && flights[0].sI.length > 0) {
       const departureCity = flights[0].sI[0].da.city;
       const arrivalCity = flights[0].sI[flights[0].sI.length - 1].aa.city;
-      const departureTime = new Intl.DateTimeFormat('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      }).format(new Date(flights[0].sI[0].dt)).split('/').join('-');
+      const departureTime = new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+        .format(new Date(flights[0].sI[0].dt))
+        .split("/")
+        .join("-");
 
       return (
         <span className="flex flex-col">
-          <p>{departureCity} - {arrivalCity}</p>
+          <p>
+            {departureCity} - {arrivalCity}
+          </p>
           <p className="text-xs">{departureTime}</p>
         </span>
       );
@@ -170,20 +197,29 @@ const RoundTrip = ({
     return "";
   };
 
-  const findMatchingSpecialReturnFlights = (flights, selectedFlight, selectedPriceInfo) => {
-    return flights.filter(flight => {
-      const matchingPrices = flight.totalPriceList.filter(price => {
+  const findMatchingSpecialReturnFlights = (
+    flights,
+    selectedFlight,
+    selectedPriceInfo
+  ) => {
+    return flights.filter((flight) => {
+      const matchingPrices = flight.totalPriceList.filter((price) => {
         if (price.fareIdentifier !== "SPECIAL_RETURN") return false;
 
         // Case 1: msri and sri are not present
         if (!selectedPriceInfo.sri && !selectedPriceInfo.msri) {
-          return price.fareIdentifier === "SPECIAL_RETURN" &&
-            flight.sI[0].fD.aI.code === selectedFlight.sI[0].fD.aI.code;
+          return (
+            price.fareIdentifier === "SPECIAL_RETURN" &&
+            flight.sI[0].fD.aI.code === selectedFlight.sI[0].fD.aI.code
+          );
         }
 
         // Case 2: sri and msri are present
         if (selectedPriceInfo.sri && selectedPriceInfo.msri) {
-          return selectedPriceInfo.msri.includes(price.sri) || price.msri.includes(selectedPriceInfo.sri);
+          return (
+            selectedPriceInfo.msri.includes(price.sri) ||
+            price.msri.includes(selectedPriceInfo.sri)
+          );
         }
 
         return false;
@@ -193,27 +229,39 @@ const RoundTrip = ({
     });
   };
 
-  const extractMatchingReturnFlightAndPrice = (matchingReturnFlights, sri, msri) => {
+  const extractMatchingReturnFlightAndPrice = (
+    matchingReturnFlights,
+    sri,
+    msri
+  ) => {
     for (const returnFlight of matchingReturnFlights) {
       for (const price of returnFlight.totalPriceList) {
-        if (price.fareIdentifier === 'SPECIAL_RETURN' &&
-          (price.sri === sri || msri.includes(price.sri))) {
+        if (
+          price.fareIdentifier === "SPECIAL_RETURN" &&
+          (price.sri === sri || msri.includes(price.sri))
+        ) {
           return {
             flight: returnFlight,
             matchingPrice: price,
-            priceIndex: returnFlight.totalPriceList.indexOf(price)
+            priceIndex: returnFlight.totalPriceList.indexOf(price),
           };
         }
       }
     }
     return null;
   };
-  const updateReturnFlightsWithExactPrice = (matchingReturnFlights, sri, msri) => {
-    const exactMatchingReturnFlight = matchingReturnFlights.find(returnFlight =>
-      returnFlight.totalPriceList.some(price =>
-        price.fareIdentifier === 'SPECIAL_RETURN' &&
-        (price.sri === sri || msri.includes(price.sri))
-      )
+  const updateReturnFlightsWithExactPrice = (
+    matchingReturnFlights,
+    sri,
+    msri
+  ) => {
+    const exactMatchingReturnFlight = matchingReturnFlights.find(
+      (returnFlight) =>
+        returnFlight.totalPriceList.some(
+          (price) =>
+            price.fareIdentifier === "SPECIAL_RETURN" &&
+            (price.sri === sri || msri.includes(price.sri))
+        )
     );
 
     if (!exactMatchingReturnFlight) {
@@ -221,17 +269,18 @@ const RoundTrip = ({
       return matchingReturnFlights;
     }
 
-    const exactMatchingPrice = exactMatchingReturnFlight.totalPriceList.find(price =>
-      price.fareIdentifier === 'SPECIAL_RETURN' &&
-      (price.sri === sri || msri.includes(price.sri))
+    const exactMatchingPrice = exactMatchingReturnFlight.totalPriceList.find(
+      (price) =>
+        price.fareIdentifier === "SPECIAL_RETURN" &&
+        (price.sri === sri || msri.includes(price.sri))
     );
 
     console.log(exactMatchingReturnFlight, "exact matching return flight");
     console.log(exactMatchingPrice, "exact matching price");
 
-    const updatedReturnFlights = matchingReturnFlights.map(flight => ({
+    const updatedReturnFlights = matchingReturnFlights.map((flight) => ({
       ...flight,
-      totalPriceList: [exactMatchingPrice]
+      totalPriceList: [exactMatchingPrice],
     }));
 
     console.log(updatedReturnFlights, "updated return flights");
@@ -240,18 +289,23 @@ const RoundTrip = ({
   };
 
   const handleSelectFlight = (flight, priceIndex, direction) => {
-
     if (isSpecialReturnActive) {
-      const specialReturn = flight.totalPriceList.filter((item) => item.fareIdentifier == 'SPECIAL_RETURN')
-      const selected = specialReturn[priceIndex]
+      const specialReturn = flight.totalPriceList.filter(
+        (item) => item.fareIdentifier == "SPECIAL_RETURN"
+      );
+      const selected = specialReturn[priceIndex];
 
       const msri = selected.msri;
       const sri = selected.sri;
 
-      console.log(msri, sri, "8787878787")
+      console.log(msri, sri, "8787878787");
       if (direction === "onward") {
         // const matching=filteredReturn.map((item)=>item.priceList.some((price)=>((price.msri.includes(sri)|| msri.includes(price.sir)))))
-        const matchingReturnFlights = findMatchingSpecialReturnFlights(returnProps, flight, selected);
+        const matchingReturnFlights = findMatchingSpecialReturnFlights(
+          returnProps,
+          flight,
+          selected
+        );
         // setSelectedReturnFlight(null)
         //           const exactMatchingReturnFlight = extractMatchingReturnFlightAndPrice(matchingReturnFlights, sri, msri);
         // console.log(exactMatchingReturnFlight, "exact matching return flight");
@@ -263,40 +317,53 @@ const RoundTrip = ({
         //             totalPriceList: [exactMatchingReturnFlight]
         //           }));
 
-        const updatedReturnFlights = updateReturnFlightsWithExactPrice(matchingReturnFlights, sri, msri);
-        console.log(updatedReturnFlights, "final")
+        const updatedReturnFlights = updateReturnFlightsWithExactPrice(
+          matchingReturnFlights,
+          sri,
+          msri
+        );
+        console.log(updatedReturnFlights, "final");
 
         setFilteredReturn(updatedReturnFlights);
         setSelectedOnwardFlight({ ...flight, selectedPriceIndex: priceIndex });
         // setSelectedReturnFlight(null);
 
-        setSelectedReturnFlight({ ...updatedReturnFlights[0], selectedPriceIndex: 0 });
-
+        setSelectedReturnFlight({
+          ...updatedReturnFlights[0],
+          selectedPriceIndex: 0,
+        });
       } else {
-        const matchingOnwardFlights = findMatchingSpecialReturnFlights(onwardProps, flight, selected);
+        const matchingOnwardFlights = findMatchingSpecialReturnFlights(
+          onwardProps,
+          flight,
+          selected
+        );
         // setSelectedOnwardFlight(null);
-        const updatedOnwardFlights = updateReturnFlightsWithExactPrice(matchingOnwardFlights, sri, msri);
-        console.log(updatedOnwardFlights, "final")
+        const updatedOnwardFlights = updateReturnFlightsWithExactPrice(
+          matchingOnwardFlights,
+          sri,
+          msri
+        );
+        console.log(updatedOnwardFlights, "final");
         setFilteredOnward(updatedOnwardFlights);
         setSelectedReturnFlight({ ...flight, selectedPriceIndex: priceIndex });
 
-        setSelectedOnwardFlight({ ...updatedOnwardFlights[0], selectedPriceIndex: 0 });
-
+        setSelectedOnwardFlight({
+          ...updatedOnwardFlights[0],
+          selectedPriceIndex: 0,
+        });
       }
 
-
-      console.log("this is special return flight", specialReturn, selected)
+      console.log("this is special return flight", specialReturn, selected);
     }
 
-
-    console.log(flight, priceIndex, direction, "-=-=-=-=-=-=-=-")
+    console.log(flight, priceIndex, direction, "-=-=-=-=-=-=-=-");
     if (direction === "onward") {
       setSelectedOnwardFlight({ ...flight, selectedPriceIndex: priceIndex });
     } else {
       setSelectedReturnFlight({ ...flight, selectedPriceIndex: priceIndex });
     }
   };
-
 
   const calculateTotalBookingPrice = () => {
     const onwardPrice = selectedOnwardFlight
@@ -308,16 +375,20 @@ const RoundTrip = ({
     return onwardPrice + returnPrice;
   };
 
-
-
   const handleBooking = () => {
     if (!selectedOnwardFlight || !selectedReturnFlight) {
       ReactToast("Please select both onward and return flight");
       return;
     }
 
-    const returnFlight = selectedReturnFlight.totalPriceList[selectedReturnFlight.selectedPriceIndex].id;
-    const onwardFlight = selectedOnwardFlight.totalPriceList[selectedOnwardFlight.selectedPriceIndex].id;
+    const returnFlight =
+      selectedReturnFlight.totalPriceList[
+        selectedReturnFlight.selectedPriceIndex
+      ].id;
+    const onwardFlight =
+      selectedOnwardFlight.totalPriceList[
+        selectedOnwardFlight.selectedPriceIndex
+      ].id;
     const data = [
       {
         returnFlightDetails: selectedReturnFlight.sI,
@@ -367,7 +438,9 @@ const RoundTrip = ({
                 ? selectedOnwardFlight?.selectedPriceIndex
                 : selectedReturnFlight?.selectedPriceIndex
             }
-            onSelect={(priceIndex) => handleSelectFlight(flight, priceIndex, direction)}
+            onSelect={(priceIndex) =>
+              handleSelectFlight(flight, priceIndex, direction)
+            }
             passenger={passenger}
             specialReturnMode={filters.specialReturnAirlines.length > 0}
           />
@@ -376,55 +449,52 @@ const RoundTrip = ({
     );
   };
 
-
   return (
-    <div className=" flex flex-wrap flex-col  md:flex-row mb-24  ">
-      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
-        {/* Filter icon for screens up to 1024px */}
-        <button
-          className="absolute bottom-0 top-4 right-4 z-50 lg-custom:hidden"
-          onClick={toggleSidebar}
-        >
-          <FaFilter className="w-6 h-6 z-10 text-blue-600" />
-        </button>
-
-        {/* Sidebar for larger screens and modal-like display for screens up to 1024px */}
+    <div className="relative  flex flex-wrap flex-col  md:flex-row mb-24  w-full ">
+      <button
+        className="absolute top-3 right-0 z-50 flex flex-col items-center justify-center  lg-custom:hidden"
+        onClick={toggleSidebar}
+      >
+        <BsFillFilterSquareFill className="w-6 h-6 text-blue-600" />
+        <div className="text-xs text-blue-600">Filters</div>
+      </button>
+      <div className="relative w-[20%] h-full flex flex-wrap flex-col lg-custom:flex-row ">
         <div
-          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 bg-white transform ${
+          className={`fixed h-full overflow-y-auto lg-custom:static m-2 top-0 bottom-0 right-0 z-50 rounded-xl w-full bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
           style={{
             maxWidth: "100%",
             maxHeight: "100%",
-            marginTop:"2%",
-            marginBottom:"2%",
+            marginTop: "2%",
+            marginBottom: "2%",
             height: "auto",
             width: "auto",
           }}
         >
-          {/* Close button for modal */}
           <button
-            className="absolute top-4  right-4 z-50 text-blue-600 lg-custom:hidden"
+            className="absolute top-2 right-4 z-50 text-blue-600 lg-custom:hidden"
             onClick={() => setIsSidebarOpen(false)}
           >
             <FaTimes className="w-6 h-6" />
           </button>
-
-          <RoundSideBar
-        passenger={passenger}
-        filters={filters}
-        setFilters={setFilters}
-        onwardData={onwardProps}
-        returnData={returnProps}
-        activeDirection={activeDirection}
-        setActiveDirection={setActiveDirection}
-        calculateTotalPrice={calculateTotalPrice}
-        isSpecialReturn={isSpecialReturnActive}
-        setIspecialReturn={setIsSpecialReturnActive}
-      />
+          <div className="font-semibold p-2 text-left text-base">Filters</div>
+          <div className="rounded-xl p-2 flex flex-col items-center ">
+            <RoundSideBar
+              passenger={passenger}
+              filters={filters}
+              setFilters={setFilters}
+              onwardData={onwardProps}
+              returnData={returnProps}
+              activeDirection={activeDirection}
+              setActiveDirection={setActiveDirection}
+              calculateTotalPrice={calculateTotalPrice}
+              isSpecialReturn={isSpecialReturnActive}
+              setIspecialReturn={setIsSpecialReturnActive}
+            />
+          </div>
         </div>
 
-        {/* Overlay for screens up to 1024px */}
         {isSidebarOpen && (
           <div
             className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
@@ -432,11 +502,11 @@ const RoundTrip = ({
           />
         )}
       </div>
-      <div className="flex flex-wrap mx-0 flex-col w-full lg-custom:w-[80%]">
-        <div className="flex flex-wrap">
-          <div className="w-full lg-custom:w-1/2">
+      <div className="flex flex-wrap h-max mx-0 flex-col w-full lg-custom:w-[80%]">
+        <div className="flex  gap-6 ">
+          <div className="w-max lg-custom:w-1/2">
             <h2
-              className={`text-sm text-center lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
+              className={`text-sm text-center p-2 lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
                 activeSection === "onward" ? "bg-blue-200" : "bg-white"
               } lg-custom:bg-white`}
               onClick={() => handleToggleSection("onward")}
@@ -444,9 +514,9 @@ const RoundTrip = ({
               {getRoute(filteredOnward)}
             </h2>
           </div>
-          <div className="w-full lg-custom:w-1/2">
+          <div className="w-max lg-custom:w-1/2">
             <h2
-              className={`text-sm text-center lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
+              className={`text-sm text-center lg-custom:text-xl p-2 font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
                 activeSection === "return" ? "bg-blue-200" : "bg-white"
               } lg-custom:bg-white`}
               onClick={() => handleToggleSection("return")}
@@ -475,7 +545,9 @@ const RoundTrip = ({
 
       {(selectedOnwardFlight || selectedReturnFlight) && (
         <BookingCard
-          selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(Boolean)}
+          selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(
+            Boolean
+          )}
           totalPrice={calculateTotalBookingPrice()}
           onBook={() => handleBooking()}
           passenger={passenger}

@@ -1,10 +1,6 @@
-
-
 import React, { useState, useEffect } from "react";
 
-const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
-  console.log({passengers})
-  // console.log(flightData, "DAT DAT DATA");
+const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
   const [flightOptions, setFlightOptions] = useState([]);
 
   useEffect(() => {
@@ -52,7 +48,7 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
     amount,
     desc
   ) => {
-    setPassenger((prevPassengers) => {
+    setPassengers((prevPassengers) => {
       console.log({ prevPassengers });
       const newPassengers = [...prevPassengers];
 
@@ -70,10 +66,13 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
       } else if (type === "baggage") {
         newPassengers[passengerIndex] = {
           ...newPassengers[passengerIndex],
-          selectedBaggages: {
-            ...newPassengers[passengerIndex].selectedBaggages,
-            [flightId]: { code: value, key: flightId, amount, desc },
-          },
+
+          selectedBaggage: [
+            {
+              ...newPassengers[passengerIndex].selectedBaggage,
+              baggage: { code: value, key: flightId, amount, desc },
+            },
+          ],
         };
       }
       return newPassengers;
@@ -105,8 +104,8 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
                     {passengers.map(
                       (passenger, index) =>
                         passenger.passengerType !== "infant" && (
-                          <div key={index} className="text-sm font-semibold">
-                            {`${passenger.passengerType} ${passenger.typeCount}`}
+                          <div key={index} className="text-sm ">
+                            <div className="font-semibold text-sm md:text-base">{`${passenger.passengerType} ${passenger.typeCount}`}</div>
                             <select
                               value={
                                 passenger?.selectedBaggages?.[flight.id]
@@ -126,9 +125,11 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
                                   selectedBaggage?.desc || ""
                                 );
                               }}
-                              className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                              className="mt-1  block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             >
-                              <option value="">Select a Baggage</option>
+                              <option className=" font-medium" value="">
+                                Select a Baggage
+                              </option>
                               {flight.baggageOptions.map((baggage) => (
                                 <option key={baggage.code} value={baggage.code}>
                                   {baggage.desc} - ₹{baggage.amount}
@@ -148,53 +149,49 @@ const BagAndMeal = ({ flightData, setPassenger, passengers }) => {
 
               {/* Meal Selections */}
               {flight.mealOptions && flight.mealOptions.length > 0 ? (
-                <div>
-                  <h3 className="font-semibold text-sm md:text-base mb-2">
-                    Select Meal
-                  </h3>
-                  <div className="space-y-2">
-                    {passengers?.map((passenger, index) => (
-                      <div key={index}>
-                        <div className="text-sm md:text-base font-semibold">
-                          {`${passenger.passengerType} ${passenger.typeCount}`}
-                        </div>
+  <div>
+    <h3 className="font-semibold text-sm md:text-base mb-2">Select Meal</h3>
+    <div className="space-y-2">
+      {passengers?.map((passenger, index) => (
+        <div key={index}>
+          <div className="text-sm md:text-base font-semibold">
+            {`${passenger.passengerType} ${passenger.typeCount}`}
+          </div>
 
-                        <select
-                          key={index}
-                          value={
-                            passenger?.selectedMeals?.[flight.id]?.code || ""
-                          }
-                          onChange={(e) => {
-                            const selectedMeal = flight.mealOptions.find(
-                              (meal) => meal.code === e.target.value
-                            );
-                            updateAddonSelection(
-                              index,
-                              flight.id,
-                              "meal",
-                              e.target.value,
-                              selectedMeal?.amount || 0,
-                              selectedMeal?.desc || ""
-                            );
-                          }}
-                          className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        >
-                          <option value="">Select a meal</option>
-                          {flight.mealOptions.map((meal) => (
-                            <option key={meal.code} value={meal.code}>
-                              {meal.desc} - ₹{meal.amount}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    )) || "N/A"}
-                  </div>
-                </div>
-              ) : (
-                <div className=" text-xs text-red-600 rounded-md  w-max md:text-sm">
-                  No Meal options available for this flight.
-                </div>
-              )}
+          <select
+            value={passenger?.selectedMeals?.[flight.id]?.code || ""}
+            onChange={(e) => {
+              const selectedMeal = flight.mealOptions.find(
+                (meal) => meal.code === e.target.value
+              );
+              updateAddonSelection(
+                index,
+                flight.id,
+                "meal",
+                e.target.value,
+                selectedMeal?.amount || 0,
+                selectedMeal?.desc || ""
+              );
+            }}
+            className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          >
+            <option value="">Select a meal</option>
+            {flight.mealOptions.map((meal) => (
+              <option key={meal.code} value={meal.code}>
+                {meal.desc} - ₹{meal.amount}
+              </option>
+            ))}
+          </select>
+        </div>
+      )) || "N/A"}
+    </div>
+  </div>
+) : (
+  <div className="text-xs text-red-600 rounded-md w-max md:text-sm">
+    No Meal options available for this flight.
+  </div>
+)}
+
             </div>
           </div>
         );

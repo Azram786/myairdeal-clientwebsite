@@ -75,7 +75,7 @@ const AddonsCard = ({
         <div>{expanded ? <FaChevronUp /> : <FaChevronDown />}</div>
       </div>
       {
-        // expanded &&
+        expanded &&
         <div className="p-4">
           <div className="flex space-x-4 mb-4">
             <button
@@ -119,7 +119,7 @@ const AddonsCard = ({
           )}
           {activeButton === "addBagAndMeal" && (
             <BagAndMeal
-              setPassenger={setPassengers}
+              setPassengers={setPassengers}
               flightData={flightData}
               passengers={passengers}
             />

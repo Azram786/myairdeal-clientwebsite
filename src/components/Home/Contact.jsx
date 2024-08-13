@@ -3,7 +3,6 @@
 // import { CiLocationOn } from "react-icons/ci";
 // import { CiMail } from "react-icons/ci";
 
-
 // import background from "../../assets/home/contact/svg/background.svg";
 // const Contact = () => {
 //   return (
@@ -89,8 +88,6 @@
 
 // export default Contact;
 
-
-
 import contactMain from "../../assets/home/contact/background.png";
 import { IoCallOutline } from "react-icons/io5";
 import { CiLocationOn, CiMail } from "react-icons/ci";
@@ -101,7 +98,7 @@ import { FiArrowRight } from "react-icons/fi";
 const Contact = () => {
   return (
     <div className="w-full bg-[#0A2945] py-10 max-w-[1900px] min-w-[250px] mx-auto font-poppins">
-    <div className="md:flex-row flex flex-col gap-4 sm:px-10 items-center">
+      <div className="md:flex-row flex flex-col gap-4 sm:px-10 items-center">
         {/* Image Section */}
         <div
           className="flex items-center justify-center"
@@ -121,8 +118,10 @@ const Contact = () => {
         {/* Contact Form Section */}
         <div className="flex flex-col w-full justify-center items-center">
           <div className="mb-5 px-6 md:w-[85%]   lg:mb-10  ">
-          <h2 className="text-base font-sans text-gray-500 font-bold">Contact us</h2>
-            <div  className="flex w-full">
+            <h2 className="text-base font-sans text-gray-500 font-bold">
+              Contact us
+            </h2>
+            <div className="flex w-full">
               <h1 className="text-white w-full text-start text-2xl sm:text-3xl lg:text-4xl font-bold">
                 Let us know how we can help you!
               </h1>
@@ -130,7 +129,7 @@ const Contact = () => {
           </div>
           <div className="w-full sm:w-[90%] mt-6">
             <form className="px-6">
-              <div className="grid grid-cols-1  sm:grid-cols-2 gap-4">
+              <div className="grid  grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label htmlFor="name" className="text-white text-sm">
                     Name
@@ -139,7 +138,7 @@ const Contact = () => {
                     type="text"
                     id="name"
                     placeholder="Enter Your Name"
-                    className=" p-2 mt-1 rounded-md bg-[#0A2945] border border-gray-500 text-white"
+                    className=" p-2 mt-1 text-xs rounded-md bg-[#0A2945] border border-gray-500 text-white"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -150,7 +149,7 @@ const Contact = () => {
                     type="email"
                     id="email"
                     placeholder="Enter Your Email"
-                    className=" p-2 mt-1 rounded-md bg-[#0A2945] border border-gray-500 text-white"
+                    className=" p-2 mt-1 text-xs rounded-md bg-[#0A2945] border border-gray-500 text-white"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -161,7 +160,7 @@ const Contact = () => {
                     type="tel"
                     id="number"
                     placeholder="Enter Your Number"
-                    className=" p-2 mt-1 rounded-md bg-[#0A2945] border border-gray-500 text-white"
+                    className=" p-2 mt-1 text-xs rounded-md bg-[#0A2945] border border-gray-500 text-white"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -170,7 +169,7 @@ const Contact = () => {
                   </label>
                   <select
                     id="enquiry"
-                    className=" p-2 mt-1 rounded-md bg-[#0A2945] border border-gray-500 text-white"
+                    className=" p-2 mt-1 text-xs rounded-md bg-[#0A2945] border border-gray-500 text-white"
                   >
                     <option value="" disabled>
                       Select an option
@@ -178,15 +177,17 @@ const Contact = () => {
                     {/* Add more options here */}
                   </select>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex  flex-col">
                   <label htmlFor="message" className="text-white text-sm">
                     Your Message
                   </label>
                   <textarea
                     id="message"
                     placeholder="Your Message"
-                    className=" p-2 mt-1 rounded-md bg-[#0A2945] border border-gray-500 text-white h-20"
-                  ></textarea>
+                    className=" w-[95%] p-2 mt-1 text-sm rounded-md bg-[#0A2945] border border-gray-500 text-white h-20"
+                  >
+
+                  </textarea>
                 </div>
                 <div className="sm:col-span-2 flex items-center gap-2">
                   <input type="checkbox" id="terms" className="text-blue-900" />
@@ -198,7 +199,10 @@ const Contact = () => {
 
               <div className="w-full">
                 <button className=" mt-4 py-2  flex gap-2 items-center justify-between w-full text-white rounded-lg bg-gradient-to-r from-blue-900 via-blue-700 to-blue-400">
-                  <span className="px-3">Send Message</span> <span className="text-xs -rotate-90 px-3"><FaChevronDown/></span>
+                  <span className="px-3">Send Message</span>{" "}
+                  <span className="text-xs -rotate-90 px-3">
+                    <FaChevronDown />
+                  </span>
                 </button>
               </div>
 
@@ -242,4 +246,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default Contact;

@@ -70,7 +70,7 @@ const MultiCityForm = ({
     if (dynamicFormData.length > 1) {
       setDynamicFormData((prev) => prev.slice(0, -1));
     } else {
-      ReactToast("At least one form is required");
+      ReactToast("At least two form is required");
     }
   };
 

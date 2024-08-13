@@ -274,7 +274,7 @@ const OfferSection = () => {
               </div>
             </div>
           </div>
-          <div className="h-full px-6 py-6 text-white grid gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="h-full px-6 py-6 text-white grid gap-6 grid-cols-2 sm:grid-cols-2 lg-custom:grid-cols-4">
             {offers.map((offer, index) => (
               <div
                 key={index}
@@ -283,24 +283,24 @@ const OfferSection = () => {
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                 }}
-                className="h-[25vh] md:h-[55vh]  w-[180px] md:w-full flex items-end rounded-[3%] transition-transform transform hover:scale-105 duration-300 ease-in-out"
+                className="h-[25vh] md:h-[55vh]  w-full md:w-[260px] flex flex-wrap items-end rounded-[3%] transition-transform transform hover:scale-105 duration-300 ease-in-out"
               >
-                <div className="mb-5 w-full px-5">
+                <div className="mb-5 w-full  px-5">
                   <div className="flex w-full items-end justify-between">
                     <div>
-                      <div className="font-bold text-[.9rem] md:text-[1.3rem]">
+                      <div className="font-bold text-xs md:text-[1.3rem]">
                         {offer.cntryName}
                       </div>
-                      <div className="font-semibold text-[.7rem] md:text-[.9rem]">
+                      <div className="font-semibold text-xs md:text-[.9rem]">
                         {offer.description}
                       </div>
                     </div>
-                    <h3 className="font-bold text-[.9rem] md:text-[1.5rem]">
+                    <h3 className="font-bold text-xs md:text-[1.5rem]">
                       {offer.amount}
                     </h3>
                   </div>
                   <div className="flex justify-center mt-3">
-                    <button className="text-black p-2 w-full bg-white rounded-lg font-semibold text-[.8rem] md:text-[1rem]">
+                    <button className="text-black p-2 w-full bg-white rounded-lg font-semibold text-xs md:text-sm">
                       Book Flight
                     </button>
                   </div>

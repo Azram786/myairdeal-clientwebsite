@@ -13,7 +13,7 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
         }));
       else
         ReactToast(
-          "you can only book 9 seats and number of infant must be lower than adult"
+          "You can only book 9 seats and number of infant must be lower than Adult"
         );
     }
 
@@ -23,7 +23,7 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
           ...prev,
           CHILD: count,
         }));
-      else ReactToast(" you can only book 9 seats");
+      else ReactToast(" You can only book 9 seats");
     }
     if (type === "infant" && formData.pft === "REGULAR") {
 
@@ -34,7 +34,7 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
         }));
       else
         ReactToast(
-          "number of infant must be less than or equal to number of adults"
+          "The Number of infant must be less than or equal to number of Adults"
         );
     }
   };
@@ -80,8 +80,8 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
 
   return (
     <div ref={selectorRef} className="pb-4 md:p-5 flex  flex-col   
-      rounded-lg bg-white  px-2">
-      <div className="flex justify-between items-center mb-4">
+      rounded-lg bg-white  px-8 mx-4">
+      <div className="flex justify-between items-center mt-4 mb-4">
         <h3 className="font-semibold text-sm lg:text-lg">SELECT PASSENGER</h3>
         <FaTimes className="cursor-pointer" onClick={() => setModelIsOpen(false)} />
       </div>

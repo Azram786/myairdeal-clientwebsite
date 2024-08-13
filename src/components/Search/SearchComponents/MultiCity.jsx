@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ReactToast from "../../util/ReactToast";
 import { FaFilter, FaTimes } from "react-icons/fa";
+import { BsFillFilterSquareFill } from "react-icons/bs";
 
 const { TabPane } = Tabs;
 
@@ -164,7 +165,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
-    <div className="flex flex-col md:flex-row mb-3 relative">
+    <div className=" relative flex flex-col md:flex-row mb-3 relative">
       {/* <SideBar
         flights={flightProps}
         filters={filters}
@@ -172,16 +173,14 @@ const MultiCity = ({ flightProps, passenger, query }) => {
         activeTabIndex={activeTabIndex}
         passenger={passenger}
       /> */}
+       <button
+        className="absolute top-3 right-0 z-50 flex flex-col items-center justify-center  lg-custom:hidden"
+        onClick={toggleSidebar}
+      >
+        <BsFillFilterSquareFill className="w-6 h-6 text-blue-600" />
+        <div className="text-xs text-blue-600">Filters</div>
+      </button>
       <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
-        {/* Filter icon for screens up to 1024px */}
-        <button
-          className="absolute bottom-0 top-4 right-4 z-50 lg-custom:hidden"
-          onClick={toggleSidebar}
-        >
-          <FaFilter className="w-6 h-6 z-10 text-blue-600" />
-        </button>
-
-        {/* Sidebar for larger screens and modal-like display for screens up to 1024px */}
         <div
           className={`fixed h-full rounded-xl overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
@@ -195,7 +194,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
             width: "auto",
           }}
         >
-          {/* Close button for modal */}
+      
           <button
             className="absolute top-4  right-4 z-50 text-blue-600 lg-custom:hidden"
             onClick={() => setIsSidebarOpen(false)}
@@ -212,7 +211,6 @@ const MultiCity = ({ flightProps, passenger, query }) => {
           />
         </div>
 
-        {/* Overlay for screens up to 1024px */}
         {isSidebarOpen && (
           <div
             className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"

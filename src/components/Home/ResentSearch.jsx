@@ -77,7 +77,7 @@ const RecentSearch = ({ ResentSearchData }) => {
   {ResentSearchData?.map((search, index) => (
     <div
       key={index}
-      className="rounded-2xl shadow-lg max-w-60 md:max-w-80 my-4 p-4 border border-[#007EC4] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
+      className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#007EC4] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
       onClick={() => {
         setResentStateHandler(search);
       }}
@@ -108,6 +108,7 @@ const RecentSearch = ({ ResentSearchData }) => {
             <div className="text-xs font-bold">
               {search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}
             </div>
+            
             <div className="text-xs">
               {search?.searchQuery.routeInfos[0].travelDate}
             </div>

@@ -327,7 +327,7 @@ const FlightDetailsCard = ({
     <div className="border flex flex-col  rounded-lg m-4 shadow-md ">
       <div className="flex flex-col md:flex-row flex-wrap justify-between items-stretch p-3  mb-2">
         <div className="flex flex-col justify-around  border-none lg:border-r-2 pr-2 w-full lg:w-[80%]  ">
-          <div className="flex justify-around items-center   w-max">
+          <div className="flex justify-around items-center  w-full md:w-max ">
             <div className="md:hidden">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
@@ -346,7 +346,7 @@ const FlightDetailsCard = ({
               <div className="flex flex-col">
                 <h1 className="text-base font-bold">{startSegment?.da.code}</h1>
 
-                <h1 className="text-xs w-max">{formatDateTime(startSegment?.dt)}</h1>
+                <h1 className="text-xs w-[80px] sm:w-max">{formatDateTime(startSegment?.dt)}</h1>
               </div>
             </div>
 
@@ -372,7 +372,7 @@ const FlightDetailsCard = ({
             <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
               <div className="flex flex-col">
                 <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
-                <h1 className="text-xs w-max">{formatDateTime(endSegment.at)}</h1>
+                <h1 className="text-xs w-[80px] sm:w-max">{formatDateTime(endSegment.at)}</h1>
               </div>
             </div>
           </div>
@@ -431,9 +431,9 @@ const FlightDetailsCard = ({
         </div>
 
         <div className="max-w-[200px] flex flex-col  justify-between items-center border-none md:border-l-2 px-0 md:px-4 ">
-          <div className="lg:flex flex-col hidden text-center gap-2 mt-4 justify-center items-center">
+          <div className=" border-l-2 ml-8 pl-4 lg-custom:flex flex-col hidden text-center gap-2 mt-4 justify-center items-center">
             {" "}
-            <p className="text-[60px]">
+            <p className="text-[50px]">
               <GiRollingSuitcase />
             </p>
             <p className="font-bold text-xs">Included:Carry on bag</p>
