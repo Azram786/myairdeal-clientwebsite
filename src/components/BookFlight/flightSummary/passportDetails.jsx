@@ -37,7 +37,7 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
   }));
 
   useEffect(() => {
-    if (passenger?.nationality) {
+    if (passenger?.nationality && (!selectedNationality || selectedNationality.value !== passenger.nationality)) {
       const countryCode = getCode(passenger.nationality) || passenger.nationality;
       const countryName = getName(countryCode) || passenger.nationality;
       setSelectedNationality({
@@ -45,11 +45,8 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
         value: countryCode,
       });
       setValue('nationality', countryCode);
-    } else {
-      setSelectedNationality(null);
-      setValue('nationality', '');
     }
-  }, [passenger?.nationality, setValue]);
+  }, [passenger?.nationality, setValue, selectedNationality]);
 
   const watchPassportNumber = watch("passportNumber");
   const watchIssueDate = watch("issueDate");
@@ -70,7 +67,7 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
         nationality: passenger?.nationality || "",
       });
     }
-  }, [passenger, reset, watchPassportNumber, watchIssueDate, watchExpiryDate, watchNationality]);
+  }, [passenger, reset]);
 
   useEffect(() => {
     if (watchIssueDate) {
@@ -78,10 +75,12 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
       issueDate.setFullYear(issueDate.getFullYear() + (passengerType === "ADULT" ? 10 : 5));
       issueDate.setDate(issueDate.getDate() - 1);
       const expiryDate = issueDate.toISOString().split('T')[0];
-      setValue("expiryDate", expiryDate);
-      updatePassenger(index, "expiryDate", expiryDate);
+      if (watchExpiryDate !== expiryDate) {
+        setValue("expiryDate", expiryDate);
+        updatePassenger(index, "expiryDate", expiryDate);
+      }
     }
-  }, [watchIssueDate, setValue, updatePassenger, index, passengerType]);
+  }, [watchIssueDate, setValue, watchExpiryDate, updatePassenger, index, passengerType]);
 
   const handleChange = (selectedOption, field) => {
     setSelectedNationality(selectedOption);

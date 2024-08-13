@@ -116,8 +116,9 @@ const AddDetails = ({
   }, [passengers, gstDetails, onData, setCurrentStep]);
 
   const [contactDetails, setContactDetails] = useState({
-    email: "",
-    phoneNumber: null
+    email: null,
+    phoneNumber: null,
+    dialCode: null,
   })
   console.log(contactDetails)
   const toggleCard = (cardName) => {
