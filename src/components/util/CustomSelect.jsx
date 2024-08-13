@@ -41,7 +41,7 @@ const CustomSelect = ({
   //----------------**important**-----------------------------------------
   // i know  this code sucks 
   // i wrote this in 15 days so useless states are here and there 
-  // but if it works dont touch 
+  // but if it works dont touch  
   return (
     <AsyncSelect
       isClearable={true}
