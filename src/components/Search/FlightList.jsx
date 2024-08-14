@@ -146,6 +146,8 @@ import { FaTelegramPlane } from "react-icons/fa";
 import FlightSearchSummary from "./FlightSearchSummary";
 import Header from "../Home/Header";
 import Footer from "../Home/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsaModifySearch } from "../../store/slices/aut.slice";
 
 const FlightList = () => {
   const location = useLocation();
@@ -158,26 +160,56 @@ const FlightList = () => {
   const [roundWay, setRoundWay] = useState([]);
   const [multicity, setMulticity] = useState([]);
   const [combo, setCombo] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const { isModifySearch } = useSelector(state => state.auth)
+  const [hasUserPressedBack, setHasUserPressedBack] = useState(false);
+  const dispatch = useDispatch()
+  useEffect(() => {
+    // Push the current state to the history
+    window.history.pushState({ page: 'current' }, '');
 
+    // Handler for popstate event (back button press)
+    const handlePopState = (event) => {
+      if (event.state && event.state.page === 'current') {
+        setHasUserPressedBack(true);
+        // Optionally, you can prevent the default back action
+        // window.history.pushState(null, '', window.location.href);
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('popstate', handlePopState);
+
+    // Cleanup function to remove event listener
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []); // Empty dependency array means this effect runs once on mount
+
+  useEffect(() => {
+    if (hasUserPressedBack) {
+      dispatch(setIsaModifySearch(false))
+    }
+  }, [hasUserPressedBack]);
   useEffect(() => {
     setData(query);
     if (!query || !data) {
       navigate("/");
     }
-  }, [query]);
+  }, [location.state]);
 
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsSessionExpired(true); 
-    },  1800000); 
+      setIsSessionExpired(true);
+    }, 1800000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
 
   const getData = async () => {
     try {
+      setLoading(true)
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}search/flight`,
         data
@@ -215,8 +247,9 @@ const FlightList = () => {
   };
 
   useEffect(() => {
+    console.log("nithin----------------------------------")
     getData();
-  }, []);
+  }, [data]);
 
   if (loading) {
     return (
@@ -229,7 +262,7 @@ const FlightList = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen ">
       <Header />
       {data && <div className="w-full py-5"><FlightSearchSummary data={data} tripType={tripType} /></div>}
       <div className=" border p-4  gap-4 shadow-sm rounded-md flex flex-col">
@@ -272,7 +305,7 @@ const SessionExpiredPopup = ({ isOpen, onClose }) => {
 
   const handleSearchAgain = () => {
     onClose();
-    navigate('/'); 
+    navigate('/');
   };
 
   return (

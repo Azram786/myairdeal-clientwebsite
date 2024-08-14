@@ -1,9 +1,6 @@
-
-
 import React from "react";
 import { MdFlight } from "react-icons/md";
-import { FaArrowRight, FaRegClock } from "react-icons/fa";
-import ProgressBar from "./ProgressBar";
+
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
   console.log(setCurrentStep, data, passengersData, "passenger");
@@ -122,7 +119,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                         })}
                         ,
                         {new Date(segment.dt).toLocaleDateString("en-US", {
-                         year:"numeric",
+                          year: "numeric",
                         })},
                         {new Date(segment.dt).toLocaleTimeString([], {
                           hour: "2-digit",
@@ -169,7 +166,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                         })}
                         ,
                         {new Date(segment.dt).toLocaleDateString("en-US", {
-                         year:"numeric",
+                          year: "numeric",
                         })},
                         {new Date(segment.at).toLocaleTimeString([], {
                           hour: "2-digit",
@@ -233,39 +230,52 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
               </tr>
             </thead>
             <tbody>
-              {passengersData?.passengers?.map((passenger, index) => (
-                <tr key={index} className=" h-24 border-t">
-                  <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
-                    {index + 1}
-                  </td>
-                  <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
-                    {`${renderValue(passenger.firstName)} ${renderValue(
-                      passenger.lastName
-                    )}`}
-                  </td>
-                  <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
-                    {/* Seat Booking - Leave this cell empty */}
-                  </td>
-                  <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
-                    <div>
+
+              {passengersData?.passengers?.map((passenger, index) => {
+                console.log({ passenger });
+                return (
+                  <tr key={index} className="h-24 border-t">
+                    <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
+                      {index + 1}
+                    </td>
+                    <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
+                      {`${passenger.title || ''} ${passenger.firstName || ''} ${passenger.lastName || ''}`}
+                    </td>
+                    <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
+                      {passenger.selectedSeat && passenger.selectedSeat.length > 0
+                        ? passenger.selectedSeat.map((seat, seatIndex) => (
+                          <div key={seatIndex}>
+                            Seat: {seat.code} (₹{seat.amount})
+                          </div>
+                        ))
+                        : 'No seat selected'}
+                    </td>
+                    <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
                       <div>
-                        {renderObjectEntries(
-                          passenger.selectedMeals,
-                          (flightId, meal) =>
-                            `Meal: Flight ${flightId}: ${meal.code} (₹${meal.amount})`
+                        {passenger.selectedMeal && passenger.selectedMeal.length > 0 && (
+                          <div>
+                            {passenger.selectedMeal.map((meal, mealIndex) => (
+                              <div key={mealIndex}>
+                                Meal: {meal.code} - {meal.desc} (₹{meal.amount})
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {passenger.selectedBaggage && passenger.selectedBaggage.length > 0 && (
+                          <div>
+                            {passenger.selectedBaggage.map((baggage, baggageIndex) => (
+                              <div key={baggageIndex}>
+                                Baggage: {baggage.code} - {baggage.desc} (₹{baggage.amount})
+                              </div>
+                            ))}
+                          </div>
                         )}
                       </div>
-                      <div>
-                        {renderObjectEntries(
-                          passenger.baggage,
-                          (flightId, bag) =>
-                            `Baggage: Flight ${flightId}: ${bag.details}`
-                        )}
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
+
             </tbody>
           </table>
         </div>
