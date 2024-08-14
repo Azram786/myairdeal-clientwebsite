@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import ModalHistoryData from "./modalHistoryData";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import ReactToast from "../../util/ReactToast";
 
 const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition, flightData, setPassengers }, ref) => {
   const {
@@ -29,7 +30,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
 
   const { token } = useSelector((state) => state.auth);
   const passportRef = useRef();
-
+  const [savePassengerInfo, setSavePassengerInfo] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [historyData, setHistoryData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -45,11 +46,13 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
 
   const handleModalOpen = (e) => {
     e.preventDefault();
+    fetchHistoryData()
     setIsModalOpen(true);
   };
 
   const fetchHistoryData = () => {
     setLoading(true);
+    // fetchHistoryData();
     axios
       .get(`${import.meta.env.VITE_SERVER_URL}user/all-passengers`, {
         headers: { authorization: `Bearer ${token}` },
@@ -78,23 +81,16 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
   }, []);
 
   const handleInputChange = (name, value) => {
-    console.log("nithinraj")
+
     setValue(name, value);
     updatePassenger(index, name, value);
   };
 
 
   const handleSelectFromHistory = (index, selectedPassenger) => {
-    console.log({ selectedPassenger });
 
-
-    // Destructure the selected passenger details
     const { ti, fN, dob, lN } = selectedPassenger;
-    // setValue("title", ti);
-    // setValue("firstName", fN);
-    // setValue("lastName", lN);
-    // setValue("dob", dob);
-    // Use a callback in setPassengers to access the current state
+
     setPassengers((prevPassengers) => {
       const updatedPassengers = [...prevPassengers];
 
@@ -131,7 +127,36 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
     if (passengerType === "CHILD") return calculateDate(12);
     if (passengerType === "INFANT") return calculateDate(2);
   };
+  const handleCheckboxChange = async (event) => {
+    const isChecked = event.target.checked;
+    setSavePassengerInfo(isChecked);
 
+    if (isChecked) {
+      console.log("Passenger data to be saved:", passenger);
+
+      try {
+        const response = await axios.put(
+          `${import.meta.env.VITE_SERVER_URL}user/add-passenger`,
+          { passenger },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        // Handle successful response
+        if (response?.data) ReactToast("Passenger saved succesfully")
+        console.log("Passenger information saved:", response.data);
+        // You might want to show a success message to the user here
+      } catch (error) {
+        // Handle error
+        console.error("Error saving passenger information:", error.response?.data || error.message);
+        // You might want to show an error message to the user here
+      }
+    }
+  };
   return (
     <div className="flex">
       <form>
@@ -238,7 +263,8 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
               )}
             />
           </div>
-          {condition?.dobe && (
+          {condition?.dobe || passenger.passengerType === "INFANT" && (
+
             <div>
               <Controller
                 name="dob"
@@ -299,7 +325,8 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
 
         <div>
           <div>
-            <input type="checkbox" />
+            <input type="checkbox" checked={savePassengerInfo}
+              onChange={handleCheckboxChange} />
             <label htmlFor="">Save passenger information</label>
           </div>
           <div>
