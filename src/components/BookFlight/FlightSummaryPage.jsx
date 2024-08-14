@@ -26,7 +26,7 @@ import Footer from "../Home/Footer";
 import FlightLanding from "../../assets/booking/viewDetailedBookings/flightLanding.svg";
 import ShowBaggageInfo from "./Util/ShowBaggageInfo";
 
-const FlightSummary = ({ flightData }) => {
+const FlightSummary = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState(null);
   const [passengersData, setPassengerData] = useState([]);
@@ -545,12 +545,14 @@ const FlightSummary = ({ flightData }) => {
                                     </div>
                                     {passenger.selectedMeal.map(
                                       (meal, mealIndex) => (
-                                        <div
-                                          key={mealIndex}
-                                          className="flex justify-between"
-                                        >
-                                          <div>{meal.desc}</div>
-                                          <div>₹{meal.amount}</div>
+                                        <div key={mealIndex} className="mb-2">
+                                          <div className="font-semibold">
+                                            Flight {mealIndex + 1}:
+                                          </div>
+                                          <div className="flex justify-between">
+                                            <div>{meal.desc}</div>
+                                            <div>₹{meal.amount}</div>
+                                          </div>
                                         </div>
                                       )
                                     )}
@@ -567,18 +569,42 @@ const FlightSummary = ({ flightData }) => {
                                       (baggage, baggageIndex) => (
                                         <div
                                           key={baggageIndex}
-                                          className="flex justify-between"
+                                          className="mb-2"
                                         >
-                                          <div>{baggage.desc}</div>
-                                          <div>₹{baggage.amount}</div>
+                                          <div className="font-semibold">
+                                            Flight {baggageIndex + 1}:
+                                          </div>
+                                          <div className="flex justify-between">
+                                            <div>{baggage.desc}</div>
+                                            <div>₹{baggage.amount}</div>
+                                          </div>
                                         </div>
                                       )
                                     )}
                                   </div>
                                 )}
 
-                                {/* Selected Seats (If applicable) */}
-                                {/* Add seat rendering here if you have selected seats data */}
+                                {/* Selected Seats */}
+                                {passenger.selectedSeat?.length > 0 && (
+                                  <div className="text-xs md:text-sm">
+                                    <div className="font-semibold mb-1">
+                                      Selected Seats:
+                                    </div>
+                                    {passenger.selectedSeat.map(
+                                      (seat, seatIndex) => (
+                                        <div key={seatIndex} className="mb-2">
+                                          <div className="font-semibold">
+                                            Flight {seatIndex + 1}:
+                                          </div>
+                                          <div className="flex justify-between">
+                                            <div>{seat.code}</div>
+                                            <div>₹{seat.amount}</div>
+                                          </div>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                )}
                               </div>
                             ))}
                           </div>

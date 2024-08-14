@@ -116,7 +116,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
       return newPassengers;
     });
   };
-
+console.log({flightOptions})
   return (
     <div className="space-y-6 ">
       {flightOptions.map((flight) => {

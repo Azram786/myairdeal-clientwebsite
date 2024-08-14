@@ -16,17 +16,45 @@ const SeatSelection = ({
   const updateSeatSelection = (passengerIndex, seatInfo) => {
     setPassengers((prevPassengers) => {
       const newPassengers = [...prevPassengers];
-      if (seatInfo) {
-        newPassengers[passengerIndex].selectedSeat = {
-          ...newPassengers[passengerIndex].selectedSeat,
-          [currentFlightId]: seatInfo,
-        };
-      } else {
-        delete newPassengers[passengerIndex].selectedSeat[currentFlightId];
+  
+      // Ensure selectedSeat is initialized as an array
+      if (!Array.isArray(newPassengers[passengerIndex].selectedSeat)) {
+        newPassengers[passengerIndex].selectedSeat = [];
       }
+  
+      const seatIndex = newPassengers[passengerIndex].selectedSeat.findIndex(
+        (seat) => seat.key === currentFlightId
+      );
+  
+      if (seatInfo) {
+        if (seatIndex > -1) {
+          // Update the existing seat entry for the flight
+          newPassengers[passengerIndex].selectedSeat[seatIndex] = {
+            key: currentFlightId,
+            code: seatInfo.code,
+            amount: seatInfo.amount,
+            desc: seatInfo.desc,
+          };
+        } else {
+          // Add a new seat entry for the flight
+          newPassengers[passengerIndex].selectedSeat.push({
+            key: currentFlightId,
+            code: seatInfo.code,
+            amount: seatInfo.amount,
+            desc: seatInfo.desc,
+          });
+        }
+      } else {
+        // Remove the seat entry if seatInfo is null
+        if (seatIndex > -1) {
+          newPassengers[passengerIndex].selectedSeat.splice(seatIndex, 1);
+        }
+      }
+  
       return newPassengers;
     });
   };
+  
 
   const handleShowSeatMap = (flightId) => {
     setCurrentFlightId(flightId);

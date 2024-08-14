@@ -16,7 +16,7 @@ const SeatMap = ({
   const [flightDetails, setFlightDetails] = useState({});
   const [sData, setSData] = useState(null);
   const [sInfo, setSInfo] = useState([]);
-  console.log({ booking},"SEAT MAP")
+  // console.log({ booking},"SEAT MAP")
 
   // Filter out infants from passengers
   const adultPassengers = Passengers.filter(
