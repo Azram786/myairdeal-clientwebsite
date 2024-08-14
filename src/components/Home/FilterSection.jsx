@@ -21,7 +21,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
+import { setIsaModifySearch, setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
 import PassengerSelector from "./PassengerSelector";
 import getCountryCode from "../util/getCity";
 const FilterSection = ({
@@ -31,9 +31,10 @@ const FilterSection = ({
   setDynamicFormData,
   setTypeOfTravel,
   typeOfTravel,
+
 }) => {
   const navigate = useNavigate();
-
+  const { isModifySearch } = useSelector((state) => state.auth)
   const { token } = useSelector((state) => state.auth);
   const [Loading, setLoading] = useState(false);
 
@@ -96,8 +97,7 @@ const FilterSection = ({
   const getCountriesHandlerOne = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${
-          import.meta.env.VITE_SERVER_URL
+        `${import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
@@ -118,8 +118,7 @@ const FilterSection = ({
   const getCountriesHandlerTwo = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${
-          import.meta.env.VITE_SERVER_URL
+        `${import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
@@ -142,8 +141,7 @@ const FilterSection = ({
   const fetchDefaultOptions = async () => {
     try {
       const response = await axios.get(
-        `${
-          import.meta.env.VITE_SERVER_URL
+        `${import.meta.env.VITE_SERVER_URL
         }search/airport-country-code?countrycode=IN`
       );
       const options = response.data.data.map((item) => {
@@ -155,7 +153,7 @@ const FilterSection = ({
       });
 
       setDefaultOptions(options);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const submitHandler = async () => {
@@ -427,6 +425,7 @@ const FilterSection = ({
 
       setLoading(false);
       navigate(`/search`, { state: { query } });
+      dispatch(setIsaModifySearch(false))
     } catch (error) {
       setLoading(false);
       console.log(error.message);
@@ -440,32 +439,34 @@ const FilterSection = ({
 
   return (
     <div className=" flex flex-col items-center  min-h-[200px]   justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
-      <div className="     md:rounded-xl w-[90%] mt-4 md:mt-0  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   ">
+      {/* <div className="     md:rounded-xl w-[90%] mt-4  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   "> */}
+      <div className={`
+  md:rounded-xl w-[90%] mt-4 p-2 shadow-md border border-gray-200 bg-white 
+  flex gap-2 flex-col justify-center md:px-5 md:gap-4
+  ${!isModifySearch ? 'relative md:top-[-60px]' : ''}
+`}>
         {/* type of travel selecting section */}
 
         <div className="flex justify-center md:justify-stretch  text-white ">
           <button
-            className={`bg-[#007EC4] text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
-              typeOfTravel === "one-way" && "bg-[#01324D]"
-            }`}
+            className={`bg-[#007EC4] text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#01324D]"
+              }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
           >
             One way
           </button>
           <button
-            className={`bg-[#007EC4] text-sm md:text-base md:p-3 p-2 border-2 ${
-              typeOfTravel === "round-trip" && "bg-[#01324D]"
-            } `}
+            className={`bg-[#007EC4] text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#01324D]"
+              } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
           >
             Round trip
           </button>
           <button
-            className={` bg-[#007EC4] text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${
-              typeOfTravel === "multi-city" && "bg-[#01324D]"
-            }`}
+            className={` bg-[#007EC4] text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#01324D]"
+              }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
           >
@@ -597,11 +598,10 @@ const FilterSection = ({
                     <input
                       className="pl-1 font-bold outline-none cursor-pointer "
                       type="text"
-                      value={`${
-                        Number(formData.ADULT) +
+                      value={`${Number(formData.ADULT) +
                         Number(formData.CHILD) +
                         Number(formData.INFANT)
-                      } | ${formData.cabinClass}`}
+                        } | ${formData.cabinClass}`}
                       readOnly
                     />
                   </div>

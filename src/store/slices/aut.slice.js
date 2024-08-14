@@ -11,7 +11,8 @@ const initialState = {
     ? JSON.parse(localStorage.getItem("resentSearch"))
     : null,
   lastSearch: null,
-  resentSearchFilter: [[], []]
+  resentSearchFilter: [[], []],
+  isModifySearch: false
 };
 
 const authSlice = createSlice({
@@ -50,6 +51,9 @@ const authSlice = createSlice({
     },
     clearResentSearchFilter: (state, action) => {
       state.resentSearchFilter = [[], []]
+    },
+    setIsaModifySearch: (state, action) => {
+      state.isModifySearch = action.payload
     }
   }
 });
@@ -63,7 +67,8 @@ export const {
   setLastSearch,
   setResentSearchFromFilter,
   setResentSearchToFilter,
-  clearResentSearchFilter
+  clearResentSearchFilter,
+  setIsaModifySearch
 } = authSlice.actions;
 
 export default authSlice.reducer;

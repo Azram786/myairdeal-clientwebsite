@@ -146,6 +146,7 @@ import { FaTelegramPlane } from "react-icons/fa";
 import FlightSearchSummary from "./FlightSearchSummary";
 import Header from "../Home/Header";
 import Footer from "../Home/Footer";
+import { useSelector } from "react-redux";
 
 const FlightList = () => {
   const location = useLocation();
@@ -158,26 +159,27 @@ const FlightList = () => {
   const [roundWay, setRoundWay] = useState([]);
   const [multicity, setMulticity] = useState([]);
   const [combo, setCombo] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(false);
+  const { isModifySearch } = useSelector(state => state.auth)
   useEffect(() => {
     setData(query);
     if (!query || !data) {
       navigate("/");
     }
-  }, [query]);
+  }, [location.state]);
 
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsSessionExpired(true); 
-    },  1800000); 
+      setIsSessionExpired(true);
+    }, 1800000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
 
   const getData = async () => {
     try {
+      setLoading(true)
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}search/flight`,
         data
@@ -215,8 +217,9 @@ const FlightList = () => {
   };
 
   useEffect(() => {
+    console.log("nithin----------------------------------")
     getData();
-  }, []);
+  }, [data]);
 
   if (loading) {
     return (
@@ -272,7 +275,7 @@ const SessionExpiredPopup = ({ isOpen, onClose }) => {
 
   const handleSearchAgain = () => {
     onClose();
-    navigate('/'); 
+    navigate('/');
   };
 
   return (

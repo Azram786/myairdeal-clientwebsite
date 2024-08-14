@@ -15,6 +15,7 @@ import WhyChooseUs from "./whyChooseUs";
 import Testimonials from "./TestMonials";
 import DownloadApp from "./AppDownload";
 import Service from "../Service/service";
+import { FiTable } from "react-icons/fi";
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -71,6 +72,7 @@ const HomePage = () => {
     return () => clearTimeout(timer);
   }, []);
   console.log({ resentSearch })
+  const { isModifySearch } = useSelector((state) => state.auth)
   useEffect(() => {
     if (resentSearch?.searchQuery) {
       setFormData((prevFormData) => ({
@@ -118,39 +120,48 @@ const HomePage = () => {
     }
   }, [resentSearch]);
 
-  console.log({ resentSearch });
+  console.log({ resentSearch, isModifySearch });
 
   return (
+
     <div>
-      {loading ? (
-        <div className="h-screen">
-          <Spinner />
-        </div>
-      ) : (
-        <>
-          <Header />
-          <Banner />
-          <FilterSection
-            formData={formData}
-            setFormData={setFormData}
-            dynamicFormData={dynamicFormData}
-            setDynamicFormData={setDynamicFormData}
-            typeOfTravel={typeOfTravel}
-            setTypeOfTravel={setTypeOfTravel}
-          />
+      {isModifySearch ? <FilterSection formData={formData}
+        setFormData={setFormData}
+        dynamicFormData={dynamicFormData}
+        setDynamicFormData={setDynamicFormData}
+        typeOfTravel={typeOfTravel}
+        setTypeOfTravel={setTypeOfTravel} /> :
+        loading ? (
+          <div className="h-screen">
+            <Spinner />
+          </div>
+        ) : (
 
-          {(token && resentSearch?.length !== 0) && <RecentSearch ResentSearchData={ResentSearchData} />}
+          <>
+            <Header />
+            <Banner />
+            <FilterSection
+              formData={formData}
+              setFormData={setFormData}
+              dynamicFormData={dynamicFormData}
+              setDynamicFormData={setDynamicFormData}
+              typeOfTravel={typeOfTravel}
+              setTypeOfTravel={setTypeOfTravel}
 
-          <OfferSection />
-          <AboutUs />
-          <Service />
-          <WhyChooseUs />
-          <Testimonials />
-          <Contact />
-          <DownloadApp />
-          <Footer />
-        </>
-      )}
+            />
+
+            {(token && resentSearch?.length !== 0) && <RecentSearch ResentSearchData={ResentSearchData} />}
+
+            <OfferSection />
+            <AboutUs />
+            <Service />
+            <WhyChooseUs />
+            <Testimonials />
+            <Contact />
+            <DownloadApp />
+            <Footer />
+          </>
+        )}
     </div>
   );
 };
