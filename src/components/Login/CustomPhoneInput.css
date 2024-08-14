@@ -1,38 +1,13 @@
-.custom-container {
-    width: 100%;
-    display: flex;
-    justify-content: start;
-    border: 2px solid rgb(43, 119, 207);
-    border-radius: 5px;
-
-    /* Adjust as needed */
+.phone-input-container {
+    width: 100% !important;
+    height: 50px !important;
+    border: 1px solid rgb(111, 111, 232);
+    box-sizing: border-box;
+    background: transparent !important;
 }
 
-.custom-button {
-    /* border: 1px solid gray; */
-
-    /* Adjust as needed */
-    background-color: white;
-    padding-left: 0.5rem;
-    /* Adjust as needed */
-    outline: none;
-
-}
-
-.custom-dropdown {
-    background-color: white;
-    border: 1px solid gray;
-
-
-}
-
-.custom-input {
-    padding: 0.75rem;
-    width: 90%;
-    padding-left: 4rem;
-    font-weight: bold;
-    border-radius: 0.375rem;
-    display: flex;
-    justify-content: start;
-    outline: none;
+.phone-input-container input {
+    width: 100% !important;
+    height: 48px !important;
+    background: transparent !important;
 }

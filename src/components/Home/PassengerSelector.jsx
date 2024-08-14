@@ -4,7 +4,11 @@ import ReactToast from "../util/ReactToast";
 
 const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
   const selectorRef = useRef(null);
+
   const handleCountChange = (type, count) => {
+    if (formData.pft !== 'REGULAR' && type === "children" || type === "infant") {
+      ReactToast("you have selected special fares")
+    }
     if (type === "adult") {
       if (formData.CHILD + count <= 9 && formData.INFANT <= count)
         setFormData((prev) => ({
