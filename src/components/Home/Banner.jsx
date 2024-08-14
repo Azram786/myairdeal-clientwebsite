@@ -10,11 +10,11 @@ const Banner = () => {
       />
 
       <div className="relative items-start h-full   left-[10%] flex flex-col justify-center  text-white w-2/3 ">
-        <h3 className="font-semibold leading-[1.5]  flex-wrap sm:text-[1rem] md:text-[2rem] text-[.8rem]">
+        <h3 className="font-semibold leading-[1.5]  flex-wrap text-[1.2rem] md:text-[2rem] ">
           Make your travel wishlist, we'll do the rest!
         </h3>
         <h4
-          className="md:mt-3 text-[.8rem]  font-poppins md:text-[1.5rem] lg:text-2x 2xl:text-[1.7rem]
+          className="md:mt-3 text-[1.2rem]  font-poppins md:text-[1.5rem] lg:text-2x 2xl:text-[1.7rem]
         "
         >
           Special offers to suit your plan

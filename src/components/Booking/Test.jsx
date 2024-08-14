@@ -59,14 +59,14 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
       firstName: selectedPassenger.fN,
       lastName: selectedPassenger.lN,
       dob: selectedPassenger.dob,
-      // Add other fields as necessary
+
     });
     // Update react-hook-form values
     setValue("title", selectedPassenger.ti);
     setValue("firstName", selectedPassenger.fN);
     setValue("lastName", selectedPassenger.lN);
     setValue("dob", selectedPassenger.dob);
-    // Add other fields as necessary
+
     setIsModalOpen(false);
   };
 
@@ -91,7 +91,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
       setLoading(true);
       axios
         .put(
-          "https://myairdeal-backend.onrender.com/user/add-passenger",
+          `${import.meta.env.VITE_SERVER_URL}user/add-passenger`,
           submittedData,
           {
             headers: {
@@ -350,7 +350,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
               updatePassenger={updatePassenger}
               passport={formData.passport}
             />
-            {/* <div className="w-full justify-between md:flex-row gap-3 flex-col mt-4 flex">
+            <div className="w-full justify-between md:flex-row gap-3 flex-col mt-4 flex">
               <button
                 type="submit"
                 className="button text-sm bg-[#007EC4] hover:bg-blue-600 text-white font-bold md:w-1/2 py-2 px-4 rounded "
@@ -381,7 +381,7 @@ const PassengerForm = ({ passenger, index, updatePassenger }) => {
                   Error: {error.message}
                 </div>
               )}
-            </div> */}
+            </div>
           </form>
         </div>
       </div>

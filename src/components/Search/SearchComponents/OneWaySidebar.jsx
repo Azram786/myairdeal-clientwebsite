@@ -264,15 +264,15 @@ const OneWaySideBar = ({
           <div className="flex justify-between gap-2">
             <span className="text-xs">₹100</span>
             <input
-  type="range"
-  min="100"
-  max={maxPrice}
-  value={filters.maxPrice}
-  onChange={handlePriceChange}
-  id="priceRange"
-  className="flex-1 price-range-slider range-slider"
-  title={`₹${filters.maxPrice}`}
-/>
+              type="range"
+              min="100"
+              max={maxPrice}
+              value={filters.maxPrice}
+              onChange={handlePriceChange}
+              id="priceRange"
+              className="flex-1 price-range-slider range-slider"
+              title={`₹${filters.maxPrice}`}
+            />
             <span className="text-xs">₹{filters.maxPrice}</span>
           </div>
         </div>
@@ -280,7 +280,7 @@ const OneWaySideBar = ({
         {/* Stops filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-sm font-semibold mb-2">Stops</h3>
-          <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
+          <div className="grid w-full grid-cols-2 md:grid-cols-2 lg:grid-cols-4 ">
             {/* {stops.map((stop, index) => (
               <label
                 key={stop}

@@ -14,19 +14,19 @@ const AddonsCard = ({
   flightData,
   bookingId,
 }) => {
+  console.log({ bookingId }, "BOOKING ID");
   const [activeButton, setActiveButton] = useState("");
   const [seatMapData, setSeatMapData] = useState(null);
   const [checkLoading, setCheckLoading] = useState(false);
   const [Errors, setErrors] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
-
   const checkSeatSelection = async () => {
     setCheckLoading(true);
 
     try {
       const response = await axios.post(
-        "https://myairdeal-backend.onrender.com/booking/seat-map",
+        `${import.meta.env.VITE_SERVER_URL}booking/seat-map`,
         {
           bookingId,
         },
@@ -38,11 +38,12 @@ const AddonsCard = ({
       );
 
       if (response.status == 200) {
-        setSeatMapData(response?.flightData);
+        console.log({ response });
+        setSeatMapData(response?.data);
       } else if (response.status === 400) {
         setSeatMapData("Seat Map is not available");
       }
-      
+
       setCheckLoading(false);
     } catch (error) {
       console.error("SeatMapError:", error);
@@ -117,7 +118,7 @@ const AddonsCard = ({
           )}
           {activeButton === "addBagAndMeal" && (
             <BagAndMeal
-              setPassenger={setPassengers}
+              setPassengers={setPassengers}
               flightData={flightData}
               passengers={passengers}
             />

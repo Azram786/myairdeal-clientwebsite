@@ -67,6 +67,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ReactToast from "../../util/ReactToast";
 import { FaFilter, FaTimes } from "react-icons/fa";
+import { BsFillFilterSquareFill } from "react-icons/bs";
 
 const { TabPane } = Tabs;
 
@@ -83,7 +84,9 @@ const Oneway = ({ flightProps, passenger, query }) => {
   });
 
   const token = useSelector((state) => state.auth.token);
-  const [selectedFlight, setSelectedFlight] = useState([{ flightIndex: 0, priceIndex: 0 }]);
+  const [selectedFlight, setSelectedFlight] = useState([
+    { flightIndex: 0, priceIndex: 0 },
+  ]);
   const navigate = useNavigate();
 
   const calculateTotalPrice = useMemo(
@@ -223,7 +226,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   console.log(filteredFlights, "filtered flights");
   return (
-    <div className="flex md:flex-row flex-col">
+    <div className="flex relative md:flex-row flex-col">
       {/* <OneWaySideBar
         flights={flightProps}
         filters={filters}
@@ -231,16 +234,15 @@ const Oneway = ({ flightProps, passenger, query }) => {
         passenger={passenger}
         calculateTotalPrice={calculateTotalPrice}
       /> */}
-      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
-        {/* Filter icon for screens up to 1024px */}
-        <button
-          className="absolute bottom-0 top-10 right-4 z-50 lg-custom:hidden"
-          onClick={toggleSidebar}
-        >
-          <FaFilter className="w-6 h-6 z-10 text-blue-600" />
-        </button>
 
-        {/* Sidebar for larger screens and modal-like display for screens up to 1024px */}
+      <button
+        className="absolute top-10 right-0 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
+        onClick={toggleSidebar}
+      >
+        <BsFillFilterSquareFill className="w-6 h-6 text-blue-600" />
+        <div className="text-xs text-blue-600">Filters</div>
+      </button>
+      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
         <div
           className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 rounded-xl bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
@@ -254,16 +256,15 @@ const Oneway = ({ flightProps, passenger, query }) => {
             width: "auto",
           }}
         >
-          {/* Close button for modal */}
           <button
-            className="absolute top-2 right-4 z-50 text-blue-600 lg-custom:hidden"
+            className="absolute top-2 right-4 z-50 text-blue-600  lg-custom:hidden"
             onClick={() => setIsSidebarOpen(false)}
           >
             <FaTimes className="w-6 h-6" />
           </button>
-         
-            <div className="font-semibold p-2 text-left text-base">Filters</div>
-            <div className="rounded-xl flex flex-col items-center ">
+
+          <div className="font-semibold p-2 text-left text-base">Filters</div>
+          <div className="rounded-xl flex flex-col items-center ">
             <OneWaySideBar
               flights={flightProps}
               filters={filters}
@@ -274,7 +275,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
           </div>
         </div>
 
-        {/* Overlay for screens up to 1024px */}
         {isSidebarOpen && (
           <div
             className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
@@ -282,6 +282,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
           />
         )}
       </div>
+
       <div className="flex-grow">
         <h1 className="text-sm font-bold">
           {" "}

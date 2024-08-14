@@ -3,7 +3,8 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        'lg-custom': '1030px', // Define custom breakpoint here
+        "custom-md": "750px", // Custom breakpoint starting from 750px
+        "lg-custom": "1030px", // Custom breakpoint at 1030px
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],

@@ -30,7 +30,10 @@ function App() {
             element={token ? <ViewDetailedBooking /> : <Login />}
           />
           <Route path="/search" element={<FlightList />} />
-          <Route path="/book-flight" element={token ? <FlightSummaryPage /> : <Login />} />
+          <Route
+            path="/book-flight"
+            element={token ? <FlightSummaryPage /> : <Login />}
+          />
           <Route path="/profile" element={token ? <Profile /> : <Login />} />
 
           {/* <Route path="/review" element={<Review />} /> */}

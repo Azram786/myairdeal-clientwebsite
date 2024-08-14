@@ -1,9 +1,7 @@
 
-
 import React, { useState, useRef } from "react";
 import PassengerForm from "./passengers";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { Controller, useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import "./CustomPhoneInput.css";
@@ -15,76 +13,81 @@ const TravellersCard = ({
   toggleCard,
   flightData,
   contactDetails,
-  setContactDetails
+  setContactDetails,
 }) => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    trigger,
-    formState: { errors },
-    getValues,
-    control,
-  } = useForm({
-    defaultValues: {
-      email: passengers[0]?.email || "",
-      phone: passengers[0]?.phone
-        ? `+${passengers[0].dialCode}${passengers[0].phone}`
-        : "",
-      dialCode: passengers[0]?.dialCode || "",
-    },
-    mode: "onChange",
-  });
-
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const [condition, setCondition] = useState(
     flightData?.conditions?.pcs || null
   );
-  const [loading, setLoading] = useState(false);
   const passengerRefs = useRef([]);
 
+  // const updatePassenger = (index, field, value) => {
+  // console.log({ field, value })
+  // const updatedPassengers = passengers.map((passenger, i) =>
+  //   i === index ? { ...passenger, [field]: value } : passenger
+  // );
+  // console.log({ updatedPassengers })
+  // setPassengers(updatedPassengers);
   const updatePassenger = (index, field, value) => {
-    const updatedPassengers = passengers.map((passenger, i) =>
-      i === index ? { ...passenger, [field]: value } : passenger
-    );
-    setPassengers(updatedPassengers);
-  };
+    console.log({ field, value });
 
-  const updateContactDetails = (field, value) => {
-    const updatedPassengers = passengers.map((passenger) => ({
-      ...passenger,
+    // Copy the passengers array to avoid direct mutation
+    const updatedPassengers = [...passengers];
+
+    // Update the specific passenger with the new value
+    updatedPassengers[index] = {
+      ...updatedPassengers[index],
       [field]: value,
-    }));
-    setPassengers(updatedPassengers);
-    setValue(field, value);
+    };
+
+    console.log({ updatedPassengers });
+
+    // Set the state with the updated array
+    setPassengers(() => updatedPassengers);
+  };
+  // };
+  console.log({ passengers })
+  const getFullPhoneNumber = () => {
+    return `${contactDetails.dialCode}${contactDetails.phoneNumber}`;
   };
 
-  const validateContactDetails = async () => {
-    setLoading(true);
-    let isValid = true;
+  // Custom validation functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
-    // Validate contact details
-    const contactDetailsValid = await trigger();
+  const validatePhoneNumber = (phoneNumber) => {
+    const phoneRegex = /^[0-9]{7,14}$/; // Adjust this regex as needed
+    return phoneRegex.test(phoneNumber);
+  };
 
-    // Validate passenger forms
-    const passengerFormsValid = await Promise.all(
-      passengers.map(async (passenger, index) => {
-        const passengerFormValid =
-          await passengerRefs.current[index].validateForm();
-        return passengerFormValid;
-      })
-    );
+  const handleSave = () => {
+    let validationErrors = {};
 
-    isValid = contactDetailsValid && passengerFormsValid.every(Boolean);
+    // Validate email
+    if (!contactDetails.email) {
+      validationErrors.email = "Email is required.";
+    } else if (!validateEmail(contactDetails.email)) {
+      validationErrors.email = "Invalid email format.";
+    }
 
-    if (isValid) {
-      console.log("All forms are valid. Submitting data.");
+    // Validate phone number
+    if (!contactDetails.phoneNumber) {
+      validationErrors.phone = "Phone number is required.";
+    } else if (!validatePhoneNumber(contactDetails.phoneNumber)) {
+      validationErrors.phone = "Invalid phone number format.";
+    }
 
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      // Proceed with save operation
+      setLoading(true);
+      // Perform your save operation here
+      console.log("Saving data...");
       setLoading(false);
-      return true;
-    } else {
-      console.log("Please fill out all required fields for all passengers.");
-      setLoading(false);
-      return false;
     }
   };
 
@@ -118,6 +121,8 @@ const TravellersCard = ({
                     flightData={flightData}
                     updatePassenger={updatePassenger}
                     condition={condition}
+                    setPassengers={setPassengers}
+                   
                   />
                 ))}
             </div>
@@ -125,92 +130,89 @@ const TravellersCard = ({
               <h3 className="font-semibold text-sm md:text-base mb-2 mx-4">
                 Contact Details
               </h3>
-              <form
-                className="flex md:flex-row flex-col gap-2 flex-wrap mb-4 justify-center"
-                onSubmit={handleSubmit(validateContactDetails)}
-              >
-                <TextField
-                  type="email"
-                  name="email"
-                  label="Email"
-                  value={contactDetails.email}
-                  // onChange={(e) => updateContactDetails("email", e.target.value)}
-                  // error={!!errors.email}
-                  // helperText={errors.email?.message}
-                  onChange={(e) => setContactDetails(prev => ({ ...prev, email: e.target.value }))}
-                />
-                <Controller
-                  name="phone"
-                  control={control}
-                  rules={{
-                    required: "Phone number is required",
-                    validate: (value) => {
-                      return (
-                        value.length >= 10 ||
-                        "Phone number must be at least 10 digits"
-                      );
-                    },
-                  }}
-                  render={({ field }) => (
-                    <PhoneInput
-                      {...field}
-                      country={"in"}
-                      enableSearch
-                      searchPlaceholder="Search for a country"
-                      // value={getValues("phone")}
-                      // onChange={(value, country, e, formattedValue) => {
-                      //   const dialCode = `+${country.dialCode}`;
-                      //   const phoneNumber = value.slice(country.dialCode.length);
+              <div className="flex md:flex-row flex-col gap-2 flex-wrap mb-4 justify-center">
+                <div>
+                  <TextField
+                    type="email"
+                    name="email"
+                    label="Email"
+                    value={contactDetails.email}
+                    onChange={(e) =>
+                      setContactDetails((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
+                    onBlur={() => {
+                      if (!validateEmail(contactDetails.email)) {
+                        setErrors((prev) => ({
+                          ...prev,
+                          email: "Invalid email format.",
+                        }));
+                      } else {
+                        setErrors((prev) => {
+                          const { email, ...rest } = prev;
+                          return rest;
+                        });
+                      }
+                    }}
+                    error={!!errors.email}
+                    helperText={errors.email}
+                  />
+                </div>
 
-                      //   // Update form state
-                      //   setValue("phone", formattedValue);
-                      //   setValue("dialCode", dialCode);
+                <div>
+                  <PhoneInput
+                    country={"in"}
+                    enableSearch
+                    searchPlaceholder="Search for a country"
+                    value={getFullPhoneNumber()}
+                    onChange={(value, country) => {
+                      const dialCode = `+${country.dialCode}`;
+                      const phoneNumber = value.slice(country.dialCode.length);
 
-                      //   // Update passengers state
-                      //   const updatedPassengers = passengers.map((passenger) => ({
-                      //     ...passenger,
-                      //     phone: phoneNumber,
-                      //     dialCode: dialCode,
-                      //   }));
-                      //   console.log({ updatedPassengers })
-                      //   setPassengers(updatedPassengers);
+                      setContactDetails({
+                        phoneNumber: phoneNumber,
+                        dialCode: dialCode,
+                      });
 
-                      //   // Trigger validation
-                      //   trigger("phone");
-                      // }}
-                      value={contactDetails.phoneNumber}
-                      onChange={(value, country) => {
-                        const phoneNumber = value.slice(country.dialCode.length);
-                        console.log({phoneNumber})
-                        setContactDetails(prev => ({ ...prev, phoneNumber: phoneNumber }))
-                      }}
-                      containerClass="custom-container"
-                      buttonClass="custom-button"
-                      dropdownClass="custom-dropdown"
-                      inputProps={{
-                        name: "phone",
-                        required: true,
-                        autoFocus: true,
-                        className: "custom-input",
-                      }}
-
-                    />
+                      if (!validatePhoneNumber(phoneNumber)) {
+                        setErrors((prev) => ({
+                          ...prev,
+                          phone: "Invalid phone number format.",
+                        }));
+                      } else {
+                        setErrors((prev) => {
+                          const { phone, ...rest } = prev;
+                          return rest;
+                        });
+                      }
+                    }}
+                    containerClass="custom-container"
+                    buttonClass="custom-button"
+                    dropdownClass="custom-dropdown"
+                    inputProps={{
+                      name: "phone",
+                      required: true,
+                      autoFocus: true,
+                      className: "custom-input",
+                    }}
+                  />
+                  {errors.phone && (
+                    <div className="text-red-500 text-xs mt-1">
+                      {errors.phone}
+                    </div>
                   )}
-                />
-                {errors.phone && (
-                  <span className="text-red-500 text-xs">
-                    {errors.phone.message}
-                  </span>
-                )}
-                <br />
+                </div>
+
                 <button
-                  type="submit"
-                  className={`text-white text-sm h-12 px-5 rounded
-                    bg-blue-400`}
+                  type="button"
+                  onClick={handleSave}
+                  className={`text-white text-sm h-12 px-5 rounded bg-blue-400`}
                 >
                   {loading ? "Saving..." : "Save"}
                 </button>
-              </form>
+              </div>
             </div>
           </>
         )}
@@ -218,4 +220,5 @@ const TravellersCard = ({
     </div>
   );
 };
+
 export default TravellersCard;
