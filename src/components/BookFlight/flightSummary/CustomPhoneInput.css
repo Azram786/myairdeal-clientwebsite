@@ -1,28 +1,75 @@
-.custom-container {
-  display: flex;
-  justify-content: start;
-  border: 1px solid rgb(201, 209, 219);
-  border-radius: 5px;
+/* .custom-container {
+    width: 50%;
+    display: flex;
+    justify-content: start;
+    border: 2px solid rgb(201, 209, 219);
+    border-radius: 5px;
+
+ 
 }
 
 .custom-button {
-  width: 25%;
-  background-color: white;
-  padding-left: 0.5rem;
-  outline: none;
+   
+    background-color: white;
+    padding-left: 0.5rem;
+ 
+    outline: none;
+
 }
 
 .custom-dropdown {
-  background-color: white;
-  border: 1px solid gray;
+    background-color: white;
+    border: 1px solid gray;
+
+
 }
 
 .custom-input {
-  width: 100%;
-  padding-left: 4rem;
-  font-weight: bold;
-  border-radius: 0.375rem;
-  display: flex;
-  justify-content: start;
-  outline: none;
+    padding: 0.75rem;
+
+    padding-left: 4rem;
+    font-weight: bold;
+    border-radius: 0.375rem;
+    display: flex;
+    justify-content: start;
+    outline: none;
+} */
+
+.custom-container {
+    width: 50%;
+    display: flex;
+    justify-content: start;
+    border: 2px solid rgb(201, 209, 219);
+    border-radius: 5px;
+
+    /* Adjust as needed */
+}
+
+.custom-button {
+    /* border: 1px solid gray; */
+
+    /* Adjust as needed */
+    background-color: white;
+    padding-left: 0.5rem;
+    /* Adjust as needed */
+    outline: none;
+
+}
+
+.custom-dropdown {
+    background-color: white;
+    border: 1px solid gray;
+
+
+}
+
+.custom-input {
+    padding: 0.75rem;
+
+    padding-left: 4rem;
+    font-weight: bold;
+    border-radius: 0.375rem;
+    display: flex;
+    justify-content: start;
+    outline: none;
 }

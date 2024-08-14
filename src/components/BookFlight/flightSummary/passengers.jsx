@@ -323,17 +323,17 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
           />
         )}
 
-        <div>
+        <div className="flex flex-wrap mt-4">
           <div>
             <input type="checkbox" className="text-2xl ml-4" checked={savePassengerInfo}
               onChange={handleCheckboxChange} />
-            <label className="text-sm font-semibold ml-2" htmlFor="">Save passenger information</label>
+            <label className="text-sm font-semibold ml-2 " htmlFor="">Save passenger information</label>
           </div>
           <div>
             <button
               onClick={handleModalOpen}
               type="button"
-              className="bg-[#1F61BC] text-white px-2 py-2 m-2 rounded-md text-sm font-semibold"
+              className="bg-[#1F61BC] text-white px-2 py-2 m-2 rounded-md text-sm font-medium mx-4"
             >
               Select from history
             </button>

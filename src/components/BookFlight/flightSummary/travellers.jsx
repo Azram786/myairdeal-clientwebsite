@@ -131,11 +131,12 @@ const TravellersCard = ({
                 Contact Details
               </h3>
               <div className="grid grid-flow-row gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-4 pb-4">
-                <div>
+                <div className="w-full ">
                   <TextField
                     type="email"
                     name="email"
                     label="Email"
+                    className="w-full"
                     value={contactDetails.email}
                     onChange={(e) =>
                       setContactDetails((prev) => ({
@@ -161,7 +162,7 @@ const TravellersCard = ({
                   />
                 </div>
 
-                <div className="w-full  justify-center items-center mx-0">
+                <div className="justify-center items-center mx-0">
                   <PhoneInput
                     country={"in"}
                     enableSearch

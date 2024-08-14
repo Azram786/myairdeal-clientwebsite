@@ -186,13 +186,13 @@ const FlightSummary = () => {
   return (
     <div className=" min-h-screen my-auto">
       <Header />
-      <div className="  sm:text-sm md:text-lg w-[80vw]  mx-auto pt-4 ">
+      <div className="  sm:text-sm md:text-lg w-[90vw] flex-wrap mx-auto pt-4 ">
         <div
-          className="flex flex-col w-full   md:flex-row gap-4   
+          className="flex flex-col w-full  flex-wrap lg-custom:flex-row gap-4   
            "
         >
           {/* Left section */}
-          <div className="w-full md:w-[75%] rounded-lg     space-y-4">
+          <div className="w-full lg-custom:w-[70%] rounded-lg     space-y-4">
             <div className=" w-full ">
               <ProgressBar
                 currentStep={currentStep}
@@ -433,7 +433,7 @@ const FlightSummary = () => {
             ) : null}
           </div>
           {/* Right Section */}
-          <div className="md:w-[30%] h-full rounded-lg space-y-2 p-5 shadow-md bg-white">
+          <div className="w-full lg-custom:w-[25%] h-full mb-8  rounded-lg space-y-2 p-5 shadow-md bg-white">
             <div className="w-full max-w-full rounded-lg  ">
               <div className="flex items-center justify-between border-b border-gray-300 pb-4">
                 <div>
@@ -455,7 +455,7 @@ const FlightSummary = () => {
                       className="flex justify-between text-xs md:text-sm lg:text-base font-medium cursor-pointer"
                       onClick={toggleTaxes}
                     >
-                      <span className="flex items-center justify-centertext-sm md:text-base">
+                      <span className="flex items-center justify-center text-sm md:text-base">
                         {" "}
                         Taxes and fees{" "}
                         {taxesExpanded ? (
@@ -619,7 +619,7 @@ const FlightSummary = () => {
                       className="flex justify-between text-xs md:text-sm lg:text-base font-bold cursor-pointer"
                       onClick={toggleAmount}
                     >
-                      <span className="flex justify-center items-center">
+                      <span className="flex justify-center text-base md:text-lg items-center">
                         Amount to Pay{" "}
                         {amountExpanded ? (
                           <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
@@ -628,7 +628,7 @@ const FlightSummary = () => {
                         )}
                       </span>
                       <div className="flex items-center">
-                        <span>
+                        <span  className="text-base md:text-lg">
                           ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.TF}
                         </span>
                       </div>
