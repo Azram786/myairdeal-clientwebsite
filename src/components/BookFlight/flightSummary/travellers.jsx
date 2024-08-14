@@ -123,7 +123,7 @@ const TravellersCard = ({
                     updatePassenger={updatePassenger}
                     condition={condition}
                     setPassengers={setPassengers}
-                   
+
                   />
                 ))}
             </div>
@@ -173,11 +173,11 @@ const TravellersCard = ({
                       const dialCode = `+${country.dialCode}`;
                       const phoneNumber = value.slice(country.dialCode.length);
 
-                      setContactDetails({
+                      setContactDetails(prevDetails => ({
+                        ...prevDetails,  // Spread the existing state
                         phoneNumber: phoneNumber,
                         dialCode: dialCode,
-                      });
-
+                      }));
                       if (!validatePhoneNumber(phoneNumber)) {
                         setErrors((prev) => ({
                           ...prev,
@@ -190,8 +190,8 @@ const TravellersCard = ({
                         });
                       }
                     }}
-                   
-                   
+
+
                     inputProps={{
                       name: "phone",
                       required: true,

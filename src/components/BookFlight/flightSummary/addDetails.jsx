@@ -344,7 +344,10 @@ const AddDetails = ({
   const checkAllPassengersCompleted = useCallback(() => {
     const areAllPassengersValid = passengers.every(validatePassengerDetails);
     console.log({ areAllPassengersValid })
-    setIsPassengersCompleted(areAllPassengersValid);
+    console.log(contactDetails.email && contactDetails.phoneNumber ? true : false)
+    contactDetails.email && contactDetails.phoneNumber ? setIsPassengersCompleted(areAllPassengersValid) : setIsPassengersCompleted(false);
+
+
     return areAllPassengersValid;
   }, [passengers, isInternational]);
 
