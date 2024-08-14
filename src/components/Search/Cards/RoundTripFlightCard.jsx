@@ -336,10 +336,10 @@ const RoundTripCard = ({
     : displayedPrices.slice(0, 2);
 
   return (
-    <div className="border flex flex-col rounded-lg m-4 bg-white sm:max-screen-sm md:w-screen-md shadow-md overflow-x-scroll w-full  ">
+    <div className="border flex flex-col rounded-lg m-4 overflow-x-scroll w-[95%]  ">
       <div className="flex flex-col md:flex-row  justify-between items-stretch p-3  mb-2">
         <div className="flex flex-col  justify-center lg-custom:justify-normal w-full">
-          <div className="flex gap-4 items-center justify-center md:justify-none ">
+          <div className="flex gap-4 items-center justify-center md:justify-normal ">
             <div className="">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
@@ -364,7 +364,7 @@ const RoundTripCard = ({
                 <h1 className="w-[50px] sm:w-max  text-xs">{formatDateTime(startSegment?.dt)}</h1>
               </div>
             </div>
-            <div className="flex  max-w-32 items-center  mb-4 md:mb-0">
+            <div className="flex  max-w-32 items-center jus  mb-4 md:mb-0">
               <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-16"></div>
               <div className="flex flex-col gap-2 text-center items-center text-xs font-semibold text-gray-500">
                 <span className="">   <span>{totalDuration}</span></span>

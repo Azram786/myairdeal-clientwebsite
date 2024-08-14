@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { logout } from "../../store/slices/aut.slice";
+import { logout, setIsaModifySearch } from "../../store/slices/aut.slice";
 import main_logo from "../../assets/home/logo/main_logo.png";
 import { IoNotificationsCircle, IoPersonCircleOutline } from "react-icons/io5";
 import { AiOutlineLogout } from "react-icons/ai";
@@ -38,32 +38,32 @@ const Header = () => {
     <>
       <Link
         to="/"
-        className={`font-semibold text-center border-r px-3 ${
-          location.pathname === "/" ? "text-[#1F61BC]" : "text-gray-600"
-        } ${mobile ? "block py-2" : ""}`}
-        onClick={() => mobile && setMobileMenuOpen(false)}
+        className={`font-semibold text-center border-r px-3 ${location.pathname === "/" ? "text-[#1F61BC]" : "text-gray-600"
+          } ${mobile ? "block py-2" : ""}`}
+        onClick={() => {
+          dispatch(setIsaModifySearch(false))
+          mobile && setMobileMenuOpen(false)
+        }}
       >
         Home
       </Link>
       <Link
         to="/view-booking"
-        className={`font-semibold border-r px-3 ${
-          location.pathname === "/view-booking" ? "text-[#1F61BC]" : "text-gray-600"
-        } ${mobile ? "block py-2" : ""}`}
+        className={`font-semibold border-r px-3 ${location.pathname === "/view-booking" ? "text-[#1F61BC]" : "text-gray-600"
+          } ${mobile ? "block py-2" : ""}`}
         onClick={() => mobile && setMobileMenuOpen(false)}
       >
         My Bookings
       </Link>
       <Link
         to="#"
-        className={`font-semibold  px-2 ${
-          location.pathname === "/notifications" ? "text-[#1F61BC]" : "text-gray-600"
-        } ${mobile ? "block py-2" : ""}`}
+        className={`font-semibold  px-2 ${location.pathname === "/notifications" ? "text-[#1F61BC]" : "text-gray-600"
+          } ${mobile ? "block py-2" : ""}`}
         onClick={() => mobile && setMobileMenuOpen(false)}
       >
         {/* Notifications */}
-  
-        <IoNotificationsCircle className="text-3xl "/>
+
+        <IoNotificationsCircle className="text-3xl " />
       </Link>
     </>
   );
@@ -87,7 +87,7 @@ const Header = () => {
                   src={user?.image || Avatar}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = {Avatar};
+                    e.target.src = { Avatar };
                   }}
                   alt="User"
                   className="w-8 h-8 rounded-full"

@@ -376,7 +376,7 @@ const AddDetails = ({
     checkAllPassengersCompleted();
   }, [passengers, checkAllPassengersCompleted]);
   return (
-    <div className="shadow-lg ">
+    <div className=" pb-6 shadow-lg ">
       <TravellersDetails
         expanded={expandedCard.travellers}
         toggleCard={() => toggleCard("travellers")}
