@@ -153,20 +153,20 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
       } catch (error) {
         // Handle error
         console.error("Error saving passenger information:", error.response?.data || error.message);
-        // You might want to show an error message to the user here
+        // You might want to show an error message to the user here 
       }
     }
   };
   return (
     <div className="flex">
       <form>
-        <div className="flex gap-2 items-center">
-          <div className="font-semibold">
+        <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-evenly gap-2 items-center mx-4">
+          <div className="  flex justify-center items-center font-semibold">
             <h2>
               {passenger.passengerType} {passenger.typeCount}
             </h2>
           </div>
-          <div>
+          <div className="  ">
             <Controller
               name="title"
               control={control}
@@ -325,15 +325,15 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
 
         <div>
           <div>
-            <input type="checkbox" checked={savePassengerInfo}
+            <input type="checkbox" className="text-2xl ml-4" checked={savePassengerInfo}
               onChange={handleCheckboxChange} />
-            <label htmlFor="">Save passenger information</label>
+            <label className="text-sm font-semibold ml-2" htmlFor="">Save passenger information</label>
           </div>
           <div>
             <button
               onClick={handleModalOpen}
               type="button"
-              className="bg-red-500"
+              className="bg-[#1F61BC] text-white px-2 py-2 m-2 rounded-md text-sm font-semibold"
             >
               Select from history
             </button>

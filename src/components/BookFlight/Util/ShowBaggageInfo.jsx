@@ -1,5 +1,5 @@
 import React from "react";
-import { LuBaggageClaim } from "react-icons/lu";
+import { PiBagSimpleBold } from "react-icons/pi";
 const BaggageInformation = ({ item }) => {
   const passengerTypes = ["ADULT", "INFANT", "CHILDREN"];
 
@@ -14,19 +14,18 @@ const BaggageInformation = ({ item }) => {
         >
           <path d="M12 2C10.35 2 9 3.35 9 5H7.5C6.12 5 5 6.12 5 7.5V18.5C5 19.88 6.12 21 7.5 21H16.5C17.88 21 19 19.88 19 18.5V7.5C19 6.12 17.88 5 16.5 5H15C15 3.35 13.65 2 12 2ZM12 4C12.55 4 13 4.45 13 5H11C11 4.45 11.45 4 12 4ZM7.5 7H16.5C16.78 7 17 7.22 17 7.5V8H7V7.5C7 7.22 7.22 7 7.5 7ZM7 10H17V18.5C17 18.78 16.78 19 16.5 19H7.5C7.22 19 7 18.78 7 18.5V10ZM9 12V14H15V12H9ZM9 16V18H15V16H9Z" />
         </svg> */}
-        {/* <div className="text-3xl">
-          <LuBaggageClaim />{" "}
-        </div> */}
       </div>
       {/* <h3 className="text-lg font-semibold mb-4 text-center">Baggage Information</h3> */}
-      <div
-        className=" flex justify-between flex-wrap items-center w-full gap-1"
-      >
+      <div className=" flex justify-between flex-wrap items-center w-full gap-1">
         {passengerTypes.map(
           (type) =>
             type === "ADULT" && (
               <div>
+                
+                <div className=" flex gap-2 text-base">
                 <p className="text-blue-800 font-bold mb-1">{type}</p>
+                  <PiBagSimpleBold className="text-xl" />{" "}
+                </div>
                 <div
                   key={type}
                   className="w-max bg-blue-50 rounded-md p-3 flex flex-col  items-start text-sm"

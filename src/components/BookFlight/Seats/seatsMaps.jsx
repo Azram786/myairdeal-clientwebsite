@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import ReactToast from "../Util/ReactToast";
 import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
@@ -144,6 +142,7 @@ const SeatMap = ({
 
   return (
     <div className="container ">
+       <p className="text-base font-semibold ">Your booking is protected by MyAirDeal</p>
       <div className="flex flex-col gap-6 md:flex-row w-full justify-around">
         {/* First portion for displaying the data - make it sticky */}
         <div className="md:sticky md:top-0 md:self-start md:min-h-screen bg-white md:w-[40%] border-r-2 flex flex-col">
@@ -173,32 +172,42 @@ const SeatMap = ({
               </div>
             </div>
             <div className="mt-6 md:max-h-[calc(100vh-300px)] w-full   overflow-y-auto custom-scrollbar">
-              <div className="grid w-full grid-cols-3">
-                <div className="flex flex-col justify-start items-center">
-                  <h1 className=" text-sm font-semibold">Passengers</h1>
-                  <div className="flex flex-col">
+             
+              <div className="grid  mx-2 grid-cols-3">
+                <div className="flex flex-col text-center items-center ">
+                  <h1 className="text-sm font-semibold text-center border-b-2  w-full mb-2">Passengers</h1>
+                  <div className="flex flex-col flex-wrap items-center text-center  w-full">
                     {adultPassengers.map((person, index) => (
-                      <p key={index} className="truncate w-max text-xs">
+                      <p
+                        key={index}
+                        className="flex flex-wrap  text-xs md:text-sm w-[80%]  break-words"
+                      >
                         {person?.firstName} {person?.lastName}
                       </p>
                     ))}
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-center">
-                  <h1 className=" text-sm font-semibold">Seat</h1>
+                  <h1 className=" text-sm font-semibold mb-2 w-full text-center border-b-2">Seat</h1>
                   <div className="flex flex-col">
                     {selectedSeats?.map((seat) => (
-                      <p key={seat?.code} className="truncate">
+                      <p
+                        key={seat?.code}
+                        className="truncate text-sm font-semibold"
+                      >
                         {seat?.code}
                       </p>
                     ))}
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-center">
-                  <h1 className="text-sm font-semibold">Fee</h1>
+                  <h1 className="text-sm font-semibold mb-2 w-full text-center border-b-2">Fee</h1>
                   <div>
                     {selectedSeats?.map((seat) => (
-                      <p key={seat?.code} className="truncate">
+                      <p
+                        key={seat?.code}
+                        className="truncate text-sm font-sm font-semibold"
+                      >
                         ₹ {seat?.amount}
                       </p>
                     ))}
@@ -244,20 +253,20 @@ const SeatMap = ({
         {/*  Third Portion to display the Identifiers*/}
         <div className="text-sm md:sticky md:top-0 md:self-start md:min-h-screen border-l-2 md:w-[20%] flex flex-col  items-center md:items-start  p-4">
           <h1 className="font-semibold">Seat Status</h1>
-          <div className="w-32 grid grid-cols-2 gap-y-4 md:grid-cols-1">
-            <div className="flex justify-center items-center">
+          <div className="w-max text-left grid grid-cols-2 gap-y-4 md:grid-cols-1 space-y-2 mt-2">
+            <div className="flex justify-start items-start">
               <span className="inline-block w-4 h-4 bg-white border mr-2"></span>
               <p className="ml-4">Available</p>
             </div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-start items-start">
               <span className="inline-block w-4 h-4 bg-gray-400 mr-2"></span>
               <p className="ml-4">Booked</p>
             </div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-start items-start">
               <span className="inline-block w-4 h-4 bg-white border-t-8 border-t-green-500 border border-slate-100 mr-2"></span>
               <p className="ml-4">Extra Legroom</p>
             </div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-start items-start">
               <span className="inline-block w-4 h-4 bg-[#007EC4] mr-2"></span>
               <p className="ml-4">Selected</p>
             </div>
