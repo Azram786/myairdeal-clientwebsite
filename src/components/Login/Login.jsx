@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import "./CustomPhoneInput.css";
 import ReactToast from "../util/ReactToast";
-
+import 'react-phone-input-2/lib/style.css'
 const spinnerVariants = {
   animate: {
     rotate: [0, 360],
@@ -25,29 +25,14 @@ const spinnerVariants = {
 
 const StyledPhoneInput = ({ value, onChange }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className=""
-    >
-      <PhoneInput
-        country={"in"}
-        value={value}
-        onChange={onChange}
-        containerClass="custom-container"
-        buttonClass="custom-button"
-        dropdownClass="custom-dropdown"
-        enableSearch
-        searchPlaceholder="Search for a country"
-        inputProps={{
-          name: "phone",
-          required: true,
-          autoFocus: true,
-          className: "custom-input",
-        }}
-      />
-    </motion.div>
+
+    <PhoneInput
+      country={"in"}
+      value={value}
+      onChange={onChange}
+      containerClass="phone-input-container"
+    />
+
   );
 };
 
@@ -183,27 +168,23 @@ const Login = () => {
             </div>
 
             <div className="">
-              <AnimatePresence>
-                {step === "sent-otp" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    <StyledPhoneInput value={phone} onChange={handleOnChange} />
-                  </motion.div>
-                )}
-                {step === "otp-sent-success" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    <OTPInput value={country} timer={timer} secondLoading={loading} handleSendOTP={handleSendOTP} />
 
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {step === "sent-otp" && (
+
+                <StyledPhoneInput value={phone} onChange={handleOnChange} />
+
+              )}
+              {step === "otp-sent-success" && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <OTPInput value={country} timer={timer} secondLoading={loading} handleSendOTP={handleSendOTP} />
+
+                </motion.div>
+              )}
+
 
               {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>
