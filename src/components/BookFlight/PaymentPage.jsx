@@ -6,38 +6,25 @@ import logo from "../../assets/home/logo/main_logo.png";
 import ReactToast from "./Util/ReactToast";
 import Spinner from "../Profile/Spinner";
 
-const PaymentPage = ({ passengersData, data }) => {
+const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
-  const [cardDetails, setCardDetails] = useState({
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-  });
-  const [bankDetails, setBankDetails] = useState({
-    accountNumber: "",
-    bankName: "",
-    ifscCode: "",
-  });
-  const [transferDetails, setTransferDetails] = useState({
-    upiId: "",
-    referenceNumber: "",
-  });
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [convenienceFee, setConvenienceFee] = useState(0);
   const [errors, setErrors] = useState({});
+  const [markUp, setMarkUp] = useState(null);
 
-  console.log(passengersData.gstDetails, "hoe");
+  console.log(passengersData, "passengerData");
 
   const calculatePassengerDetails = useMemo(() => {
     return passengersData?.passengers?.map((passenger) => {
       const baseFare = data?.totalPriceInfo?.totalFareDetail.fC?.TF || 0;
-      const mealsCost = Object.values(passenger.selectedMeals || {}).reduce(
+      const mealsCost = Object.values(passenger.selectedMeal || {}).reduce(
         (sum, meal) => sum + (meal.amount || 0),
         0
       );
-      const seatsCost = (passenger.SelectedSeat || []).reduce(
+      const seatsCost = (passenger.selectedSeat || []).reduce(
         (sum, seat) => sum + (seat.amount || 0),
         0
       );
@@ -65,6 +52,41 @@ const PaymentPage = ({ passengersData, data }) => {
       0
     );
   }, [calculatePassengerDetails]);
+
+  const getMarkUp = async () => {
+    await axios
+      .get(`${import.meta.env.VITE_SERVER_URL}markup/get-user-mark-up`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.flatPrice) {
+          setConvenienceFee(res.data.value);
+          saveCommission(res.data.value);
+        } else if (res.data.percentage) {
+          if (res.data.totalFare) {
+            const markUpAmount = parseInt((totalFare / 100) * res.data.value);
+            setConvenienceFee(markUpAmount);
+            saveCommission(markUpAmount);
+          } else if (res.data.baseFare) {
+            const bF = data?.totalPriceInfo?.totalFareDetail.fC?.BF;
+            const markUpAmount = parseInt((bF / 100) * res.data.value);
+            setConvenienceFee(markUpAmount);
+            saveCommission(markUpAmount);
+          }
+        }
+        setMarkUp(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getMarkUp();
+  }, []);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -95,10 +117,18 @@ const PaymentPage = ({ passengersData, data }) => {
       fN: passenger.firstName,
       lN: passenger.lastName,
       pt: passenger.passengerType,
-      dob: passenger.dob,
-      ssrSeatInfos: passenger.SelectedSeat.map((seat) => ({
+      // dob: passenger.dob,
+      ssrSeatInfos: passenger?.selectedSeat?.map((seat) => ({
         key: seat.key,
         code: seat.code,
+      })),
+      ssrBaggageInfos: passenger?.selectedBaggage?.map((baggage) => ({
+        key: baggage.key,
+        code: baggage.code,
+      })),
+      ssrMealInfos: passenger?.selectedMeal?.map((meal) => ({
+        key: meal.key,
+        code: meal.code,
       })),
     }));
 
@@ -111,16 +141,20 @@ const PaymentPage = ({ passengersData, data }) => {
           },
         ],
         travellerInfo: travellerInfo,
-        gstInfo: {
-          gstNumber: passengersData.gstDetails.gstNumber,
-          email: passengersData.gstDetails.email,
-          registeredName: passengersData.gstDetails.companyName,
-          mobile: passengersData.gstDetails.phone,
-          address: passengersData.gstDetails.address,
-        },
+        // gstInfo: {
+        //   gstNumber: passengersData.gstDetails.gstNumber,
+        //   email: passengersData.gstDetails.email,
+        //   registeredName: passengersData.gstDetails.companyName,
+        //   mobile: passengersData.gstDetails.phone,
+        //   address: passengersData.gstDetails.address,
+        // },
+        // deliveryInfo: {
+        //   emails: passengersData.passengers.map((p) => p.email),
+        //   contacts: passengersData.passengers.map((p) => p.phone),
+        // },
         deliveryInfo: {
-          emails: passengersData.passengers.map((p) => p.email),
-          contacts: passengersData.passengers.map((p) => p.phone),
+          emails: ["rjoshuasujith@gmail.com"],
+          contacts: ["8105823389"],
         },
       },
       searchQuery: data?.searchQuery,
@@ -132,13 +166,19 @@ const PaymentPage = ({ passengersData, data }) => {
   const callBookingApi = async (paymentResponse) => {
     const { searchQuery, booking } = prepareApiData(paymentResponse);
     setIsLoading(true);
-
+    console.log(paymentResponse, "PAYMENT");
+    const payment = {
+      razorpay_payment_id: paymentResponse.razorpay_payment_id,
+      baseFare: data?.totalPriceInfo?.totalFareDetail.fC?.BF || 0,
+      markUp,
+    };
     try {
       const response = await axios.post(
-        "https://api.myairdeal.com/booking/complete",
+        `${import.meta.env.VITE_SERVER_URL}booking/complete`,
         {
           searchQuery,
           booking,
+          payment,
         },
         { headers: { authorization: `Bearer ${token}` } }
       );
@@ -191,10 +231,10 @@ const PaymentPage = ({ passengersData, data }) => {
       if (!res) {
         throw new Error("Razorpay SDK failed to load. Are you online?");
       }
-
+      const amountToPay = parseInt(totalAmount) + parseInt(convenienceFee);
       const options = {
         key: import.meta.env.VITE_RZP_KEY_ID,
-        amount: totalAmount * 100,
+        amount: amountToPay * 100,
         currency: "INR",
         name: "My Air Deal",
         description: "Flight Booking Payment",
@@ -218,90 +258,6 @@ const PaymentPage = ({ passengersData, data }) => {
     }
   };
 
-  const handlePaymentMethodChange = (e) => {
-    setPaymentMethod(e.target.value);
-    setErrors({});
-  };
-
-  const handleCardDetailsChange = (e) => {
-    setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
-  };
-
-  const validateCardDetails = () => {
-    const { cardNumber, expiryDate, cvv } = cardDetails;
-    const errors = {};
-
-    if (!cardNumber || cardNumber.length !== 16) {
-      errors.cardNumber = "Card number must be 16 digits";
-    }
-    if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
-      errors.expiryDate = "Expiry date must be in MM/YY format";
-    }
-    if (!cvv || cvv.length !== 3) {
-      errors.cvv = "CVV must be 3 digits";
-    }
-
-    return errors;
-  };
-
-  const handleBankDetailsChange = (e) => {
-    setBankDetails({ ...bankDetails, [e.target.name]: e.target.value });
-  };
-
-  const validateBankDetails = () => {
-    const { accountNumber, bankName, ifscCode } = bankDetails;
-    const errors = {};
-
-    if (!accountNumber) {
-      errors.accountNumber = "Account number is required";
-    }
-    if (!bankName) {
-      errors.bankName = "Bank name is required";
-    }
-    if (!ifscCode || !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifscCode)) {
-      errors.ifscCode = "Invalid IFSC Code";
-    }
-
-    return errors;
-  };
-
-  const handleTransferDetailsChange = (e) => {
-    setTransferDetails({ ...transferDetails, [e.target.name]: e.target.value });
-  };
-
-  const validateTransferDetails = () => {
-    const { upiId, referenceNumber } = transferDetails;
-    const errors = {};
-
-    if (!upiId) {
-      errors.upiId = "UPI ID is required";
-    }
-    if (!referenceNumber) {
-      errors.referenceNumber = "Reference number is required";
-    }
-
-    return errors;
-  };
-  const handlePayment = () => {
-    let validationErrors = {};
-
-    if (paymentMethod === "card") {
-      validationErrors = validateCardDetails();
-    } else if (paymentMethod === "bank") {
-      validationErrors = validateBankDetails();
-    } else if (paymentMethod === "transfer") {
-      validationErrors = validateTransferDetails();
-    }
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    // Proceed with payment processing
-    openRazorpay();
-  };
-
   if (isLoading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -319,182 +275,15 @@ const PaymentPage = ({ passengersData, data }) => {
         <h2 className="text-2xl text-left border-b-2 w-full leading-10 font-bold mb-4">
           Payment
         </h2>
-        <div className="w-full text-left">
-          <div className="w-full text-left mb-4">
-            <p className="text-base md:text-lg font-semibold">Pay with:</p>
-            <div className="flex gap-4 text-sm  md:text-base">
-              <label className="flex  justify-center items-center">
-                <input
-                  type="radio"
-                  value="card"
-                  checked={paymentMethod === "card"}
-                  onChange={handlePaymentMethodChange}
-                  className="mr-2"
-                />
-                Card
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  value="bank"
-                  checked={paymentMethod === "bank"}
-                  onChange={handlePaymentMethodChange}
-                  className="mr-2"
-                />
-                Bank
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  value="transfer"
-                  checked={paymentMethod === "transfer"}
-                  onChange={handlePaymentMethodChange}
-                  className="mr-2"
-                />
-                Transfer
-              </label>
-            </div>
-          </div>
 
-          {/* Card Payment Fields */}
-          {paymentMethod === "card" && (
-            <div className="w-full text-left">
-              <p className="text-base font-semibold">Card Number:</p>
-              <input
-                type="number"
-                name="cardNumber"
-                placeholder="Enter Card Number"
-                className="w-full p-2 border border-gray-300 text-sm rounded mb-4"
-                value={cardDetails.cardNumber}
-                onChange={handleCardDetailsChange}
-              />
-              {errors.cardNumber && (
-                <p className="text-red-500 text-sm">{errors.cardNumber}</p>
-              )}
-
-              <div className="flex w-full justify-between items-center  gap-4">
-                <div className="w-[45%] flex flex-col">
-                  <p className="text-base font-semibold">Expiry Date:</p>
-                  <input
-                    type="text"
-                    name="expiryDate"
-                    placeholder="MM/YY"
-                    className="w-full p-2 border my-2 border-gray-300 rounded mb-4 text-sm"
-                    value={cardDetails.expiryDate}
-                    onChange={handleCardDetailsChange}
-                  />
-                  {errors.expiryDate && (
-                    <p className="text-red-500 text-sm">{errors.expiryDate}</p>
-                  )}
-                </div>
-                <div className="w-[45%] flex flex-col">
-                  <p className="text-base font-semibold">CVV:</p>
-                  <input
-                    type="password"
-                    name="cvv"
-                    placeholder="CVV"
-                    className="w-full p-2 border my-2 text-sm border-gray-300 rounded mb-4"
-                    value={cardDetails.cvv}
-                    onChange={handleCardDetailsChange}
-                  />
-
-                  {errors.cvv && (
-                    <p className="text-red-500 text-sm">{errors.cvv}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Bank Payment Fields */}
-          {paymentMethod === "bank" && (
-            <div className="w-full text-left">
-              <p className="text-base font-semibold">Account Number:</p>
-              <input
-                type="text"
-                name="accountNumber"
-                placeholder="Enter Account Number"
-                className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
-                value={bankDetails.accountNumber}
-                onChange={handleBankDetailsChange}
-              />
-              {errors.accountNumber && (
-                <p className="text-red-500 text-sm">{errors.accountNumber}</p>
-              )}
-              <div className="w-full justify-between flex items-center">
-                <div className=" w-[45%] flex flex-col">
-                  <p className="text-base font-semibold">Bank Name:</p>
-                  <input
-                    type="text"
-                    name="bankName"
-                    placeholder="Enter Bank Name"
-                    className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
-                    value={bankDetails.bankName}
-                    onChange={handleBankDetailsChange}
-                  />
-                  {errors.bankName && (
-                    <p className="text-red-500 text-sm">{errors.bankName}</p>
-                  )}
-                </div>
-                <div className="w-[45%] flex flex-col">
-                  <p className="text-base font-semibold">IFSC Code:</p>
-                  <input
-                    type="text"
-                    name="ifscCode"
-                    placeholder="Enter IFSC Code"
-                    className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
-                    value={bankDetails.ifscCode}
-                    onChange={handleBankDetailsChange}
-                  />
-
-                  {errors.ifscCode && (
-                    <p className="text-red-500 text-sm">{errors.ifscCode}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Transfer Payment Fields */}
-          {paymentMethod === "transfer" && (
-            <div className="w-full text-left">
-              <p className="text-base font-semibold">UPI ID:</p>
-              <input
-                type="text"
-                name="upiId"
-                placeholder="Enter UPI ID"
-                className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
-                value={transferDetails.upiId}
-                onChange={handleTransferDetailsChange}
-              />
-              {errors.upiId && (
-                <p className="text-red-500 text-sm">{errors.upiId}</p>
-              )}
-
-              <p className="text-base font-semibold">Reference Number:</p>
-              <input
-                type="text"
-                name="referenceNumber"
-                placeholder="Enter Reference Number"
-                className="w-full p-2 border text-sm border-gray-300 rounded mb-4"
-                value={transferDetails.referenceNumber}
-                onChange={handleTransferDetailsChange}
-              />
-              {errors.referenceNumber && (
-                <p className="text-red-500 text-sm">{errors.referenceNumber}</p>
-              )}
-            </div>
-          )}
-        </div>
         <p className="text-sm">
           Your personal data will be used to process your order, support your
           experience throughout this website, and for other purposes described
           in our privacy policy.
         </p>
-
         <button
           className="bg-[#007EC4] rounded-md mb-4 text-white font-semibold text-sm md:text-base px-5 py-2 mt-4 disabled:opacity-50 flex items-center justify-center"
-          onClick={handlePayment}
+          onClick={openRazorpay}
           disabled={isProcessing}
         >
           {isProcessing ? (

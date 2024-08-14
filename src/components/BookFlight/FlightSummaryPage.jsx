@@ -34,13 +34,13 @@ const FlightSummary = () => {
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
-
   // const [Passenger, setPassenger] = useState(null);
   console.log({ data });
   const location = useLocation();
   const [seatMapData, setSeatMapData] = useState(null); // For seat map API
   const { bookings } = location.state || {};
   const navigate = useNavigate();
+  const [commision, setComission] = useState(0);
   const bookingArray = useMemo(() => {
     return bookings ? bookings.map((item) => item.priceId) : [];
   }, [bookings]);
@@ -52,6 +52,10 @@ const FlightSummary = () => {
       navigate("/search");
     }
   }, [bookings, bookingArray, navigate]);
+
+  const saveCommission = (commission) => {
+    setComission(commission);
+  };
 
   const handleStepClick = (step) => {
     if (step <= currentStep) {
@@ -172,6 +176,30 @@ const FlightSummary = () => {
     const minutes = Math.round(totalDuration % 60);
     return `${hours}h ${minutes}m`;
   }
+
+  //my code
+
+  const calculateExtrasTotal = () => {
+    return passengers.reduce((total, passenger) => {
+      const mealsTotal =
+        passenger.selectedMeal?.reduce((sum, meal) => sum + meal.amount, 0) ||
+        0;
+      const baggageTotal =
+        passenger.selectedBaggage?.reduce(
+          (sum, baggage) => sum + baggage.amount,
+          0
+        ) || 0;
+      const seatsTotal =
+        passenger.selectedSeat?.reduce((sum, seat) => sum + seat.amount, 0) ||
+        0;
+
+      return total + mealsTotal + baggageTotal + seatsTotal;
+    }, 0);
+  };
+
+  const totalFare = data?.totalPriceInfo?.totalFareDetail?.fC?.TF || 0;
+  const extrasTotal = calculateExtrasTotal();
+  const amountToPay = totalFare + extrasTotal;
 
   if (Loading) {
     return (
@@ -426,7 +454,8 @@ const FlightSummary = () => {
                 <PaymentPage
                   data={data}
                   passengersData={passengersData}
-
+                  totalFare={amountToPay}
+                  saveCommission={saveCommission}
                   // updatePssenger={updatePssenger}
                 />
               </>
@@ -628,9 +657,7 @@ const FlightSummary = () => {
                         )}
                       </span>
                       <div className="flex items-center">
-                        <span  className="text-base md:text-lg">
-                          ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.TF}
-                        </span>
+                        <span>₹ {amountToPay + commision} </span>
                       </div>
                     </div>
                     <div
@@ -642,7 +669,7 @@ const FlightSummary = () => {
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
                           <div className="flex justify-between">
                             <span>Commission</span>
-                            <span>N/A</span>
+                            <span>₹ {commision}</span>
                           </div>
                           <div className="flex justify-between">
                             <span>TDS</span>
