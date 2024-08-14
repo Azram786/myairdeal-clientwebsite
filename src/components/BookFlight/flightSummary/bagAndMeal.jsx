@@ -4,7 +4,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
   const [flightOptions, setFlightOptions] = useState([]);
 
   useEffect(() => {
-    console.log({ flightData });
+    // console.log({ flightData });
     const options = flightData.tripInfos.flatMap((trip) =>
       trip.sI.map((segment) => ({
         id: segment.id,

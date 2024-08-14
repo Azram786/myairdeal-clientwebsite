@@ -46,7 +46,7 @@ const FlightSummary = () => {
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
   console.log("nithin----------------------------[[[[[[[[[[[[[[[[[[[[");
-  console.log({ flightData, passengers }, "REVIEW PAGE");
+  // console.log({ flightData, passengers }, "REVIEW PAGE");
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
       navigate("/search");
