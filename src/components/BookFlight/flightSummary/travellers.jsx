@@ -5,6 +5,7 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { TextField } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import "./CustomPhoneInput.css";
+import 'react-phone-input-2/lib/style.css'
 
 const TravellersCard = ({
   passengers,
@@ -166,7 +167,7 @@ const TravellersCard = ({
                     country={"in"}
                     enableSearch
                     searchPlaceholder="Search for a country"
-                    className="w-full"
+                    containerClass="phone-input-container"
                     value={getFullPhoneNumber()}
                     onChange={(value, country) => {
                       const dialCode = `+${country.dialCode}`;
@@ -189,9 +190,8 @@ const TravellersCard = ({
                         });
                       }
                     }}
-                    containerClass="custom-container"
-                    buttonClass="custom-button"
-                    dropdownClass="custom-dropdown"
+                   
+                   
                     inputProps={{
                       name: "phone",
                       required: true,
