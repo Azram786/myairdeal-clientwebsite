@@ -5,6 +5,7 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { TextField } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import "./CustomPhoneInput.css";
+import 'react-phone-input-2/lib/style.css'
 
 const TravellersCard = ({
   passengers,
@@ -122,7 +123,7 @@ const TravellersCard = ({
                     updatePassenger={updatePassenger}
                     condition={condition}
                     setPassengers={setPassengers}
-                   
+
                   />
                 ))}
             </div>
@@ -131,11 +132,12 @@ const TravellersCard = ({
                 Contact Details
               </h3>
               <div className="grid grid-flow-row gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-4 pb-4">
-                <div>
+                <div className="w-full ">
                   <TextField
                     type="email"
                     name="email"
                     label="Email"
+                    className="w-full"
                     value={contactDetails.email}
                     onChange={(e) =>
                       setContactDetails((prev) => ({
@@ -161,22 +163,22 @@ const TravellersCard = ({
                   />
                 </div>
 
-                <div className="w-full  justify-center items-center mx-0">
+                <div className="justify-center items-center mx-0">
                   <PhoneInput
                     country={"in"}
                     enableSearch
                     searchPlaceholder="Search for a country"
-                    className="w-full"
+                    containerClass="phone-input-container"
                     value={getFullPhoneNumber()}
                     onChange={(value, country) => {
                       const dialCode = `+${country.dialCode}`;
                       const phoneNumber = value.slice(country.dialCode.length);
 
-                      setContactDetails({
+                      setContactDetails(prevDetails => ({
+                        ...prevDetails,  // Spread the existing state
                         phoneNumber: phoneNumber,
                         dialCode: dialCode,
-                      });
-
+                      }));
                       if (!validatePhoneNumber(phoneNumber)) {
                         setErrors((prev) => ({
                           ...prev,
@@ -189,9 +191,8 @@ const TravellersCard = ({
                         });
                       }
                     }}
-                    containerClass="custom-container"
-                    buttonClass="custom-button"
-                    dropdownClass="custom-dropdown"
+
+
                     inputProps={{
                       name: "phone",
                       required: true,

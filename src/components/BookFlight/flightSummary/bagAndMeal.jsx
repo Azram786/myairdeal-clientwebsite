@@ -52,7 +52,6 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
       console.log({ prevPassengers });
       const newPassengers = [...prevPassengers];
 
-      // Update the selected passenger
       const passenger = newPassengers[passengerIndex];
 
       if (type === "meal") {
@@ -63,7 +62,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
         );
 
         if (mealIndex > -1) {
-          // Update existing meal entry for the same flight and passenger
+          
           updatedMeals[mealIndex] = {
             ...updatedMeals[mealIndex],
             code: value,
@@ -71,7 +70,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
             desc,
           };
         } else {
-          // Add new meal entry for the flight and passenger
+         
           updatedMeals.push({
             code: value,
             key: flightId,
@@ -91,7 +90,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
         );
 
         if (baggageIndex > -1) {
-          // Update existing baggage entry for the same flight and passenger
+
           updatedBaggage[baggageIndex] = {
             ...updatedBaggage[baggageIndex],
             code: value,
@@ -99,7 +98,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
             desc,
           };
         } else {
-          // Add new baggage entry for the flight and passenger
+          
           updatedBaggage.push({
             code: value,
             key: flightId,
@@ -126,14 +125,13 @@ console.log({flightOptions})
             <h2 className="text-xl font-semibold mb-4">{flight.route}</h2>
 
             <div className="grid grid-cols-1 gap-4">
-              {/* Passenger Details */}
+         
               <div>
                 <h3 className="font-semibold text-base md:text-lg mb-2">
                   Passenger Details
                 </h3>
               </div>
 
-              {/* Baggage Selections */}
               {flight.baggageOptions && flight.baggageOptions.length > 0 ? (
                 <div>
                   <h3 className="font-semibold md:text-lg mb-2 text-base">
@@ -199,7 +197,7 @@ console.log({flightOptions})
                   </div>
                 </div>
               ) : (
-                <div className="text-xs text-red-600 rounded-md w-max md:text-sm">
+                <div className="text-xs text-red-600 rounded-md md:text-sm">
                   No baggage options available for this flight.
                 </div>
               )}
@@ -237,9 +235,9 @@ console.log({flightOptions})
                               selectedMeal?.desc || ""
                             );
                           }}
-                          className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 text-sm bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         >
-                          <option value="">Select a meal</option>
+                          <option className="font-medium" value="">Select a meal</option>
                           {flight.mealOptions.map((meal) => (
                             <option key={meal.code} value={meal.code}>
                               {meal.desc} - ₹{meal.amount}

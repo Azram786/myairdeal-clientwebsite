@@ -18,10 +18,10 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
         {" "}
         {/* Added ml-8 sm:ml-16 md:ml-24 */}
         {steps.map((step, index) => (
-          <div key={index} className="flex  items-center w-full relative">
+          <div key={index} className="flex  w-full relative">
             <div className="flex flex-col items-center">
               <div
-                className={`relative flex items-center justify-center w-8 h-8 md:w-12 md:h-12 rounded-full cursor-pointer ${
+                className={`relative flex items-center mx-2 sm:mx-4 justify-center w-8 h-8 md:w-12 md:h-12 rounded-full cursor-pointer ${
                   index <= currentStep
                     ? "bg-blue-500 text-white shadow-lg"
                     : "bg-gray-200 text-gray-600"
@@ -30,7 +30,7 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
               >
                 {step.icon}
                 {index <= currentStep && (
-                  <div className="absolute bottom-[-10px] left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-blue-500"></div>
+                  <div className="absolute bottom-[-10px]  left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-blue-500"></div>
                 )}
               </div>
               <div
@@ -46,7 +46,7 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
             {index < steps.length - 1 && (
               <div className="flex-grow flex items-center">
                 <div
-                  className={`w-full h-1 ${
+                  className={`w-full hidden md:flex h-1 ${
                     index < currentStep ? "bg-blue-500" : "bg-gray-200"
                   }`}
                 ></div>

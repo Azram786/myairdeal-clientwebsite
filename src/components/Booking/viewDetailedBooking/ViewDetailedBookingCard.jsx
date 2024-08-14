@@ -34,12 +34,12 @@ const ViewDetailedBookingCard = ({
             <div className="h-16 w-16 flex items-center justify-center bg-white text-[#007EC4] font-bold text-xl rounded-full mr-4">
               {singleBookingData?.gstInfo?.registeredName
                 ?.charAt(0)
-                .toUpperCase() || user.firstName.charAt(0)}
+                .toUpperCase() || user?.firstName.charAt(0)}
             </div>
             <div className="w-full  ">
               <div className="text-base md:text-lg font-semibold uppercase ">
                 {/* {user?.firstName} {user?.lastName} */}
-                {singleBookingData?.gstInfo?.registeredName || user.firstName}
+                {singleBookingData?.gstInfo?.registeredName || user?.firstName}
               </div>
               <div className="text-base  lg:text-lg  flex-col md:flex-row font-semibold flex w-full justify-between">
                 <div className=" flex ">

@@ -129,7 +129,7 @@ const Contact = () => {
           </div>
           <div className="w-full sm:w-[90%] mt-6">
             <form className="px-6">
-              <div className="grid  grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid  grid-cols-1 lg-custom:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label htmlFor="name" className="text-white text-sm">
                     Name
@@ -207,7 +207,7 @@ const Contact = () => {
               </div>
 
               {/* Contact Info Section */}
-              <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+              <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg-custom:grid-cols-3 gap-4 mt-6">
                 <div className="flex items-start gap-2">
                   <div className="flex-shrink-0 p-1 rounded-full bg-white">
                     <IoCallOutline className="text-blue-900 text-[1.25rem]" />

@@ -129,7 +129,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   const renderStopsSection = () => (
     <div className="mb-6 border-b  rounded-md border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">Stops</h3>
-      <div className="grid w-full grid-cols-2 lg:grid-cols-4">
+      <div className="grid w-full grid-cols-4 md:grid-cols-2 lg:grid-cols-4 ">
         {stops.map((stop, index) => (
           <label
             key={stop}
@@ -148,6 +148,36 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
             {stop}
           </label>
         ))}
+         {/* {["0", "1", "2", "3+"].map((stop, index) => (
+              <label
+                key={stop}
+                htmlFor={`stop-${stop}`}
+                className={`mb-1 border hover:bg-blue-100 flex text-xs flex-col items-center justify-center py-2 ${
+                  index === 0 ? "rounded-l-md" : ""
+                } ${index === 3 ? "rounded-r-md" : ""} ${
+                  filters.stops.includes(stop) ? "bg-blue-200" : ""
+                } ${
+                  stopsCountMap[stop] === 0
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  id={`stop-${stop}`}
+                  checked={filters.stops.includes(stop)}
+                  onChange={() =>
+                    stopsCountMap[stop] > 0 && handleStopsChange(stop)
+                  }
+                  className="mr-2 hidden"
+                  disabled={stopsCountMap[stop] === 0}
+                />
+                <span className="text-xs">{stop}</span>
+                <span className="md:text-[10px] text-[8px] text-gray-500">
+                  {stopsCountMap[stop] > 0 ? `(${stopsCountMap[stop]})` : "(0)"}
+                </span>
+              </label>
+            ))} */}
       </div>
     </div>
   );
@@ -155,7 +185,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   const renderTimeSection = (type, title) => (
     <div className="mb-6 border-b border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">{title}</h3>
-      <div className="grid grid-cols-2 lg:grid-cols-4 place-items-center gap-2">
+      <div className="grid grid-cols-4 md:grid-cols-4 place-items-center gap-2">
         {[
           { icon: <PiMountains />, time: "00-06" },
           { icon: <IoIosSunny />, time: "06-12" },

@@ -28,22 +28,14 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
       setIsModalOpen(true);
     }
   }
+
   function convertDateFormat(inputDate) {
-    // Create a Date object from the input string
-    const date = new Date(inputDate);
 
-    // Extract the year, month, and day components
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const day = String(date.getDate()).padStart(2,
-      '0');
-
-    // Format the date   
-    //  as YYYY - MM - DD
-    const formattedDate = `${year}-${month}-${day}`;
-
+    const formattedDate = inputDate.split('T')[0];
+    console.log({ formattedDate })
     return formattedDate;
   }
+
   const closeModal = () => setIsModalOpen(false);
   const getData = async () => {
     try {
@@ -80,16 +72,16 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
   };
 
   const handleTripSelection = (tripIndex) => {
-    if (cancelWholeTicket) return; // Prevent trip selection when whole ticket is selected
+    if (cancelWholeTicket) return;
     setSelectedTrips((prevSelectedTrips) => {
       if (prevSelectedTrips.includes(tripIndex)) {
-        // Remove the trip and all related travelers
+
         setSelectedTravelers((prevSelectedTravelers) =>
           prevSelectedTravelers.filter((traveler) => !traveler.startsWith(`${tripIndex}-`))
         );
         return prevSelectedTrips.filter((index) => index !== tripIndex);
       } else {
-        // Uncheck all passengers for this trip
+
         setSelectedTravelers((prevSelectedTravelers) =>
           prevSelectedTravelers.filter((traveler) => !traveler.startsWith(`${tripIndex}-`))
         );
@@ -132,7 +124,9 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
     }
 
     const tripsData = selectedTrips.map((tripIndex) => {
+
       const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
+      console.log({ trip })
       const tripData = {
         src: trip?.sI[0].da.code,
         dest: trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code,
@@ -165,7 +159,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
         const tripData = {
           src: trip?.sI[0].da.code,
           dest: trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code,
-          departureDate: trip?.sI[0].dt,
+          departureDate: convertDateFormat(trip?.sI[0].dt),
         };
 
         const tripTravelers = selectedTravelers
@@ -230,7 +224,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
 
 
     } catch (error) {
-      console.log(error)
+      ReactToast(error.response.data.errors[0].message)
       setAmendmentLoadin(false)
       setModalIsOpen(false)
       toast(error.response.data.errors[0].message);

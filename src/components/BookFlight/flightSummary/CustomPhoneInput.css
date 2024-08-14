@@ -1,4 +1,4 @@
-.custom-container {
+/* .custom-container {
   display: flex;
   justify-content: start;
   border: 1px solid rgb(201, 209, 219);
@@ -6,15 +6,18 @@
 }
 
 .custom-button {
-  width: 25%;
-  background-color: white;
-  padding-left: 0.5rem;
-  outline: none;
+    background-color: white;
+    padding-left: 0.5rem;
+  
+    outline: none;
+
 }
 
 .custom-dropdown {
-  background-color: white;
-  border: 1px solid gray;
+    background-color: white;
+    border: 1px solid gray;
+
+
 }
 
 .custom-input {
@@ -25,4 +28,18 @@
   display: flex;
   justify-content: start;
   outline: none;
+} */
+.phone-input-container {
+  width: 110% !important;
+  height: 100% !important;
+  border: 1px solid rgb(178, 178, 185);
+  box-sizing: border-box;
+
+}
+
+.phone-input-container input {
+  width: 110% !important;
+  height: 100% !important;
+  padding-left: 15px;
+
 }
