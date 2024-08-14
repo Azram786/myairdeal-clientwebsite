@@ -92,7 +92,7 @@ const TravellersCard = ({
   };
 
   return (
-    <div className="shadow-lg">
+    <div className="  shadow-lg">
       <div
         className="justify-between cursor-pointer shadow-sm p-3 flex items-center"
         onClick={toggleCard}
@@ -126,11 +126,11 @@ const TravellersCard = ({
                   />
                 ))}
             </div>
-            <div className="mt-4">
+            <div className=" mt-4">
               <h3 className="font-semibold text-sm md:text-base mb-2 mx-4">
                 Contact Details
               </h3>
-              <div className="flex md:flex-row flex-col gap-2 flex-wrap mb-4 justify-center">
+              <div className="grid grid-flow-row gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-4 pb-4">
                 <div>
                   <TextField
                     type="email"
@@ -161,11 +161,12 @@ const TravellersCard = ({
                   />
                 </div>
 
-                <div>
+                <div className="w-full  justify-center items-center mx-0">
                   <PhoneInput
                     country={"in"}
                     enableSearch
                     searchPlaceholder="Search for a country"
+                    className="w-full"
                     value={getFullPhoneNumber()}
                     onChange={(value, country) => {
                       const dialCode = `+${country.dialCode}`;
@@ -205,13 +206,13 @@ const TravellersCard = ({
                   )}
                 </div>
 
-                <button
+                {/* <button
                   type="button"
                   onClick={handleSave}
-                  className={`text-white text-sm h-12 px-5 rounded bg-blue-400`}
+                  className={`text-white text-sm h-12 px-5 rounded bg-[#1F61BC]`}
                 >
                   {loading ? "Saving..." : "Save"}
-                </button>
+                </button> */}
               </div>
             </div>
           </>

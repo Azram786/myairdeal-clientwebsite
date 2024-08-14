@@ -433,7 +433,7 @@ const FlightSummary = () => {
             ) : null}
           </div>
           {/* Right Section */}
-          <div className="md:w-max h-full rounded-lg space-y-2 p-5 shadow-md bg-white">
+          <div className="md:w-[30%] h-full rounded-lg space-y-2 p-5 shadow-md bg-white">
             <div className="w-full max-w-full rounded-lg  ">
               <div className="flex items-center justify-between border-b border-gray-300 pb-4">
                 <div>
