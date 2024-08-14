@@ -74,7 +74,7 @@ const AddonsCard = ({
         <div>{expanded ? <FaChevronUp /> : <FaChevronDown />}</div>
       </div>
       {
-        // expanded &&
+        expanded &&
         <div className="p-4">
           <div className="flex space-x-4 mb-4">
             <button
