@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   FaPlane,
-  FaInfoCircle,
-  FaChevronDown,
-  FaChevronUp,
 } from "react-icons/fa";
 import { GiRollingSuitcase } from "react-icons/gi";
 import FareToolTip from "./FareTooltip";
@@ -17,7 +14,7 @@ const FlightDetailsCard = ({
   onSelect,
   passenger,
 }) => {
- 
+
   const [showAllPrices, setShowAllPrices] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [activeTab, setActiveTab] = useState("Flight Details");
@@ -166,7 +163,7 @@ const FlightDetailsCard = ({
                       />
                       <div>
                         <div className="font-bold text-sm">
-                          <span className="text-[10px] text-gray-600">{flightDetails.totalPriceList[0].fd.ADULT.cc}</span> <br/>
+                          <span className="text-[10px] text-gray-600">{flightDetails.totalPriceList[0].fd.ADULT.cc}</span> <br />
                           {segment.fD.aI.name} {segment.fD.fN}
                         </div>
                         <div className="text-xs text-gray-500">
@@ -180,7 +177,7 @@ const FlightDetailsCard = ({
                     <div className="flex mt-2 items-center w-full  md:w-[70%] justify-around gap-0 md:gap-8">
                       <div className=" w-24 md:min-w-[30%]">
                         <div className="font-bold text-xs w-max md:text-sm">
-                          
+
                           {formatDateTime(segment.dt)}
                         </div>
                         <div className="text-xs  text-gray-500">
@@ -386,11 +383,10 @@ const FlightDetailsCard = ({
                   className={`
                 text-xs text-start space-y-2 flex shrink-0 items-center min-w-24 md:w-fit
                 p-1 mb-2 cursor-pointer 
-                ${
-                  localSelectedPriceIndex === index
-                    ? "border-2 border-[#007EC4] rounded-md"
-                    : "border border-gray-200 hover:border-blue-300 rounded-md"
-                }
+                ${localSelectedPriceIndex === index
+                      ? "border-2 border-[#007EC4] rounded-md"
+                      : "border border-gray-200 hover:border-blue-300 rounded-md"
+                    }
               `}
                 >
                   <div className="flex  flex-col text-xs ">
@@ -437,16 +433,15 @@ const FlightDetailsCard = ({
               <GiRollingSuitcase />
             </p>
             <p className="font-bold text-xs">Included:Carry on bag</p>
-           
-             
-                <div className="text-xs font-bold">{flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.cB}</div>
-             
+
+
+            <div className="text-xs font-bold">{flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.cB}</div>
+
           </div>
 
           <button
-            className={`${
-              isSelected ? "bg-green-500" : "bg-[#007EC4]"
-            } text-white md:w-48 text-center px-16 py-2 rounded-md mt-4 md:mt-0`}
+            className={`${isSelected ? "bg-green-500" : "bg-[#007EC4]"
+              } text-white md:w-48 text-center px-16 py-2 rounded-md mt-4 md:mt-0`}
             onClick={() => onSelect(localSelectedPriceIndex)}
           >
             {isSelected ? "Selected" : "Select"}
@@ -467,11 +462,10 @@ const FlightDetailsCard = ({
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-2 px-2 md:px-3 shrink-0 text-sm ${
-                  activeTab === tab
-                    ? "text-[#007EC4]  font-bold border-b-2 border-[#007EC4]"
-                    : "text-gray-500"
-                }`}
+                className={`py-2 px-2 md:px-3 shrink-0 text-sm ${activeTab === tab
+                  ? "text-[#007EC4]  font-bold border-b-2 border-[#007EC4]"
+                  : "text-gray-500"
+                  }`}
               >
                 {tab}
               </button>

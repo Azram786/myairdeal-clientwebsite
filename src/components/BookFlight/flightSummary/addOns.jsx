@@ -20,9 +20,7 @@ const AddonsCard = ({
   const [Errors, setErrors] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
-  // console.log(passengers, "Hello");
-  // console.log(bookingId, "bookingId");
-  console.log({ passengers, name: "nithin" });
+
   const checkSeatSelection = async () => {
     setCheckLoading(true);
 
@@ -44,7 +42,7 @@ const AddonsCard = ({
       } else if (response.status === 400) {
         setSeatMapData("Seat Map is not available");
       }
-      console.log("Seat Map Data:", response);
+      
       setCheckLoading(false);
     } catch (error) {
       console.error("SeatMapError:", error);

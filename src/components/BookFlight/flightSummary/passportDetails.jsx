@@ -1,4 +1,3 @@
-
 // import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 // import { useForm, Controller } from "react-hook-form";
 // import { TextField } from "@mui/material";
@@ -6,7 +5,7 @@
 // import { getCode, getName, getNames } from 'country-list';
 // import Flag from 'react-world-flags';
 
-// const PassportDetails = forwardRef(({ passenger, index, updatePassenger, condition, passengerType,departureDate }, ref) => {
+// const PassportDetails = forwardRef(({ passenger, index, updatePassenger, condition, passengerType, departureDate }, ref) => {
 //   const {
 //     control,
 //     trigger,
@@ -25,7 +24,6 @@
 
 //   const [selectedNationality, setSelectedNationality] = useState(null);
 //   const countryNames = getNames();
-//   console.log({ passengerType })
 //   const options = countryNames.map((country) => ({
 //     label: country,
 //     value: getCode(country),
@@ -39,7 +37,7 @@
 //   }));
 
 //   useEffect(() => {
-//     if (passenger?.nationality) {
+//     if (passenger?.nationality && (!selectedNationality || selectedNationality.value !== passenger.nationality)) {
 //       const countryCode = getCode(passenger.nationality) || passenger.nationality;
 //       const countryName = getName(countryCode) || passenger.nationality;
 //       setSelectedNationality({
@@ -47,18 +45,20 @@
 //         value: countryCode,
 //       });
 //       setValue('nationality', countryCode);
-//     } else {
-//       setSelectedNationality(null);
-//       setValue('nationality', '');
 //     }
-//   }, [passenger, setValue]);
+//   }, [passenger?.nationality, setValue, selectedNationality]);
+
+//   const watchPassportNumber = watch("passportNumber");
+//   const watchIssueDate = watch("issueDate");
+//   const watchExpiryDate = watch("expiryDate");
+//   const watchNationality = watch("nationality");
 
 //   useEffect(() => {
 //     if (
-//       passenger?.passportNumber !== watch("passportNumber") ||
-//       passenger?.issueDate !== watch("issueDate") ||
-//       passenger?.expiryDate !== watch("expiryDate") ||
-//       passenger?.nationality !== watch("nationality")
+//       passenger?.passportNumber !== watchPassportNumber ||
+//       passenger?.issueDate !== watchIssueDate ||
+//       passenger?.expiryDate !== watchExpiryDate ||
+//       passenger?.nationality !== watchNationality
 //     ) {
 //       reset({
 //         passportNumber: passenger?.passportNumber || "",
@@ -67,23 +67,20 @@
 //         nationality: passenger?.nationality || "",
 //       });
 //     }
-//   }, [passenger, reset, watch]);
+//   }, [passenger, reset]);
 
 //   useEffect(() => {
-
-//     const issueDateValue = watch("issueDate");
-//     if (issueDateValue) {
-//       const issueDate = new Date(issueDateValue);
-
+//     if (watchIssueDate) {
+//       const issueDate = new Date(watchIssueDate);
 //       issueDate.setFullYear(issueDate.getFullYear() + (passengerType === "ADULT" ? 10 : 5));
-
 //       issueDate.setDate(issueDate.getDate() - 1);
-
-
 //       const expiryDate = issueDate.toISOString().split('T')[0];
-//       setValue("expiryDate", expiryDate);
+//       if (watchExpiryDate !== expiryDate) {
+//         setValue("expiryDate", expiryDate);
+//         updatePassenger(index, "expiryDate", expiryDate);
+//       }
 //     }
-//   }, [watch("issueDate"), setValue]);
+//   }, [watchIssueDate, setValue, watchExpiryDate, updatePassenger, index, passengerType]);
 
 //   const handleChange = (selectedOption, field) => {
 //     setSelectedNationality(selectedOption);
@@ -118,6 +115,8 @@
 //       {label}
 //     </div>
 //   );
+
+//   const today = new Date().toISOString().split('T')[0];
 
 //   return (
 //     <div className="mt-4">
@@ -183,7 +182,6 @@
 //                 field.onChange(e);
 //                 handleInputChange("passportNumber", e.target.value);
 //               }}
-
 //             />
 //           )}
 //         />
@@ -191,19 +189,19 @@
 //         {condition?.pid && (
 //           <Controller
 //             name="issueDate"
-
-
 //             control={control}
 //             rules={{
 //               required: "Issue Date is required",
+//               validate: (value) =>
+//                 value <= today || "Issue Date cannot be in the future",
 //             }}
 //             render={({ field }) => (
 //               <TextField
 //                 {...field}
 //                 label="Issue Date"
 //                 type="date"
-
 //                 InputLabelProps={{ shrink: true }}
+//                 inputProps={{ max: today }}
 //                 error={!!errors.issueDate}
 //                 helperText={errors.issueDate?.message}
 //                 onChange={(e) => {
@@ -221,6 +219,8 @@
 //             control={control}
 //             rules={{
 //               required: "Expiry Date is required",
+//               validate: (value) =>
+//                 value >= today || "Expiry Date cannot be in the past",
 //             }}
 //             render={({ field }) => (
 //               <TextField
@@ -228,13 +228,13 @@
 //                 label="Expiry Date"
 //                 type="date"
 //                 InputLabelProps={{ shrink: true }}
+//                 inputProps={{ min: today }}
 //                 error={!!errors.expiryDate}
 //                 helperText={errors.expiryDate?.message}
 //                 onChange={(e) => {
 //                   field.onChange(e);
 //                   handleInputChange("expiryDate", e.target.value);
 //                 }}
-
 //               />
 //             )}
 //           />
@@ -284,7 +284,7 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
   }));
 
   useEffect(() => {
-    if (passenger?.nationality) {
+    if (passenger?.nationality && (!selectedNationality || selectedNationality.value !== passenger.nationality)) {
       const countryCode = getCode(passenger.nationality) || passenger.nationality;
       const countryName = getName(countryCode) || passenger.nationality;
       setSelectedNationality({
@@ -292,18 +292,20 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
         value: countryCode,
       });
       setValue('nationality', countryCode);
-    } else {
-      setSelectedNationality(null);
-      setValue('nationality', '');
     }
-  }, [passenger, setValue]);
+  }, [passenger?.nationality, setValue, selectedNationality]);
+
+  const watchPassportNumber = watch("passportNumber");
+  const watchIssueDate = watch("issueDate");
+  const watchExpiryDate = watch("expiryDate");
+  const watchNationality = watch("nationality");
 
   useEffect(() => {
     if (
-      passenger?.passportNumber !== watch("passportNumber") ||
-      passenger?.issueDate !== watch("issueDate") ||
-      passenger?.expiryDate !== watch("expiryDate") ||
-      passenger?.nationality !== watch("nationality")
+      passenger?.passportNumber !== watchPassportNumber ||
+      passenger?.issueDate !== watchIssueDate ||
+      passenger?.expiryDate !== watchExpiryDate ||
+      passenger?.nationality !== watchNationality
     ) {
       reset({
         passportNumber: passenger?.passportNumber || "",
@@ -312,18 +314,20 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
         nationality: passenger?.nationality || "",
       });
     }
-  }, [passenger, reset, watch]);
+  }, [passenger, reset]);
 
   useEffect(() => {
-    const issueDateValue = watch("issueDate");
-    if (issueDateValue) {
-      const issueDate = new Date(issueDateValue);
+    if (watchIssueDate) {
+      const issueDate = new Date(watchIssueDate);
       issueDate.setFullYear(issueDate.getFullYear() + (passengerType === "ADULT" ? 10 : 5));
       issueDate.setDate(issueDate.getDate() - 1);
       const expiryDate = issueDate.toISOString().split('T')[0];
-      setValue("expiryDate", expiryDate);
+      if (watchExpiryDate !== expiryDate) {
+        setValue("expiryDate", expiryDate);
+        updatePassenger(index, "expiryDate", expiryDate);
+      }
     }
-  }, [watch("issueDate"), setValue, passengerType]);
+  }, [watchIssueDate, setValue, watchExpiryDate, updatePassenger, index, passengerType]);
 
   const handleChange = (selectedOption, field) => {
     setSelectedNationality(selectedOption);
@@ -377,6 +381,7 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
               placeholder={<CustomPlaceholder placeholder={"Nationality"} />}
               options={options}
               onChange={(selectedOption) => handleChange(selectedOption, field)}
+              onBlur={() => trigger("nationality")}
               filterOption={customFilterOption}
               formatOptionLabel={formatOptionLabel}
               styles={{
@@ -425,6 +430,7 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
                 field.onChange(e);
                 handleInputChange("passportNumber", e.target.value);
               }}
+              onBlur={() => trigger("passportNumber")}
             />
           )}
         />
@@ -451,6 +457,7 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
                   field.onChange(e);
                   handleInputChange("issueDate", e.target.value);
                 }}
+                onBlur={() => trigger("issueDate")}
               />
             )}
           />
@@ -478,6 +485,7 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
                   field.onChange(e);
                   handleInputChange("expiryDate", e.target.value);
                 }}
+                onBlur={() => trigger("expiryDate")}
               />
             )}
           />

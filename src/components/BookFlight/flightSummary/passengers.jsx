@@ -1,12 +1,16 @@
+
+
+
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { MenuItem, Select, TextField, FormHelperText } from "@mui/material";
 import PassportDetails from "./passportDetails";
 import { format } from "date-fns";
+import ModalHistoryData from "./modalHistoryData";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition, flightData }, ref) => {
-
-
+const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition, flightData, setPassengers }, ref) => {
   const {
     control,
     handleSubmit,
@@ -23,8 +27,14 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
     },
   });
 
+  const { token } = useSelector((state) => state.auth);
   const passportRef = useRef();
-  const [departureDate, setDepartureDate] = useState(flightData?.tripInfos[0].sI[0]?.dt)
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [historyData, setHistoryData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [departureDate, setDepartureDate] = useState(flightData?.tripInfos[0].sI[0]?.dt);
+
   useImperativeHandle(ref, () => ({
     validateForm: async () => {
       const result = await trigger();
@@ -32,6 +42,27 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
       return result && passportValid;
     },
   }));
+
+  const handleModalOpen = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
+  const fetchHistoryData = () => {
+    setLoading(true);
+    axios
+      .get(`${import.meta.env.VITE_SERVER_URL}user/all-passengers`, {
+        headers: { authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setHistoryData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching history data:", error);
+        setLoading(false);
+      });
+  };
 
   useEffect(() => {
     reset({
@@ -42,12 +73,46 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
     });
   }, [passenger, reset]);
 
+  useEffect(() => {
+    fetchHistoryData();
+  }, []);
+
   const handleInputChange = (name, value) => {
+    console.log("nithinraj")
     setValue(name, value);
     updatePassenger(index, name, value);
   };
 
-  // const departureDate = "2024-08-22T17:10";
+
+  const handleSelectFromHistory = (index, selectedPassenger) => {
+    console.log({ selectedPassenger });
+
+
+    // Destructure the selected passenger details
+    const { ti, fN, dob, lN } = selectedPassenger;
+    // setValue("title", ti);
+    // setValue("firstName", fN);
+    // setValue("lastName", lN);
+    // setValue("dob", dob);
+    // Use a callback in setPassengers to access the current state
+    setPassengers((prevPassengers) => {
+      const updatedPassengers = [...prevPassengers];
+
+      // Update all fields for the selected passenger
+      updatedPassengers[index] = {
+        ...updatedPassengers[index],
+        title: ti,
+        firstName: fN,
+        dob: dob,
+        lastName: lN,
+      };
+      console.log({ updatedPassengers, index })
+      return updatedPassengers;
+    });
+
+    setIsModalOpen(false);
+
+  };
 
   const calculateDate = (years) => {
     const date = new Date(departureDate);
@@ -56,15 +121,15 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
   };
 
   const getMaxDate = (passengerType) => {
-    if (passengerType === "ADULT") return calculateDate(18); // Adult: 18 years before departure date
-    if (passengerType === "CHILD") return calculateDate(2);  // Child: Maximum age is 12 years (calculated in getMinDate)
-    if (passengerType === "INFANT") return calculateDate(0); // Infant: Maximum age is 2 years (calculated in getMinDate)
+    if (passengerType === "ADULT") return calculateDate(18);
+    if (passengerType === "CHILD") return calculateDate(2);
+    if (passengerType === "INFANT") return calculateDate(0);
   };
 
   const getMinDate = (passengerType) => {
-    if (passengerType === "ADULT") return calculateDate(60); // Adult: Minimum age is 60 years
-    if (passengerType === "CHILD") return calculateDate(12); // Child: Minimum age is 2 years
-    if (passengerType === "INFANT") return calculateDate(2); // Infant: Minimum age is 0 years
+    if (passengerType === "ADULT") return calculateDate(60);
+    if (passengerType === "CHILD") return calculateDate(12);
+    if (passengerType === "INFANT") return calculateDate(2);
   };
 
   return (
@@ -72,9 +137,9 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
       <form>
         <div className="flex gap-2 items-center">
           <div className="font-semibold">
-            <div className="text-base mx-4">
+            <h2>
               {passenger.passengerType} {passenger.typeCount}
-            </div>
+            </h2>
           </div>
           <div>
             <Controller
@@ -91,6 +156,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
                     field.onChange(e);
                     handleInputChange("title", e.target.value);
                   }}
+                  onBlur={() => trigger("title")}
                 >
                   <MenuItem value="" disabled>
                     Select Title
@@ -138,6 +204,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
                     field.onChange(e);
                     handleInputChange("firstName", e.target.value);
                   }}
+                  onBlur={() => trigger("firstName")}
                 />
               )}
             />
@@ -166,6 +233,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
                     field.onChange(e);
                     handleInputChange("lastName", e.target.value);
                   }}
+                  onBlur={() => trigger("lastName")}
                 />
               )}
             />
@@ -189,7 +257,6 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
                         return `${passenger.passengerType} must be born on or after ${format(min, "yyyy-MM-dd")}`;
                       }
                       return true;
-                      return true;
                     },
                   },
                 }}
@@ -210,6 +277,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
                       field.onChange(e);
                       handleInputChange("dob", e.target.value);
                     }}
+                    onBlur={() => trigger("dob")}
                   />
                 )}
               />
@@ -228,9 +296,35 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
             departureDate={departureDate}
           />
         )}
+
+        <div>
+          <div>
+            <input type="checkbox" />
+            <label htmlFor="">Save passenger information</label>
+          </div>
+          <div>
+            <button
+              onClick={handleModalOpen}
+              type="button"
+              className="bg-red-500"
+            >
+              Select from history
+            </button>
+          </div>
+        </div>
       </form>
+
+      {isModalOpen && (
+        <ModalHistoryData
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSelect={handleSelectFromHistory}
+          historyData={historyData}
+          DATAindex={index}
+        />
+      )}
     </div>
   );
 });
 
-export default PassengerForm;
+export default React.memo(PassengerForm);
