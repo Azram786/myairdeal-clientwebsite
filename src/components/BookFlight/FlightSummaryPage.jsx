@@ -109,6 +109,7 @@ const FlightSummary = ({ flightData }) => {
 
   const [taxesExpanded, setTaxesExpanded] = useState(false);
   const [amountExpanded, setAmountExpanded] = useState(false);
+  const [mealExpanded, setIsMealExpanded] = useState(false);
 
   // const toggleTaxes = (index) => {
   //   setTaxesExpanded((prev) =>
@@ -117,6 +118,10 @@ const FlightSummary = ({ flightData }) => {
   // };
   const toggleTaxes = () => {
     setTaxesExpanded((prev) => !prev);
+  };
+
+  const toggleMeal = () => {
+    setIsMealExpanded(!mealExpanded);
   };
 
   // const toggleAmount = (index) => {
@@ -224,7 +229,7 @@ const FlightSummary = ({ flightData }) => {
                               )}
                             </div>
                             <div className="text-sm md:text-base  font-semibold text-gray-600 flex items-center">
-                              <FaRegClock className="mr-2 "/>
+                              <FaRegClock className="mr-2 " />
                               {calculateTotalDuration(item.sI)}
                             </div>
                           </div>
@@ -428,7 +433,7 @@ const FlightSummary = ({ flightData }) => {
             ) : null}
           </div>
           {/* Right Section */}
-          <div className="md:w-[25%] h-full rounded-lg space-y-4 p-5 shadow-md bg-white">
+          <div className="md:w-max h-full rounded-lg space-y-2 p-5 shadow-md bg-white">
             <div className="w-full max-w-full rounded-lg  ">
               <div className="flex items-center justify-between border-b border-gray-300 pb-4">
                 <div>
@@ -507,39 +512,81 @@ const FlightSummary = ({ flightData }) => {
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <div className=" mt-2 text-sm md:text-base font-medium">
-                      Meals ,Baggage and Seats
-                    </div>
-                    <div className="text-xs md:text-sm">
-                      {passengers[0]?.selectedMeal &&
-                      passengers[0]?.selectedMeal.length > 0 ? (
-                        <div className="flex  justify-between">
-                          <div>
-                            {passengers[0]?.selectedMeal[0]?.meal?.desc}
-                          </div>
-                          <div>
-                            ₹{passengers[0]?.selectedMeal[0]?.meal?.amount}
-                          </div>
+                    {passengers[0]?.selectedMeal?.length > 0 ||
+                    passengers[0]?.selectedBaggage?.length > 0 ? (
+                      <>
+                        <div
+                          className="mt-2 text-sm md:text-base flex  items-center font-medium cursor-pointer"
+                          onClick={toggleMeal}
+                        >
+                          Meals, Baggage, and Seats
+                          <span className="ml-2">
+                            {mealExpanded ? (
+                              <FaChevronUp className="ml-2 text-xs md:text-sm lg:text-base" />
+                            ) : (
+                              <FaChevronDown className="ml-2 text-xs md:text-sm lg:text-base" />
+                            )}
+                          </span>
                         </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="text-xs md:text-sm">
-                      {passengers[0]?.selectedBaggage &&
-                      passengers[0]?.selectedBaggage.length > 0 ? (
-                        <div className="flex  justify-between">
-                          <div>
-                            {passengers[0]?.selectedBaggage[0]?.baggage?.desc}
+
+                        {mealExpanded && (
+                          <div className="mt-2 space-y-2">
+                            {passengers.map((passenger, passengerIndex) => (
+                              <div key={passengerIndex} className="space-y-2">
+                                <div className="font-semibold text-sm md:text-base">
+                                  {`${passenger.passengerType} ${passenger.typeCount}`}
+                                </div>
+
+                                {/* Selected Meals */}
+                                {passenger.selectedMeal?.length > 0 && (
+                                  <div className="text-xs md:text-sm">
+                                    <div className="font-semibold mb-1">
+                                      Selected Meals:
+                                    </div>
+                                    {passenger.selectedMeal.map(
+                                      (meal, mealIndex) => (
+                                        <div
+                                          key={mealIndex}
+                                          className="flex justify-between"
+                                        >
+                                          <div>{meal.desc}</div>
+                                          <div>₹{meal.amount}</div>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                )}
+
+                                {/* Selected Baggage */}
+                                {passenger.selectedBaggage?.length > 0 && (
+                                  <div className="text-xs md:text-sm">
+                                    <div className="font-semibold mb-1">
+                                      Selected Baggage:
+                                    </div>
+                                    {passenger.selectedBaggage.map(
+                                      (baggage, baggageIndex) => (
+                                        <div
+                                          key={baggageIndex}
+                                          className="flex justify-between"
+                                        >
+                                          <div>{baggage.desc}</div>
+                                          <div>₹{baggage.amount}</div>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                )}
+
+                                {/* Selected Seats (If applicable) */}
+                                {/* Add seat rendering here if you have selected seats data */}
+                              </div>
+                            ))}
                           </div>
-                          <div>
-                            ₹{passengers[0]?.selectedBaggage[0]?.baggage?.amount}
-                          </div>
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+                        )}
+                      </>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="mt-2">
                     <div
