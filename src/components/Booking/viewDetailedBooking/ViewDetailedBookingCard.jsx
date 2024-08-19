@@ -168,9 +168,9 @@ const ViewDetailedBookingCard = ({
                       {value.sI.length === 1
                         ? calculateDuration(value.sI[0].dt, value.sI[0].at)
                         : calculateDuration(
-                            value.sI[0].dt,
-                            value.sI[value.sI.length - 1].at
-                          )}
+                          value.sI[0].dt,
+                          value.sI[value.sI.length - 1].at
+                        )}
                     </h1>
                   </div>
                   <div className="flex md:flex-col lg:w-full justify-center md:justify-between px-1 mt-1 lg:mt-4">
@@ -213,12 +213,12 @@ const ViewDetailedBookingCard = ({
                             {value.sI.length === 1
                               ? timeFormatChanger(value.sI[0].at)
                               : timeFormatChanger(
-                                  value.sI[value.sI.length - 1].at
-                                )}
+                                value.sI[value.sI.length - 1].at
+                              )}
                           </div>
                         </div>
                       </div>
-                    
+
                       <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 ">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
                           <BsDoorClosedFill />
@@ -280,9 +280,9 @@ const ViewDetailedBookingCard = ({
                         {value.sI.map((singleValue, index) => {
                           const layoverDuration = previousArrivalTime
                             ? calculateDuration(
-                                previousArrivalTime,
-                                singleValue.dt
-                              )
+                              previousArrivalTime,
+                              singleValue.dt
+                            )
                             : null;
                           previousArrivalTime = singleValue.at;
 

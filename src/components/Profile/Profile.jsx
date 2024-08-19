@@ -430,10 +430,10 @@ const UserProfile = () => {
                                     backgroundSize: "cover",
                                 }}>
                                 <div className="rounded-full mx-auto mb-4 w-24 h-24 bg-white flex items-center justify-center text-[#007EC4] text-3xl font-bold uppercase">
-                                    {user.firstName.charAt(0)}
+                                    {user?.firstName?.charAt(0)}
                                 </div>
-                                <h1 className="text-2xl font-bold uppercase">{user.firstName} {user.lastName}</h1>
-                                <p className='font-bold text-xl'>{user.phone}</p>
+                                <h1 className="text-2xl font-bold uppercase">{user?.firstName} {user?.lastName}</h1>
+                                <p className='font-bold text-xl'>{user?.phone}</p>
                             </div>
                             <div className='flex  item-center justify-center px-10 '>
                                 <div className="md:p-6 pl-2 md:pl-0  flex flex-col w-full  justify-center items-center   py-2    lg:w-1/2">

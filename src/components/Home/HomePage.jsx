@@ -16,6 +16,7 @@ import Testimonials from "./TestMonials";
 import DownloadApp from "./AppDownload";
 import Service from "../Service/service";
 import { FiTable } from "react-icons/fi";
+import { setUser } from "../../store/slices/aut.slice";
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -120,7 +121,8 @@ const HomePage = () => {
     }
   }, [resentSearch]);
 
-  console.log({ resentSearch, isModifySearch });
+
+
 
   return (
 
