@@ -111,11 +111,14 @@ const HomePage = () => {
 
           setTypeOfTravel("multi-city")
           setDynamicFormData(
-            resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => ({
-              fromCity: index === 0 ? formData.toCityOrAirport : route.fromCityOrAirport.code,
-              toCity: route.toCityOrAirport.code,
-              travelDate: new Date(route.travelDate),
-            }))
+            resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => {
+              console.log({route})
+              return ({
+                fromCity: index === 1 ? formData.toCityOrAirport : route.fromCityOrAirport.code,
+                toCity: route.toCityOrAirport.code,
+                travelDate: new Date(route.travelDate),
+              })
+            })
           );
         }
 

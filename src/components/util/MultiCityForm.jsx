@@ -28,7 +28,7 @@ const MultiCityForm = ({
         const newEntry = {
           fromCity: lastEntry?.toCity || "",
           toCity: "",
-          travelDate: formData.travelDate,
+          travelDate: null,
         };
 
         // Return the new state with the new entry appended
