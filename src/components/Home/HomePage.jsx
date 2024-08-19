@@ -104,11 +104,11 @@ const HomePage = () => {
         travelDate: formData.travelDate,
       }]))
       if (resentSearch.searchQuery.routeInfos.length === 2 && resentSearch.searchQuery.routeInfos[0].toCityOrAirport.code === resentSearch.searchQuery.routeInfos[1].fromCityOrAirport.code) {
-        console.log("-----------------------------------------------")
+
         setTypeOfTravel("round-trip")
       } else
         if (resentSearch.searchQuery.routeInfos.length > 1) {
-          console.log("----------------------------------------")
+
           setTypeOfTravel("multi-city")
           setDynamicFormData(
             resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => ({

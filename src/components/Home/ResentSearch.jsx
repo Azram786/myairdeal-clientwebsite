@@ -7,10 +7,9 @@ import "./ResentSearch.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearResent,
-  clearResentSearchFilter,
+
   setResentSearch,
-  setResentSearchFromFilter,
-  setResentSearchToFilter,
+
 } from "../../store/slices/aut.slice";
 import { MdFlight } from "react-icons/md";
 
@@ -59,7 +58,7 @@ const RecentSearch = ({ ResentSearchData }) => {
     if (resentSearch) {
       timer = setTimeout(() => {
         dispatch(clearResent());
-      }, 2 * 60 * 1000); // 2 minutes in milliseconds
+      }, 6 * 60 * 1000); // 2 minutes in milliseconds
     }
 
     // Cleanup function to clear the timer if the component unmounts or resentSearch changes
@@ -73,56 +72,56 @@ const RecentSearch = ({ ResentSearchData }) => {
     <div className=" w-[90%]  text-center rounded-xl my-4 mb-10 justify-center mx-auto flex flex-col gap-5">
       <h1 className="font-semibold px-4 text-start text-2xl">Recent Search</h1>
       <div className="px-4 ">
-      <Slider {...settings}>
-  {ResentSearchData?.map((search, index) => (
-    <div
-      key={index}
-      className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#007EC4] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
-      onClick={() => {
-        setResentStateHandler(search);
-      }}
-    >
-      <div className="flex flex-col space-y-2">
-        <div className="flex flex-row justify-between items-center">
-          <div className="text-left w-[40%]">
-            <div className="text-xs font-bold">
-              {search?.searchQuery.routeInfos[0].fromCityOrAirport?.code || "N/A"}
-            </div>
-            <div className="text-[10px] text-gray-500">
-              {search?.searchQuery?.cabinClass || "N/A"}
-            </div>
-            <div className="text-xs text-gray-400 mt-1">
-              {search?.searchQuery.searchModifiers.isDirectFlight === true
-                ? "Direct Flight"
-                : "Indirect flight "}
-            </div>
-          </div>
-          <div className="flex flex-col w-[20%] items-center">
-            <div className="relative h-0.5 bg-gray-300 my-1">
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500">
-                <MdFlight className="transform rotate-90 text-base" />
+        <Slider {...settings}>
+          {ResentSearchData?.map((search, index) => (
+            <div
+              key={index}
+              className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#007EC4] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
+              onClick={() => {
+                setResentStateHandler(search);
+              }}
+            >
+              <div className="flex flex-col space-y-2">
+                <div className="flex flex-row justify-between items-center">
+                  <div className="text-left w-[40%]">
+                    <div className="text-xs font-bold">
+                      {search?.searchQuery.routeInfos[0].fromCityOrAirport?.code || "N/A"}
+                    </div>
+                    <div className="text-[10px] text-gray-500">
+                      {search?.searchQuery?.cabinClass || "N/A"}
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {search?.searchQuery.searchModifiers.isDirectFlight === true
+                        ? "Direct Flight"
+                        : "Indirect flight "}
+                    </div>
+                  </div>
+                  <div className="flex flex-col w-[20%] items-center">
+                    <div className="relative h-0.5 bg-gray-300 my-1">
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500">
+                        <MdFlight className="transform rotate-90 text-base" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right w-[40%]">
+                    <div className="text-xs font-bold">
+                      {search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}
+                    </div>
+
+                    <div className="text-xs">
+                      {search?.searchQuery.routeInfos[0].travelDate}
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {search?.searchQuery?.searchModifiers?.isConnectingFlight === true
+                        ? "Connection flight"
+                        : ""}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="text-right w-[40%]">
-            <div className="text-xs font-bold">
-              {search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}
-            </div>
-            
-            <div className="text-xs">
-              {search?.searchQuery.routeInfos[0].travelDate}
-            </div>
-            <div className="text-xs text-gray-400 mt-1">
-              {search?.searchQuery?.searchModifiers?.isConnectingFlight === true
-                ? "Connection flight"
-                : ""}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  ))}
-</Slider>
+          ))}
+        </Slider>
       </div>
     </div>
   );

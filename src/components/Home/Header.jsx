@@ -2,14 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { logout, setIsaModifySearch } from "../../store/slices/aut.slice";
+import { logout, setIsaModifySearch, setUser } from "../../store/slices/aut.slice";
 import main_logo from "../../assets/home/logo/main_logo.png";
 import { IoNotificationsCircle, IoPersonCircleOutline } from "react-icons/io5";
 import { AiOutlineLogout } from "react-icons/ai";
 import { FiMenu } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import Avatar from '../../assets/home/banner/avatar.png'
-import { ImNotification } from "react-icons/im";
+import axios from "axios";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -43,7 +43,7 @@ const Header = () => {
             Authorization: `Bearer ${token}`
           }
         });
-        console.log({ response });
+ 
         const profileData = {
           firstName: response.data.firstName,
           lastName: response.data.lastName,
