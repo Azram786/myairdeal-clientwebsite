@@ -35,7 +35,7 @@ const FlightSummary = () => {
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
   // const [Passenger, setPassenger] = useState(null);
-  console.log({ data });
+
   const location = useLocation();
   const [seatMapData, setSeatMapData] = useState(null); // For seat map API
   const { bookings } = location.state || {};
@@ -45,7 +45,7 @@ const FlightSummary = () => {
     return bookings ? bookings.map((item) => item.priceId) : [];
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
-  console.log("nithin----------------------------[[[[[[[[[[[[[[[[[[[[");
+ 
   // console.log({ flightData, passengers }, "REVIEW PAGE");
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {

@@ -58,13 +58,13 @@ const FilterSection = ({
 
   //set country code where from
   const setContryCodeFrom = (value) => {
-    console.log({ countryCodeFrom: value });
+   
     setFormData((prev) => ({ ...prev, fromCityOrAirport: value }));
   };
 
   //set country code where to
   const setContryCodeTo = (value) => {
-    console.log({ contryCodeTo: value });
+    
 
     if (formData.fromCityOrAirport === value && value !== "") {
       ReactToast("You cannot select the same airport twice");
@@ -118,10 +118,10 @@ const FilterSection = ({
   const getPreferedAirLine = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`)
-      console.log({ response })
+  
       setPrefferedAirLines(response.data.preferredAirlines)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
   // API search for second select tag
@@ -421,7 +421,7 @@ const FilterSection = ({
         };
       }
 
-      console.log({ query });
+     
       dispatch(setLastSearch(query));
       dispatch(setResentSearch(saving));
       if (token) {
@@ -441,7 +441,7 @@ const FilterSection = ({
       dispatch(setIsaModifySearch(false))
     } catch (error) {
       setLoading(false);
-      console.log(error.message);
+      // console.log(error.message);
       ReactToast("Something went wrong");
     }
   };

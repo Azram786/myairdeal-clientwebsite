@@ -1,7 +1,7 @@
 import React from "react";
 
 function FlightSummaryCard({ data, currentStep }) {
-  console.log(data);
+ 
   return (
     <div>
       <div className="w-full md:w-[70%] rounded-lg bg-white p-2 space-y-4">

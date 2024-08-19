@@ -64,7 +64,6 @@ const MultiCityForm = ({
     });
   };
 
-  console.log({ dynamicFormData })
 
   const removeLastFormHandler = () => {
     if (dynamicFormData.length > 1) {
@@ -78,7 +77,7 @@ const MultiCityForm = ({
     <div className="flex bg-white flex-col lg:flex-row w-full gap-2">
       <div className="lg:w-[75%] flex flex-col gap-3">
         {dynamicFormData?.map((form, index) => {
-          console.log({form,index})
+
           return (
             <DynamicForm
               dateDynamic={

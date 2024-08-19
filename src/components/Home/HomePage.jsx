@@ -38,7 +38,7 @@ const HomePage = () => {
     pft: "REGULAR",
   });
 
-  console.log({ formData })
+
   const [dynamicFormData, setDynamicFormData] = useState([
     {
       fromCity: formData.toCityOrAirport || null,
@@ -46,7 +46,7 @@ const HomePage = () => {
       travelDate: formData.travelDate,
     },
   ]);
-  console.log({ formData, dynamicFormData });
+ 
 
   async function getResentSearch() {
     try {
@@ -60,7 +60,7 @@ const HomePage = () => {
       );
       setResentSearchData(response.data.data);
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   }
 
@@ -72,7 +72,7 @@ const HomePage = () => {
 
     return () => clearTimeout(timer);
   }, []);
-  console.log({ resentSearch })
+
   const { isModifySearch } = useSelector((state) => state.auth)
 
   useEffect(() => {
@@ -112,15 +112,15 @@ const HomePage = () => {
           setTypeOfTravel("multi-city")
           setDynamicFormData(() =>
             resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => {
-              console.log({ date: new Date(route.travelDate), index })
+             
               return ({
                 fromCity: index === 0 ? formData.toCityOrAirport || route.fromCityOrAirport.code : route.fromCityOrAirport.code,
                 toCity: route.toCityOrAirport.code,
-                travelDate: new Date(route.travelDate),
+                travelDate: index === 0 ? formData.travelDate : new Date(route.travelDate),
               })
             })
           );
-          console.log({ dynamicFormData })
+          
         }
 
     }
