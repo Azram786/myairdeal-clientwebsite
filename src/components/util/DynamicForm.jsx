@@ -17,7 +17,7 @@ const DynamicForm = ({
 }) => {
   const [startDate, setStartDate] = useState(dateDynamic);
   console.log({ form })
-
+  console.log({ dateDynamic })
   useEffect(() => {
     setForm({ travelDate: startDate });
   }, [startDate]);
@@ -30,7 +30,7 @@ const DynamicForm = ({
   return (
 
 
-    
+
     <div className="flex flex-col p-3 md:p-0 md:flex-row justify-between relative border border-slate-400 rounded-lg gap-2 md:border-none max-w-[1800px] ">
 
       <div className="  gap-2 md:w-[67%] flex flex-col md:flex-row relative justify-between ">

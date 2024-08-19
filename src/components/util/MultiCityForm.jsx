@@ -77,22 +77,25 @@ const MultiCityForm = ({
   return (
     <div className="flex bg-white flex-col lg:flex-row w-full gap-2">
       <div className="lg:w-[75%] flex flex-col gap-3">
-        {dynamicFormData?.map((form, index) => (
-          <DynamicForm
-            dateDynamic={
-              index === 0 ? formData.travelDate : dynamicFormData[index - 1].travelDate
-            }
-            key={index}
-            dynamicFormData={dynamicFormData}
-            defaultOptions={defaultOptions}
-            getCountriesHandlerOne={getCountriesHandlerOne}
-            getCountriesHandlerTwo={getCountriesHandlerTwo}
-            form={form}
-            setForm={(data) => handleFormDataChange(index, data)}
-            formData={formData}
-            index={index}
-          />
-        ))}
+        {dynamicFormData?.map((form, index) => {
+          console.log({form,index})
+          return (
+            <DynamicForm
+              dateDynamic={
+                index === 0 ? formData.travelDate : dynamicFormData[index - 1].travelDate
+              }
+              key={index}
+              dynamicFormData={dynamicFormData}
+              defaultOptions={defaultOptions}
+              getCountriesHandlerOne={getCountriesHandlerOne}
+              getCountriesHandlerTwo={getCountriesHandlerTwo}
+              form={form}
+              setForm={(data) => handleFormDataChange(index, data)}
+              formData={formData}
+              index={index}
+            />
+          )
+        })}
       </div>
 
       <div className="flex md:justify-start gap-4 lg:w-[25%]items-center md:items-end justify-between ">
