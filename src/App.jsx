@@ -14,7 +14,7 @@ import Signup from "./components/Login/Signup";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
-  console.log(token);
+
   return (
     <>
       <BrowserRouter>
