@@ -26,7 +26,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
             );
             console.log("Response data:", response.data);
             if (response.status === 200) {
-                ReactToast('Your request successfully send ')
+                ReactToast('Your request is successfully sent. ')
                 closeModal()
             }
 
@@ -51,7 +51,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
                         {["New Complaint", "Unresolved Complaint", "Write to management"].map((heading) => (
                             <label
                                 key={heading}
-                                className={` block text-center mb-1 border p-2 rounded-md cursor-pointer ${selectedHeading === heading ? 'border-[#007EC4]' : 'border-gray-300'}`}
+                                className={` block text-center mb-1 border p-2 rounded-md cursor-pointer ${selectedHeading === heading ? 'bg-[#007EC4] text-white' : 'border-gray-300'}`}
                             >
                                 <input
                                     type="radio"

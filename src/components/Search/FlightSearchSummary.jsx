@@ -112,7 +112,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
         </div>
         <div className="flex justify-center">
           {/* <Link to=""> */}
-          <button onClick={() => dispatch(setIsaModifySearch(true))} className="border-[#01324D] bg-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+          <button onClick={() => dispatch(setIsaModifySearch(true))} className="border-[#01324D] bg-[#01324D] border text-xs lg-custom:text-sm text-white px-4 py-2 rounded-md">
             MODIFY SEARCH
           </button>
           {/* </Link> */}
@@ -176,6 +176,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
       </div>
     </div>
   );
+
   const renderRoundTrip = () => (
     <div>
       {/* Grid layout for medium and larger screens */}
@@ -390,7 +391,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
           </div>
           <div className="flex justify-center items-center">
             {/* <Link to="/"> */}
-            <button onClick={() => dispatch(setIsaModifySearch(true))} className="border-[#01324D] bg-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+            <button onClick={() => dispatch(setIsaModifySearch(true))} className="border-[#01324D] bg-[#01324D] border text-xs lg-custom:text-sm text-white px-4 py-2 rounded-md">
               MODIFY SEARCH
             </button>
             {/* </Link> */}

@@ -28,7 +28,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
   );
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [selectedFlights, setSelectedFlights] = useState(
-    flightProps.map(() => ({ flightIndex: 0, priceIndex: 0 }))
+    flightProps.map(() => ({}))
   );
 
   const navigate = useNavigate();

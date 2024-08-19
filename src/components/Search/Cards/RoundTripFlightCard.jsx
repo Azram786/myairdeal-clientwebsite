@@ -21,7 +21,7 @@ const RoundTripCard = ({
   onSelect,
   passenger,
   specialReturnMode,
-  baggageDetails, 
+  baggageDetails,
   mealDetails,
 }) => {
   // console.log(flightDetails,
@@ -160,19 +160,22 @@ const RoundTripCard = ({
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className="overflow-x-scroll w-full p-0 pb-2 pl-2 md:p-2">
+          <div>
             {data.map((segment, index) => (
-              <div key={index} className="flex flex-col  justify-start px-4 ">
-                <div className="text-sm w-full   flex flex-col md:flex-row  text-black font-bold">
+              <div
+                key={index}
+                className="flex w-full overscroll-auto flex-col  justify-start "
+              >
+                <div className="text-sm w-max ml-2  flex flex-col md:flex-row  text-black font-bold">
                   {segment.da.city} → {segment.aa.city}
-                  <span className="text-[10px]  ml-2 text-gray-500">
+                  <span className="text-[10px]  text-gray-500">
                     {" "}
                     {formatDateTime(segment.dt).split(",")[0]},
                     {getDayOfWeek(segment.dt)}
                   </span>
                 </div>
-                <div className="flex justify-center   mt-2  items-center md:items-start">
-                  <div className=" min-w-16 ml-12 md:ml-0 items-start">
+                <div className="flex bg-green-400 justify-center w-full overflow-x-auto  mt-2  items-center md:items-start">
+                  <div className=" min-w-12 ml-6 md:ml-0 items-start">
                     <img
                       src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
                       alt={segment?.fD?.aI?.code}
@@ -180,14 +183,17 @@ const RoundTripCard = ({
                     />
                     <div className="">
                       <div className="font-bold text-xs">
-                     <span className="text-[10px] text-gray-600">{flightDetails.totalPriceList[0].fd.ADULT.cc}</span> <br/>
+                        <span className="text-[10px] text-gray-600">
+                          {flightDetails.totalPriceList[0].fd.ADULT.cc}
+                        </span>{" "}
+                        <br />
                         {segment.fD.aI.name}
                         <br /> {segment.fD.fN}
                       </div>
                     </div>
                   </div>
 
-                  <div className="   w-full flex gap-1  items-start  ">
+                  <div className="  bg-yellow-300 overflow-x-scroll w-full flex gap-1  items-start  ">
                     <div className="text-left w-max  sm:min-w-28 ">
                       <div className="font-bold max-w-20 sm:w-max text-xs flex-wrap">
                         {formatDateTime(segment.dt)}
@@ -361,13 +367,18 @@ const RoundTripCard = ({
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
-                <h1 className="w-[50px] sm:w-max  text-xs">{formatDateTime(startSegment?.dt)}</h1>
+                <h1 className="w-[50px] sm:w-max  text-xs">
+                  {formatDateTime(startSegment?.dt)}
+                </h1>
               </div>
             </div>
             <div className="flex  max-w-32 items-center jus  mb-4 md:mb-0">
               <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-16"></div>
               <div className="flex flex-col gap-2 text-center items-center text-xs font-semibold text-gray-500">
-                <span className="">   <span>{totalDuration}</span></span>
+                <span className="">
+                  {" "}
+                  <span>{totalDuration}</span>
+                </span>
                 <FaPlane className="mx-2 text-blue-800 text-3xl" />
                 <div className="flex items-center ">
                   {isConnectionFlight ? (
@@ -386,7 +397,9 @@ const RoundTripCard = ({
               <div>
                 <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
-                <h1 className="w-[50px] sm:w-max   text-xs">{formatDateTime(endSegment?.at)}</h1>
+                <h1 className="w-[50px] sm:w-max   text-xs">
+                  {formatDateTime(endSegment?.at)}
+                </h1>
               </div>
             </div>
           </div>
@@ -402,10 +415,10 @@ const RoundTripCard = ({
                       className={`
                         text-xs text-start min-w-36 space-y-2 flex-shrink-0  md:w-fit p-1 mb-2 cursor-pointer
 ${
-                localSelectedPriceIndex === index
-                  ? "border-[4px] border-[#007EC4] rounded-md"
-                  : "border border-gray-200 hover:border-blue-300 rounded-md"
-              }
+  localSelectedPriceIndex === index
+    ? "border-[4px] border-[#007EC4] rounded-md"
+    : "border border-gray-200 hover:border-blue-300 rounded-md"
+}
             `}
                     >
                       <div className="flex flex-col text-xs">
@@ -491,8 +504,8 @@ ${
       </div>
 
       {showDetails && (
-        <div className="px-0 md:px-4 border-t justify-center lg-custom:justify-normal overflow-x-scroll w-full border-gray-200 pt-4">
-          <div className="mb-2 text-[10px] ml-0 shrink-0 flex ">
+        <div>
+          <div className="w-full text-xs mb-2 md:text-sm px-0 md:px-4 shrink-0 flex overflow-x-auto">
             {[
               "Flight Details",
               "Fare Details",

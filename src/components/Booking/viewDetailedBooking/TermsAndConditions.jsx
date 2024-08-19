@@ -5,11 +5,11 @@ import React from "react";
 const TermsAndConditions = () => {
   return (
     <div className="font-poppins text-gray-800 p-6  mx-auto font-medium ">
-      <h1 className="text-3xl font-bold mb-6">Terms and Conditions</h1>
+      <h1 className="text-base md:text-lg lg:text-2xl font-bold mb-6">Terms and Conditions</h1>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">Payments</h2>
-        <ul className="list-disc px-4 md:px-8 lg:px-16 text-base md:text-lg space-y-2">
+        <h2 className="text-lg font-semibold mb-4">Payments</h2>
+        <ul className="list-disc px-4 md:px-8 lg:px-16 text-base space-y-2">
           <li>
             If you are purchasing your ticket using a debit or credit card via
             the Website, we will process these payments via the automated secure

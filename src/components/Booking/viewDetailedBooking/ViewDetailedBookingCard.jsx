@@ -27,19 +27,19 @@ const ViewDetailedBookingCard = ({
   console.log({ searchQuery });
 
   return (
-    <div className=" border-l-0 w-full md:w-[72%]">
+    <div className=" border-l-0 w-full lg:w-[72%]">
       <div className="rounded-lg my-2">
         <div className="flex justify-between items-center bg-[#007EC4] flex-wrap p-4 rounded-t-xl text-white">
           <div className="flex w-full  flex-col md:flex-row justify-end ">
             <div className="h-16 w-16 flex items-center justify-center bg-white text-[#007EC4] font-bold text-xl rounded-full mr-4">
               {singleBookingData?.gstInfo?.registeredName
                 ?.charAt(0)
-                .toUpperCase() || user.firstName.charAt(0)}
+                .toUpperCase() || user?.firstName.charAt(0)}
             </div>
             <div className="w-full  ">
               <div className="text-base md:text-lg font-semibold uppercase ">
                 {/* {user?.firstName} {user?.lastName} */}
-                {singleBookingData?.gstInfo?.registeredName || user.firstName}
+                {singleBookingData?.gstInfo?.registeredName || user?.firstName}
               </div>
               <div className="text-base  lg:text-lg  flex-col md:flex-row font-semibold flex w-full justify-between">
                 <div className=" flex ">
@@ -68,8 +68,8 @@ const ViewDetailedBookingCard = ({
         {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
           return (
             <div key={index}>
-              <div className=" flex flex-wrap gap-2 w-full py-2  lg:flex-row lg:flex-nowrap">
-                <div className="bg-[#D0E7F4] flex gap-3 p-2 rounded-lg flex-col w-full lg:w-1/2 ">
+              <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
+                <div className="bg-[#D0E7F4] flex gap-3 p-2 rounded-lg flex-col w-full lg-custom:w-1/2 ">
                   <div className="  w-full">
                     <div className="  text-left flex pl-2 items-center">
                       <div>
@@ -173,91 +173,90 @@ const ViewDetailedBookingCard = ({
                           )}
                     </h1>
                   </div>
-                  <div className="flex md:flex-col lg:w-full justify-center md:justify-between px-1 mt-1 lg:mt-4">
-                    <div className="bg-green 400 grid grid-flow-row grid-cols-2 sm:grid-cols-2 md:grid-cols-3 w-full my-2">
-                      <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3">
-                        <div className="text-base md:text-lg text-white bg-[#0A2945] p-2 rounded ">
-                          <MdDateRange className="text-xl md:text-2xl" />
+
+                  <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-[80%] lg:w-full mx-auto  ">
+                    <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
+                        <MdDateRange />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                          Departure Date
                         </div>
-                        <div>
-                          <div className="text-[#495049] text-sm  md:text-base font-semibold w-max">
-                            Departure Date
-                          </div>
-                          <div className="font-semibold text-sm ">
-                            {dateDateFormatChanger(value.sI[0].dt)}
-                          </div>
+                        <div className="font-semibold text-sm ">
+                          {dateDateFormatChanger(value.sI[0].dt)}
                         </div>
                       </div>
-                      <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
-                          <IoIosTime />
+                    </div>
+                    <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
+                        <IoIosTime />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
+                          Departure Time
                         </div>
-                        <div>
-                          <div className="text-[#495049] w-max text-sm md:text-base font-semibold">
-                            Departure Time
-                          </div>
-                          <div className="font-semibold text-sm ">
-                            {timeFormatChanger(value.sI[0].dt)}
-                          </div>
+                        <div className="font-semibold text-sm ">
+                          {timeFormatChanger(value.sI[0].dt)}
                         </div>
                       </div>
-                      <div className="flex  gap-1 items-center sm:w-1/2   md:w-1/3 ">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded  ">
-                          <IoIosTime />
+                    </div>
+                    <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3 ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded  ">
+                        <IoIosTime />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
+                          Arrival time
                         </div>
-                        <div>
-                          <div className="text-[#495049] w-max text-sm md:text-base font-semibold">
-                            Arrival time
-                          </div>
-                          <div className="font-semibold text-sm">
-                            {value.sI.length === 1
-                              ? timeFormatChanger(value.sI[0].at)
-                              : timeFormatChanger(
-                                  value.sI[value.sI.length - 1].at
-                                )}
-                          </div>
+                        <div className="font-semibold text-sm">
+                          {value.sI.length === 1
+                            ? timeFormatChanger(value.sI[0].at)
+                            : timeFormatChanger(
+                                value.sI[value.sI.length - 1].at
+                              )}
                         </div>
                       </div>
-                    
-                      <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 ">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
-                          <BsDoorClosedFill />
+                    </div>
+
+                    <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
+                        <BsDoorClosedFill />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                          Terminal
                         </div>
-                        <div>
-                          <div className="text-[#495049] w-max text-sm  md:text-base font-semibold">
-                            Terminal
-                          </div>
-                          <div className="font-semibold text-sm ">
-                            {value.sI[0].da.terminal
-                              ? value.sI[0].da.terminal
-                              : "NA"}
-                          </div>
+                        <div className="font-semibold text-sm w-max ">
+                          {value.sI[0].da.terminal
+                            ? value.sI[0].da.terminal
+                            : "NA"}
                         </div>
                       </div>
-                      <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 ">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
-                          <BsDoorClosedFill />
+                    </div>
+                    <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
+                        <BsDoorClosedFill />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
+                          Stops
                         </div>
-                        <div>
-                          <div className="text-[#495049] w-max text-sm md:text-base font-semibold">
-                            Stops
-                          </div>
-                          <div className="font-semibold text-sm ">
-                            {value.sI.length - 1}
-                          </div>
+                        <div className="font-semibold text-sm ">
+                          {value.sI.length - 1}
                         </div>
                       </div>
-                      <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 ">
-                        <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded  ">
-                          <MdOutlineAirlineSeatReclineExtra />
+                    </div>
+                    <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded  ">
+                        <MdOutlineAirlineSeatReclineExtra />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
+                          Seat Class
                         </div>
-                        <div>
-                          <div className="text-[#495049] w-max text-sm md:text-base font-semibold">
-                            Seat Class
-                          </div>
-                          <div className="font-semibold text-sm">
-                            {searchQuery.cabinClass}
-                          </div>
+                        <div className="font-semibold text-sm">
+                          {searchQuery.cabinClass}
                         </div>
                       </div>
                     </div>

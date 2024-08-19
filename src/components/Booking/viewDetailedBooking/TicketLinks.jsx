@@ -117,11 +117,11 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
       for: 'cancel',
       description: "Further contact details can be found at",
     },
-    {
-      title: "Check refunds and refund status",
-      for: 'refund',
-      description: "Further contact details can be found at",
-    },
+    // {
+    //   title: "Check refunds and refund status",
+    //   for: 'refund',
+    //   description: "Further contact details can be found at",
+    // },
   ];
 
   // Filter the links based on bookingFilter
@@ -156,13 +156,13 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
         Quick links
       </div>
       {links.map((link, index) => (
-        <div key={index} className="flex flex-col md:flex-row items-center justify-between bg-blue-100 border-t border-blue-200 rounded-lg p-4">
+        <div key={index} className="flex flex-col sm:flex-row md:items-center justify-none md:justify-between bg-blue-100 border-t border-blue-200 rounded-lg p-4">
           <div className="flex-1">
             <h3 className="text-lg font-semibold">{link.title}</h3>
             <p className="text-sm text-gray-700">{link.description}</p>
           </div>
           <button
-            className="bg-[#007EC4] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 text-white rounded-md md:rounded-r-lg flex items-center"
+            className="bg-[#007EC4] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 text-white rounded-md md:rounded-r-lg flex items-center w-max"
             onClick={() => handleButtonClick(link)}
           >
             <FaArrowRight className="text-xl" />

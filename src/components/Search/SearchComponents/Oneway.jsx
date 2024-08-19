@@ -85,7 +85,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const token = useSelector((state) => state.auth.token);
   const [selectedFlight, setSelectedFlight] = useState([
-    { flightIndex: 0, priceIndex: 0 },
+    // { flightIndex: 0, priceIndex: 0 },
   ]);
   const navigate = useNavigate();
 

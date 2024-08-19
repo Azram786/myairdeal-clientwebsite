@@ -98,8 +98,8 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row  bg-[#007EC4] md:bg-transparent text-white md:text-black rounded-md md:rounded-none p-2  md:w-[90%]  py-2 md:border-r-2 md:border-gray-300  sm:flex-row md:flex-row  gap-3  ">
-                <div className="flex w-full justify-between gap-4 md:gap-1   flex-col  ">
+              <div className="flex w-full flex-row justify-between bg-[#007EC4] md:bg-transparent text-white md:text-black rounded-md md:rounded-none p-2  md:w-[100%]  py-2 md:border-r-2 md:border-gray-300  sm:flex-row md:flex-row  gap-3  ">
+                <div className="flex w-full justify-between  gap-4 md:gap-1   flex-col  ">
                   <div className="text-base md:text-base  mr-2  line-clamp-1 ">
                     <span className="md:hidden tracking-widest">
                       {" "}
@@ -114,11 +114,11 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                     {formatTime(trip.sI[0].dt)}
                   </div>
                 </div>
-                <div></div>
-                <div className="flex w-full justify-between gap-4 md:gap-1 pl-32 md:pl-0 flex-col ">
-                  <div className=" text-base md:text-base font-medium flex flex-col ">
-                    <div className="text-base md:text-base  mr-2  line-clamp-1 ">
-                      <span className="md:hidden tracking-widest flex">
+               
+                <div className="flex w-full justify-between  gap-4 md:gap-1 pl-40 md:pl-0 flex-col ">
+                  <div className=" text-base md:text-base   font-medium flex flex-col ">
+                    <div className="text-base md:text-base mr-2  line-clamp-1 ">
+                      <span className="md:hidden tracking-widest  flex">
                         {trip.sI.length === 1
                           ? trip.sI[0].aa.code
                           : trip.sI[trip.sI.length - 1].aa.code}{" "}
