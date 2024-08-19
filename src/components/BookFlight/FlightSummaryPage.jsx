@@ -315,8 +315,18 @@ const FlightSummary = () => {
                                           hour12: true,
                                         })}
                                       </div>
+                                      <div className="text-sm font-semibold">
+                                        {new Date(
+                                          item.sI[0].dt
+                                        ).toLocaleDateString("en-US", {
+                                          weekday: "long",
+                                          year: "numeric",
+                                          month: "short",
+                                          day: "numeric",
+                                        })}
+                                      </div>
                                     </div>
-                                    <div className="flex-col text-center my-2 md:my-0 w-full md:w-[40%]">
+                                    <div className="flex-col text-center my-2 md:my-0 w-full mr-32 md:w-[40%]">
                                       <div className="w-full text-center text-semibold flex ">
                                         <span className="text-center mx-auto text-sm">
                                           {(() => {
@@ -353,7 +363,7 @@ const FlightSummary = () => {
                                           : item.sI.length + "Stops"}
                                       </div>
                                     </div>
-                                    <div className="flex-col text-center md:text-left w-full md:w-[40%] ml-0 md:ml-6">
+                                    <div className="flex-col text-center md:text-left w-full md:w-[40%] ">
                                       <div className="text-lg font-bold">
                                         {segment.aa.code}
                                       </div>
@@ -373,6 +383,16 @@ const FlightSummary = () => {
                                           hour: "2-digit",
                                           minute: "2-digit",
                                           hour12: true,
+                                        })}
+                                      </div>
+                                      <div className="text-sm font-semibold">
+                                        {new Date(
+                                          item.sI[0].dt
+                                        ).toLocaleDateString("en-US", {
+                                          weekday: "long",
+                                          year: "numeric",
+                                          month: "short",
+                                          day: "numeric",
                                         })}
                                       </div>
                                     </div>

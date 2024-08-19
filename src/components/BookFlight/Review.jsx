@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdFlight } from "react-icons/md";
-
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
   console.log(setCurrentStep, data, passengersData, "passenger");
 
-
   const renderValue = (value) => value || "N/A";
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
 
   const renderObjectEntries = (obj, renderFunction) => {
     if (!obj || Object.keys(obj).length === 0) return "N/A";
@@ -113,14 +112,16 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                       </div>
 
                       <div className="text-sm font-semibold">
-                        {new Date(segment.dt).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                        })}
-                        ,
-                        {new Date(segment.dt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                        })},
+                        <div>
+                          {new Date(segment.dt).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                          ,
+                          {new Date(segment.dt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                          })}
+                        </div>
                         {new Date(segment.dt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
@@ -131,7 +132,9 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                         {segment.da.city}, {segment.da.country}
                       </div>
                       <div className="text-sm">{segment.da.name}</div>
-                      <div className="text-sm">{segment.da.terminal || "N/A"}</div>
+                      <div className="text-sm">
+                        {segment.da.terminal || "N/A"}
+                      </div>
                     </div>
                     <div className="flex-col items-center   w-full md:min-w-[250px]">
                       <div className="text-center">
@@ -160,14 +163,18 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                     <div className="flex-col  w-full md:min-w-[250px]  md:ml-24 items-center text-left  ">
                       <div className="text-lg font-bold">{segment.aa.code}</div>
                       <div className="text-sm font-semibold">
-                        {new Date(segment.dt).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                        })}
-                        ,
-                        {new Date(segment.dt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                        })},
+                        <div className="mr-1">
+                          {" "}
+                          {new Date(segment.dt).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                          ,
+                          {new Date(segment.dt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                          })}{" "}
+                        </div>
+
                         {new Date(segment.at).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
@@ -219,8 +226,12 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
           <table className="min-w-full bg-white  rounded-lg">
             <thead className="sticky top-0 bg-gray-100">
               <tr className="text-left">
-                <th className="py-2 px-4  text-sm w-max md:min-w-[11rem]">Sl No</th>
-                <th className="py-2 px-4  text-sm w-max md:min-w-[11rem]">Name</th>
+                <th className="py-2 px-4  text-sm w-max md:min-w-[11rem]">
+                  Sl No
+                </th>
+                <th className="py-2 px-4  text-sm w-max md:min-w-[11rem]">
+                  Name
+                </th>
                 <th className="py-2 px-4 text-sm w-max md:min-w-[11rem]">
                   Seat Booking
                 </th>
@@ -230,7 +241,6 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
               </tr>
             </thead>
             <tbody>
-
               {passengersData?.passengers?.map((passenger, index) => {
                 console.log({ passenger });
                 return (
@@ -239,47 +249,68 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                       {index + 1}
                     </td>
                     <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
-                      {`${passenger.title || ''} ${passenger.firstName || ''} ${passenger.lastName || ''}`}
+                      {`${passenger.title || ""} ${passenger.firstName || ""} ${
+                        passenger.lastName || ""
+                      }`}
                     </td>
                     <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
-                      {passenger.selectedSeat && passenger.selectedSeat.length > 0
+                      {passenger.selectedSeat &&
+                      passenger.selectedSeat.length > 0
                         ? passenger.selectedSeat.map((seat, seatIndex) => (
-                          <div key={seatIndex}>
-                            Seat: {seat.code} (₹{seat.amount})
-                          </div>
-                        ))
-                        : 'No seat selected'}
+                            <div key={seatIndex}>
+                              Seat: {seat.code} (₹{seat.amount})
+                            </div>
+                          ))
+                        : "No seat selected"}
                     </td>
                     <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
                       <div>
-                        {passenger.selectedMeal && passenger.selectedMeal.length > 0 && (
-                          <div>
-                            {passenger.selectedMeal.map((meal, mealIndex) => (
-                              <div key={mealIndex}>
-                                Meal: {meal.code} - {meal.desc} (₹{meal.amount})
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        {passenger.selectedBaggage && passenger.selectedBaggage.length > 0 && (
-                          <div>
-                            {passenger.selectedBaggage.map((baggage, baggageIndex) => (
-                              <div key={baggageIndex}>
-                                Baggage: {baggage.code} - {baggage.desc} (₹{baggage.amount})
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                        {passenger.selectedMeal &&
+                          passenger.selectedMeal.length > 0 && (
+                            <div>
+                              {passenger.selectedMeal.map((meal, mealIndex) => (
+                                <div key={mealIndex}>
+                                  Meal: {meal.code} - {meal.desc} (₹
+                                  {meal.amount})
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        {passenger.selectedBaggage &&
+                          passenger.selectedBaggage.length > 0 && (
+                            <div>
+                              {passenger.selectedBaggage.map(
+                                (baggage, baggageIndex) => (
+                                  <div key={baggageIndex}>
+                                    Baggage: {baggage.code} - {baggage.desc} (₹
+                                    {baggage.amount})
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          )}
                       </div>
                     </td>
                   </tr>
                 );
               })}
-
             </tbody>
           </table>
         </div>
       </div>
+      <div>Terms and Conditions</div>
+
+      <label className="flex items-center mt-2">
+        <input
+          type="checkbox"
+          className="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:outline-none"
+          checked={isTermsChecked}
+          onChange={(e) => setIsTermsChecked(e.target.checked)}
+        />
+        <span className="ml-3 text-sm font-semibold">
+          I agree to the Terms and Conditions
+        </span>
+      </label>
 
       <div className="flex justify-between items-center bg-gray-200 p-2 rounded-lg shadow-md mt-4">
         <button
@@ -290,7 +321,12 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
         </button>
         <button
           onClick={() => setCurrentStep(3)}
-          className="bg-[#007EC4] hover:bg-blue-600 md:text-base text-white text-sm  font-bold py-2 px-4 rounded-md focus:outline-none"
+          className={`${
+            isTermsChecked
+              ? "bg-[#007EC4] hover:bg-blue-600"
+              : "bg-gray-400 cursor-not-allowed"
+          } text-white font-bold text-sm md:text-base py-2 px-4 rounded-md focus:outline-none`}
+          disabled={!isTermsChecked}
         >
           Continue to Payment
         </button>

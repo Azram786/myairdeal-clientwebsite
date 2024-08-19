@@ -16,6 +16,7 @@ import Testimonials from "./TestMonials";
 import DownloadApp from "./AppDownload";
 import Service from "../Service/service";
 import { FiTable } from "react-icons/fi";
+import { setUser } from "../../store/slices/aut.slice";
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -73,6 +74,7 @@ const HomePage = () => {
   }, []);
   console.log({ resentSearch })
   const { isModifySearch } = useSelector((state) => state.auth)
+
   useEffect(() => {
     if (resentSearch?.searchQuery) {
       setFormData((prevFormData) => ({
@@ -88,8 +90,8 @@ const HomePage = () => {
         toCityOrAirport:
           resentSearch.searchQuery.routeInfos[0]?.toCityOrAirport?.code ||
           prevFormData.toCityOrAirport,
-        travelDate: new Date(),
-        returnDate: new Date(),
+        travelDate: new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate) >= new Date() ? new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate) : new Date(),
+        returnDate: new Date(resentSearch?.searchQuery?.routeInfos[resentSearch.searchQuery.routeInfos.length - 1]?.travelDate) > new Date() ? new Date(resentSearch?.searchQuery?.routeInfos[resentSearch.searchQuery.routeInfos.length - 1]?.travelDate) : new Date(),
         isDirectFlight: true,
         isConnectingFlight: resentSearch.searchQuery.searchModifiers?.isConnectingFlight ?? prevFormData.isConnectingFlight,
         pft: resentSearch.searchQuery.searchModifiers?.pft || prevFormData.pft,
@@ -102,25 +104,29 @@ const HomePage = () => {
         travelDate: formData.travelDate,
       }]))
       if (resentSearch.searchQuery.routeInfos.length === 2 && resentSearch.searchQuery.routeInfos[0].toCityOrAirport.code === resentSearch.searchQuery.routeInfos[1].fromCityOrAirport.code) {
-        console.log("-----------------------------------------------")
+
         setTypeOfTravel("round-trip")
       } else
         if (resentSearch.searchQuery.routeInfos.length > 1) {
-          console.log("----------------------------------------")
+
           setTypeOfTravel("multi-city")
           setDynamicFormData(
-            resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => ({
-              fromCity: index === 0 ? formData.toCityOrAirport : route.fromCityOrAirport.code,
-              toCity: route.toCityOrAirport.code,
-              travelDate: new Date(route.travelDate),
-            }))
+            resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => {
+              console.log({route})
+              return ({
+                fromCity: index === 1 ? formData.toCityOrAirport : route.fromCityOrAirport.code,
+                toCity: route.toCityOrAirport.code,
+                travelDate: new Date(route.travelDate),
+              })
+            })
           );
         }
 
     }
   }, [resentSearch]);
 
-  console.log({ resentSearch, isModifySearch });
+
+
 
   return (
 

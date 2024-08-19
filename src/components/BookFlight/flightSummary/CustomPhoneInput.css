@@ -6,18 +6,15 @@
 }
 
 .custom-button {
-    background-color: white;
-    padding-left: 0.5rem;
-  
-    outline: none;
-
+  width: 25%;
+  background-color: white;
+  padding-left: 0.5rem;
+  outline: none;
 }
 
 .custom-dropdown {
-    background-color: white;
-    border: 1px solid gray;
-
-
+  background-color: white;
+  border: 1px solid gray;
 }
 
 .custom-input {
@@ -30,16 +27,14 @@
   outline: none;
 } */
 .phone-input-container {
-  width: 110% !important;
-  height: 100% !important;
+  width: 100% !important;
+  height: 50px !important;
   border: 1px solid rgb(178, 178, 185);
   box-sizing: border-box;
 
 }
 
 .phone-input-container input {
-  width: 110% !important;
+  width: 100% !important;
   height: 100% !important;
-  padding-left: 15px;
-
 }

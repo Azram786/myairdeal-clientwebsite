@@ -168,9 +168,9 @@ const ViewDetailedBookingCard = ({
                       {value.sI.length === 1
                         ? calculateDuration(value.sI[0].dt, value.sI[0].at)
                         : calculateDuration(
-                            value.sI[0].dt,
-                            value.sI[value.sI.length - 1].at
-                          )}
+                          value.sI[0].dt,
+                          value.sI[value.sI.length - 1].at
+                        )}
                     </h1>
                   </div>
 
@@ -279,9 +279,9 @@ const ViewDetailedBookingCard = ({
                         {value.sI.map((singleValue, index) => {
                           const layoverDuration = previousArrivalTime
                             ? calculateDuration(
-                                previousArrivalTime,
-                                singleValue.dt
-                              )
+                              previousArrivalTime,
+                              singleValue.dt
+                            )
                             : null;
                           previousArrivalTime = singleValue.at;
 

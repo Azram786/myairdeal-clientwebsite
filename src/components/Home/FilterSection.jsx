@@ -37,7 +37,7 @@ const FilterSection = ({
   const { isModifySearch } = useSelector((state) => state.auth)
   const { token } = useSelector((state) => state.auth);
   const [Loading, setLoading] = useState(false);
-
+  const [preferredAirline, setPrefferedAirLine] = useState()
   const dispatch = useDispatch();
 
   //filter state for country code
@@ -47,6 +47,8 @@ const FilterSection = ({
   //state for modal
   const [modalIsOpen, setModelIsOpen] = useState(false);
 
+
+  const [preferredAirlines, setPrefferedAirLines] = useState([])
   // state for filteration
 
   //changing type-of-travel
@@ -113,7 +115,15 @@ const FilterSection = ({
       callback([]);
     }
   };
-
+  const getPreferedAirLine = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`)
+      console.log({ response })
+      setPrefferedAirLines(response.data.preferredAirlines)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   // API search for second select tag
   const getCountriesHandlerTwo = async (inputValue, callback) => {
     try {
@@ -155,6 +165,9 @@ const FilterSection = ({
       setDefaultOptions(options);
     } catch (error) { }
   };
+  useEffect(() => {
+    getPreferedAirLine()
+  }, [])
 
   const submitHandler = async () => {
     try {
@@ -660,11 +673,18 @@ const FilterSection = ({
                 name=""
                 className="border w-3/4  cursor-pointer  md:w-auto rounded-md l p-2 md:p-1    bg-white"
                 id=""
+                value={preferredAirline}
+                onChange={(e) => setPrefferedAirLine(e.target.value)}
+
               >
                 <option className="" value="" disabled selected>
                   Select Prefered Airline
                 </option>
-                <option value="">ethiad</option>
+                <option value={null}>
+                  Select all
+                </option>
+                {preferredAirlines.map((value) => <option value={value.code}>{value.name}</option>)}
+
               </select>
             </div>
             <div className=" text-sm md:text-base flex gap-2 p-1 w-full  cursor-pointer justify-center items-center md:w-1/3  ">
