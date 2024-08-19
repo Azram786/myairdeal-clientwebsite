@@ -4,7 +4,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
   const [flightOptions, setFlightOptions] = useState([]);
 
   useEffect(() => {
-    // console.log({ flightData });
+  
     const options = flightData.tripInfos.flatMap((trip) =>
       trip.sI.map((segment) => ({
         id: segment.id,
@@ -49,7 +49,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
     desc
   ) => {
     setPassengers((prevPassengers) => {
-      console.log({ prevPassengers });
+  
       const newPassengers = [...prevPassengers];
 
       const passenger = newPassengers[passengerIndex];
@@ -115,11 +115,11 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
       return newPassengers;
     });
   };
-console.log({flightOptions})
+
   return (
     <div className="space-y-6 ">
       {flightOptions.map((flight) => {
-        console.log({ flight });
+     
         return (
           <div key={flight.id} className="border rounded-lg shadow-lg p-4">
             <h2 className="text-xl font-semibold mb-4">{flight.route}</h2>

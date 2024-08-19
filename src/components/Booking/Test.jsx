@@ -221,7 +221,7 @@ const AddDetails = ({
   const [isInternational, setIsInternational] = useState(
     flightData?.conditions?.pcs || false
   );
-  console.log({ isInternational })
+ 
   const [contactDetails, setContactDetails] = useState({
     email: null,
     phoneNumber: null,
@@ -287,9 +287,9 @@ const AddDetails = ({
     );
     setPassengers(newPassengers);
   }, [numAdults, numChildren, numInfants, generatePassengers, setPassengers]);
-  console.log({ contactDetails })
+
   const validatePassengerDetails = (passenger) => {
-    console.log({ passenger, nithin: "nihtinakn" });
+
 
     const isBasicDetailsFilled = !!(
       passenger.title &&

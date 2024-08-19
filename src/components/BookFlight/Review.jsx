@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { MdFlight } from "react-icons/md";
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
-  console.log(setCurrentStep, data, passengersData, "passenger");
 
   const renderValue = (value) => value || "N/A";
   const [isTermsChecked, setIsTermsChecked] = useState(false);
@@ -242,7 +241,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
             </thead>
             <tbody>
               {passengersData?.passengers?.map((passenger, index) => {
-                console.log({ passenger });
+         
                 return (
                   <tr key={index} className="h-24 border-t">
                     <td className="py-2 px-4 border-b text-xs min-w-[11rem]">

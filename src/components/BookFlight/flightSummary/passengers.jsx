@@ -62,7 +62,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching history data:", error);
+        console.error( error);
         setLoading(false);
       });
   };
@@ -102,7 +102,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
         dob: dob,
         lastName: lN,
       };
-      console.log({ updatedPassengers, index })
+
       return updatedPassengers;
     });
 
@@ -132,7 +132,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
     setSavePassengerInfo(isChecked);
 
     if (isChecked) {
-      console.log("Passenger data to be saved:", passenger);
+
 
       try {
         const response = await axios.put(
@@ -148,7 +148,6 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
 
         // Handle successful response
         if (response?.data) ReactToast("Passenger saved succesfully")
-        console.log("Passenger information saved:", response.data);
         // You might want to show a success message to the user here
       } catch (error) {
         // Handle error

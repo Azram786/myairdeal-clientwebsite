@@ -14,7 +14,6 @@ const AddonsCard = ({
   flightData,
   bookingId,
 }) => {
-  console.log({ bookingId }, "BOOKING ID");
   const [activeButton, setActiveButton] = useState("");
   const [seatMapData, setSeatMapData] = useState(null);
   const [checkLoading, setCheckLoading] = useState(false);

@@ -65,7 +65,7 @@ const FlightSummary = () => {
 
   const handleDataFromChild = (data) => {
     setPassengerData(data);
-    console.log(passengersData, "Passenger data");
+
   };
 
   const getData = async () => {
