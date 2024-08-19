@@ -74,6 +74,7 @@ const HomePage = () => {
   }, []);
   console.log({ resentSearch })
   const { isModifySearch } = useSelector((state) => state.auth)
+
   useEffect(() => {
     if (resentSearch?.searchQuery) {
       setFormData((prevFormData) => ({
@@ -89,8 +90,8 @@ const HomePage = () => {
         toCityOrAirport:
           resentSearch.searchQuery.routeInfos[0]?.toCityOrAirport?.code ||
           prevFormData.toCityOrAirport,
-        travelDate: new Date(),
-        returnDate: new Date(),
+        travelDate: new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate) >= new Date() ? new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate) : new Date(),
+        returnDate: new Date(resentSearch?.searchQuery?.routeInfos[resentSearch.searchQuery.routeInfos.length - 1]?.travelDate) > new Date() ? new Date(resentSearch?.searchQuery?.routeInfos[resentSearch.searchQuery.routeInfos.length - 1]?.travelDate) : new Date(),
         isDirectFlight: true,
         isConnectingFlight: resentSearch.searchQuery.searchModifiers?.isConnectingFlight ?? prevFormData.isConnectingFlight,
         pft: resentSearch.searchQuery.searchModifiers?.pft || prevFormData.pft,

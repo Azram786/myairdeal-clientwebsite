@@ -37,7 +37,7 @@ const Header = () => {
     try {
       if (token) {
 
-        setLoading(true);
+
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -56,11 +56,11 @@ const Header = () => {
           },
         };
         dispatch(setUser(profileData))
-        setLoading(false);
+
       }
     } catch (error) {
       console.log(error.message);
-      setLoading(false);
+
     }
   };
   useEffect(() => {
