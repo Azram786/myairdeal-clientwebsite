@@ -54,27 +54,40 @@ const SeatMap = ({
     if (!seat.isBooked) {
       setSelectedSeats((prevSeats) => {
         const seatIndex = prevSeats.findIndex((s) => s.code === seat.seatNo);
-
+  
+        // If the seat is already selected, unselect it
         if (seatIndex !== -1) {
           const updatedSeats = prevSeats.filter((s) => s.code !== seat.seatNo);
           onSeatSelect(updatedSeats.length, null);
           return updatedSeats;
-        } else if (prevSeats.length < adultPassengers.length) {
+        }
+  
+        // If the maximum number of seats is selected, replace the last selected seat
+        if (prevSeats.length >= adultPassengers.length) {
+          const updatedSeats = prevSeats.slice(1); // Remove the first seat
           const newSeat = {
             key: flightId,
             code: seat.seatNo,
             amount: seat.amount,
           };
-          const updatedSeats = [...prevSeats, newSeat];
-          onSeatSelect(updatedSeats.length - 1, newSeat);
-          return updatedSeats;
-        } else {
-          ReactToast("Please remove a selected seat before choosing a new one");
-          return prevSeats;
+          const newSeatsList = [...updatedSeats, newSeat];
+          onSeatSelect(newSeatsList.length - 1, newSeat);
+          return newSeatsList;
         }
+  
+        // If there is still room to select a new seat
+        const newSeat = {
+          key: flightId,
+          code: seat.seatNo,
+          amount: seat.amount,
+        };
+        const updatedSeats = [...prevSeats, newSeat];
+        onSeatSelect(updatedSeats.length - 1, newSeat);
+        return updatedSeats;
       });
     }
   };
+  
 
   const isSeatSelected = (seatNo) =>
     selectedSeats.some((seat) => seat.code === seatNo);
