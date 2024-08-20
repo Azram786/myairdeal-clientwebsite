@@ -146,9 +146,6 @@ const MultiCity = ({ flightProps, passenger, query }) => {
       };
     });
 
-    console.log("Booking:", bookingData);
-
-    console.log("Booking:", bookingData);
     if (!token) {
       ReactToast("Please login first");
       navigate("/sign-in", { state: { booking: query } });
@@ -295,7 +292,6 @@ const MultiCity = ({ flightProps, passenger, query }) => {
         </Tabs>
       </div>
 
-      {console.log(selectedFlights[0].priceIndex, "heoo")}
       {(selectedFlights[0]?.priceIndex != null ||
         selectedFlights[1]?.priceIndex != null) && (
         <BookingCard

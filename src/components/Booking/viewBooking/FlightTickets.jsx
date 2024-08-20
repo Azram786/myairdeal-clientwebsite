@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
+import ReactToast from "../../util/ReactToast";
 
 const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
   // Utility function to format the date
@@ -33,7 +34,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
         `/view-detailed-booking?bookingId=${bookingID}&bookingFilter=${bookingFilter}`
       );
     } catch (error) {
-      console.log(error.message);
+      ReactToast(error.message);
     }
   };
 
@@ -63,7 +64,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
       // If the request is successful and returns a PDF file, you can handle the file here
     } catch (error) {
-      console.log(error);
+     ReactToast(error);
     }
   };
 

@@ -59,7 +59,7 @@ const Header = () => {
 
       }
     } catch (error) {
-      console.log(error.message);
+      ReactToast(error.message);
 
     }
   };

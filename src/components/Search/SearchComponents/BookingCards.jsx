@@ -237,7 +237,7 @@
 import React, { useMemo } from "react";
 
 const BookingCard = ({ selectedFlights, onBook, passenger }) => {
-  console.log({ selectedFlights }, "BOOKING CARD");
+
   const calculateTotalPrice = useMemo(
     () => (flight) => {
       if (

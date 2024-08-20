@@ -12,7 +12,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
-        console.log("Form data:", data);
+    
 
         try {
             const response = await axios.post(
@@ -24,7 +24,6 @@ const TicketRaising = ({ bookingId, closeModal }) => {
                     },
                 }
             );
-            console.log("Response data:", response.data);
             if (response.status === 200) {
                 ReactToast('Your request is successfully sent. ')
                 closeModal()

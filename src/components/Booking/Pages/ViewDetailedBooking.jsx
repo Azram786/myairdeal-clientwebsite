@@ -23,7 +23,6 @@ const ViewDetailedBooking = () => {
 
   const { token } = useSelector((state) => state.auth);
   const [singleBookingData, setSingleBookingData] = useState(null);
-  console.log({ singleBookingData });
   const queryParams = getQueryParams(location.search);
   const { bookingId, bookingFilter } = queryParams;
   const [loading, setLoading] = useState(true);
@@ -46,10 +45,9 @@ const ViewDetailedBooking = () => {
       setSingleBookingData(response.data.data);
       setAmendment(response.data.amendment)
       setLoading(false);
-      console.log({ response });
     } catch (error) {
       setLoading(false);
-      console.log(error.message);
+      ReactToast(error.message);
     }
   };
 
@@ -83,7 +81,8 @@ const ViewDetailedBooking = () => {
 
       // If the request is successful and returns a PDF file, you can handle the file here
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      ReactTost(error.message)
     }
   };
   useEffect(() => {

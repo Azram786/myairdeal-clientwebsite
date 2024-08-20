@@ -79,7 +79,8 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         setMarkUp(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+        ReactToast(error.message)
       });
   };
 

@@ -53,7 +53,7 @@ const FlightBookings = () => {
     }
   };
 
-  console.log({ bookingData });
+ 
 
   useEffect(() => {
     getBookingData();

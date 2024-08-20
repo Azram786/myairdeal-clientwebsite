@@ -24,7 +24,7 @@ const ViewDetailedBookingCard = ({
   const toggleDropdown = (index) => {
     setOpenConnectionIndex(openConnectionIndex === index ? null : index);
   };
-  console.log({ searchQuery });
+
 
   return (
     <div className=" border-l-0 w-full lg:w-[72%]">

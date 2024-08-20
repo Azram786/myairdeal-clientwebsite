@@ -46,7 +46,7 @@ const FlightSummary = () => {
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
  
-  // console.log({ flightData, passengers }, "REVIEW PAGE");
+
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
       navigate("/search");
@@ -88,11 +88,11 @@ const FlightSummary = () => {
         setData(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         setLoading(false);
         ReactToast("Some error occurred please try again");
         navigate("/");
-        console.log(error);
+        // console.log(error);
       });
   };
 

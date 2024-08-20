@@ -94,7 +94,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
       }
     } catch (error) {
       setLoading(false);
-      console.log("Error verifying OTP:", error.message);
+      ReactToast("Error verifying OTP:", error.message);
     }
   };
   const handleResendOTP = () => {

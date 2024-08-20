@@ -364,13 +364,13 @@ const UserProfile = () => {
                     }
                 });
 
-                console.log(response);
+           
                 setSavingLoading(false);
                 setIsEditing(false);
                 getProfileData()
             } catch (error) {
                 setSavingLoading(false);
-                console.log(error.message);
+                ReactToast(error.message);
             }
         }
     };
@@ -383,7 +383,7 @@ const UserProfile = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log({ response });
+   
             const profileData = {
                 firstName: response.data.firstName,
                 lastName: response.data.lastName,
@@ -399,7 +399,7 @@ const UserProfile = () => {
             setUserData(profileData);
             setLoading(false);
         } catch (error) {
-            console.log(error.message);
+           ReactToast(error.message);
             setLoading(false);
         }
     };

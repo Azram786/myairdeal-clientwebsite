@@ -24,7 +24,7 @@ const RecentSearch = ({ ResentSearchData }) => {
   }, [resentSearch, dispatch]);
 
   const setResentStateHandler = (value) => {
-    console.log({ value });
+ 
     dispatch(setResentSearch(value));
   };
 

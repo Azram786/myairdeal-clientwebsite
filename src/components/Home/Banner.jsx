@@ -61,10 +61,10 @@ const Banner = () => {
   const getBanners = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}banner/get-banners-user`);
-      console.log({ banners: response },"Banners");
+      // console.log({ banners: response },"Banners");
       setBanners(response.data);
     } catch (error) {
-      console.log(error);
+      ReactToast(error);
     }
   };
 
