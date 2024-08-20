@@ -460,9 +460,9 @@ const FilterSection = ({
 `}>
         {/* type of travel selecting section */}
 
-        <div className="flex justify-center md:justify-stretch  text-black">
+        <div className="flex justify-center md:justify-stretch text-white ">
           <button
-            className={`bg-[#D3C19F] text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#c79834]"
+            className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
@@ -470,7 +470,7 @@ const FilterSection = ({
             One way
           </button>
           <button
-            className={`bg-[#D3C19F] text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#c79834]"
+            className={`bg-[#1B1D29]  text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#D7B56D] text-black"
               } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
@@ -478,7 +478,7 @@ const FilterSection = ({
             Round trip
           </button>
           <button
-            className={` bg-[#D3C19F] text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#c79834]"
+            className={` bg-[#1B1D29]  text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#D7B56D] text-black"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
@@ -710,7 +710,7 @@ const FilterSection = ({
               // form submition
               onClick={submitHandler}
               className=" flex items-center mt-2 
-              space-x-2  text-white bg-[#01324D] p-3 rounded"
+              space-x-2  text-white bg-[#1B1D29] p-3 rounded"
             >
               <FaTelegramPlane className="text-white text-lg" />
               <span>{Loading ? "Searching..." : "Search Flights"}</span>

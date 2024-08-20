@@ -64,7 +64,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
       // If the request is successful and returns a PDF file, you can handle the file here
     } catch (error) {
-     ReactToast(error);
+      ReactToast(error);
     }
   };
 
@@ -99,7 +99,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-row justify-between bg-[#007EC4] md:bg-transparent text-white md:text-black rounded-md md:rounded-none p-2  md:w-[100%]  py-2 md:border-r-2 md:border-gray-300  sm:flex-row md:flex-row  gap-3  ">
+              <div className="flex w-full flex-row justify-between text-[#D7B56D] md:bg-transparent bg-[#1B1D29] md:text-black rounded-md md:rounded-none p-2  md:w-[100%]  py-2 md:border-r-2 md:border-gray-300  sm:flex-row md:flex-row  gap-3  ">
                 <div className="flex w-full justify-between  gap-4 md:gap-1   flex-col  ">
                   <div className="text-base md:text-base  mr-2  line-clamp-1 ">
                     <span className="md:hidden tracking-widest">
@@ -115,7 +115,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                     {formatTime(trip.sI[0].dt)}
                   </div>
                 </div>
-               
+
                 <div className="flex w-full justify-between  gap-4 md:gap-1 pl-40 md:pl-0 flex-col ">
                   <div className=" text-base md:text-base   font-medium flex flex-col ">
                     <div className="text-base md:text-base mr-2  line-clamp-1 ">
@@ -144,7 +144,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
             <div className="flex w-full min-w-80  sm:w-[40%]  justify-between  gap-5   ">
               <div className="flex flex-col justify-evenly  md:ml-2  sm:flex-col gap-0 md:gap-3  sm:w-1/2">
                 <div className="flex items-center gap-1">
-                  <div className="text-[1.5rem] text-sky-600 mr-2  bg-[#E6F3FF] p-1 rounded-md">
+                  <div className="text-[1.5rem] mr-2 bg-[#1B1D29]  text-white p-1 rounded-md">
                     <MdOutlineDateRange />
                   </div>
                   <div>
@@ -155,7 +155,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <div className="text-[1.5rem] mr-2 text-sky-600  bg-[#E6F3FF] p-1 rounded-md">
+                  <div className="text-[1.5rem] mr-2 bg-[#1B1D29] p-1  text-white rounded-md">
                     <IoIosTime />
                   </div>
                   <div>
@@ -168,7 +168,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
               </div>
               <div className="flex flex-col  sm:flex-col justify-evenly   sm:w-1/2 gap-0 md:gap-3">
                 <div className="flex items-center gap-1">
-                  <div className="text-[1.5rem] text-sky-600 mr-2  bg-[#E6F3FF] p-1 rounded-md">
+                  <div className="text-[1.5rem]  bg-[#1B1D29]  text-white mr-2  F] p-1 rounded-md">
                     <BsDoorClosedFill />
                   </div>
                   <div>
@@ -179,7 +179,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <div className="text-[1.5rem] text-sky-600 mr-2 bg-[#E6F3FF] p-1 rounded-md">
+                  <div className="text-[1.5rem]  bg-[#1B1D29]  text-white mr-2  p-1 rounded-md">
                     <MdAirlineStops />
                   </div>
                   <div>
@@ -198,12 +198,12 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
       <div className="flex  gap-1 flex-row   lg:w-[20%] xl:w-[25%] md:space-x-4 ">
         <button
           onClick={() => DownloadInvoice()}
-          className="bg-[#007EC4] text-sm rounded-md text-white px-2 xl:px-4 py-1 font-semibold mb-4 md:mb-0"
+          className="text-[#D7B56D] text-sm rounded-md bg-[#1B1D29] px-2 xl:px-4 py-1 font-semibold mb-4 md:mb-0"
         >
           Download Ticket
         </button>
         <button
-          className="text-[#007EC4] text-sm border border-[#007EC4] bg-white px-2 xl:px-4 py-1 xl:py-2 rounded-md font-semibold mb-4 md:mb-0 "
+          className="text-[#D7B56D] text-sm border border-[#1B1D29] bg-[#1B1D29] px-2 xl:px-4 py-1 xl:py-2 rounded-md font-semibold mb-4 md:mb-0 "
           onClick={getSingleTripDetailHandler}
         >
           Details

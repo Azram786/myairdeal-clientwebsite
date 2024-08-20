@@ -7,7 +7,7 @@ import {
 } from "react-icons/md";
 import { RiFlightLandLine, RiFlightTakeoffFill } from "react-icons/ri";
 import { GoArrowSwitch } from "react-icons/go";
-import FilterSection from '../Home/FilterSection'
+import FilterSection from "../Home/FilterSection";
 // import FareToolTip from "./FareTooltip";
 
 import { Link, Navigate, useNavigate } from "react-router-dom";
@@ -16,15 +16,13 @@ import HomePage from "../Home/HomePage";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsaModifySearch } from "../../store/slices/aut.slice";
 const FlightSearchSummary = ({ data, tripType }) => {
-  
   if (!data || !data.searchQuery) {
     return null; // or return a loading state
   }
 
-
   const { searchQuery } = data;
   const { cabinClass, paxInfo, routeInfos } = searchQuery;
-  const { isModifySearch } = useSelector((state) => state.auth)
+  const { isModifySearch } = useSelector((state) => state.auth);
 
   const passengers =
     parseInt(paxInfo.ADULT) +
@@ -46,82 +44,101 @@ const FlightSearchSummary = ({ data, tripType }) => {
 
     return formatter.format(date).replace(/(\d+)/, "$1th");
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
   const renderOneWay = () => (
     <div>
       {/* Grid layout for medium and larger screens */}
-      {isModifySearch ? <><HomePage /></> : <div className="hidden md:grid md:grid-cols-5 gap-3 bg-[#007EC4] text-white p-2">
-        <div className="flex items-center space-x-4 md:border-r justify-center">
-          <div className="flex flex-col">
-            <span className="text-xs text-white">From</span>
-            <span className="text-xs font-semibold">
-              {routeInfos[0].fromCityOrAirport.code}
-            </span>
-          </div>
-          <span className="rotate-90">
-            <MdFlight />
-          </span>
-          <div className="flex flex-col">
-            <span className="text-xs text-white">To</span>
-            <span className="text-xs font-semibold">
-              {routeInfos[0].toCityOrAirport.code}
-            </span>
-          </div>
-        </div>
-        <div className="flex items-center justify-center md:border-r">
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-white">Passengers & Class</span>
-            <div className="relative group">
-              <span className="text-xs font-semibold line-clamp-1">
-                {`${paxInfo.ADULT} Adults ${paxInfo.CHILD > 0
-                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
-                  } `
-                  : ""
-                  }${paxInfo.INFANT > 0
-                    ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
-                    } `
-                    : ""
-                  } | ${cabinClass}`}
+      {isModifySearch ? (
+        <>
+          <HomePage />
+        </>
+      ) : (
+        <div className="hidden md:grid md:grid-cols-5 gap-3 bg-[#1B1D29] text-white p-2">
+          <div className="flex items-center space-x-4 md:border-r justify-center">
+            <div className="flex flex-col">
+              <span className="text-xs text-white">From</span>
+              <span className="text-xs font-semibold">
+                {routeInfos[0].fromCityOrAirport.code}
               </span>
-              {/* Tooltip */}
-              <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                {`${paxInfo.ADULT} Adults, ${paxInfo.CHILD > 0
-                  ? `${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""}`
-                  : "No Children"
-                  }, ${paxInfo.INFANT > 0
-                    ? `${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""}`
-                    : "No Infants"
+            </div>
+            <span className="rotate-90">
+              <MdFlight />
+            </span>
+            <div className="flex flex-col">
+              <span className="text-xs text-white">To</span>
+              <span className="text-xs font-semibold">
+                {routeInfos[0].toCityOrAirport.code}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center justify-center md:border-r">
+            <div className="flex flex-col items-center">
+              <span className="text-xs text-white">Passengers & Class</span>
+              <div className="relative group">
+                <span className="text-xs font-semibold line-clamp-1">
+                  {`${paxInfo.ADULT} Adults ${
+                    paxInfo.CHILD > 0
+                      ? `, ${paxInfo.CHILD} Child${
+                          paxInfo.CHILD > 1 ? "ren" : ""
+                        } `
+                      : ""
+                  }${
+                    paxInfo.INFANT > 0
+                      ? `,${paxInfo.INFANT} Infant${
+                          paxInfo.INFANT > 1 ? "s" : ""
+                        } `
+                      : ""
+                  } | ${cabinClass}`}
+                </span>
+                {/* Tooltip */}
+                <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  {`${paxInfo.ADULT} Adults, ${
+                    paxInfo.CHILD > 0
+                      ? `${paxInfo.CHILD} Child${
+                          paxInfo.CHILD > 1 ? "ren" : ""
+                        }`
+                      : "No Children"
+                  }, ${
+                    paxInfo.INFANT > 0
+                      ? `${paxInfo.INFANT} Infant${
+                          paxInfo.INFANT > 1 ? "s" : ""
+                        }`
+                      : "No Infants"
                   }`}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center justify-center md:border-r">
-          <div className="flex flex-col">
-            <span className="text-xs text-white">Departure Date</span>
-            <span className="text-xs font-semibold">
-              {formatTravelDate(routeInfos[0].travelDate)}
-            </span>
+          <div className="flex items-center justify-center md:border-r">
+            <div className="flex flex-col">
+              <span className="text-xs text-white">Departure Date</span>
+              <span className="text-xs font-semibold">
+                {formatTravelDate(routeInfos[0].travelDate)}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center justify-center md:border-r">
+            <div className="flex flex-col">
+              <span className="text-xs text-white">Preferred Airline</span>
+              <span className="text-xs font-semibold">{`None`}</span>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            {/* <Link to=""> */}
+            <button
+              onClick={() => dispatch(setIsaModifySearch(true))}
+              className="border-[#01324D] bg-[#D7B56D] border text-xs lg-custom:text-sm text-black px-4 py-2 rounded-md"
+            >
+              MODIFY SEARCH
+            </button>
+            {/* </Link> */}
           </div>
         </div>
-        <div className="flex items-center justify-center md:border-r">
-          <div className="flex flex-col">
-            <span className="text-xs text-white">Preferred Airline</span>
-            <span className="text-xs font-semibold">{`None`}</span>
-          </div>
-        </div>
-        <div className="flex justify-center">
-          {/* <Link to=""> */}
-          <button onClick={() => dispatch(setIsaModifySearch(true))} className="border-[#01324D] bg-[#01324D] border text-xs lg-custom:text-sm text-white px-4 py-2 rounded-md">
-            MODIFY SEARCH
-          </button>
-          {/* </Link> */}
-        </div>
-      </div>}
-
+      )}
 
       {/* Dropdown for small screens */}
-      <div className="md:hidden mx-2 bg-[#007EC4] text-white p-2 rounded-md">
+      <div className="md:hidden mx-2 bg-[#1B1D29] text-white p-2 rounded-md">
         <details className="w-full">
           <summary className="flex justify-between items-center cursor-pointer">
             <span>Flight Details</span>
@@ -143,15 +160,19 @@ const FlightSearchSummary = ({ data, tripType }) => {
             <div className="flex items-center justify-between border-b pb-2">
               <span className="text-xs">Passengers & Class</span>
               <span className="text-xs font-semibold">
-                {`${paxInfo.ADULT} Adults ${paxInfo.CHILD > 0
-                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
-                  } `
-                  : ""
-                  }${paxInfo.INFANT > 0
-                    ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
-                    } `
+                {`${paxInfo.ADULT} Adults ${
+                  paxInfo.CHILD > 0
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      } `
                     : ""
-                  } | ${cabinClass}`}
+                }${
+                  paxInfo.INFANT > 0
+                    ? `,${paxInfo.INFANT} Infant${
+                        paxInfo.INFANT > 1 ? "s" : ""
+                      } `
+                    : ""
+                } | ${cabinClass}`}
               </span>
             </div>
             <div className="flex items-center justify-between border-b pb-2">
@@ -166,7 +187,10 @@ const FlightSearchSummary = ({ data, tripType }) => {
             </div>
             <div className="flex justify-center mt-2">
               {/* <Link to="/"> */}
-              <button onClick={() => dispatch(setIsaModifySearch(true))} className="border-[#01324D] bg-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+              <button
+                onClick={() => dispatch(setIsaModifySearch(true))}
+                className="border-[#01324D] bg-[#D7B56D] border text-sm text-black px-4 py-2 rounded-md"
+              >
                 MODIFY SEARCH
               </button>
               {/* </Link> */}
@@ -180,7 +204,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
   const renderRoundTrip = () => (
     <div>
       {/* Grid layout for medium and larger screens */}
-      <div className="hidden md:grid md:grid-cols-6 gap-3 bg-[#007EC4] text-white p-2">
+      <div className="hidden md:grid md:grid-cols-6 gap-3 bg-[#1B1D29] text-white p-2">
         <div className="flex items-center space-x-4 md:border-r justify-center">
           <div className="flex flex-col">
             <span className="text-xs text-white">From</span>
@@ -219,26 +243,33 @@ const FlightSearchSummary = ({ data, tripType }) => {
             <span className="text-xs text-white">Passengers & Class</span>
             <div className="relative group">
               <span className="text-xs font-semibold line-clamp-1">
-                {`${paxInfo.ADULT} Adults${paxInfo.CHILD > 0
-                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
-                  }`
-                  : ""
-                  }${paxInfo.INFANT > 0
-                    ? `, ${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
-                    }`
+                {`${paxInfo.ADULT} Adults${
+                  paxInfo.CHILD > 0
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      }`
                     : ""
-                  } | ${cabinClass}`}
+                }${
+                  paxInfo.INFANT > 0
+                    ? `, ${paxInfo.INFANT} Infant${
+                        paxInfo.INFANT > 1 ? "s" : ""
+                      }`
+                    : ""
+                } | ${cabinClass}`}
               </span>
               {/* Tooltip */}
               <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                {`${paxInfo.ADULT} Adults${paxInfo.CHILD > 0
-                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
-                  }`
-                  : ""
-                  }, ${paxInfo.INFANT > 0
+                {`${paxInfo.ADULT} Adults${
+                  paxInfo.CHILD > 0
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      }`
+                    : ""
+                }, ${
+                  paxInfo.INFANT > 0
                     ? `${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""}`
                     : "No Infants"
-                  }, | ${cabinClass}`}
+                }, | ${cabinClass}`}
               </div>
             </div>
           </div>
@@ -251,7 +282,10 @@ const FlightSearchSummary = ({ data, tripType }) => {
         </div>
         <div className="flex justify-center">
           {/* <Link to="/"> */}
-          <button onClick={() => dispatch(setIsaModifySearch(true))} className="border-[#01324D] bg-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+          <button
+            onClick={() => dispatch(setIsaModifySearch(true))}
+            className="border-[#01324D] bg-[#D7B56D] border text-sm text-black px-4 py-2 rounded-md"
+          >
             MODIFY SEARCH
           </button>
           {/* </Link> */}
@@ -259,7 +293,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
       </div>
 
       {/* Dropdown for small screens */}
-      <div className="md:hidden mx-2 bg-[#007EC4] text-white p-2 rounded-md">
+      <div className="md:hidden mx-2 bg-[#1B1D29] text-white p-2 rounded-md">
         <details className="w-full">
           <summary className="flex justify-between items-center cursor-pointer">
             <span>Round Trip Details</span>
@@ -293,15 +327,19 @@ const FlightSearchSummary = ({ data, tripType }) => {
             <div className="flex items-center justify-between border-b pb-2">
               <span className="text-xs">Passengers & Class</span>
               <span className="text-xs font-semibold">
-                {`${paxInfo.ADULT} Adults${paxInfo.CHILD > 0
-                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
-                  }`
-                  : ""
-                  }${paxInfo.INFANT > 0
-                    ? `, ${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
-                    }`
+                {`${paxInfo.ADULT} Adults${
+                  paxInfo.CHILD > 0
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      }`
                     : ""
-                  } | ${cabinClass}`}
+                }${
+                  paxInfo.INFANT > 0
+                    ? `, ${paxInfo.INFANT} Infant${
+                        paxInfo.INFANT > 1 ? "s" : ""
+                      }`
+                    : ""
+                } | ${cabinClass}`}
               </span>
             </div>
             <div className="flex items-center justify-between border-b pb-2">
@@ -309,11 +347,12 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs font-semibold">None</span>
             </div>
             <div className="flex justify-center mt-2">
-
-              <button onClick={() => dispatch(setIsaModifySearch(true))} className="border-[#01324D] bg-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+              <button
+                onClick={() => dispatch(setIsaModifySearch(true))}
+                className="border-[#01324D] bg-[#D7B56D] border text-sm text-black px-4 py-2 rounded-md"
+              >
                 MODIFY SEARCH
               </button>
-
             </div>
           </div>
         </details>
@@ -324,7 +363,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
   const renderMultiCity = () => (
     <div>
       {/* Grid layout for medium and larger screens */}
-      <div className="hidden md:flex flex-col md:flex-row items-center gap-3 bg-[#007EC4] p-2 text-white">
+      <div className="hidden md:flex flex-col md:flex-row items-center gap-3 bg-[#1B1D29] p-2 text-white">
         <div className="md:w-1/2 w-[95%] justify-center overflow-x-auto md:border-r no-scroll flex">
           {routeInfos.map((route, index) => (
             <div
@@ -357,26 +396,34 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs text-white">Passengers & Class</span>
               <div className="relative group">
                 <span className="text-xs font-semibold line-clamp-1">
-                  {`${paxInfo.ADULT} Adults ${paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
-                    } `
-                    : ""
-                    }${paxInfo.INFANT > 0
-                      ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
-                      } `
+                  {`${paxInfo.ADULT} Adults ${
+                    paxInfo.CHILD > 0
+                      ? `, ${paxInfo.CHILD} Child${
+                          paxInfo.CHILD > 1 ? "ren" : ""
+                        } `
                       : ""
-                    } | ${cabinClass}`}
+                  }${
+                    paxInfo.INFANT > 0
+                      ? `,${paxInfo.INFANT} Infant${
+                          paxInfo.INFANT > 1 ? "s" : ""
+                        } `
+                      : ""
+                  } | ${cabinClass}`}
                 </span>
                 <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  {`${paxInfo.ADULT} Adults, ${paxInfo.CHILD > 0
-                    ? `${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
-                    }`
-                    : "No Children"
-                    }, ${paxInfo.INFANT > 0
-                      ? `${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
-                      }`
+                  {`${paxInfo.ADULT} Adults, ${
+                    paxInfo.CHILD > 0
+                      ? `${paxInfo.CHILD} Child${
+                          paxInfo.CHILD > 1 ? "ren" : ""
+                        }`
+                      : "No Children"
+                  }, ${
+                    paxInfo.INFANT > 0
+                      ? `${paxInfo.INFANT} Infant${
+                          paxInfo.INFANT > 1 ? "s" : ""
+                        }`
                       : "No Infants"
-                    },`}
+                  },`}
                 </div>
               </div>
             </div>
@@ -391,7 +438,10 @@ const FlightSearchSummary = ({ data, tripType }) => {
           </div>
           <div className="flex justify-center items-center">
             {/* <Link to="/"> */}
-            <button onClick={() => dispatch(setIsaModifySearch(true))} className="border-[#01324D] bg-[#01324D] border text-xs lg-custom:text-sm text-white px-4 py-2 rounded-md">
+            <button
+              onClick={() => dispatch(setIsaModifySearch(true))}
+              className="border-[#01324D] bg-[#D7B56D] border text-xs lg-custom:text-sm text-black px-4 py-2 rounded-md"
+            >
               MODIFY SEARCH
             </button>
             {/* </Link> */}
@@ -400,7 +450,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
       </div>
 
       {/* Dropdown for small screens */}
-      <div className="md:hidden mx-2 bg-[#007EC4] text-white p-2 rounded-md">
+      <div className="md:hidden mx-2 bg-[#1B1D29] text-white p-2 rounded-md">
         <details className="w-full">
           <summary className="flex justify-between items-center cursor-pointer">
             <span>Multi-City Details</span>
@@ -432,26 +482,31 @@ const FlightSearchSummary = ({ data, tripType }) => {
             <div className="flex items-center justify-between border-b pb-2">
               <span className="text-xs">Passengers & Class</span>
               <span className="text-xs font-semibold">
-                {`${paxInfo.ADULT} Adults ${paxInfo.CHILD > 0
-                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
-                  } `
-                  : ""
-                  }${paxInfo.INFANT > 0
-                    ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
-                    } `
+                {`${paxInfo.ADULT} Adults ${
+                  paxInfo.CHILD > 0
+                    ? `, ${paxInfo.CHILD} Child${
+                        paxInfo.CHILD > 1 ? "ren" : ""
+                      } `
                     : ""
-                  } | ${cabinClass}`}
+                }${
+                  paxInfo.INFANT > 0
+                    ? `,${paxInfo.INFANT} Infant${
+                        paxInfo.INFANT > 1 ? "s" : ""
+                      } `
+                    : ""
+                } | ${cabinClass}`}
               </span>
             </div>
             <div className="flex items-center justify-between border-b pb-2">
               <span className="text-xs">Preferred Airline</span>
               <span className="text-xs font-semibold">None</span>
             </div>
-            <div className="flex justify-center mt-2 " >
+            <div className="flex justify-center mt-2 ">
               {/* <Link to="/"> */}
               <button
                 onClick={() => dispatch(setIsaModifySearch(true))}
-                className="border-[#01324D] bg-[#01324D] border text-sm text-white px-4 py-2 rounded-md">
+                className="border-[#01324D] bg-[#D7B56D] border text-sm text-black px-4 py-2 rounded-md"
+              >
                 MODIFY SEARCH
               </button>
               {/* </Link> */}

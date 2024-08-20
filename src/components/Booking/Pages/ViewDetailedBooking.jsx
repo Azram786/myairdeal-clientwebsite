@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import { CiSaveDown1 } from "react-icons/ci";
 import ViewDetailedBookingCard from "../viewDetailedBooking/ViewDetailedBookingCard";
@@ -26,7 +24,7 @@ const ViewDetailedBooking = () => {
   const queryParams = getQueryParams(location.search);
   const { bookingId, bookingFilter } = queryParams;
   const [loading, setLoading] = useState(true);
-  const [amendment, setAmendment] = useState([])
+  const [amendment, setAmendment] = useState([]);
   const getSingleTicketDetailHandler = async () => {
     try {
       setLoading(true);
@@ -43,7 +41,7 @@ const ViewDetailedBooking = () => {
 
       setSearchQuery(response.data.searchQuery);
       setSingleBookingData(response.data.data);
-      setAmendment(response.data.amendment)
+      setAmendment(response.data.amendment);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -82,7 +80,7 @@ const ViewDetailedBooking = () => {
       // If the request is successful and returns a PDF file, you can handle the file here
     } catch (error) {
       // console.log(error);
-      ReactTost(error.message)
+      ReactTost(error.message);
     }
   };
   useEffect(() => {
@@ -98,18 +96,18 @@ const ViewDetailedBooking = () => {
         </div>
       ) : (
         <div className="  p-2 border rounded-lg md:px-10  mt-3  flex justify-center items-center  ">
-
-
           <div className=" flex flex-col w-full   ">
-            <div className=" bg-[#007EC4] gap-2 flex flex-wrap justify-between items-center text-white rounded-xl px-10   py-4">
-              <div className="text-[1.3rem] flex  font-bold">Ticket booking</div>
+            <div className=" bg-[#1B1D29] gap-2 flex flex-wrap justify-between items-center text-[#D7B56D] rounded-xl px-10   py-4">
+              <div className="text-[1.3rem] flex  font-bold">
+                Ticket booking
+              </div>
               <div className="flex gap-3">
                 {/* <div className="">
                 <button className="bg-red-500  flex justify-center items-center text-white p-2 w-[200px] rounded-lg">Cancel booking</button>
               </div> */}
                 <div className="">
                   <button
-                    className="bg-white flex justify-center items-center text-[#007EC4] p-2 w-[200px] rounded-lg"
+                    className="text-[#1B1D29] flex justify-center items-center bg-white p-2 w-[200px] rounded-lg"
                     onClick={DownloadInvoice}
                   >
                     <CiSaveDown1 />
@@ -157,16 +155,12 @@ const ViewDetailedBooking = () => {
                         onClick={toggleDropdown}
                       >
                         <div className="flex justify-center items-end gap-1">
-
                           <div>Total Additional Fare</div>{" "}
                           <FaAngleDoubleDown color="green" />
                         </div>
 
                         <div className="flex items-end">
-                          {
-                            `₹${singleBookingData?.itemInfos.AIR.totalPriceInfo
-                              .totalFareDetail.fC.TAF}`
-                          }
+                          {`₹${singleBookingData?.itemInfos.AIR.totalPriceInfo.totalFareDetail.fC.TAF}`}
                         </div>
                       </div>
                       {isDropdownOpen && (
@@ -175,30 +169,24 @@ const ViewDetailedBooking = () => {
                             <div>IGST</div>
                             <div className="flex">
                               ₹
-                              {
-                                singleBookingData?.itemInfos.AIR
-                                  .totalPriceInfo.totalFareDetail.afC.TAF?.AGST || "N/A"
-                              }
+                              {singleBookingData?.itemInfos.AIR.totalPriceInfo
+                                .totalFareDetail.afC.TAF?.AGST || "N/A"}
                             </div>
                           </div>
                           <div className="flex justify-between">
                             <div>Other Taxes</div>
                             <div>
-
-                              ₹{
-                                singleBookingData?.itemInfos.AIR
-                                  .totalPriceInfo.totalFareDetail.afC?.TAF?.OT || "N/A"
-                              }
+                              ₹
+                              {singleBookingData?.itemInfos.AIR.totalPriceInfo
+                                .totalFareDetail.afC?.TAF?.OT || "N/A"}
                             </div>
                           </div>
                           <div className="flex justify-between">
                             <div>Fuel Surcharge</div>
                             <div>
                               ₹
-                              {
-                                singleBookingData?.itemInfos.AIR
-                                  .totalPriceInfo.totalFareDetail.afC.TAF?.YR || "N/A"
-                              }
+                              {singleBookingData?.itemInfos.AIR.totalPriceInfo
+                                .totalFareDetail.afC.TAF?.YR || "N/A"}
                             </div>
                           </div>
                           {/* Add other details as needed */}
@@ -237,7 +225,6 @@ const ViewDetailedBooking = () => {
             />
             <TermsAndConditions />
           </div>
-
         </div>
       )}
 

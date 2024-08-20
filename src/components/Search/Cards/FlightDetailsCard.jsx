@@ -353,7 +353,7 @@ const FlightDetailsCard = ({
               <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold w-16 sm:w-32 md:min-w-44 text-gray-500">
                 {/* <span>{convertToHoursMinutes(totalDuration)}</span> */}
                 <span>{totalDuration}</span>
-                <FaPlane className="mx-2 text-blue-800 text-3xl" />
+                <FaPlane className="mx-2 text-[#1B1D29] text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (
                     <span>
@@ -388,7 +388,7 @@ const FlightDetailsCard = ({
                 p-1 mb-2 cursor-pointer 
                 ${
                   localSelectedPriceIndex === index
-                    ? "border-2 border-[#007EC4] rounded-md"
+                    ? "border-2 border-[#1B1D29] rounded-md"
                     : "border border-gray-200 hover:border-blue-300 rounded-md"
                 }
               `}
@@ -418,11 +418,11 @@ const FlightDetailsCard = ({
               >
                 {showDetails ? (
                   <span className="text-black">
-                    <span className="text-[#007EC4]">Hide Details</span>
+                    <span className="text-[#1B1D29]">Hide Details</span>
                   </span>
                 ) : (
                   <span className="text-black">
-                    <span className="text-[#007EC4]">View Details</span>
+                    <span className="text-[#1B1D29]">View Details</span>
                   </span>
                 )}
               </button>
@@ -445,8 +445,8 @@ const FlightDetailsCard = ({
         <div className="flex justify-end  w-full">
           <button
             className={`${
-              isSelected ? "bg-green-500" : "bg-[#007EC4]"
-            } text-white md:w-48 text-center  px-16 py-2 rounded-md mt-4 md:mt-0`}
+              isSelected ? "bg-[#D7B56D] text-[#1B1D29]" : "bg-[#1B1D29] text-[#D7B56D]"
+            }  font-semibold md:w-48 text-center  px-16 py-2 rounded-md mt-4 md:mt-0`}
             onClick={() => onSelect(localSelectedPriceIndex)}
           >
             {isSelected ? "Selected" : "Select"}
@@ -469,7 +469,7 @@ const FlightDetailsCard = ({
                 onClick={() => setActiveTab(tab)}
                 className={`py-2 px-2 md:px-3 shrink-0 text-sm ${
                   activeTab === tab
-                    ? "text-[#007EC4]  font-bold border-b-2 border-[#007EC4]"
+                    ? "text-[#1B1D29]  font-bold border-b-2 border-[#1B1D29]"
                     : "text-gray-500"
                 }`}
               >

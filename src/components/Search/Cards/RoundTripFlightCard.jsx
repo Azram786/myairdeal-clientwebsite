@@ -164,11 +164,11 @@ const RoundTripCard = ({
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex w-full overscroll-x-auto  flex-col  justify-start "
+                className="flex w-full overscroll-x-auto   flex-col  justify-start "
               >
                 <div className="text-sm w-max ml-2  flex flex-col md:flex-row  text-black font-bold">
                   {segment.da.city} → {segment.aa.city}
-                  <span className="text-[10px]  text-gray-500">
+                  <span className="text-[10px] ml-2 text-gray-500">
                     {" "}
                     {formatDateTime(segment.dt).split(",")[0]},
                     {getDayOfWeek(segment.dt)}
@@ -341,7 +341,7 @@ const RoundTripCard = ({
     : displayedPrices.slice(0, 2);
 
   return (
-    <div className="border  bg-yellow-400 flex flex-col rounded-lg m-4 w-full overflow-x-auto">
+    <div className="border bg-white  flex flex-col rounded-lg m-4 ">
       <div className="flex flex-col md:flex-row  justify-between items-stretch p-3  mb-2">
         <div className="flex flex-col  justify-center lg-custom:justify-normal w-full">
           <div className="flex gap-4 items-center justify-center md:justify-normal ">
@@ -378,7 +378,7 @@ const RoundTripCard = ({
                   {" "}
                   <span>{totalDuration}</span>
                 </span>
-                <FaPlane className="mx-2 text-blue-800 text-3xl" />
+                <FaPlane className="mx-2 text-[#1B1D29] text-3xl" />
                 <div className="flex items-center ">
                   {isConnectionFlight ? (
                     <span className="flex-wrap">
@@ -405,7 +405,7 @@ const RoundTripCard = ({
 
           <div className="flex items-center  justify-between w-full ">
             <div className="flex flex-col w-full ">
-              <div className="relative border-[1px] border-[#007EC4]  m-2 rounded-md">
+              <div className="relative border-[1px] border-[#1B1D29]  m-2 rounded-md">
                 <div className="flex flex-wrap gap-2  overflow-x-auto  mt-3 p-2 items-center">
                   {visiblePrices?.map((price, index) => (
                     <div
@@ -415,7 +415,7 @@ const RoundTripCard = ({
                         text-xs text-start min-w-36 space-y-2 flex-shrink-0  md:w-fit p-1 mb-2 cursor-pointer
 ${
   localSelectedPriceIndex === index
-    ? "border-[4px] border-[#007EC4] rounded-md"
+    ? "border-[2px] border-[#1B1D29] rounded-md"
     : "border border-gray-200 hover:border-blue-300 rounded-md"
 }
             `}
@@ -440,7 +440,7 @@ ${
                   {displayedPrices.length > 2 && (
                     <button
                       onClick={() => setShowAllPrices(!showAllPrices)}
-                      className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#007EC4] text-white rounded-md py-1 px-2 flex items-center justify-center"
+                      className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#1B1D29] text-white rounded-md py-1 px-2 flex items-center justify-center"
                       style={{ bottom: "-1.5rem" }}
                     >
                       <p className="mr-2 text-xs">
@@ -472,12 +472,12 @@ ${
                     {showDetails ? (
                       <span className="text-black">
                         {/* Fare Details :{" "} */}
-                        <span className="text-[#007EC4]">Hide Details</span>
+                        <span className="text-[#1B1D29]">Hide Details</span>
                       </span>
                     ) : (
                       <span className="text-black">
                         {/* Fare Details :{" "} */}
-                        <span className="text-[#007EC4]">View Details</span>
+                        <span className="text-[#1B1D29]">View Details</span>
                       </span>
                     )}
                   </button>
@@ -485,8 +485,8 @@ ${
                 <div className=" flex items-end justify-end ">
                   <button
                     className={`${
-                      isSelected ? "bg-green-500" : "bg-[#007EC4]"
-                    } text-white md:w-20 px-7 py-2 rounded-md `}
+                      isSelected ? "bg-[#D7B56D] text-[#1B1D29]  font-bold" : "bg-[#1B1D29] text-[#D7B56D]"
+                    }  md:w-20 px-7 py-2 rounded-md `}
                     onClick={() => onSelect(localSelectedPriceIndex)}
                   >
                     {isSelected ? "Selected" : "Select"}
@@ -516,7 +516,7 @@ ${
                 onClick={() => setActiveTab(tab)}
                 className={`py-2 px-2 shrink-0 text-[12px] ${
                   activeTab === tab
-                    ? "text-[#007EC4]  font-bold border-b-2 border-[#007EC4]"
+                    ? "text-[#1B1D29]  font-bold border-b-2 border-[#1B1D29]"
                     : "text-gray-500"
                 }`}
               >

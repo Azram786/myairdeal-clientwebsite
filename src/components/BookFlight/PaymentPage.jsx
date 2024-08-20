@@ -15,7 +15,6 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   const [errors, setErrors] = useState({});
   const [markUp, setMarkUp] = useState(null);
 
-
   const calculatePassengerDetails = useMemo(() => {
     return passengersData?.passengers?.map((passenger) => {
       const baseFare = data?.totalPriceInfo?.totalFareDetail.fC?.TF || 0;
@@ -60,7 +59,6 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         },
       })
       .then((res) => {
-       
         if (res.data.flatPrice) {
           setConvenienceFee(res.data.value);
           saveCommission(res.data.value);
@@ -80,7 +78,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
       })
       .catch((error) => {
         // console.log(error);
-        ReactToast(error.message)
+        ReactToast(error.message);
       });
   };
 
@@ -186,7 +184,6 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
       if (!response.data) {
         throw new Error("Booking API call failed");
       }
-   
 
       if (response.data?.status?.success) {
         ReactToast("Booking successful!");
@@ -195,7 +192,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         );
       }
     } catch (error) {
-      console.error( error);
+      console.error(error);
       ReactToast("Booking failed. Please contact customer support.");
     } finally {
       setIsLoading(false);
@@ -203,14 +200,13 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   };
 
   const handlePaymentSuccess = async (response) => {
-
     setIsProcessing(false);
     ReactToast("Payment successful! Processing your booking...");
     await callBookingApi(response);
   };
 
   const handlePaymentError = (error) => {
-    console.error( error);
+    console.error(error);
     ReactToast("Payment failed. Please try again.");
     setIsProcessing(false);
   };
@@ -282,7 +278,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
           in our privacy policy.
         </p>
         <button
-          className="bg-[#007EC4] rounded-md mb-4 text-white font-semibold text-sm md:text-base px-5 py-2 mt-4 disabled:opacity-50 flex items-center justify-center"
+          className="bg-[#1B1D29] rounded-md mb-4 text-[#D7B56D] font-semibold text-sm md:text-base px-5 py-2 mt-4 disabled:opacity-50 flex items-center justify-center"
           onClick={openRazorpay}
           disabled={isProcessing}
         >

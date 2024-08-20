@@ -45,7 +45,6 @@ const FlightSummary = () => {
     return bookings ? bookings.map((item) => item.priceId) : [];
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
- 
 
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
@@ -65,7 +64,6 @@ const FlightSummary = () => {
 
   const handleDataFromChild = (data) => {
     setPassengerData(data);
-
   };
 
   const getData = async () => {
@@ -237,14 +235,14 @@ const FlightSummary = () => {
                   {data?.tripInfos?.map((item, index) => {
                     return (
                       <div key={index} className=" rounded-lg p-2   ">
-                        <div className=" flex flex-wrap items-center justify-between bg-blue-200 p-2 rounded-t-lg">
-                          <div className="text-base sm:text-lg font-bold flex items-center">
+                        <div className=" flex flex-wrap items-center justify-between bg-[#1B1D29] text-white  p-2 rounded-t-lg">
+                          <div className="text-base sm:text-lg font-semibold flex items-center">
                             <span>{item.sI[0].da.city}</span>
                             <FaArrowRight className="mx-2 inline" />
                             <span>{item.sI[item.sI.length - 1].aa.city}</span>
                           </div>
                           <div className="flex justify-center items-center gap-2">
-                            <div className="text-gray-600 text-sm mt-1 sm:mt-0 sm:ml-2">
+                            <div className="text-white text-sm mt-1 sm:mt-0 sm:ml-2">
                               On{" "}
                               {new Date(item.sI[0].dt).toLocaleDateString(
                                 "en-US",
@@ -256,7 +254,7 @@ const FlightSummary = () => {
                                 }
                               )}
                             </div>
-                            <div className="text-sm md:text-base  font-semibold text-gray-600 flex items-center">
+                            <div className="text-sm md:text-base  font-semibold text-white flex items-center">
                               <FaRegClock className="mr-2 " />
                               {calculateTotalDuration(item.sI)}
                             </div>
@@ -269,7 +267,7 @@ const FlightSummary = () => {
                                 <div className="flex-col lg-custom:flex-row md:items-center   w-full justify-evenly  mb-4  flex">
                                   <div className="w-full lg-custom:w-[20%] flex ">
                                     <div className="font-semibold  text-xs  rounded-md inline-flex md:flex md:h-full lg-custom:justify-center lg-custom:items-center md:flex-col items-start justify-start  s p-1 space-x-2">
-                                      <div className="w-8 h-8 md:h-14 md:w-14">
+                                      <div className="w-8 h-8 md:h-14 md:w-14 ">
                                         <img
                                           src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
                                           onError={(e) =>
@@ -411,7 +409,7 @@ const FlightSummary = () => {
                                   the Airline
                                 </span> */}
                                 {index !== item.sI.length - 1 && (
-                                  <div className="flex justify-between bg-blue-900 text-white p-3 rounded-md mt-4 mb-4">
+                                  <div className="flex justify-between bg-[#1B1D29] text-white p-3 rounded-md mt-4 mb-4">
                                     <div className="text-sm">
                                       Require to change plane
                                     </div>
@@ -439,7 +437,7 @@ const FlightSummary = () => {
                 </div>
                 <div className="flex justify-center py-3 px-4">
                   <button
-                    className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-[#007EC4] text-white rounded-md text-sm sm:text-base flex items-center justify-center"
+                    className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-[#1B1D29] text-[#D7B56D]  rounded-md text-sm sm:text-base flex items-center justify-center"
                     onClick={handleSaveAndContinue}
                   >
                     {isSeatMapLoading ? (
@@ -484,14 +482,14 @@ const FlightSummary = () => {
           {/* Right Section */}
           <div className="w-full lg-custom:w-[25%] h-full mb-8  rounded-lg space-y-2 p-5 shadow-md bg-white">
             <div className="w-full max-w-full rounded-lg  ">
-              <div className="flex items-center justify-between border-b border-gray-300 pb-4">
+              <div className="text-[#1B1D29] flex items-center justify-between border-b border-gray-300 pb-4">
                 <div>
                   <span className="font-bold text-lg md:text-xl lg:text-2xl">
                     FARE SUMMARY
                   </span>
                 </div>
               </div>
-              <div className="text-gray-700 mt-4 md:mt-6 space-y-4 md:space-y-6">
+              <div className="text-[#1B1D29] mt-4 md:mt-6 space-y-4 md:space-y-6">
                 <div className="pt-3">
                   <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                     <span className="text-sm md:text-base ">Base fare</span>

@@ -108,13 +108,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
             company's GST details
           </div>
         </div>
-        <div>
-          {expanded ? (
-            <FaChevronUp />
-          ) : (
-            <FaChevronDown />
-          )}
-        </div>
+        <div>{expanded ? <FaChevronUp /> : <FaChevronDown />}</div>
       </div>
       {expanded && (
         <div className="p-4 bg-white">
@@ -198,7 +192,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
           </div>
           <div className="mt-6 flex justify-end">
             <button
-              className="bg-[#007ec4] text-white px-4 py-2 rounded hover:bg-[#006aa3] transition-colors"
+              className="bg-[#D7B56D] text-white px-4 py-2 rounded hover:bg-[#006aa3] transition-colors"
               onClick={handleSaveGSTDetails}
             >
               Save GST Details

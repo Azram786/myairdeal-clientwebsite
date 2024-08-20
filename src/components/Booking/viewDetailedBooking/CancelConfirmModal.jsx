@@ -55,7 +55,7 @@ const CancelConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
                 </div> */}
                 <div className="mt-6 text-center">
                     <button
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-[#1B1D29] transition-colors"
                         onClick={handleConfirm}
                     // disabled={!selection}
                     >

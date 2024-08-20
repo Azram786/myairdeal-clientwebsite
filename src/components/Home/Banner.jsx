@@ -107,7 +107,7 @@ const Banner = () => {
                 behavior: "smooth",
               })
             }
-            className="bg-[#01324D] px-6 text-xs md:text-base rounded-md mt-4 py-2"
+            className="bg-[#1B1D29] px-6 text-xs md:text-base rounded-md mt-4 py-2"
           >
               {banners[currentSlide]?.buttonText}
           </button>

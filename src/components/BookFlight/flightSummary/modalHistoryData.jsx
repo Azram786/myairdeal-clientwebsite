@@ -6,11 +6,9 @@ const ModalHistoryData = ({
   historyData,
   loading,
   onSelect,
-  DATAindex
+  DATAindex,
 }) => {
   if (!isOpen) return null;
-
-
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
@@ -34,7 +32,9 @@ const ModalHistoryData = ({
             />
           </svg>
         </button>
-        <h2 className="text-base md:text-xl font-semibold">Select From History</h2>
+        <h2 className="text-base md:text-xl font-semibold">
+          Select From History
+        </h2>
         <div className="mt-4">
           {loading ? (
             <div className="flex justify-center items-center w-96 h-96">
@@ -77,12 +77,11 @@ const ModalHistoryData = ({
         </div>
         <button
           onClick={onClose}
-          className="mt-4 bg-[#007EC4] text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          className="mt-4 bg-[#D7B56D] text-white px-4 py-2 rounded-lg hover:bg-blue-600"
         >
           Close
         </button>
       </div>
-
     </div>
   );
 };

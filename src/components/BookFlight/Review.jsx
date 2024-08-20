@@ -193,7 +193,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                       There is a Special No Meal fare Provided by the Airline
                     </span> */}
                     {segmentIndex !== item.sI.length - 1 && (
-                      <div className="flex justify-between bg-blue-900 text-white p-3 rounded-md mt-4 mb-4">
+                      <div className="flex justify-between bg-[#1B1D29] text-white p-3 rounded-md mt-4 mb-4">
                         <div className="text-sm">Require to change plane</div>
                         <div className="text-base font-medium">
                           <span className="text-sm">
@@ -300,7 +300,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
       <label className="flex items-center mt-2">
         <input
           type="checkbox"
-          className="form-checkbox h-5 w-5 white border-gray-300 rounded focus:ring-blue-500 focus:outline-none"
+          className="form-checkbox h-5 w-5 white border-gray-300 rounded focus:ring-[#1B1D29] focus:outline-none"
           checked={isTermsChecked}
           onChange={(e) => setIsTermsChecked(e.target.checked)}
         />
@@ -312,7 +312,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
       <div className="flex justify-between items-center bg-gray-200 p-2 rounded-lg shadow-md mt-4">
         <button
           onClick={() => setCurrentStep(1)}
-          className="bg-[#007EC4] hover:bg-blue-600 text-white font-bold text-sm md:text-base py-2 px-4 rounded-md focus:outline-none"
+          className="bg-[#1B1D29] hover:bg-[#D7B56D] hover:text-black text-white font-bold text-sm md:text-base py-2 px-4 rounded-md focus:outline-none"
         >
           Back
         </button>
@@ -320,7 +320,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
           onClick={() => setCurrentStep(3)}
           className={`${
             isTermsChecked
-              ? "bg-[#007EC4] hover:bg-blue-600"
+              ? "bg-[#1B1D29] hover:bg-[#D7B56D] hover:text-black"
               : "bg-gray-400 cursor-not-allowed"
           } text-white font-bold text-sm md:text-base py-2 px-4 rounded-md focus:outline-none`}
           disabled={!isTermsChecked}

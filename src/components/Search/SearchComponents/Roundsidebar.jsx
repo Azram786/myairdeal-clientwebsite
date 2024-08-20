@@ -1,13 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { IoIosMoon, IoIosSunny } from 'react-icons/io';
-import { PiMountains } from 'react-icons/pi';
-import { TbSunset2 } from 'react-icons/tb';
+import React, { useEffect, useState } from "react";
+import { IoIosMoon, IoIosSunny } from "react-icons/io";
+import { PiMountains } from "react-icons/pi";
+import { TbSunset2 } from "react-icons/tb";
 
-const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirection, setActiveDirection, passenger, isSpecialReturn, setIspecialReturn }) => {
+const RoundSideBar = ({
+  filters,
+  setFilters,
+  onwardData,
+  returnData,
+  activeDirection,
+  setActiveDirection,
+  passenger,
+  isSpecialReturn,
+  setIspecialReturn,
+}) => {
   const [stops] = useState(["0", "1", "2", "3+"]);
   const [maxPrices, setMaxPrices] = useState({ onward: 0, return: 0 });
   const [specialReturnAirlines, setSpecialReturnAirlines] = useState([]);
-  
 
   const calculateTotalPrice = (flight) => {
     let total = 0;
@@ -26,7 +35,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
       const returnMax = Math.max(...returnData.map(calculateTotalPrice));
       setMaxPrices({ onward: onwardMax, return: returnMax });
 
-      setFilters(prev => ({
+      setFilters((prev) => ({
         ...prev,
         onward: { ...prev.onward, maxPrice: onwardMax },
         return: { ...prev.return, maxPrice: returnMax },
@@ -39,8 +48,12 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   useEffect(() => {
     const getSpecialReturnAirlines = () => {
       const airlines = new Set();
-      [...onwardData, ...returnData].forEach(flight => {
-        if (flight.totalPriceList.some(price => price.fareIdentifier === "SPECIAL_RETURN")) {
+      [...onwardData, ...returnData].forEach((flight) => {
+        if (
+          flight.totalPriceList.some(
+            (price) => price.fareIdentifier === "SPECIAL_RETURN"
+          )
+        ) {
           airlines.add(flight.sI[0].fD.aI.name);
         }
       });
@@ -50,81 +63,80 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
     getSpecialReturnAirlines();
   }, [onwardData, returnData]);
 
-  const flightCountMap = (data) => data.reduce((acc, flight) => {
-    const airline = flight.sI[0]?.fD?.aI?.name;
-    if (airline) {
-      acc[airline] = (acc[airline] || 0) + 1;
-    }
-    return acc;
-  }, {});
+  const flightCountMap = (data) =>
+    data.reduce((acc, flight) => {
+      const airline = flight.sI[0]?.fD?.aI?.name;
+      if (airline) {
+        acc[airline] = (acc[airline] || 0) + 1;
+      }
+      return acc;
+    }, {});
 
   const [tooltipPosition, setTooltipPosition] = useState(0);
   const [showTooltip, setShowTooltip] = useState(false);
-  
+
   const handlePriceChange = (e) => {
     const newValue = parseInt(e.target.value);
     const thumbOffset = (newValue / maxPrices[activeDirection]) * 100;
-  
+
     //tooltip for price
     setTooltipPosition(thumbOffset);
     setShowTooltip(true);
-  
-    
-    setFilters(prev => ({
+
+    setFilters((prev) => ({
       ...prev,
       [activeDirection]: {
         ...prev[activeDirection],
-        maxPrice: newValue
-      }
+        maxPrice: newValue,
+      },
     }));
   };
 
   const handleStopsChange = (stop) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       [activeDirection]: {
         ...prev[activeDirection],
         stops: prev[activeDirection].stops.includes(stop)
-          ? prev[activeDirection].stops.filter(s => s !== stop)
-          : [...prev[activeDirection].stops, stop]
-      }
+          ? prev[activeDirection].stops.filter((s) => s !== stop)
+          : [...prev[activeDirection].stops, stop],
+      },
     }));
   };
 
   const handleTimeChange = (type, time) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       [activeDirection]: {
         ...prev[activeDirection],
         [type]: prev[activeDirection][type].includes(time)
-          ? prev[activeDirection][type].filter(t => t !== time)
-          : [...prev[activeDirection][type], time]
-      }
+          ? prev[activeDirection][type].filter((t) => t !== time)
+          : [...prev[activeDirection][type], time],
+      },
     }));
   };
 
   const handleAirlineChange = (airline) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       [activeDirection]: {
         ...prev[activeDirection],
         airlines: prev[activeDirection].airlines.includes(airline)
-          ? prev[activeDirection].airlines.filter(a => a !== airline)
-          : [...prev[activeDirection].airlines, airline]
-      }
+          ? prev[activeDirection].airlines.filter((a) => a !== airline)
+          : [...prev[activeDirection].airlines, airline],
+      },
     }));
   };
 
   const handleSpecialReturnAirlineChange = (airline) => {
     setIspecialReturn(!isSpecialReturn);
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       specialReturnAirlines: prev.specialReturnAirlines.includes(airline)
-        ? prev.specialReturnAirlines.filter(a => a !== airline)
-        : [...prev.specialReturnAirlines, airline]
+        ? prev.specialReturnAirlines.filter((a) => a !== airline)
+        : [...prev.specialReturnAirlines, airline],
     }));
   };
-
 
   const renderStopsSection = () => (
     <div className="mb-6 border-b  rounded-md border-gray-300 pb-4">
@@ -134,8 +146,10 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
           <label
             key={stop}
             htmlFor={`stop-${stop}`}
-            className={`mb-1 border text-xs  hover:bg-blue-100 flex justify-center py-2 ${index === 0 ? 'rounded-l-md' : ''} ${index === stops.length - 1 ? 'rounded-r-md' : ''} ${
-              filters[activeDirection].stops.includes(stop) ? 'bg-blue-200' : ''
+            className={`mb-1 border text-xs  hover:bg-blue-100 flex justify-center py-2 ${
+              index === 0 ? "rounded-l-md" : ""
+            } ${index === stops.length - 1 ? "rounded-r-md" : ""} ${
+              filters[activeDirection].stops.includes(stop) ? "bg-blue-200" : ""
             }`}
           >
             <input
@@ -148,7 +162,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
             {stop}
           </label>
         ))}
-         {/* {["0", "1", "2", "3+"].map((stop, index) => (
+        {/* {["0", "1", "2", "3+"].map((stop, index) => (
               <label
                 key={stop}
                 htmlFor={`stop-${stop}`}
@@ -190,12 +204,12 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
           { icon: <PiMountains />, time: "00-06" },
           { icon: <IoIosSunny />, time: "06-12" },
           { icon: <TbSunset2 />, time: "12-18" },
-          { icon: <IoIosMoon />, time: "18-00" }
+          { icon: <IoIosMoon />, time: "18-00" },
         ].map(({ icon, time }) => (
           <span
             key={time}
             className={`border-gray-500 border  hover:bg-blue-100 text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
-              filters[activeDirection][type].includes(time) ? 'bg-blue-200' : ''
+              filters[activeDirection][type].includes(time) ? "bg-blue-200" : ""
             }`}
             onClick={() => handleTimeChange(type, time)}
           >
@@ -208,13 +222,18 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   );
 
   const renderAirlinesSection = () => {
-    const airlineCounts = flightCountMap(activeDirection === 'onward' ? onwardData : returnData);
+    const airlineCounts = flightCountMap(
+      activeDirection === "onward" ? onwardData : returnData
+    );
     return (
       <div className="mb-6 border-b border-gray-300 pb-4">
         <h3 className="text-sm font-semibold mb-2">Airlines</h3>
         <div className="flex flex-col">
           {Object.entries(airlineCounts).map(([airline, count]) => (
-            <span key={airline} className="flex justify-between items-center w-full">
+            <span
+              key={airline}
+              className="flex justify-between items-center w-full"
+            >
               <label htmlFor={`airline-${airline}`} className="mb-1 text-xs">
                 {airline} <span className="text-gray-400">({count})</span>
               </label>
@@ -252,7 +271,7 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
           {showTooltip && (
             <div
               className="absolute bg-gray-700 text-white text-xs rounded px-2 py-1"
-              style={{ left: `calc(${tooltipPosition}% - 20px)`, top: '-30px' }}
+              style={{ left: `calc(${tooltipPosition}% - 20px)`, top: "-30px" }}
             >
               ₹{filters[activeDirection].maxPrice}
             </div>
@@ -268,8 +287,14 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
       <h3 className="text-sm font-semibold mb-2">Special Return Flights</h3>
       <div className="flex flex-col">
         {specialReturnAirlines.map((airline) => (
-          <span key={airline} className="flex justify-between items-center w-full">
-            <label htmlFor={`special-return-${airline}`} className="mb-1 text-xs">
+          <span
+            key={airline}
+            className="flex justify-between items-center w-full"
+          >
+            <label
+              htmlFor={`special-return-${airline}`}
+              className="mb-1 text-xs"
+            >
               {airline}
             </label>
             <input
@@ -288,20 +313,30 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
   return (
     <div className="flex  flex-row w-[full]  lg-custom:w-full h-screen overflow-y-auto border shadow-md  min-h-screen">
       <div className="p-4 grid gap-2 grid-cols-1 w-full md:grid-cols-1">
-        <div className='flex flex-col'>
+        <div className="flex flex-col">
           <div className="mb-6 border-b border-gray-300 pb-4">
             <div className="flex flex-col text-xs sm:flex-row justify-center items-center mb-4">
               <button
-                className={`px-4 sm:rounded-l py-2 ${activeDirection === "onward" ? "bg-[#007EC4] text-white" : "bg-gray-200"}`}
+                className={`px-4 sm:rounded-l py-2 ${
+                  activeDirection === "onward"
+                    ? "bg-[#1B1D29] text-white"
+                    : "bg-gray-200"
+                }`}
                 onClick={() => setActiveDirection("onward")}
               >
-                {onwardData[0]?.sI[0]?.da?.code} - {onwardData[0]?.sI[onwardData[0].sI.length - 1]?.aa?.code}
+                {onwardData[0]?.sI[0]?.da?.code} -{" "}
+                {onwardData[0]?.sI[onwardData[0].sI.length - 1]?.aa?.code}
               </button>
               <button
-                className={`px-4 sm:rounded-r py-2 ${activeDirection === "return" ? "bg-[#007EC4] text-white" : "bg-gray-200"}`}
+                className={`px-4 sm:rounded-r py-2 ${
+                  activeDirection === "return"
+                    ? "bg-[#1B1D29] text-white"
+                    : "bg-gray-200"
+                }`}
                 onClick={() => setActiveDirection("return")}
               >
-                {returnData[0]?.sI[0]?.da?.code} - {returnData[0]?.sI[returnData[0].sI.length - 1]?.aa?.code}
+                {returnData[0]?.sI[0]?.da?.code} -{" "}
+                {returnData[0]?.sI[returnData[0].sI.length - 1]?.aa?.code}
               </button>
             </div>
           </div>
@@ -309,8 +344,8 @@ const RoundSideBar = ({ filters, setFilters, onwardData, returnData, activeDirec
         </div>
 
         {renderStopsSection()}
-        {renderTimeSection('departureTime', 'Departure Time')}
-        {renderTimeSection('arrivalTime', 'Arrival Time')}
+        {renderTimeSection("departureTime", "Departure Time")}
+        {renderTimeSection("arrivalTime", "Arrival Time")}
         {renderAirlinesSection()}
         {renderSpecialReturnSection()}
       </div>

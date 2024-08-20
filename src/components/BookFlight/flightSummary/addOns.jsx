@@ -72,15 +72,14 @@ const AddonsCard = ({
         </div>
         <div>{expanded ? <FaChevronUp /> : <FaChevronDown />}</div>
       </div>
-      {
-        expanded &&
+      {expanded && (
         <div className="p-4">
           <div className="flex space-x-4 mb-4">
             <button
               onClick={() => setActiveButton("seatSelection")}
               className={`text-sm md:text-base px-4 py-2 rounded ${
                 activeButton === "seatSelection"
-                  ? "bg-[#007ec4] text-white"
+                  ? "bg-[#D7B56D] text-white"
                   : "bg-gray-200 text-gray-700"
               }`}
             >
@@ -93,7 +92,7 @@ const AddonsCard = ({
               onClick={() => setActiveButton("addBagAndMeal")}
               className={`text-sm md:text-base px-4 py-2 rounded ${
                 activeButton === "addBagAndMeal"
-                  ? "bg-[#007ec4] text-white"
+                  ? "bg-[#D7B56D] text-white"
                   : "bg-gray-200 text-gray-700"
               }`}
             >
@@ -123,7 +122,7 @@ const AddonsCard = ({
             />
           )}
         </div>
-      }
+      )}
     </div>
   );
 };

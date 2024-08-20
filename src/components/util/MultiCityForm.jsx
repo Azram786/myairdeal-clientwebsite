@@ -99,16 +99,16 @@ const MultiCityForm = ({
 
       <div className="flex md:justify-start gap-4 lg:w-[25%]items-center md:items-end justify-between ">
         <button
-          className="flex p-3 justify-center items-center bg-red-500 text-white rounded-md cursor-pointer"
+          className="flex p-3 justify-center items-center bg-[#1B1D29] text-[#D7B56D] rounded-md cursor-pointer"
           onClick={removeLastFormHandler}
         >
           <MdOutlineClear size={"23px"} />
         </button>
         <button
-          className="bg-[#1F61BC] p-3 rounded text-white"
+          className="bg-[#D7B56D] p-3 rounded text-black"
           onClick={dynamicFormIncreaseHandler}
         >
-          ADD ONE MORE.
+          ADD ONE MORE
         </button>
       </div>
     </div>

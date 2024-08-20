@@ -186,12 +186,12 @@ const Login = () => {
                 whileTap={{ scale: 0.85 }}
                 disabled={loading}
                 onClick={handleSubmit}
-                className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5"
+                className="bg-[#D7B56D] text-white h-[45px] rounded-md mt-5"
               >
                 {loading ? (
                   <div className="flex justify-center items-center">
                     <motion.div
-                      className="w-4 h-4 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
+                      className="w-4 h-4 border-4 border-t-4 border-t-[#D7B56D] border-gray-200 rounded-full"
                       variants={spinnerVariants}
                       animate="animate"
                     />

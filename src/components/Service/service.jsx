@@ -9,12 +9,12 @@ function Card(props) {
         <img
           src={props?.imgURL}
           alt="plane"
-          className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4 bg-sky-100 border-solid border-4 border-sky-900 rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm"
+          className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4 bg-sky-100 border-solid border-4 border-[#1B1D29] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm"
         />
-        <h2 className="text-sm sm:text-2xl font-semibold mb-2">
+        <h2 className="text-sm sm:text-2xl text-[#1B1D29] font-semibold mb-2">
           {props?.head}
         </h2>
-        <p className="text-sm sm:text-lg   ">{props?.para}</p>
+        <p className="text-sm sm:text-lg text-[#1B1D29]  ">{props?.para}</p>
       </div>
  
   );
@@ -37,8 +37,8 @@ function Service() {
       style={{ backgroundImage: `url(${background})` }}
       className="bg-cover  w-full mx-auto text-center py-12"
     >
-      <div className="text-white text-base font-bold mb-2">Services</div>
-      <div className="text-white text-xl sm:text-3xl font-bold mb-8">
+      <div className="text-[#D7B56D] text-base font-bold mb-2">Services</div>
+      <div className="text-[#D7B56D] text-xl sm:text-3xl font-bold mb-8">
         We Offer Best Services
       </div>
       <div className="grid grid-cols-2   w-full md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 place-items-center justify-center">

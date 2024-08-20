@@ -15,7 +15,6 @@ const SeatMap = ({
   const [sData, setSData] = useState(null);
   const [sInfo, setSInfo] = useState([]);
 
-
   // Filter out infants from passengers
   const adultPassengers = Passengers.filter(
     (passenger) => passenger.passengerType !== "INFANT"
@@ -54,14 +53,14 @@ const SeatMap = ({
     if (!seat.isBooked) {
       setSelectedSeats((prevSeats) => {
         const seatIndex = prevSeats.findIndex((s) => s.code === seat.seatNo);
-  
+
         // If the seat is already selected, unselect it
         if (seatIndex !== -1) {
           const updatedSeats = prevSeats.filter((s) => s.code !== seat.seatNo);
           onSeatSelect(updatedSeats.length, null);
           return updatedSeats;
         }
-  
+
         // If the maximum number of seats is selected, replace the last selected seat
         if (prevSeats.length >= adultPassengers.length) {
           const updatedSeats = prevSeats.slice(1); // Remove the first seat
@@ -74,7 +73,7 @@ const SeatMap = ({
           onSeatSelect(newSeatsList.length - 1, newSeat);
           return newSeatsList;
         }
-  
+
         // If there is still room to select a new seat
         const newSeat = {
           key: flightId,
@@ -87,7 +86,6 @@ const SeatMap = ({
       });
     }
   };
-  
 
   const isSeatSelected = (seatNo) =>
     selectedSeats.some((seat) => seat.code === seatNo);
@@ -99,7 +97,7 @@ const SeatMap = ({
     if (seat.isBooked) {
       className += "bg-gray-400 cursor-not-allowed";
     } else if (isSeatSelected(seat.seatNo)) {
-      className += "bg-[#007EC4] text-white";
+      className += "bg-[#D7B56D] text-white";
     } else {
       className += "bg-white hover:bg-gray-200";
     }
@@ -155,7 +153,9 @@ const SeatMap = ({
 
   return (
     <div className="container ">
-       <p className="text-base font-semibold ">Your booking is protected by MyAirDeal</p>
+      <p className="text-base font-semibold ">
+        Your booking is protected by MyAirDeal
+      </p>
       <div className="flex flex-col gap-6 md:flex-row w-full justify-around">
         {/* First portion for displaying the data - make it sticky */}
         <div className="md:sticky md:top-0 md:self-start md:min-h-screen bg-white md:w-[40%] border-r-2 flex flex-col">
@@ -185,10 +185,11 @@ const SeatMap = ({
               </div>
             </div>
             <div className="mt-6 md:max-h-[calc(100vh-300px)] w-full   overflow-y-auto custom-scrollbar">
-             
               <div className="grid  mx-2 grid-cols-3">
                 <div className="flex flex-col text-center items-center ">
-                  <h1 className="text-sm font-semibold text-center border-b-2  w-full mb-2">Passengers</h1>
+                  <h1 className="text-sm font-semibold text-center border-b-2  w-full mb-2">
+                    Passengers
+                  </h1>
                   <div className="flex flex-col flex-wrap items-center text-center  w-full">
                     {adultPassengers.map((person, index) => (
                       <p
@@ -201,7 +202,9 @@ const SeatMap = ({
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-center">
-                  <h1 className=" text-sm font-semibold mb-2 w-full text-center border-b-2">Seat</h1>
+                  <h1 className=" text-sm font-semibold mb-2 w-full text-center border-b-2">
+                    Seat
+                  </h1>
                   <div className="flex flex-col">
                     {selectedSeats?.map((seat) => (
                       <p
@@ -214,7 +217,9 @@ const SeatMap = ({
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-center">
-                  <h1 className="text-sm font-semibold mb-2 w-full text-center border-b-2">Fee</h1>
+                  <h1 className="text-sm font-semibold mb-2 w-full text-center border-b-2">
+                    Fee
+                  </h1>
                   <div>
                     {selectedSeats?.map((seat) => (
                       <p
@@ -280,7 +285,7 @@ const SeatMap = ({
               <p className="ml-4">Extra Legroom</p>
             </div>
             <div className="flex justify-start items-start">
-              <span className="inline-block w-4 h-4 bg-[#007EC4] mr-2"></span>
+              <span className="inline-block w-4 h-4 bg-[#D7B56D] mr-2"></span>
               <p className="ml-4">Selected</p>
             </div>
           </div>

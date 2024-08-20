@@ -409,7 +409,7 @@ const RoundTrip = ({
     }
 
     return (
-      <div className=" overflow-x-auto bg-green-200">
+      <div className=" overflow-x-auto ">
         {flights.map((flight, index) => (
           <RoundTripCard
             key={index}
@@ -511,7 +511,7 @@ const RoundTrip = ({
             </h2>
           </div>
         </div>
-        <div className=" w-full overflow-x-auto flex h-[850px] flex-col lg-custom:flex-row">
+        <div className="  flex h-[850px] flex-col lg-custom:flex-row">
           <div
             className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
               activeSection === "onward" ? "block" : "hidden"

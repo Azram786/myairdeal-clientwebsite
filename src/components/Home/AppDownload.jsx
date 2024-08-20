@@ -46,7 +46,7 @@ const DownloadApp = () => {
     <div className="px-3 md:px-16 mx-auto p-6 font-poppins overflow-hidden relative m-5">
       {/* <h2 className="text-base font-sans text-gray-500 font-bold">Download</h2> */}
       <h1 className="text-xl md:text-3xl font-bold mb-8">Download our app</h1>
-      <div className="relative flex flex-col md:flex-row items-center  bg-[#253B59] justify-between p-8 rounded-lg md:h-56">
+      <div className="relative flex flex-col md:flex-row items-center  bg-[#1B1D29] justify-between p-8 rounded-lg md:h-56">
         <div className=" w-full  flex  rounded-lg ">
           <section className=" text-white md:w-3/4">
             <h2 className="text-base md:text-2xl font-bold mb-4">
@@ -56,7 +56,7 @@ const DownloadApp = () => {
               Available for Android and iOS. It's Free! Download Now!
             </p>
             <div className="flex justify-around md:justify-start gap-4">
-              <button className="text-sm md:text-base bg-[#0f1e35] px-4 text-white border border-white py-2  md:px-6 rounded-full">
+              <button className="text-sm md:text-base bg-[#D7B56D] px-4 text-black border-none py-2  md:px-6 rounded-full">
                 Play Store
               </button>
               <button className="text-sm md:text-base bg-white text-[#0f1e35] py-2 px-4 md:px-6 rounded-full">

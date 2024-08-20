@@ -332,7 +332,7 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
             <button
               onClick={handleModalOpen}
               type="button"
-              className="bg-[#1F61BC] text-white px-2 py-2 m-2 rounded-md text-sm font-medium mx-4"
+              className="bg-[#1B1D29] text-[#D7B56D] px-2 py-2 m-2 rounded-md text-sm font-medium mx-4"
             >
               Select from history
             </button>

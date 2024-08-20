@@ -25,13 +25,12 @@ const ViewDetailedBookingCard = ({
     setOpenConnectionIndex(openConnectionIndex === index ? null : index);
   };
 
-
   return (
     <div className=" border-l-0 w-full lg:w-[72%]">
       <div className="rounded-lg my-2">
-        <div className="flex justify-between items-center bg-[#007EC4] flex-wrap p-4 rounded-t-xl text-white">
+        <div className="flex justify-between items-center bg-[#1B1D29] flex-wrap p-4 rounded-t-xl text-white">
           <div className="flex w-full  flex-col md:flex-row justify-end ">
-            <div className="h-16 w-16 flex items-center justify-center bg-white text-[#007EC4] font-bold text-xl rounded-full mr-4">
+            <div className="h-16 w-16 flex items-center justify-center bg-white text-[#D7B56D] font-bold text-xl rounded-full mr-4">
               {singleBookingData?.gstInfo?.registeredName
                 ?.charAt(0)
                 .toUpperCase() || user?.firstName.charAt(0)}
@@ -168,15 +167,15 @@ const ViewDetailedBookingCard = ({
                       {value.sI.length === 1
                         ? calculateDuration(value.sI[0].dt, value.sI[0].at)
                         : calculateDuration(
-                          value.sI[0].dt,
-                          value.sI[value.sI.length - 1].at
-                        )}
+                            value.sI[0].dt,
+                            value.sI[value.sI.length - 1].at
+                          )}
                     </h1>
                   </div>
 
                   <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-[80%] lg:w-full mx-auto  ">
                     <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded ">
                         <MdDateRange />
                       </div>
                       <div>
@@ -189,7 +188,7 @@ const ViewDetailedBookingCard = ({
                       </div>
                     </div>
                     <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded ">
                         <IoIosTime />
                       </div>
                       <div>
@@ -202,7 +201,7 @@ const ViewDetailedBookingCard = ({
                       </div>
                     </div>
                     <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3 ">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded  ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded  ">
                         <IoIosTime />
                       </div>
                       <div>
@@ -220,7 +219,7 @@ const ViewDetailedBookingCard = ({
                     </div>
 
                     <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded ">
                         <BsDoorClosedFill />
                       </div>
                       <div>
@@ -235,7 +234,7 @@ const ViewDetailedBookingCard = ({
                       </div>
                     </div>
                     <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded ">
                         <BsDoorClosedFill />
                       </div>
                       <div>
@@ -248,7 +247,7 @@ const ViewDetailedBookingCard = ({
                       </div>
                     </div>
                     <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#0A2945] p-2 rounded  ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded  ">
                         <MdOutlineAirlineSeatReclineExtra />
                       </div>
                       <div>
@@ -268,7 +267,7 @@ const ViewDetailedBookingCard = ({
                   <>
                     <button
                       onClick={() => toggleDropdown(index)}
-                      className="bg-[#007EC4] text-white w-full py-2 rounded-lg"
+                      className="bg-[#1B1D29] text-white w-full py-2 rounded-lg"
                     >
                       {openConnectionIndex === index
                         ? "Hide Connections"
@@ -279,9 +278,9 @@ const ViewDetailedBookingCard = ({
                         {value.sI.map((singleValue, index) => {
                           const layoverDuration = previousArrivalTime
                             ? calculateDuration(
-                              previousArrivalTime,
-                              singleValue.dt
-                            )
+                                previousArrivalTime,
+                                singleValue.dt
+                              )
                             : null;
                           previousArrivalTime = singleValue.at;
 

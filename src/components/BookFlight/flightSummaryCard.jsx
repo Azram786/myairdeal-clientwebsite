@@ -160,7 +160,7 @@ function FlightSummaryCard({ data, currentStep }) {
 
             <div className="flex justify-center mt-6 px-4">
               <button
-                className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-[#007EC4] text-white rounded-md text-sm sm:text-base flex items-center justify-center"
+                className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins text-[#D7B56D] bg-[#1B1D29] rounded-md text-sm sm:text-base flex items-center justify-center"
                 onClick={handleSaveAndContinue}
               >
                 {isSeatMapLoading ? (

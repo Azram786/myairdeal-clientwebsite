@@ -5,12 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaPlane } from "react-icons/fa";
 import "./ResentSearch.css";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clearResent,
-
-  setResentSearch,
-
-} from "../../store/slices/aut.slice";
+import { clearResent, setResentSearch } from "../../store/slices/aut.slice";
 import { MdFlight } from "react-icons/md";
 
 const RecentSearch = ({ ResentSearchData }) => {
@@ -24,7 +19,6 @@ const RecentSearch = ({ ResentSearchData }) => {
   }, [resentSearch, dispatch]);
 
   const setResentStateHandler = (value) => {
- 
     dispatch(setResentSearch(value));
   };
 
@@ -76,7 +70,7 @@ const RecentSearch = ({ ResentSearchData }) => {
           {ResentSearchData?.map((search, index) => (
             <div
               key={index}
-              className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#D3A121] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
+              className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#01324D] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
               onClick={() => {
                 setResentStateHandler(search);
               }}
@@ -85,34 +79,38 @@ const RecentSearch = ({ ResentSearchData }) => {
                 <div className="flex flex-row justify-between items-center">
                   <div className="text-left w-[40%]">
                     <div className="text-xs font-bold">
-                      {search?.searchQuery.routeInfos[0].fromCityOrAirport?.code || "N/A"}
+                      {search?.searchQuery.routeInfos[0].fromCityOrAirport
+                        ?.code || "N/A"}
                     </div>
                     <div className="text-[10px] text-gray-500">
                       {search?.searchQuery?.cabinClass || "N/A"}
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
-                      {search?.searchQuery.searchModifiers.isDirectFlight === true
+                      {search?.searchQuery.searchModifiers.isDirectFlight ===
+                      true
                         ? "Direct Flight"
                         : "Indirect flight "}
                     </div>
                   </div>
                   <div className="flex flex-col w-[20%] items-center">
                     <div className="relative h-0.5 bg-gray-300 my-1">
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[#D3A121]">
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[#D7B56D]">
                         <MdFlight className="transform rotate-90 text-base" />
                       </div>
                     </div>
                   </div>
                   <div className="text-right w-[40%]">
                     <div className="text-xs font-bold">
-                      {search?.searchQuery.routeInfos[0].toCityOrAirport?.code || "N/A"}
+                      {search?.searchQuery.routeInfos[0].toCityOrAirport
+                        ?.code || "N/A"}
                     </div>
 
                     <div className="text-xs">
                       {search?.searchQuery.routeInfos[0].travelDate}
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
-                      {search?.searchQuery?.searchModifiers?.isConnectingFlight === true
+                      {search?.searchQuery?.searchModifiers
+                        ?.isConnectingFlight === true
                         ? "Connection flight"
                         : ""}
                     </div>
@@ -219,7 +217,7 @@ export default RecentSearch;
 //             <Slider {...settings}>
 //                 {ResentSearchData.map((search, index) => (
 //                     <div key={index} className="p-2 " onClick={() => setResentStateHandler(search)}>
-//                         <div className="bg-white rounded-2xl shadow-lg p-3 border border-[#007EC4] my-3 font-poppins max-w-[335px] mx-auto">
+//                         <div className="bg-white rounded-2xl shadow-lg p-3 border border-[#D7B56D] my-3 font-poppins max-w-[335px] mx-auto">
 //                             <div className="flex flex-col space-y-2">
 //                                 <div className="flex flex-row justify-between items-center">
 //                                     <div className="text-left flex-1">
@@ -263,7 +261,7 @@ export default RecentSearch;
 //     <div className="w-full py-8">
 //         <h1 className="text-3xl px-16 font-bold text-start">Recent Search</h1>
 
-//         <div className="bg-white rounded-2xl shadow-lg p-3 border border-#007EC4] my-3 font-poppins max-w-[335px] mx-auto">
+//         <div className="bg-white rounded-2xl shadow-lg p-3 border border-#D7B56D] my-3 font-poppins max-w-[335px] mx-auto">
 //           <div className="flex flex-col space-y-2">
 //             <div className="flex flex-row justify-between items-center">
 //               <div className="text-left flex-1">

@@ -37,7 +37,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
 
   function convertDateFormat(inputDate) {
     const formattedDate = inputDate.split("T")[0];
-  
+
     return formattedDate;
   }
 
@@ -132,7 +132,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
 
     const tripsData = selectedTrips.map((tripIndex) => {
       const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
-   
+
       const tripData = {
         src: trip?.sI[0].da.code,
         dest:
@@ -206,8 +206,6 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
   const submitAmendment = async () => {
     setAmendmentLoadin(true);
     const data = getFormattedData();
-  
-
 
     try {
       if (!remarks) toast("enter remarks");
@@ -222,14 +220,12 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
             { bookingId: data.bookingId, remarks, type: data.type },
             { headers }
           );
-          
         } else {
           const response = await axios.post(
             `${import.meta.env.VITE_SERVER_URL}booking/submit-amendment`,
             data,
             { headers }
           );
-          
         }
       }
       setAmendmentLoadin(false);
@@ -243,7 +239,6 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
   };
 
   const handleConfirm = (selection) => {
-  
     if (selection == "no") {
       ReactToast("press yes to confirm submit amendment");
     } else {
@@ -258,7 +253,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
           {Loading ? (
             <div className="flex justify-center items-center w-full h-full">
               <motion.div
-                className="w-12 h-12 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
+                className="w-12 h-12 border-4 border-t-4 border-t-[#D7B56D] border-gray-200 rounded-full"
                 variants={spinnerVariants}
                 animate="animate"
               />
@@ -272,14 +267,14 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                 <label className="flex items-center mt-2">
                   <input
                     type="checkbox"
-                    className="form-checkbox h-6 w-6 text-blue-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                    className="form-checkbox h-6 w-6 text-[#1B1D29] border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
                     onChange={handleCancelWholeTicket}
                     checked={cancelWholeTicket}
                   />
                   <span
                     className={`ml-3 text-sm  font-semibold border p-1 rounded-md ${
                       cancelWholeTicket
-                        ? "border-blue-700 bg-blue-200"
+                        ? "border-[#1B1D29] bg-blue-200"
                         : "bg-gray-100"
                     }`}
                   >
@@ -293,13 +288,13 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                       <div
                         className={`flex flex-col gap-1 p-2 mb-2 text-sm md:text-base font-bold border rounded-lg ${
                           selectedTrips.includes(tripIndex) &&
-                          "border-blue-700 bg-blue-200"
+                          "border-[#1B1D29] bg-blue-200"
                         }`}
                       >
                         <div className="flex justify-between items-center">
                           <span>
                             Trip {tripIndex + 1}
-                            <p className="text-blue-700 text-base md:text-lg font-bold">
+                            <p className="text-[#1B1D29] text-base md:text-lg font-bold">
                               {trip?.sI[0].da.code} -
                               {trip.sI.length === 1
                                 ? trip?.sI[0].aa.code
@@ -308,7 +303,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                           </span>
                           <button
                             onClick={() => toggleDropdown(tripIndex)}
-                            className="text-blue-700 text-sm font-bold"
+                            className="text-[#1B1D29] text-sm font-bold"
                           >
                             {openDropdowns.includes(tripIndex)
                               ? "Hide Passenger(s)"
@@ -338,12 +333,12 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                                   selectedTravelers.includes(
                                     `${tripIndex}-${travelerIndex}`
                                   )
-                                    ? "border border-blue-800"
+                                    ? "border border-[#1B1D29]"
                                     : "border"
                                 }`}
                               >
                                 <div className="flex flex-wrap">
-                                  <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-blue-500 text-white font-medium text-xl rounded-full mr-4">
+                                  <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-[#1B1D29] text-white font-medium text-xl rounded-full mr-4">
                                     {traveler.fN.charAt(0).toUpperCase()}
                                   </div>
                                   <div>
@@ -387,7 +382,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                 )}
 
                 <div className="mt-4">
-                  <label className="block text-blue-700 font-semibold mb-2">
+                  <label className="block text-[#1B1D29] font-semibold mb-2">
                     Remarks
                   </label>
                   <textarea
@@ -410,7 +405,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                     </>
                   ) : (
                     <button
-                      className="px-4 py-2 bg-blue-700 text-white font-semibold mb-4 rounded-md transition-colors"
+                      className="px-4 py-2 bg-[#1B1D29] text-white font-semibold mb-4 rounded-md transition-colors"
                       // onClick={submitAmendment}
                       onClick={openModal}
                     >
