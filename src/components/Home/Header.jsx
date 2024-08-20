@@ -70,7 +70,7 @@ const Header = () => {
     <>
       <Link
         to="/"
-        className={`font-semibold text-center border-r px-3 ${location.pathname === "/" ? "text-[#1F61BC]" : "text-gray-600"
+        className={`font-semibold text-center border-r px-3 ${location.pathname === "/" ? "text-[#c79834]" : "text-gray-600"
           } ${mobile ? "block py-2" : ""}`}
         onClick={() => {
           dispatch(setIsaModifySearch(false))
@@ -83,7 +83,7 @@ const Header = () => {
         <>
           <Link
             to="/view-booking"
-            className={`font-semibold border-r px-3 ${location.pathname === "/view-booking" ? "text-[#1F61BC]" : "text-gray-600"
+            className={`font-semibold border-r px-3 ${location.pathname === "/view-booking" ? "text-[#c79834]" : "text-gray-600"
               } ${mobile ? "block py-2" : ""}`}
             onClick={() => mobile && setMobileMenuOpen(false)}
           >
@@ -110,7 +110,7 @@ const Header = () => {
       <div className=" mx-auto px-8 py-2 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <img src={main_logo} alt="logo" className="h-10 mr-2" />
-          <h3 className="text-[#1F61BC] text-xl font-bold">My Air Deal</h3>
+          <h3 className="text-[#c79834] text-xl font-bold">My <span className="[#D3C19F]">Air</span> Deal</h3>
         </Link>
         <div className="hidden md:flex items-center ">
           <NavLinks />

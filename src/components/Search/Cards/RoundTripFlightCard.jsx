@@ -164,7 +164,7 @@ const RoundTripCard = ({
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex w-full overscroll-auto flex-col  justify-start "
+                className="flex w-full overscroll-x-auto  flex-col  justify-start "
               >
                 <div className="text-sm w-max ml-2  flex flex-col md:flex-row  text-black font-bold">
                   {segment.da.city} → {segment.aa.city}
@@ -174,26 +174,25 @@ const RoundTripCard = ({
                     {getDayOfWeek(segment.dt)}
                   </span>
                 </div>
-                <div className="flex bg-green-400 justify-center w-full overflow-x-auto  mt-2  items-center md:items-start">
-                  <div className=" min-w-12 ml-6 md:ml-0 items-start">
+                <div className="flex justify-center   mt-2   items-center md:items-start">
+                  <div className="  min-w-12 mx-2 md:items-start">
                     <img
                       src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
                       alt={segment?.fD?.aI?.code}
                       className="md:size-10 size-8 rounded-md mr-0 md:mr-4"
                     />
-                    <div className="">
-                      <div className="font-bold text-xs">
-                        <span className="text-[10px] text-gray-600">
-                          {flightDetails.totalPriceList[0].fd.ADULT.cc}
-                        </span>{" "}
-                        <br />
-                        {segment.fD.aI.name}
-                        <br /> {segment.fD.fN}
-                      </div>
+
+                    <div className="font-bold text-xs mb-4">
+                      <span className="text-[10px] text-gray-600 ">
+                        {flightDetails.totalPriceList[0].fd.ADULT.cc}
+                      </span>{" "}
+                      <br />
+                      {segment.fD.aI.name}
+                      <br /> {segment.fD.fN}
                     </div>
                   </div>
 
-                  <div className="  bg-yellow-300 overflow-x-scroll w-full flex gap-1  items-start  ">
+                  <div className="   mx-2  flex gap-1  items-start  ">
                     <div className="text-left w-max  sm:min-w-28 ">
                       <div className="font-bold max-w-20 sm:w-max text-xs flex-wrap">
                         {formatDateTime(segment.dt)}
@@ -342,7 +341,7 @@ const RoundTripCard = ({
     : displayedPrices.slice(0, 2);
 
   return (
-    <div className="border flex flex-col rounded-lg m-4 overflow-x-scroll w-[95%]  ">
+    <div className="border  bg-yellow-400 flex flex-col rounded-lg m-4 w-full overflow-x-auto">
       <div className="flex flex-col md:flex-row  justify-between items-stretch p-3  mb-2">
         <div className="flex flex-col  justify-center lg-custom:justify-normal w-full">
           <div className="flex gap-4 items-center justify-center md:justify-normal ">

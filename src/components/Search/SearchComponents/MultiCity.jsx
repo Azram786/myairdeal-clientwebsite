@@ -170,12 +170,12 @@ const MultiCity = ({ flightProps, passenger, query }) => {
         activeTabIndex={activeTabIndex}
         passenger={passenger}
       /> */}
-       <button
+      <button
         className="absolute top-3 right-0 z-50 flex flex-col items-center justify-center  lg-custom:hidden"
         onClick={toggleSidebar}
       >
-        <BsFillFilterSquareFill className="w-6 h-6 text-blue-600" />
-        <div className="text-xs text-blue-600">Filters</div>
+        <BsFillFilterSquareFill className="w-6 h-6 white" />
+        <div className="text-xs white">Filters</div>
       </button>
       <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
         <div
@@ -191,9 +191,8 @@ const MultiCity = ({ flightProps, passenger, query }) => {
             width: "auto",
           }}
         >
-      
           <button
-            className="absolute top-4  right-4 z-50 text-blue-600 lg-custom:hidden"
+            className="absolute top-4  right-4 z-50 white lg-custom:hidden"
             onClick={() => setIsSidebarOpen(false)}
           >
             <FaTimes className="w-6 h-6" />

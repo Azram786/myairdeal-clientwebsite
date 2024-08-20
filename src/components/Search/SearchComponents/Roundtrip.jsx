@@ -9,7 +9,6 @@ import { FaFilter, FaTimes } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { BsFillFilterSquareFill } from "react-icons/bs";
 
-
 const RoundTrip = ({
   onwardProps = [],
   returnProps = [],
@@ -274,13 +273,10 @@ const RoundTrip = ({
         (price.sri === sri || msri.includes(price.sri))
     );
 
-  
-
     const updatedReturnFlights = matchingReturnFlights.map((flight) => ({
       ...flight,
       totalPriceList: [exactMatchingPrice],
     }));
-
 
     return updatedReturnFlights;
   };
@@ -295,7 +291,6 @@ const RoundTrip = ({
       const msri = selected.msri;
       const sri = selected.sri;
 
-     
       if (direction === "onward") {
         // const matching=filteredReturn.map((item)=>item.priceList.some((price)=>((price.msri.includes(sri)|| msri.includes(price.sir)))))
         const matchingReturnFlights = findMatchingSpecialReturnFlights(
@@ -319,7 +314,6 @@ const RoundTrip = ({
           sri,
           msri
         );
-   
 
         setFilteredReturn(updatedReturnFlights);
         setSelectedOnwardFlight({ ...flight, selectedPriceIndex: priceIndex });
@@ -349,7 +343,6 @@ const RoundTrip = ({
           selectedPriceIndex: 0,
         });
       }
-
     }
 
     if (direction === "onward") {
@@ -394,7 +387,6 @@ const RoundTrip = ({
       },
     ];
 
-
     if (!token) {
       ReactToast("Please login first");
       navigate("/sign-in");
@@ -417,7 +409,7 @@ const RoundTrip = ({
     }
 
     return (
-      <div>
+      <div className=" overflow-x-auto bg-green-200">
         {flights.map((flight, index) => (
           <RoundTripCard
             key={index}
@@ -449,7 +441,7 @@ const RoundTrip = ({
         className="absolute top-3 right-0 z-50 flex flex-col items-center justify-center  lg-custom:hidden"
         onClick={toggleSidebar}
       >
-        <BsFillFilterSquareFill className="w-6 h-6 text-blue-600" />
+        <BsFillFilterSquareFill className="w-6 h-6 white" />
         <div className="text-xs text-blue-600">Filters</div>
       </button>
       <div className="relative w-[20%] h-full flex flex-wrap flex-col lg-custom:flex-row ">
@@ -467,7 +459,7 @@ const RoundTrip = ({
           }}
         >
           <button
-            className="absolute top-2 right-4 z-50 text-blue-600 lg-custom:hidden"
+            className="absolute top-2 right-4 z-50 white lg-custom:hidden"
             onClick={() => setIsSidebarOpen(false)}
           >
             <FaTimes className="w-6 h-6" />
@@ -519,16 +511,16 @@ const RoundTrip = ({
             </h2>
           </div>
         </div>
-        <div className="flex h-[850px] flex-col lg-custom:flex-row">
+        <div className=" w-full overflow-x-auto flex h-[850px] flex-col lg-custom:flex-row">
           <div
-            className={`w-full lg-custom:w-1/2 overflow-y-auto no-scroll ${
+            className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
               activeSection === "onward" ? "block" : "hidden"
             } lg-custom:block`}
           >
             {renderFlightSection(filteredOnward, "onward")}
           </div>
           <div
-            className={`w-full lg-custom:w-1/2 overflow-y-auto no-scroll ${
+            className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
               activeSection === "return" ? "block" : "hidden"
             } lg-custom:block`}
           >

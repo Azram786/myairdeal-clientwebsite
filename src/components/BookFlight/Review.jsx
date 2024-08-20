@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { MdFlight } from "react-icons/md";
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
-
   const renderValue = (value) => value || "N/A";
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
@@ -241,7 +240,6 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
             </thead>
             <tbody>
               {passengersData?.passengers?.map((passenger, index) => {
-         
                 return (
                   <tr key={index} className="h-24 border-t">
                     <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
@@ -302,7 +300,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
       <label className="flex items-center mt-2">
         <input
           type="checkbox"
-          className="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:outline-none"
+          className="form-checkbox h-5 w-5 white border-gray-300 rounded focus:ring-blue-500 focus:outline-none"
           checked={isTermsChecked}
           onChange={(e) => setIsTermsChecked(e.target.checked)}
         />

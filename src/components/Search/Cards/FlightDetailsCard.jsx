@@ -152,7 +152,7 @@ const FlightDetailsCard = ({
                     key={index}
                     className="flex  relative flex-col md:flex-row items-center justify-start px-2 lg:px-4 py-4 "
                   >
-                    <div className="flex items-center w-full text-left md:w-[26%]">
+                    <div className="flex items-center w-full text-left pl-0 md:pl-6 lg-custom:pl-0 md:w-[26%]">
                       <img
                         src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
                         alt={segment?.fD?.aI?.code}
@@ -175,7 +175,7 @@ const FlightDetailsCard = ({
                     </div>
 
                     <div className="flex gap-2 mt-2 items-center w-full  md:w-[70%] justify-around  md:gap-8">
-                      <div className=" w-32 md:min-w-[30%]">
+                      <div className=" p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%]">
                         <div className="font-bold text-xs  md:text-sm">
                           {formatDateTime(segment.dt)}
                         </div>
@@ -189,7 +189,7 @@ const FlightDetailsCard = ({
                           {segment.da.terminal || "N/A"}
                         </div>
                       </div>
-                      <div className="flex justify-center w-20  md:min-w-[35%] mr-0 md:mr-6 flex-col items-center ">
+                      <div className="flex justify-center w-20  md:min-w-[25%] lg-custom:min-w-[35%] mr-0 md:mr-6 flex-col items-center ">
                         <div className="text-[10px] md:text-xs text-end text-gray-500">
                           {segment.stops === 0
                             ? "Non-Stop"
@@ -201,7 +201,7 @@ const FlightDetailsCard = ({
                           {calculateDuration(segment.dt, segment.at)}
                         </div>
                       </div>
-                      <div className="text-left w-32 md:min-w-[30%]  ml-0 md:ml-8 ">
+                      <div className="text-left p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%] ml-0 lg-custom:ml-8 ">
                         <div className="font-bold text-xs md:text-sm">
                           {formatDateTime(segment.at)}
                         </div>
@@ -219,7 +219,7 @@ const FlightDetailsCard = ({
                   </div>
                   <div className="w-full flex justify-center">
                     {index < data.length - 1 && (
-                      <div className="px-4  flex justify-around text-xs  py-2 md:w-1/2 border border-gray-200 bg-gray-100 rounded-full md:text-sm">
+                      <div className="px-4  flex justify-around  py-2 lg-custom:w-1/2 border border-gray-200 bg-gray-100 rounded-full text-xs  md:text-sm">
                         <span className=" font-bold">
                           Require to change Plane
                         </span>
@@ -323,17 +323,17 @@ const FlightDetailsCard = ({
     <div className="border flex flex-col  rounded-lg m-4 shadow-md ">
       <div className="flex flex-col md:flex-row flex-wrap justify-between items-stretch p-3  mb-2">
         <div className="flex flex-col justify-around  border-none lg:border-r-2 pr-2 w-full lg:w-[80%]  ">
-          <div className="flex justify-around  gap-3 md:w-max ">
-            <div className="md:hidden">
+          <div className="flex justify-around  gap-0 md:gap-3 md:w-max ">
+            {/* <div className="md:hidden">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                 onError={(e) => (e.currentTarget.src = defaultAirline)}
                 alt={startSegment?.fD?.aI?.code}
-                className="size-12 hidden mr-6"
+                className="size-12 mr-6"
               />
-            </div>
+            </div> */}
 
-            <div className="md:flex-row flex-col flex justify-center   items-center mb-4 md:mb-0">
+            <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                 alt={startSegment?.fD?.aI?.code}
@@ -349,8 +349,8 @@ const FlightDetailsCard = ({
             </div>
 
             <div className="flex   items-center mb-4 md:mb-0">
-              <div className="border-t  hidden md:flex border-dashed ml-4 border-gray-400 w-6 md:w-16 lg:w-[200px]"></div>
-              <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold w-20 md:min-w-44 text-gray-500">
+              <div className="border-t  hidden sm:flex border-dashed ml-0 md:ml-4 border-gray-400 w-6 md:w-16 lg:w-[200px]"></div>
+              <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold w-16 sm:w-32 md:min-w-44 text-gray-500">
                 {/* <span>{convertToHoursMinutes(totalDuration)}</span> */}
                 <span>{totalDuration}</span>
                 <FaPlane className="mx-2 text-blue-800 text-3xl" />
@@ -361,11 +361,11 @@ const FlightDetailsCard = ({
                       {data.length === 2 && ` via ${data[0].aa.city}`}
                     </span>
                   ) : (
-                    <span className="min-w-44">Non-stop flight</span>
+                    <span className="md:min-w-44">Non-stop flight</span>
                   )}
                 </div>
               </div>
-              <div className="border-t hidden md:flex border-dashed mr-8 border-gray-400 w-4 md:w-16 lg:w-[200px]"></div>
+              <div className="border-t hidden sm:flex border-dashed mr-8 border-gray-400 w-4 md:w-16 lg:w-[200px]"></div>
             </div>
             <div className="md:flex-row flex-col  flex justify-center items-center mb-4 md:mb-0">
               <div className="flex flex-col">

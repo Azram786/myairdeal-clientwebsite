@@ -76,7 +76,7 @@ const RecentSearch = ({ ResentSearchData }) => {
           {ResentSearchData?.map((search, index) => (
             <div
               key={index}
-              className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#007EC4] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
+              className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#D3A121] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
               onClick={() => {
                 setResentStateHandler(search);
               }}
@@ -98,7 +98,7 @@ const RecentSearch = ({ ResentSearchData }) => {
                   </div>
                   <div className="flex flex-col w-[20%] items-center">
                     <div className="relative h-0.5 bg-gray-300 my-1">
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500">
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[#D3A121]">
                         <MdFlight className="transform rotate-90 text-base" />
                       </div>
                     </div>

@@ -460,9 +460,9 @@ const FilterSection = ({
 `}>
         {/* type of travel selecting section */}
 
-        <div className="flex justify-center md:justify-stretch  text-white ">
+        <div className="flex justify-center md:justify-stretch  text-black">
           <button
-            className={`bg-[#007EC4] text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#01324D]"
+            className={`bg-[#D3C19F] text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#c79834]"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
@@ -470,7 +470,7 @@ const FilterSection = ({
             One way
           </button>
           <button
-            className={`bg-[#007EC4] text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#01324D]"
+            className={`bg-[#D3C19F] text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#c79834]"
               } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
@@ -478,7 +478,7 @@ const FilterSection = ({
             Round trip
           </button>
           <button
-            className={` bg-[#007EC4] text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#01324D]"
+            className={` bg-[#D3C19F] text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#c79834]"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
