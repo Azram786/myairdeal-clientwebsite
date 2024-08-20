@@ -56,7 +56,6 @@ const DeleteModalTemplateConfirm = ({
     setLoading(false);
   };
 
-  console.log("nithintoahliuwuegrouiqwgruiweiuhjfdkjahkjfa")
 
   return (
     <Modal

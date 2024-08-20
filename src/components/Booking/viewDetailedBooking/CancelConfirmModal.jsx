@@ -12,7 +12,7 @@ const CancelConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
     if (!isModalOpen) return null;
 
     const handleConfirm = () => {
-        console.log("nithin")
+        
         // if (!selection) ReactToast("choose yes or no")
         // else {
 

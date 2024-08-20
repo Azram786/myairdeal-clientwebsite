@@ -72,7 +72,6 @@ import { BsFillFilterSquareFill } from "react-icons/bs";
 const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
-  console.log("flightProps in Oneway:", flightProps);
 
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
@@ -146,9 +145,9 @@ const Oneway = ({ flightProps, passenger, query }) => {
   };
 
   useEffect(() => {
-    console.log("Filters changed:", filters);
+
     const newFilteredFlights = flightProps.filter((flight) => {
-      console.log("Processing flight:", flight);
+ 
       const price = calculateTotalPrice(flight);
       const stops = getStopsCount(flight);
       const departureHour = new Date(flight.sI[0].dt).getHours();
@@ -182,7 +181,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
       );
     });
 
-    console.log("New filtered flights:", newFilteredFlights);
+
     setFilteredFlights(newFilteredFlights);
   }, [filters, flightProps, calculateTotalPrice]);
 
@@ -199,7 +198,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
             selected.priceIndex
           ].id,
       }));
-      console.log("Processing bookings:", bookings);
+    
 
       if (!token) {
         ReactToast("Please login first");
@@ -224,7 +223,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
-  console.log(filteredFlights, "filtered flights");
   return (
     <div className="flex relative md:flex-row flex-col">
       {/* <OneWaySideBar
@@ -365,7 +363,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
           </TabPane>
         </Tabs>
 
-        {console.log(selectedFlight, "djloe")}
+   
       </div>
       {selectedFlight.length > 0 && (
         <BookingCard

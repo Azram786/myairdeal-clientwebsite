@@ -15,7 +15,6 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   const [errors, setErrors] = useState({});
   const [markUp, setMarkUp] = useState(null);
 
-  console.log(passengersData, "passengerData");
 
   const calculatePassengerDetails = useMemo(() => {
     return passengersData?.passengers?.map((passenger) => {
@@ -61,7 +60,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+       
         if (res.data.flatPrice) {
           setConvenienceFee(res.data.value);
           saveCommission(res.data.value);
@@ -81,6 +80,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
       })
       .catch((error) => {
         console.log(error);
+        ReactToast(error.message)
       });
   };
 
@@ -166,7 +166,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   const callBookingApi = async (paymentResponse) => {
     const { searchQuery, booking } = prepareApiData(paymentResponse);
     setIsLoading(true);
-    console.log(paymentResponse, "PAYMENT");
+
     const payment = {
       razorpay_payment_id: paymentResponse.razorpay_payment_id,
       baseFare: data?.totalPriceInfo?.totalFareDetail.fC?.BF || 0,
@@ -186,7 +186,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
       if (!response.data) {
         throw new Error("Booking API call failed");
       }
-      console.log("Booking successful:", response);
+   
 
       if (response.data?.status?.success) {
         ReactToast("Booking successful!");
@@ -195,7 +195,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         );
       }
     } catch (error) {
-      console.error("Booking API error:", error);
+      console.error( error);
       ReactToast("Booking failed. Please contact customer support.");
     } finally {
       setIsLoading(false);
@@ -203,14 +203,14 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   };
 
   const handlePaymentSuccess = async (response) => {
-    console.log("Payment successful:", response);
+
     setIsProcessing(false);
     ReactToast("Payment successful! Processing your booking...");
     await callBookingApi(response);
   };
 
   const handlePaymentError = (error) => {
-    console.error("Payment failed:", error);
+    console.error( error);
     ReactToast("Payment failed. Please try again.");
     setIsProcessing(false);
   };

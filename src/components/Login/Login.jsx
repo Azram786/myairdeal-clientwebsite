@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import "./CustomPhoneInput.css";
 import ReactToast from "../util/ReactToast";
-import 'react-phone-input-2/lib/style.css'
+import "react-phone-input-2/lib/style.css";
 const spinnerVariants = {
   animate: {
     rotate: [0, 360],
@@ -25,14 +25,12 @@ const spinnerVariants = {
 
 const StyledPhoneInput = ({ value, onChange }) => {
   return (
-
     <PhoneInput
       country={"in"}
       value={value}
       onChange={onChange}
       containerClass="phone-input-container"
     />
-
   );
 };
 
@@ -45,7 +43,6 @@ const Login = () => {
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     let interval;
@@ -61,8 +58,6 @@ const Login = () => {
   }, [step, timer]);
 
   const handleOnChange = (value, countryData) => {
-    console.log({ countryData });
-    console.log({ value });
     setPhone(value);
     let newPhno = value
       .split("")
@@ -102,7 +97,6 @@ const Login = () => {
           countryName: country.country,
         },
       };
-      console.log({ query });
 
       setLoading(true);
       const data = await axios.post(
@@ -123,12 +117,9 @@ const Login = () => {
       }
     } catch (error) {
       setLoading(false);
-      ReactToast("Try again")
-      console.log(error.message);
+      ReactToast("Try again");
     }
   };
-
-
 
   const handleSubmit = () => {
     handleSendOTP();
@@ -154,7 +145,9 @@ const Login = () => {
           >
             <div className="flex items-center gap-7">
               <div>
-                <Link to='/'><img className="h-[80px]" src={Logo} alt="Logo" /></Link>
+                <Link to="/">
+                  <img className="h-[80px]" src={Logo} alt="Logo" />
+                </Link>
               </div>
               <div className="text-[1.6rem] font-bold text-[#1F61BC]">
                 <h3>My Air Deal</h3>
@@ -168,11 +161,8 @@ const Login = () => {
             </div>
 
             <div className="">
-
               {step === "sent-otp" && (
-
                 <StyledPhoneInput value={phone} onChange={handleOnChange} />
-
               )}
               {step === "otp-sent-success" && (
                 <motion.div
@@ -180,11 +170,14 @@ const Login = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <OTPInput value={country} timer={timer} secondLoading={loading} handleSendOTP={handleSendOTP} />
-
+                  <OTPInput
+                    value={country}
+                    timer={timer}
+                    secondLoading={loading}
+                    handleSendOTP={handleSendOTP}
+                  />
                 </motion.div>
               )}
-
 
               {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>

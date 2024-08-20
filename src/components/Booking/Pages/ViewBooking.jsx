@@ -40,20 +40,20 @@ const FlightBookings = () => {
           config
         );
       }
-      console.log({ response });
+
       if (response.status === 200) {
         setLoading(false);
         setBookingData(response.data);
       }
       setLoading(false);
     } catch (error) {
-      console.log(error.message);
+      ReactToast(error.message);
       setLoading(false);
       setBookingData([]);
     }
   };
 
-  console.log({ bookingData });
+ 
 
   useEffect(() => {
     getBookingData();

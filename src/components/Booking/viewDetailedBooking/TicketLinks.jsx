@@ -102,9 +102,7 @@ import SubmitAmendment from "./SubmitAmendment";
 import TicketRaising from "./TicketRaising";
 
 const TicketLinks = ({ singleBookingData, bookingFilter }) => {
-  console.log({ bookingFilter })
 
-  console.log({ singleBookingData });
 
   const allLinks = [
     {

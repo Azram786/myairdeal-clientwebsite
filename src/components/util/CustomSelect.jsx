@@ -36,7 +36,7 @@ const CustomSelect = ({
     }
     : null;
 
-  console.log({ myFormData, value })
+
 
   //----------------**important**-----------------------------------------
   // i know  this code sucks 

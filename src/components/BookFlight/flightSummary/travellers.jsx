@@ -31,7 +31,7 @@ const TravellersCard = ({
   // console.log({ updatedPassengers })
   // setPassengers(updatedPassengers);
   const updatePassenger = (index, field, value) => {
-    console.log({ field, value });
+
 
     // Copy the passengers array to avoid direct mutation
     const updatedPassengers = [...passengers];
@@ -42,13 +42,13 @@ const TravellersCard = ({
       [field]: value,
     };
 
-    console.log({ updatedPassengers });
+
 
     // Set the state with the updated array
     setPassengers(() => updatedPassengers);
   };
   // };
-  console.log({ passengers })
+
   const getFullPhoneNumber = () => {
     return `${contactDetails.dialCode}${contactDetails.phoneNumber}`;
   };
@@ -87,7 +87,7 @@ const TravellersCard = ({
       // Proceed with save operation
       setLoading(true);
       // Perform your save operation here
-      console.log("Saving data...");
+
       setLoading(false);
     }
   };

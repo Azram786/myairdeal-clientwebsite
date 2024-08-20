@@ -195,11 +195,11 @@ const ViewAmendmentDetails = ({ amendment }) => {
                     },
                 }
             );
-            console.log({ response, id: "2" });
+        
             setAmendmentData(response.data);
             setLoading(false)
         } catch (error) {
-            console.log(error.message);
+            ReactToast(error.message);
         }
     };
 
@@ -211,7 +211,7 @@ const ViewAmendmentDetails = ({ amendment }) => {
                 Amendment List
             </div>
             {amendment.map((value) => {
-                console.log({ value });
+          
 
                 return (
                     <div className="flex flex-col md:flex-row items-center justify-between bg-blue-100 border-t border-blue-200 rounded-lg p-4" key={value.id}>

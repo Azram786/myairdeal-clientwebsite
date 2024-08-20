@@ -60,7 +60,7 @@ const SeatSelection = ({
     setIsModalOpen(true);
   };
 
-  console.log("seatMapData", seatMapData);
+ 
 
   return (
     <div className="grid grid-cols-1 ">

@@ -37,7 +37,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
 
   function convertDateFormat(inputDate) {
     const formattedDate = inputDate.split("T")[0];
-    console.log({ formattedDate });
+  
     return formattedDate;
   }
 
@@ -56,7 +56,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
       setFullbookingData(response.data.data);
       setLoading(false);
     } catch (error) {
-      console.log(error.message);
+      ReactToast(error.message);
       setLoading(false);
     }
   };
@@ -132,7 +132,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
 
     const tripsData = selectedTrips.map((tripIndex) => {
       const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
-      console.log({ trip });
+   
       const tripData = {
         src: trip?.sI[0].da.code,
         dest:
@@ -206,8 +206,8 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
   const submitAmendment = async () => {
     setAmendmentLoadin(true);
     const data = getFormattedData();
-    console.log({ data });
-    console.log({ cancelWholeTicket, selectedTravelers, selectedTrips });
+  
+
 
     try {
       if (!remarks) toast("enter remarks");
@@ -222,14 +222,14 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
             { bookingId: data.bookingId, remarks, type: data.type },
             { headers }
           );
-          console.log({ response });
+          
         } else {
           const response = await axios.post(
             `${import.meta.env.VITE_SERVER_URL}booking/submit-amendment`,
             data,
             { headers }
           );
-          console.log({ response });
+          
         }
       }
       setAmendmentLoadin(false);
@@ -243,7 +243,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
   };
 
   const handleConfirm = (selection) => {
-    console.log(`User selected: ${selection}`);
+  
     if (selection == "no") {
       ReactToast("press yes to confirm submit amendment");
     } else {

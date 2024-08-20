@@ -69,7 +69,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log("GST Details saved:", gstDetails);
+      // console.log("GST Details saved:", gstDetails);
     }
   };
 

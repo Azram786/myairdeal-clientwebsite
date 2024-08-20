@@ -14,7 +14,6 @@ const AddonsCard = ({
   flightData,
   bookingId,
 }) => {
-  console.log({ bookingId }, "BOOKING ID");
   const [activeButton, setActiveButton] = useState("");
   const [seatMapData, setSeatMapData] = useState(null);
   const [checkLoading, setCheckLoading] = useState(false);
@@ -38,7 +37,7 @@ const AddonsCard = ({
       );
 
       if (response.status == 200) {
-        console.log({ response });
+        // console.log({ response });
         setSeatMapData(response?.data);
       } else if (response.status === 400) {
         setSeatMapData("Seat Map is not available");

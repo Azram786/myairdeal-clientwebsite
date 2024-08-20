@@ -23,6 +23,7 @@ const DynamicForm = ({
 
   useEffect(() => {
     setStartDate(() => dateDynamic);
+    //bug is in here
     setForm({ travelDate: startDate });
   }, [dateDynamic]);
 
@@ -77,6 +78,7 @@ const DynamicForm = ({
         <div className="rounded flex  items-center border w-full">
           <div className="flex items-center justify-between  pl-5 w-full    
           ">
+            
             <DatePicker
               minDate={formData.travelDate}
               selected={startDate}

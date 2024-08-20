@@ -33,7 +33,6 @@ const RoundTrip = ({
   const [specialReturnReturn, setSpecialReturnReturn] = useState([]);
   const [isSpecialReturnActive, setIsSpecialReturnActive] = useState(false);
 
-  console.log(specialReturnOnward, specialReturnReturn, "-0-0-0-0-0-0-0-");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
@@ -265,7 +264,7 @@ const RoundTrip = ({
     );
 
     if (!exactMatchingReturnFlight) {
-      console.log("No exact matching return flight found");
+      ReactToast("No exact matching return flight found");
       return matchingReturnFlights;
     }
 
@@ -275,15 +274,13 @@ const RoundTrip = ({
         (price.sri === sri || msri.includes(price.sri))
     );
 
-    console.log(exactMatchingReturnFlight, "exact matching return flight");
-    console.log(exactMatchingPrice, "exact matching price");
+  
 
     const updatedReturnFlights = matchingReturnFlights.map((flight) => ({
       ...flight,
       totalPriceList: [exactMatchingPrice],
     }));
 
-    console.log(updatedReturnFlights, "updated return flights");
 
     return updatedReturnFlights;
   };
@@ -298,7 +295,7 @@ const RoundTrip = ({
       const msri = selected.msri;
       const sri = selected.sri;
 
-      console.log(msri, sri, "8787878787");
+     
       if (direction === "onward") {
         // const matching=filteredReturn.map((item)=>item.priceList.some((price)=>((price.msri.includes(sri)|| msri.includes(price.sir)))))
         const matchingReturnFlights = findMatchingSpecialReturnFlights(
@@ -322,7 +319,7 @@ const RoundTrip = ({
           sri,
           msri
         );
-        console.log(updatedReturnFlights, "final");
+   
 
         setFilteredReturn(updatedReturnFlights);
         setSelectedOnwardFlight({ ...flight, selectedPriceIndex: priceIndex });
@@ -344,7 +341,6 @@ const RoundTrip = ({
           sri,
           msri
         );
-        console.log(updatedOnwardFlights, "final");
         setFilteredOnward(updatedOnwardFlights);
         setSelectedReturnFlight({ ...flight, selectedPriceIndex: priceIndex });
 
@@ -354,10 +350,8 @@ const RoundTrip = ({
         });
       }
 
-      console.log("this is special return flight", specialReturn, selected);
     }
 
-    console.log(flight, priceIndex, direction, "-=-=-=-=-=-=-=-");
     if (direction === "onward") {
       setSelectedOnwardFlight({ ...flight, selectedPriceIndex: priceIndex });
     } else {
@@ -399,7 +393,7 @@ const RoundTrip = ({
         priceId: onwardFlight,
       },
     ];
-    console.log(data);
+
 
     if (!token) {
       ReactToast("Please login first");

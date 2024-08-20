@@ -53,6 +53,7 @@
 import { useEffect, useState } from "react";
 import BannerImage from "../../assets/home/banner/Banner.png";
 import axios from "axios";
+import ReactToast from "../util/ReactToast";
 
 const Banner = () => {
   const [banners, setBanners] = useState([]);
@@ -61,10 +62,10 @@ const Banner = () => {
   const getBanners = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}banner/get-banners-user`);
-      console.log({ banners: response },"Banners");
+      // console.log({ banners: response },"Banners");
       setBanners(response.data);
     } catch (error) {
-      console.log(error);
+      ReactToast(error);
     }
   };
 

@@ -24,7 +24,8 @@ const RecentSearch = ({ ResentSearchData }) => {
   }, [resentSearch, dispatch]);
 
   const setResentStateHandler = (value) => {
-    console.log({ value });
+    console.log({value})
+ 
     dispatch(setResentSearch(value));
   };
 
@@ -56,9 +57,9 @@ const RecentSearch = ({ ResentSearchData }) => {
   useEffect(() => {
     let timer;
     if (resentSearch) {
-      timer = setTimeout(() => {
-        dispatch(clearResent());
-      }, 6 * 60 * 1000); // 2 minutes in milliseconds
+      // timer = setTimeout(() => {
+      //   dispatch(clearResent());
+      // }, 6 * 60 * 1000); // 2 minutes in milliseconds
     }
 
     // Cleanup function to clear the timer if the component unmounts or resentSearch changes

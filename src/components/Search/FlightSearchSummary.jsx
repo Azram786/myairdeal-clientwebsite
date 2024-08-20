@@ -16,7 +16,7 @@ import HomePage from "../Home/HomePage";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsaModifySearch } from "../../store/slices/aut.slice";
 const FlightSearchSummary = ({ data, tripType }) => {
-  console.log({ data });
+  
   if (!data || !data.searchQuery) {
     return null; // or return a loading state
   }
@@ -25,7 +25,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
   const { searchQuery } = data;
   const { cabinClass, paxInfo, routeInfos } = searchQuery;
   const { isModifySearch } = useSelector((state) => state.auth)
-  console.log(tripType, "type");
+
   const passengers =
     parseInt(paxInfo.ADULT) +
     parseInt(paxInfo.CHILD) +
