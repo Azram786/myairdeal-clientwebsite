@@ -16,7 +16,7 @@ const DynamicForm = ({
   dateDynamic,
 }) => {
   const [startDate, setStartDate] = useState(dateDynamic);
- 
+
   useEffect(() => {
     setForm({ travelDate: startDate });
   }, [startDate]);
@@ -78,7 +78,7 @@ const DynamicForm = ({
         <div className="rounded flex  items-center border w-full">
           <div className="flex items-center justify-between  pl-5 w-full    
           ">
-            
+
             <DatePicker
               minDate={formData.travelDate}
               selected={startDate}

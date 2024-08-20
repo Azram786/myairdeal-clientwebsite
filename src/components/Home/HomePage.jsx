@@ -122,7 +122,7 @@ const HomePage = () => {
             return ({
               fromCity: index === 0 ? formData.toCityOrAirport || route.fromCityOrAirport.code : route.fromCityOrAirport.code,
               toCity: route.toCityOrAirport.code,
-              travelDate: null,
+              travelDate: new Date(route.travelDate),
             })
           })
           console.log({ data })

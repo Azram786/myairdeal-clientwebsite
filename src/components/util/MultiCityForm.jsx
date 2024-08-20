@@ -82,7 +82,8 @@ const MultiCityForm = ({
         {dynamicFormData?.map((form, index) => (
           <DynamicForm
             dateDynamic={
-              index === 0 ? formData.travelDate : dynamicFormData[index - 1].travelDate
+              index === 0 ? dynamicFormData[index]?.travelDate || formData.travelDate :
+                dynamicFormData[index]?.travelDate
             }
             key={index}
             dynamicFormData={dynamicFormData}
