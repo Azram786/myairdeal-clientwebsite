@@ -72,7 +72,7 @@ const RecentSearch = ({ ResentSearchData }) => {
           {ResentSearchData?.map((search, index) => (
             <div
               key={index}
-              className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#01324D] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
+              className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#D7B56D] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
               onClick={() => {
                 setResentStateHandler(search);
               }}

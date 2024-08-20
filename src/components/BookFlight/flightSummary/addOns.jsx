@@ -79,7 +79,7 @@ const AddonsCard = ({
               onClick={() => setActiveButton("seatSelection")}
               className={`text-sm md:text-base px-4 py-2 rounded ${
                 activeButton === "seatSelection"
-                  ? "bg-[#D7B56D] text-white"
+                  ? "text-[#D7B56D] bg-[#1B1D29]"
                   : "bg-gray-200 text-gray-700"
               }`}
             >
@@ -92,7 +92,7 @@ const AddonsCard = ({
               onClick={() => setActiveButton("addBagAndMeal")}
               className={`text-sm md:text-base px-4 py-2 rounded ${
                 activeButton === "addBagAndMeal"
-                  ? "bg-[#D7B56D] text-white"
+                  ? "text-[#D7B56D] bg-[#1B1D29]"
                   : "bg-gray-200 text-gray-700"
               }`}
             >

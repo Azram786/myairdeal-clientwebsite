@@ -312,7 +312,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
       <div className="flex justify-between items-center bg-gray-200 p-2 rounded-lg shadow-md mt-4">
         <button
           onClick={() => setCurrentStep(1)}
-          className="bg-[#1B1D29] hover:bg-[#D7B56D] hover:text-black text-white font-bold text-sm md:text-base py-2 px-4 rounded-md focus:outline-none"
+          className="bg-[#1B1D29] hover:bg-[#D7B56D] hover:text-black text-white text-sm md:text-base py-2 px-4 rounded-md focus:outline-none"
         >
           Back
         </button>
@@ -322,7 +322,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
             isTermsChecked
               ? "bg-[#1B1D29] hover:bg-[#D7B56D] hover:text-black"
               : "bg-gray-400 cursor-not-allowed"
-          } text-white font-bold text-sm md:text-base py-2 px-4 rounded-md focus:outline-none`}
+          } text-white text-sm md:text-base py-2 px-4 rounded-md focus:outline-none`}
           disabled={!isTermsChecked}
         >
           Continue to Payment

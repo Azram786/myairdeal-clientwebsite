@@ -192,7 +192,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
           </div>
           <div className="mt-6 flex justify-end">
             <button
-              className="bg-[#D7B56D] text-white px-4 py-2 rounded hover:bg-[#006aa3] transition-colors"
+              className="text-[#D7B56D] bg-[#1B1D29] text-sm md:text-base px-4 py-2 rounded  transition-colors"
               onClick={handleSaveGSTDetails}
             >
               Save GST Details

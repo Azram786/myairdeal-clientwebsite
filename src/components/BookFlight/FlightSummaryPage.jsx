@@ -290,7 +290,7 @@ const FlightSummary = () => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="flex flex-col md:flex-row w-full  ">
+                                  <div className="flex flex-col md:flex-row w-full   ">
                                     <div className="flex-col text-center md:text-left w-full md:w-[40%]">
                                       <div className="text-lg font-bold ">
                                         {segment.da.code}

@@ -1,6 +1,7 @@
 .slick-prev:before,
 .slick-next:before {
-  color: #1B1D29;
+  color: #D7B56D;
+
   font-size: 40px;
   /* Set the hover color for the arrow buttons */
 }
@@ -18,6 +19,6 @@
 
 .slick-prev:hover:before,
 .slick-next:hover:before {
-  color: #1B1D29;
+  color: #D7B56D;
   /* Set the hover color for the arrow buttons */
 }

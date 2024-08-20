@@ -460,7 +460,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
             {routeInfos.map((route, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between border-b pb-2"
+                className="flex items-center justify-beteen border-b pb-2"
               >
                 <div className="flex flex-col">
                   <span className="text-xs">From</span>
