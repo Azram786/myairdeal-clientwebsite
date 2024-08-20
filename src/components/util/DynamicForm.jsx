@@ -14,6 +14,7 @@ const DynamicForm = ({
   formData,
   form,
   dateDynamic,
+  setDate
 }) => {
   const [startDate, setStartDate] = useState(dateDynamic);
 
@@ -24,9 +25,11 @@ const DynamicForm = ({
   useEffect(() => {
     setStartDate(() => dateDynamic);
     //bug is in here
-    setForm({ travelDate: startDate });
+    // setForm({ travelDate: startDate });
   }, [dateDynamic]);
-
+useEffect(()=>{
+   setForm({ travelDate: dateDynamic });
+},[dateDynamic])
   return (
 
 

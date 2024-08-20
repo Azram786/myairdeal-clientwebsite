@@ -47,24 +47,66 @@ const MultiCityForm = ({
   //     return newData;
   //   });
   // };
+  // const handleFormDataChange = (index, data) => {
+  //   console.log({ index, data })
+
+  //   setDynamicFormData((prev) => {
+
+  //     const newData = [...prev];
+
+  //     // Update the current index with the new data
+  //     newData[index] = { ...newData[index], ...data };
+
+  //     // Check if the next index exists
+  //     if (index + 1 < newData.length && data.toCity) {
+  //       // Update the fromCity of the next object
+  //       newData[index + 1] = { ...newData[index + 1], fromCity: data.toCity };
+  //     }
+
+  //     return newData;
+  //   });
+  // };
   const handleFormDataChange = (index, data) => {
-    console.log({ index, data })
-    // setDynamicFormData((prev) => {
+    console.log({ index, data });
 
-    //   const newData = [...prev];
+    setDynamicFormData((prev) => {
+      const newData = [...prev];
 
-    //   // Update the current index with the new data
-    //   newData[index] = { ...newData[index], ...data };
+      // Update the current index with the new data
+      newData[index] = { ...newData[index], ...data };
 
-    //   // Check if the next index exists
-    //   if (index + 1 < newData.length && data.toCity) {
-    //     // Update the fromCity of the next object
-    //     newData[index + 1] = { ...newData[index + 1], fromCity: data.toCity };
-    //   }
+      // Check if the next index exists
+      if (index + 1 < newData.length) {
+        // Update the fromCity of the next object if toCity is provided
+        if (data.toCity) {
+          newData[index + 1] = { ...newData[index + 1], fromCity: data.toCity };
+        }
 
-    //   return newData;
-    // });
+        // Check if travelDate is provided in the current data
+        if (data.travelDate) {
+          const currentDate = new Date(data.travelDate);
+          const nextDate = new Date(newData[index + 1].travelDate);
+
+          // If the current travelDate is greater than the next index's travelDate,
+          // update the next index's travelDate
+          if (currentDate > nextDate) {
+            newData[index + 1] = { ...newData[index + 1], travelDate: data.travelDate };
+          }
+        }
+      }
+
+      return newData;
+    });
   };
+
+
+  const handleFormDateChange = (index, date) => {
+    try {
+
+    } catch (error) {
+
+    }
+  }
 
   console.log({ dynamicFormData })
 
@@ -81,16 +123,22 @@ const MultiCityForm = ({
       <div className="lg:w-[75%] flex flex-col gap-3">
         {dynamicFormData?.map((form, index) => (
           <DynamicForm
+            // dateDynamic={
+            //   index === 0 ? formData.travelDate :
+            //     dynamicFormData[index]?.travelDate
+            // }
             dateDynamic={
-              index === 0 ? dynamicFormData[index]?.travelDate || formData.travelDate :
-                dynamicFormData[index]?.travelDate
+              index === 0
+                ? formData.travelDate > dynamicFormData[index].travelDate ? formData.travelDate : dynamicFormData[index].travelDate : dynamicFormData[index].travelDate || dynamicFormData?.[index - 1].travelDate
             }
+
             key={index}
             dynamicFormData={dynamicFormData}
             defaultOptions={defaultOptions}
             getCountriesHandlerOne={getCountriesHandlerOne}
             getCountriesHandlerTwo={getCountriesHandlerTwo}
             form={form}
+            setDate={(date) => handleFormDateChange(index, date)}
             setForm={(data) => handleFormDataChange(index, data)}
             formData={formData}
             index={index}
