@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsaModifySearch, setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
 import PassengerSelector from "./PassengerSelector";
 import getCountryCode from "../util/getCity";
+import { AsYouType } from "libphonenumber-js";
 const FilterSection = ({
   formData,
   setFormData,
@@ -58,13 +59,13 @@ const FilterSection = ({
 
   //set country code where from
   const setContryCodeFrom = (value) => {
-   
+
     setFormData((prev) => ({ ...prev, fromCityOrAirport: value }));
   };
 
   //set country code where to
   const setContryCodeTo = (value) => {
-    
+
 
     if (formData.fromCityOrAirport === value && value !== "") {
       ReactToast("You cannot select the same airport twice");
@@ -118,10 +119,10 @@ const FilterSection = ({
   const getPreferedAirLine = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`)
-  
+
       setPrefferedAirLines(response.data.preferredAirlines)
     } catch (error) {
-      // console.log(error)
+      console.log(error.message)
     }
   }
   // API search for second select tag
@@ -421,8 +422,8 @@ const FilterSection = ({
         };
       }
 
-     
-      dispatch(setLastSearch(query));
+      console.log({ query, saving })
+      // dispatch(setLastSearch(query));
       dispatch(setResentSearch(saving));
       if (token) {
         const response = await axios.post(
@@ -541,6 +542,9 @@ const FilterSection = ({
             <div className="flex flex-col md:flex-row    w-full  lg-custom:w-1/2 gap-2">
               <div className="  rounded   flex items-center border md:w-1/2  py-2 ">
                 <div className="flex items-center text-sm md:text-base justify-center gap-4   w-full ">
+                  {
+                    console.log({'foofy':formData.travelDate})
+                  }
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}

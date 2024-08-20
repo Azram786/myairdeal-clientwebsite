@@ -28,7 +28,7 @@ const MultiCityForm = ({
         const newEntry = {
           fromCity: lastEntry?.toCity || "",
           toCity: "",
-          travelDate: null,
+          travelDate: formData.travelDate,
         };
 
         // Return the new state with the new entry appended
@@ -47,7 +47,28 @@ const MultiCityForm = ({
   //     return newData;
   //   });
   // };
+  // const handleFormDataChange = (index, data) => {
+  //   console.log({ index, data })
+
+  //   setDynamicFormData((prev) => {
+
+  //     const newData = [...prev];
+
+  //     // Update the current index with the new data
+  //     newData[index] = { ...newData[index], ...data };
+
+  //     // Check if the next index exists
+  //     if (index + 1 < newData.length && data.toCity) {
+  //       // Update the fromCity of the next object
+  //       newData[index + 1] = { ...newData[index + 1], fromCity: data.toCity };
+  //     }
+
+  //     return newData;
+  //   });
+  // };
   const handleFormDataChange = (index, data) => {
+    console.log({ index, data });
+
     setDynamicFormData((prev) => {
       const newData = [...prev];
 
@@ -55,15 +76,39 @@ const MultiCityForm = ({
       newData[index] = { ...newData[index], ...data };
 
       // Check if the next index exists
-      if (index + 1 < newData.length && data.toCity) {
-        // Update the fromCity of the next object
-        newData[index + 1] = { ...newData[index + 1], fromCity: data.toCity };
+      if (index + 1 < newData.length) {
+        // Update the fromCity of the next object if toCity is provided
+        if (data.toCity) {
+          newData[index + 1] = { ...newData[index + 1], fromCity: data.toCity };
+        }
+
+        // Check if travelDate is provided in the current data
+        if (data.travelDate) {
+          const currentDate = new Date(data.travelDate);
+          const nextDate = new Date(newData[index + 1].travelDate);
+
+          // If the current travelDate is greater than the next index's travelDate,
+          // update the next index's travelDate
+          if (currentDate > nextDate) {
+            newData[index + 1] = { ...newData[index + 1], travelDate: data.travelDate };
+          }
+        }
       }
 
       return newData;
     });
   };
 
+
+  const handleFormDateChange = (index, date) => {
+    try {
+
+    } catch (error) {
+
+    }
+  }
+
+  console.log({ dynamicFormData })
 
   const removeLastFormHandler = () => {
     if (dynamicFormData.length > 1) {
@@ -76,25 +121,29 @@ const MultiCityForm = ({
   return (
     <div className="flex bg-white flex-col lg:flex-row w-full gap-2">
       <div className="lg:w-[75%] flex flex-col gap-3">
-        {dynamicFormData?.map((form, index) => {
+        {dynamicFormData?.map((form, index) => (
+          <DynamicForm
+            // dateDynamic={
+            //   index === 0 ? formData.travelDate :
+            //     dynamicFormData[index]?.travelDate
+            // }
+            dateDynamic={
+              index === 0
+                ? formData.travelDate > dynamicFormData[index].travelDate ? formData.travelDate : dynamicFormData[index].travelDate : dynamicFormData[index].travelDate || dynamicFormData?.[index - 1].travelDate
+            }
 
-          return (
-            <DynamicForm
-              dateDynamic={
-                index === 0 ? formData.travelDate : dynamicFormData[index - 1].travelDate
-              }
-              key={index}
-              dynamicFormData={dynamicFormData}
-              defaultOptions={defaultOptions}
-              getCountriesHandlerOne={getCountriesHandlerOne}
-              getCountriesHandlerTwo={getCountriesHandlerTwo}
-              form={form}
-              setForm={(data) => handleFormDataChange(index, data)}
-              formData={formData}
-              index={index}
-            />
-          )
-        })}
+            key={index}
+            dynamicFormData={dynamicFormData}
+            defaultOptions={defaultOptions}
+            getCountriesHandlerOne={getCountriesHandlerOne}
+            getCountriesHandlerTwo={getCountriesHandlerTwo}
+            form={form}
+            setDate={(date) => handleFormDateChange(index, date)}
+            setForm={(data) => handleFormDataChange(index, data)}
+            formData={formData}
+            index={index}
+          />
+        ))}
       </div>
 
       <div className="flex md:justify-start gap-4 lg:w-[25%]items-center md:items-end justify-between ">

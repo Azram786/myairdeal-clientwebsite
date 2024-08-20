@@ -6,10 +6,10 @@ import { GoChecklist } from "react-icons/go";
 
 const ProgressBar = ({ currentStep, onStepClick }) => {
   const steps = [
-    { label: "Itinerary", icon: <GoChecklist className="text-[#D7B56D]" size={24} /> },
-    { label: "Add Details", icon: <FaUser className="text-[#D7B56D]" size={24} /> },
-    { label: "Review", icon: <VscPreview className="text-[#D7B56D]" size={24} /> },
-    { label: "Payment", icon: <MdPayment className="text-[#D7B56D]" size={24} /> },
+    { label: "Itinerary", icon: <GoChecklist size={24} /> },
+    { label: "Add Details", icon: <FaUser  size={24} /> },
+    { label: "Review", icon: <VscPreview size={24} /> },
+    { label: "Payment", icon: <MdPayment  size={24} /> },
   ];
 
   return (
@@ -23,7 +23,7 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
               <div
                 className={`relative flex items-center mx-2 sm:mx-4 justify-center w-8 h-8 md:w-12 md:h-12 rounded-full cursor-pointer ${
                   index <= currentStep
-                    ? "bg-[#1B1D29] text-white shadow-lg"
+                    ? "bg-[#1B1D29] text-[#D7B56D] shadow-lg"
                     : "bg-gray-200 text-gray-600"
                 }`}
                 onClick={() => onStepClick(index)}
