@@ -19,8 +19,8 @@ const RecentSearch = ({ ResentSearchData }) => {
   }, [resentSearch, dispatch]);
 
   const setResentStateHandler = (value) => {
-    console.log({value})
- 
+    console.log({ value })
+
     dispatch(setResentSearch(value));
   };
 
@@ -49,21 +49,9 @@ const RecentSearch = ({ ResentSearchData }) => {
     ],
   };
 
-  useEffect(() => {
-    let timer;
-    if (resentSearch) {
-      // timer = setTimeout(() => {
-      //   dispatch(clearResent());
-      // }, 6 * 60 * 1000); // 2 minutes in milliseconds
-    }
+  // useEffect(() => {
 
-    // Cleanup function to clear the timer if the component unmounts or resentSearch changes
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, [resentSearch, dispatch]);
+  // }, [resentSearch, dispatch]);
   return (
     <div className=" w-[90%]  text-center rounded-xl my-4 mb-10 justify-center mx-auto flex flex-col gap-5">
       <h1 className="font-semibold px-4 text-start text-2xl">Recent Search</h1>
@@ -89,7 +77,7 @@ const RecentSearch = ({ ResentSearchData }) => {
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
                       {search?.searchQuery.searchModifiers.isDirectFlight ===
-                      true
+                        true
                         ? "Direct Flight"
                         : "Indirect flight "}
                     </div>

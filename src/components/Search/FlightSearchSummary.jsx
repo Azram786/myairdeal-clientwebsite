@@ -77,35 +77,27 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs text-white">Passengers & Class</span>
               <div className="relative group">
                 <span className="text-xs font-semibold line-clamp-1">
-                  {`${paxInfo.ADULT} Adults ${
-                    paxInfo.CHILD > 0
-                      ? `, ${paxInfo.CHILD} Child${
-                          paxInfo.CHILD > 1 ? "ren" : ""
-                        } `
+                  {`${paxInfo.ADULT} Adults ${paxInfo.CHILD > 0
+                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
+                    } `
+                    : ""
+                    }${paxInfo.INFANT > 0
+                      ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
+                      } `
                       : ""
-                  }${
-                    paxInfo.INFANT > 0
-                      ? `,${paxInfo.INFANT} Infant${
-                          paxInfo.INFANT > 1 ? "s" : ""
-                        } `
-                      : ""
-                  } | ${cabinClass}`}
+                    } | ${cabinClass}`}
                 </span>
                 {/* Tooltip */}
                 <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  {`${paxInfo.ADULT} Adults, ${
-                    paxInfo.CHILD > 0
-                      ? `${paxInfo.CHILD} Child${
-                          paxInfo.CHILD > 1 ? "ren" : ""
-                        }`
-                      : "No Children"
-                  }, ${
-                    paxInfo.INFANT > 0
-                      ? `${paxInfo.INFANT} Infant${
-                          paxInfo.INFANT > 1 ? "s" : ""
-                        }`
+                  {`${paxInfo.ADULT} Adults, ${paxInfo.CHILD > 0
+                    ? `${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
+                    }`
+                    : "No Children"
+                    }, ${paxInfo.INFANT > 0
+                      ? `${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
+                      }`
                       : "No Infants"
-                  }`}
+                    }`}
                 </div>
               </div>
             </div>
@@ -127,7 +119,10 @@ const FlightSearchSummary = ({ data, tripType }) => {
           <div className="flex justify-center">
             {/* <Link to=""> */}
             <button
-              onClick={() => dispatch(setIsaModifySearch(true))}
+              onClick={() => {
+                dispatch(setIsaModifySearch(true))
+                console.log("clicked")
+              }}
               className="border-[#01324D] bg-[#D7B56D] border text-xs lg-custom:text-sm text-black px-4 py-2 rounded-md"
             >
               MODIFY SEARCH
@@ -160,19 +155,15 @@ const FlightSearchSummary = ({ data, tripType }) => {
             <div className="flex items-center justify-between border-b pb-2">
               <span className="text-xs">Passengers & Class</span>
               <span className="text-xs font-semibold">
-                {`${paxInfo.ADULT} Adults ${
-                  paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${
-                        paxInfo.CHILD > 1 ? "ren" : ""
-                      } `
+                {`${paxInfo.ADULT} Adults ${paxInfo.CHILD > 0
+                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
+                  } `
+                  : ""
+                  }${paxInfo.INFANT > 0
+                    ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
+                    } `
                     : ""
-                }${
-                  paxInfo.INFANT > 0
-                    ? `,${paxInfo.INFANT} Infant${
-                        paxInfo.INFANT > 1 ? "s" : ""
-                      } `
-                    : ""
-                } | ${cabinClass}`}
+                  } | ${cabinClass}`}
               </span>
             </div>
             <div className="flex items-center justify-between border-b pb-2">
@@ -186,14 +177,17 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs font-semibold">None</span>
             </div>
             <div className="flex justify-center mt-2">
-              {/* <Link to="/"> */}
+
               <button
-                onClick={() => dispatch(setIsaModifySearch(true))}
+                onClick={() => {
+                  dispatch(setIsaModifySearch(true))
+                  console.log("clicked")
+                }}
                 className="border-[#01324D] bg-[#D7B56D] border text-sm text-black px-4 py-2 rounded-md"
               >
                 MODIFY SEARCH
               </button>
-              {/* </Link> */}
+
             </div>
           </div>
         </details>
@@ -202,7 +196,11 @@ const FlightSearchSummary = ({ data, tripType }) => {
   );
 
   const renderRoundTrip = () => (
-    <div>
+    <>   {isModifySearch ? (
+      <>
+        <HomePage />
+      </>
+    ) : (<div>
       {/* Grid layout for medium and larger screens */}
       <div className="hidden md:grid md:grid-cols-6 gap-3 bg-[#1B1D29] text-white p-2">
         <div className="flex items-center space-x-4 md:border-r justify-center">
@@ -243,33 +241,26 @@ const FlightSearchSummary = ({ data, tripType }) => {
             <span className="text-xs text-white">Passengers & Class</span>
             <div className="relative group">
               <span className="text-xs font-semibold line-clamp-1">
-                {`${paxInfo.ADULT} Adults${
-                  paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${
-                        paxInfo.CHILD > 1 ? "ren" : ""
-                      }`
+                {`${paxInfo.ADULT} Adults${paxInfo.CHILD > 0
+                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
+                  }`
+                  : ""
+                  }${paxInfo.INFANT > 0
+                    ? `, ${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
+                    }`
                     : ""
-                }${
-                  paxInfo.INFANT > 0
-                    ? `, ${paxInfo.INFANT} Infant${
-                        paxInfo.INFANT > 1 ? "s" : ""
-                      }`
-                    : ""
-                } | ${cabinClass}`}
+                  } | ${cabinClass}`}
               </span>
               {/* Tooltip */}
               <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                {`${paxInfo.ADULT} Adults${
-                  paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${
-                        paxInfo.CHILD > 1 ? "ren" : ""
-                      }`
-                    : ""
-                }, ${
-                  paxInfo.INFANT > 0
+                {`${paxInfo.ADULT} Adults${paxInfo.CHILD > 0
+                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
+                  }`
+                  : ""
+                  }, ${paxInfo.INFANT > 0
                     ? `${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""}`
                     : "No Infants"
-                }, | ${cabinClass}`}
+                  }, | ${cabinClass}`}
               </div>
             </div>
           </div>
@@ -283,7 +274,10 @@ const FlightSearchSummary = ({ data, tripType }) => {
         <div className="flex justify-center">
           {/* <Link to="/"> */}
           <button
-            onClick={() => dispatch(setIsaModifySearch(true))}
+            onClick={() => {
+              dispatch(setIsaModifySearch(true))
+              console.log("clicked")
+            }}
             className="border-[#01324D] bg-[#D7B56D] border text-sm text-black px-4 py-2 rounded-md"
           >
             MODIFY SEARCH
@@ -327,19 +321,15 @@ const FlightSearchSummary = ({ data, tripType }) => {
             <div className="flex items-center justify-between border-b pb-2">
               <span className="text-xs">Passengers & Class</span>
               <span className="text-xs font-semibold">
-                {`${paxInfo.ADULT} Adults${
-                  paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${
-                        paxInfo.CHILD > 1 ? "ren" : ""
-                      }`
+                {`${paxInfo.ADULT} Adults${paxInfo.CHILD > 0
+                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
+                  }`
+                  : ""
+                  }${paxInfo.INFANT > 0
+                    ? `, ${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
+                    }`
                     : ""
-                }${
-                  paxInfo.INFANT > 0
-                    ? `, ${paxInfo.INFANT} Infant${
-                        paxInfo.INFANT > 1 ? "s" : ""
-                      }`
-                    : ""
-                } | ${cabinClass}`}
+                  } | ${cabinClass}`}
               </span>
             </div>
             <div className="flex items-center justify-between border-b pb-2">
@@ -357,11 +347,17 @@ const FlightSearchSummary = ({ data, tripType }) => {
           </div>
         </details>
       </div>
-    </div>
+    </div>)}</>
+
+
   );
 
   const renderMultiCity = () => (
-    <div>
+    <>   {isModifySearch ? (
+      <>
+        <HomePage />
+      </>
+    ) : (<div>
       {/* Grid layout for medium and larger screens */}
       <div className="hidden md:flex flex-col md:flex-row items-center gap-3 bg-[#1B1D29] p-2 text-white">
         <div className="md:w-1/2 w-[95%] justify-center overflow-x-auto md:border-r no-scroll flex">
@@ -396,34 +392,26 @@ const FlightSearchSummary = ({ data, tripType }) => {
               <span className="text-xs text-white">Passengers & Class</span>
               <div className="relative group">
                 <span className="text-xs font-semibold line-clamp-1">
-                  {`${paxInfo.ADULT} Adults ${
-                    paxInfo.CHILD > 0
-                      ? `, ${paxInfo.CHILD} Child${
-                          paxInfo.CHILD > 1 ? "ren" : ""
-                        } `
+                  {`${paxInfo.ADULT} Adults ${paxInfo.CHILD > 0
+                    ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
+                    } `
+                    : ""
+                    }${paxInfo.INFANT > 0
+                      ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
+                      } `
                       : ""
-                  }${
-                    paxInfo.INFANT > 0
-                      ? `,${paxInfo.INFANT} Infant${
-                          paxInfo.INFANT > 1 ? "s" : ""
-                        } `
-                      : ""
-                  } | ${cabinClass}`}
+                    } | ${cabinClass}`}
                 </span>
                 <div className="absolute bottom-full left-0 mb-2 w-56 px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  {`${paxInfo.ADULT} Adults, ${
-                    paxInfo.CHILD > 0
-                      ? `${paxInfo.CHILD} Child${
-                          paxInfo.CHILD > 1 ? "ren" : ""
-                        }`
-                      : "No Children"
-                  }, ${
-                    paxInfo.INFANT > 0
-                      ? `${paxInfo.INFANT} Infant${
-                          paxInfo.INFANT > 1 ? "s" : ""
-                        }`
+                  {`${paxInfo.ADULT} Adults, ${paxInfo.CHILD > 0
+                    ? `${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
+                    }`
+                    : "No Children"
+                    }, ${paxInfo.INFANT > 0
+                      ? `${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
+                      }`
                       : "No Infants"
-                  },`}
+                    },`}
                 </div>
               </div>
             </div>
@@ -439,7 +427,10 @@ const FlightSearchSummary = ({ data, tripType }) => {
           <div className="flex justify-center items-center">
             {/* <Link to="/"> */}
             <button
-              onClick={() => dispatch(setIsaModifySearch(true))}
+              onClick={() => {
+                dispatch(setIsaModifySearch(true))
+                console.log("clicked")
+              }}
               className="border-[#01324D] bg-[#D7B56D] border text-xs lg-custom:text-sm text-black px-4 py-2 rounded-md"
             >
               MODIFY SEARCH
@@ -482,19 +473,15 @@ const FlightSearchSummary = ({ data, tripType }) => {
             <div className="flex items-center justify-between border-b pb-2">
               <span className="text-xs">Passengers & Class</span>
               <span className="text-xs font-semibold">
-                {`${paxInfo.ADULT} Adults ${
-                  paxInfo.CHILD > 0
-                    ? `, ${paxInfo.CHILD} Child${
-                        paxInfo.CHILD > 1 ? "ren" : ""
-                      } `
+                {`${paxInfo.ADULT} Adults ${paxInfo.CHILD > 0
+                  ? `, ${paxInfo.CHILD} Child${paxInfo.CHILD > 1 ? "ren" : ""
+                  } `
+                  : ""
+                  }${paxInfo.INFANT > 0
+                    ? `,${paxInfo.INFANT} Infant${paxInfo.INFANT > 1 ? "s" : ""
+                    } `
                     : ""
-                }${
-                  paxInfo.INFANT > 0
-                    ? `,${paxInfo.INFANT} Infant${
-                        paxInfo.INFANT > 1 ? "s" : ""
-                      } `
-                    : ""
-                } | ${cabinClass}`}
+                  } | ${cabinClass}`}
               </span>
             </div>
             <div className="flex items-center justify-between border-b pb-2">
@@ -514,7 +501,9 @@ const FlightSearchSummary = ({ data, tripType }) => {
           </div>
         </details>
       </div>
-    </div>
+    </div>)}
+    </>
+
   );
 
   return (
