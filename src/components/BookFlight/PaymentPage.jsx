@@ -59,17 +59,18 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         },
       })
       .then((res) => {
+        console.log(res.data);
         if (res.data.flatPrice) {
           setConvenienceFee(res.data.value);
           saveCommission(res.data.value);
         } else if (res.data.percentage) {
           if (res.data.totalFare) {
-            const markUpAmount = parseInt((totalFare / 100) * res.data.value);
+            const markUpAmount = parseFloat((totalFare / 100) * res.data.value);
             setConvenienceFee(markUpAmount);
             saveCommission(markUpAmount);
           } else if (res.data.baseFare) {
             const bF = data?.totalPriceInfo?.totalFareDetail.fC?.BF;
-            const markUpAmount = parseInt((bF / 100) * res.data.value);
+            const markUpAmount = parseFloat((bF / 100) * res.data.value);
             setConvenienceFee(markUpAmount);
             saveCommission(markUpAmount);
           }
@@ -78,10 +79,8 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
       })
       .catch((error) => {
         console.log(error);
-        ReactToast(error.message)
       });
   };
-
   useEffect(() => {
     getMarkUp();
   }, []);
@@ -227,7 +226,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
       if (!res) {
         throw new Error("Razorpay SDK failed to load. Are you online?");
       }
-      const amountToPay = parseInt(totalAmount) + parseInt(convenienceFee);
+      const amountToPay = Math.round(totalAmount + convenienceFee);
       const options = {
         key: import.meta.env.VITE_RZP_KEY_ID,
         amount: amountToPay * 100,
