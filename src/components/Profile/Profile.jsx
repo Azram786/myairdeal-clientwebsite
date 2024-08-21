@@ -448,7 +448,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <Header />
+
       {loading ? (
         <div className="h-[85vh] w-full flex justify-center items-center ">
           <Spinner />
@@ -628,7 +628,7 @@ const UserProfile = () => {
               </div>
             </div>
           </motion.div>
-          <Footer />
+        
         </>
       )}
     </>

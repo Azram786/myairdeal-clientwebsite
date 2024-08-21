@@ -353,7 +353,7 @@ const FlightDetailsCard = ({
               <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold w-16 sm:w-32 md:min-w-44 text-gray-500">
                 {/* <span>{convertToHoursMinutes(totalDuration)}</span> */}
                 <span>{totalDuration}</span>
-                <FaPlane className="mx-2 text-[#1B1D29] text-3xl" />
+                <FaPlane className="mx-2 text-[#D7B56D] text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (
                     <span>
@@ -430,13 +430,13 @@ const FlightDetailsCard = ({
           </div>
         </div>
 
-        <div className="min-w-[100px] flex flex-col  justify-between items-center border-none  ">
+        <div className="w-max flex flex-col pr-4  justify-between items-center   ">
           <div className="ml-8 pl-4 hidden lg-custom:flex flex-col text-center gap-2 mt-4 justify-center items-center">
             {" "}
             <p className="text-[50px]">
               <GiRollingSuitcase />
             </p>
-            <p className="font-bold text-xs">Included:Carry on bag</p>
+            <p className="font-bold text-xs">Included:<br/>Carry on bag</p>
             <div className="text-xs font-bold">
               {flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.cB}
             </div>

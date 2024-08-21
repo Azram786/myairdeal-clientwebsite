@@ -84,7 +84,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                 <div className="block md:hidden font-semibold justify-center items-center">
                   {trip.sI[0].fD.aI.name}
                 </div>
-                <div className="flex border   border-blue-400  rounded-xl p-2">
+                <div className="flex border   border-[#1B1D29]  rounded-xl p-2">
                   {/* <img
                   src={FlightLogo}
                   className="h-16 w-16 rounded-lg p-1 object-contain mr-4 border border-blue-700"
@@ -94,14 +94,14 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                     src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${trip.sI[0].fD.aI.code}.png`}
                     onError={(e) => (e.currentTarget.src = defaultAirline)}
                     alt={trip?.sI[0].fD?.aI?.code}
-                    className="w-10 h-10 "
+                    className="w-12 h-10 "
                   />
                 </div>
               </div>
 
               <div className="flex w-full flex-row justify-between text-[#D7B56D] md:bg-transparent bg-[#1B1D29] md:text-black rounded-md md:rounded-none p-2  md:w-[100%]  py-2 md:border-r-2 md:border-gray-300  sm:flex-row md:flex-row  gap-3  ">
                 <div className="flex w-full justify-between  gap-4 md:gap-1   flex-col  ">
-                  <div className="text-base md:text-base  mr-2  line-clamp-1 ">
+                  <div className="text-base md:text-base  mr-2  line-clamp-1 ">h
                     <span className="md:hidden tracking-widest">
                       {" "}
                       {trip.sI[0].da.code}{" "}
@@ -144,7 +144,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
             <div className="flex w-full min-w-80  sm:w-[40%]  justify-between  gap-5   ">
               <div className="flex flex-col justify-evenly  md:ml-2  sm:flex-col gap-0 md:gap-3  sm:w-1/2">
                 <div className="flex items-center gap-1">
-                  <div className="text-[1.5rem] mr-2 bg-[#1B1D29]  text-white p-1 rounded-md">
+                  <div className="text-[1.5rem] mr-2 bg-[#1B1D29]  text-[#D7B56D] p-1 rounded-md">
                     <MdOutlineDateRange />
                   </div>
                   <div>
@@ -155,7 +155,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <div className="text-[1.5rem] mr-2 bg-[#1B1D29] p-1  text-white rounded-md">
+                  <div className="text-[1.5rem] mr-2 bg-[#1B1D29] p-1  text-[#D7B56D] rounded-md">
                     <IoIosTime />
                   </div>
                   <div>
@@ -168,7 +168,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
               </div>
               <div className="flex flex-col  sm:flex-col justify-evenly   sm:w-1/2 gap-0 md:gap-3">
                 <div className="flex items-center gap-1">
-                  <div className="text-[1.5rem]  bg-[#1B1D29]  text-white mr-2  F] p-1 rounded-md">
+                  <div className="text-[1.5rem]  bg-[#1B1D29]  text-[#D7B56D] mr-2  F] p-1 rounded-md">
                     <BsDoorClosedFill />
                   </div>
                   <div>
@@ -179,7 +179,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <div className="text-[1.5rem]  bg-[#1B1D29]  text-white mr-2  p-1 rounded-md">
+                  <div className="text-[1.5rem]  bg-[#1B1D29]  text-[#D7B56D] mr-2  p-1 rounded-md">
                     <MdAirlineStops />
                   </div>
                   <div>
@@ -198,12 +198,12 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
       <div className="flex  gap-1 flex-row   lg:w-[20%] xl:w-[25%] md:space-x-4 ">
         <button
           onClick={() => DownloadInvoice()}
-          className="text-[#D7B56D] text-sm rounded-md bg-[#1B1D29] px-2 xl:px-4 py-1 font-semibold mb-4 md:mb-0"
+          className="text-white text-sm rounded-md bg-[#1B1D29] px-2 xl:px-4 py-1 font-semibold mb-4 md:mb-0"
         >
           Download Ticket
         </button>
         <button
-          className="text-[#D7B56D] text-sm border border-[#1B1D29] bg-[#1B1D29] px-2 xl:px-4 py-1 xl:py-2 rounded-md font-semibold mb-4 md:mb-0 "
+          className="text-white text-sm border border-[#1B1D29] bg-[#1B1D29] px-2 xl:px-4 py-1 xl:py-2 rounded-md font-semibold mb-4 md:mb-0 "
           onClick={getSingleTripDetailHandler}
         >
           Details

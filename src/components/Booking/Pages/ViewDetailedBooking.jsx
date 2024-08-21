@@ -25,6 +25,7 @@ const ViewDetailedBooking = () => {
   const { bookingId, bookingFilter } = queryParams;
   const [loading, setLoading] = useState(true);
   const [amendment, setAmendment] = useState([]);
+  const [data,setData]=useState(null)
   const getSingleTicketDetailHandler = async () => {
     try {
       setLoading(true);
@@ -38,10 +39,12 @@ const ViewDetailedBooking = () => {
           },
         }
       );
-
+      console.log({ data: response.data })
       setSearchQuery(response.data.searchQuery);
       setSingleBookingData(response.data.data);
       setAmendment(response.data.amendment);
+      setData(response.data.completeBookingData
+      )
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -89,7 +92,7 @@ const ViewDetailedBooking = () => {
 
   return (
     <div className="">
-      <Header />
+
       {loading ? (
         <div className="h-[85vh] w-full flex  justify-center items-center ">
           <Spinner />
@@ -97,7 +100,7 @@ const ViewDetailedBooking = () => {
       ) : (
         <div className="  p-2 border rounded-lg md:px-10  mt-3  flex justify-center items-center  ">
           <div className=" flex flex-col w-full   ">
-            <div className=" bg-[#1B1D29] gap-2 flex flex-wrap justify-between items-center text-[#D7B56D] rounded-xl px-10   py-4">
+            <div className=" bg-[#dce3e8] border-2 gap-2 flex flex-wrap justify-between items-center text-black rounded-xl px-10   py-4">
               <div className="text-[1.3rem] flex  font-bold">
                 Ticket booking
               </div>
@@ -107,7 +110,7 @@ const ViewDetailedBooking = () => {
               </div> */}
                 <div className="">
                   <button
-                    className="text-[#1B1D29] flex justify-center items-center bg-white p-2 w-[200px] rounded-lg"
+                    className="bg-[#0A2546] border-white border-2 flex justify-center items-center text-[#D7B56D] p-2 w-[200px] rounded-lg"
                     onClick={DownloadInvoice}
                   >
                     <CiSaveDown1 />
@@ -146,7 +149,8 @@ const ViewDetailedBooking = () => {
                         {
                           singleBookingData?.itemInfos.AIR.totalPriceInfo
                             .totalFareDetail.fC.BF
-                        }
+                         + Math.abs(  singleBookingData?.itemInfos.AIR.totalPriceInfo
+                          .totalFareDetail.fC.TF - data?.payment?.amount)}
                       </div>
                     </div>
                     <div className=" flex flex-col">
@@ -207,10 +211,8 @@ const ViewDetailedBooking = () => {
                     <div>Total</div>
                     <div className="flex">
                       ₹{" "}
-                      {
-                        singleBookingData?.itemInfos.AIR.totalPriceInfo
-                          .totalFareDetail.fC.TF
-                      }
+                    
+                      {data?.payment?.amount}
                     </div>
                   </div>
                 </div>
@@ -228,7 +230,7 @@ const ViewDetailedBooking = () => {
         </div>
       )}
 
-      <Footer />
+
     </div>
   );
 };

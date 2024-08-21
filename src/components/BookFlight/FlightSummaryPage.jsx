@@ -13,8 +13,8 @@ import Review from "./Review";
 import AddDetails from "./flightSummary/addDetails";
 import { ApiData } from "./dummy-meal";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import defaultAirline from "../../assets/home/logo/defaultAirline.png";
 import { set } from "react-hook-form";
 import PaymentPage from "./PaymentPage";
@@ -25,6 +25,7 @@ import Header from "../Home/Header";
 import Footer from "../Home/Footer";
 import FlightLanding from "../../assets/booking/viewDetailedBookings/flightLanding.svg";
 import ShowBaggageInfo from "./Util/ShowBaggageInfo";
+import { setIsaModifySearch } from "../../store/slices/aut.slice";
 
 const FlightSummary = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -34,10 +35,10 @@ const FlightSummary = () => {
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
-  // const [Passenger, setPassenger] = useState(null);
+
 
   const location = useLocation();
-  const [seatMapData, setSeatMapData] = useState(null); // For seat map API
+  const [seatMapData, setSeatMapData] = useState(null);
   const { bookings } = location.state || {};
   const navigate = useNavigate();
   const [commision, setComission] = useState(0);
@@ -45,7 +46,6 @@ const FlightSummary = () => {
     return bookings ? bookings.map((item) => item.priceId) : [];
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
-
 
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
@@ -113,6 +113,12 @@ const FlightSummary = () => {
   const [taxesExpanded, setTaxesExpanded] = useState(false);
   const [amountExpanded, setAmountExpanded] = useState(false);
   const [mealExpanded, setIsMealExpanded] = useState(false);
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+
+    dispatch(setIsaModifySearch(false))
+  }, [])
 
   // const toggleTaxes = (index) => {
   //   setTaxesExpanded((prev) =>
@@ -153,6 +159,7 @@ const FlightSummary = () => {
     return `${hours}h ${minutes}m`;
   }
 
+  console.log({ passengersData, passengers })
   function calculateTotalDuration(segments) {
     if (!segments || segments.length === 0) return "N/A";
 
@@ -210,9 +217,10 @@ const FlightSummary = () => {
     );
   }
 
+
   return (
-    <div className=" min-h-screen my-auto">
-      <Header />
+    <div className=" min-h-screen my-auto  ">
+      {/* <Header /> */}
       <div className="  sm:text-sm md:text-lg w-[90vw] flex-wrap mx-auto pt-4 ">
         <div
           className="flex flex-col w-full  flex-wrap lg-custom:flex-row gap-4   
@@ -448,6 +456,7 @@ const FlightSummary = () => {
                   </button>
                 </div>
               </>
+
             ) : currentStep === 1 ? (
               <AddDetails
                 bookingId={data?.bookingId}
@@ -494,7 +503,9 @@ const FlightSummary = () => {
                   <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                     <span className="text-sm md:text-base ">Base fare</span>
                     <span>
-                      ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
+                      ₹{" "}
+                      {data?.totalPriceInfo?.totalFareDetail?.fC?.BF +
+                        commision}
                     </span>
                   </div>
                   <div className="mt-2">
@@ -549,7 +560,7 @@ const FlightSummary = () => {
                               ₹{" "}
                               {
                                 data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
-                                  ?.YR
+                                  ?.YR || "N/A"
                               }
                             </span>
                           </div>
@@ -683,14 +694,14 @@ const FlightSummary = () => {
                     >
                       {amountExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
-                          <div className="flex justify-between">
+                          {/* <div className="flex justify-between">
                             <span>Commission</span>
                             <span>₹ {commision}</span>
-                          </div>
-                          <div className="flex justify-between">
+                          </div> */}
+                          {/* <div className="flex justify-between">
                             <span>TDS</span>
                             <span>N/A</span>
-                          </div>
+                          </div> */}
                           <div className="flex justify-between font-medium">
                             <span>Net Price</span>
                             <span>

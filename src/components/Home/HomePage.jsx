@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Header from "./Header";
 import Banner from "./Banner";
 import FilterSection from "./FilterSection";
 import OfferSection from "./OfferSection";
 import Contact from "./Contact";
-import Footer from "./Footer";
+
 import Spinner from "../Profile/Spinner";
 import RecentSearch from "./ResentSearch";
 import axios from "axios";
@@ -87,7 +86,7 @@ const HomePage = () => {
           prevFormData.toCityOrAirport,
         travelDate:
           new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate) >=
-          new Date()
+            new Date()
             ? new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate)
             : new Date(),
         returnDate:
@@ -97,10 +96,10 @@ const HomePage = () => {
             ]?.travelDate
           ) > new Date()
             ? new Date(
-                resentSearch?.searchQuery?.routeInfos[
-                  resentSearch.searchQuery.routeInfos.length - 1
-                ]?.travelDate
-              )
+              resentSearch?.searchQuery?.routeInfos[
+                resentSearch.searchQuery.routeInfos.length - 1
+              ]?.travelDate
+            )
             : new Date(),
         isDirectFlight: true,
         isConnectingFlight:
@@ -120,7 +119,7 @@ const HomePage = () => {
       if (
         resentSearch.searchQuery.routeInfos.length === 2 &&
         resentSearch.searchQuery.routeInfos[0].toCityOrAirport.code ===
-          resentSearch.searchQuery.routeInfos[1].fromCityOrAirport.code
+        resentSearch.searchQuery.routeInfos[1].fromCityOrAirport.code
       ) {
         setTypeOfTravel("round-trip");
       } else if (resentSearch.searchQuery.routeInfos.length > 1) {
@@ -208,7 +207,7 @@ const HomePage = () => {
         </div>
       ) : (
         <>
-          <Header />
+
           <Banner />
           <FilterSection
             formData={formData}
@@ -230,7 +229,7 @@ const HomePage = () => {
           <Testimonials />
           <Contact />
           <DownloadApp />
-          <Footer />
+
         </>
       )}
     </div>

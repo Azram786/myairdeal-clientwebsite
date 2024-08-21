@@ -304,10 +304,10 @@ const OneWaySideBar = ({
               <label
                 key={stop}
                 htmlFor={`stop-${stop}`}
-                className={`mb-1 border hover:bg-blue-100 flex text-xs flex-col items-center justify-center py-2 ${
+                className={`mb-1 border hover:bg-[#D7B56D] flex text-xs flex-col items-center justify-center py-2 ${
                   index === 0 ? "rounded-l-md" : ""
                 } ${index === 3 ? "rounded-r-md" : ""} ${
-                  filters.stops.includes(stop) ? "bg-blue-200" : ""
+                  filters.stops.includes(stop) ? "bg-[#D7B56D]" : ""
                 } ${
                   stopsCountMap[stop] === 0
                     ? "opacity-50 cursor-not-allowed"
@@ -336,7 +336,7 @@ const OneWaySideBar = ({
         {/* Departure Time filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">
           <h3 className="text-sm font-semibold mb-2">Departure Time</h3>
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-2 ">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg-custom2:grid-cols-4 place-items-center gap-2 ">
             {[
               { icon: <PiMountains />, time: "00-06" },
               { icon: <IoIosSunny />, time: "06-12" },
@@ -345,8 +345,8 @@ const OneWaySideBar = ({
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 hover:bg-blue-100 border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
-                  filters.departureTime.includes(time) ? "bg-blue-200" : ""
+                className={`border-gray-500 hover:bg-[#D7B56D] border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                  filters.departureTime.includes(time) ? "bg-[#D7B56D]" : ""
                 }`}
                 onClick={() => handleTimeChange("departureTime", time)}
               >
@@ -369,8 +369,8 @@ const OneWaySideBar = ({
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 hover:bg-blue-100 text-xs border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
-                  filters.arrivalTime.includes(time) ? "bg-blue-200" : ""
+                className={`border-gray-500 hover:bg-[#D7B56D] text-xs border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                  filters.arrivalTime.includes(time) ? "bg-[#D7B56D]" : ""
                 }`}
                 onClick={() => handleTimeChange("arrivalTime", time)}
               >
