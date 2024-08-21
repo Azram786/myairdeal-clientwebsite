@@ -218,7 +218,7 @@ const OneWaySideBar = ({
 
   const handlePriceChange = (e) => {
     const newMaxPrice = parseInt(e.target.value);
-    console.log("Price changed to:", newMaxPrice);
+    // console.log("Price changed to:", newMaxPrice);
     setFilters((prev) => ({ ...prev, maxPrice: newMaxPrice }));
   };
 

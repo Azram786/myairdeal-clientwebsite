@@ -35,7 +35,7 @@ const FlightSummary = () => {
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
   // const [Passenger, setPassenger] = useState(null);
-  console.log({ data });
+
   const location = useLocation();
   const [seatMapData, setSeatMapData] = useState(null); // For seat map API
   const { bookings } = location.state || {};
@@ -45,8 +45,8 @@ const FlightSummary = () => {
     return bookings ? bookings.map((item) => item.priceId) : [];
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
-  console.log("nithin----------------------------[[[[[[[[[[[[[[[[[[[[");
-  // console.log({ flightData, passengers }, "REVIEW PAGE");
+
+
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
       navigate("/search");
@@ -65,7 +65,6 @@ const FlightSummary = () => {
 
   const handleDataFromChild = (data) => {
     setPassengerData(data);
-    console.log(passengersData, "Passenger data");
   };
 
   const getData = async () => {
@@ -92,7 +91,7 @@ const FlightSummary = () => {
         setLoading(false);
         ReactToast("Some error occurred please try again");
         navigate("/");
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -230,21 +229,20 @@ const FlightSummary = () => {
             {currentStep === 0 ? (
               <>
                 <div
-                  className={`pb-4 border h-max border-gray-400  max-h-[50vh] ${
-                    data?.tripInfos.length > 1 && "overflow-scroll"
-                  } overflow-x-hidden`}
+                  className={`pb-4 border h-max border-gray-400  max-h-[50vh] ${data?.tripInfos.length > 1 && "overflow-scroll"
+                    } overflow-x-hidden`}
                 >
                   {data?.tripInfos?.map((item, index) => {
                     return (
                       <div key={index} className=" rounded-lg p-2   ">
-                        <div className=" flex flex-wrap items-center justify-between bg-blue-200 p-2 rounded-t-lg">
-                          <div className="text-base sm:text-lg font-bold flex items-center">
+                        <div className=" flex flex-wrap items-center justify-between bg-[#1B1D29] text-white  p-2 rounded-t-lg">
+                          <div className="text-base sm:text-lg font-semibold flex items-center">
                             <span>{item.sI[0].da.city}</span>
                             <FaArrowRight className="mx-2 inline" />
                             <span>{item.sI[item.sI.length - 1].aa.city}</span>
                           </div>
                           <div className="flex justify-center items-center gap-2">
-                            <div className="text-gray-600 text-sm mt-1 sm:mt-0 sm:ml-2">
+                            <div className="text-white text-sm mt-1 sm:mt-0 sm:ml-2">
                               On{" "}
                               {new Date(item.sI[0].dt).toLocaleDateString(
                                 "en-US",
@@ -256,7 +254,7 @@ const FlightSummary = () => {
                                 }
                               )}
                             </div>
-                            <div className="text-sm md:text-base  font-semibold text-gray-600 flex items-center">
+                            <div className="text-sm md:text-base  font-semibold text-white flex items-center">
                               <FaRegClock className="mr-2 " />
                               {calculateTotalDuration(item.sI)}
                             </div>
@@ -269,12 +267,12 @@ const FlightSummary = () => {
                                 <div className="flex-col lg-custom:flex-row md:items-center   w-full justify-evenly  mb-4  flex">
                                   <div className="w-full lg-custom:w-[20%] flex ">
                                     <div className="font-semibold  text-xs  rounded-md inline-flex md:flex md:h-full lg-custom:justify-center lg-custom:items-center md:flex-col items-start justify-start  s p-1 space-x-2">
-                                      <div className="w-8 h-8 md:h-14 md:w-14">
+                                      <div className="w-8 h-8 md:h-14 md:w-14 ">
                                         <img
                                           src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
                                           onError={(e) =>
-                                            (e.currentTarget.src =
-                                              defaultAirline)
+                                          (e.currentTarget.src =
+                                            defaultAirline)
                                           }
                                           alt={segment?.fD?.aI?.code}
                                           className="w-full h-full object-contain "
@@ -292,7 +290,7 @@ const FlightSummary = () => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="flex flex-col md:flex-row w-full  ">
+                                  <div className="flex flex-col md:flex-row w-full   ">
                                     <div className="flex-col text-center md:text-left w-full md:w-[40%]">
                                       <div className="text-lg font-bold ">
                                         {segment.da.code}
@@ -315,8 +313,18 @@ const FlightSummary = () => {
                                           hour12: true,
                                         })}
                                       </div>
+                                      <div className="text-sm font-semibold">
+                                        {new Date(
+                                          item.sI[0].dt
+                                        ).toLocaleDateString("en-US", {
+                                          weekday: "long",
+                                          year: "numeric",
+                                          month: "short",
+                                          day: "numeric",
+                                        })}
+                                      </div>
                                     </div>
-                                    <div className="flex-col text-center my-2 md:my-0 w-full md:w-[40%]">
+                                    <div className="flex-col text-center my-2 md:my-0 w-full mr-32 md:w-[40%]">
                                       <div className="w-full text-center text-semibold flex ">
                                         <span className="text-center mx-auto text-sm">
                                           {(() => {
@@ -353,7 +361,7 @@ const FlightSummary = () => {
                                           : item.sI.length + "Stops"}
                                       </div>
                                     </div>
-                                    <div className="flex-col text-center md:text-left w-full md:w-[40%] ml-0 md:ml-6">
+                                    <div className="flex-col text-center md:text-left w-full md:w-[40%] ">
                                       <div className="text-lg font-bold">
                                         {segment.aa.code}
                                       </div>
@@ -375,6 +383,16 @@ const FlightSummary = () => {
                                           hour12: true,
                                         })}
                                       </div>
+                                      <div className="text-sm font-semibold">
+                                        {new Date(
+                                          item.sI[0].dt
+                                        ).toLocaleDateString("en-US", {
+                                          weekday: "long",
+                                          year: "numeric",
+                                          month: "short",
+                                          day: "numeric",
+                                        })}
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -391,7 +409,7 @@ const FlightSummary = () => {
                                   the Airline
                                 </span> */}
                                 {index !== item.sI.length - 1 && (
-                                  <div className="flex justify-between bg-blue-900 text-white p-3 rounded-md mt-4 mb-4">
+                                  <div className="flex justify-between bg-[#1B1D29] text-white p-3 rounded-md mt-4 mb-4">
                                     <div className="text-sm">
                                       Require to change plane
                                     </div>
@@ -419,7 +437,7 @@ const FlightSummary = () => {
                 </div>
                 <div className="flex justify-center py-3 px-4">
                   <button
-                    className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-[#007EC4] text-white rounded-md text-sm sm:text-base flex items-center justify-center"
+                    className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-[#1B1D29] text-[#D7B56D]  rounded-md text-sm sm:text-base flex items-center justify-center"
                     onClick={handleSaveAndContinue}
                   >
                     {isSeatMapLoading ? (
@@ -446,7 +464,7 @@ const FlightSummary = () => {
                   setCurrentStep={setCurrentStep}
                   data={data}
                   passengersData={passengersData}
-                  // updatePssenger={updatePssenger}
+                // updatePssenger={updatePssenger}
                 />
               </>
             ) : currentStep === 3 ? (
@@ -456,7 +474,7 @@ const FlightSummary = () => {
                   passengersData={passengersData}
                   totalFare={amountToPay}
                   saveCommission={saveCommission}
-                  // updatePssenger={updatePssenger}
+                // updatePssenger={updatePssenger}
                 />
               </>
             ) : null}
@@ -464,14 +482,14 @@ const FlightSummary = () => {
           {/* Right Section */}
           <div className="w-full lg-custom:w-[25%] h-full mb-8  rounded-lg space-y-2 p-5 shadow-md bg-white">
             <div className="w-full max-w-full rounded-lg  ">
-              <div className="flex items-center justify-between border-b border-gray-300 pb-4">
+              <div className="text-[#1B1D29] flex items-center justify-between border-b border-gray-300 pb-4">
                 <div>
                   <span className="font-bold text-lg md:text-xl lg:text-2xl">
                     FARE SUMMARY
                   </span>
                 </div>
               </div>
-              <div className="text-gray-700 mt-4 md:mt-6 space-y-4 md:space-y-6">
+              <div className="text-[#1B1D29] mt-4 md:mt-6 space-y-4 md:space-y-6">
                 <div className="pt-3">
                   <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                     <span className="text-sm md:text-base ">Base fare</span>
@@ -500,9 +518,8 @@ const FlightSummary = () => {
                       </div>
                     </div>
                     <div
-                      className={`transition-max-height duration-300 ease-in-out ${
-                        taxesExpanded ? "max-h-[500px]" : "max-h-0"
-                      } overflow-y-auto`}
+                      className={`transition-max-height duration-300 ease-in-out ${taxesExpanded ? "max-h-[500px]" : "max-h-0"
+                        } overflow-y-auto`}
                     >
                       {taxesExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
@@ -542,7 +559,7 @@ const FlightSummary = () => {
                   </div>
                   <div className="flex flex-col">
                     {passengers[0]?.selectedMeal?.length > 0 ||
-                    passengers[0]?.selectedBaggage?.length > 0 ? (
+                      passengers[0]?.selectedBaggage?.length > 0 ? (
                       <>
                         <div
                           className="mt-2 text-sm md:text-base flex  items-center font-medium cursor-pointer"
@@ -661,9 +678,8 @@ const FlightSummary = () => {
                       </div>
                     </div>
                     <div
-                      className={`transition-max-height duration-300 ease-in-out ${
-                        amountExpanded ? "max-h-[500px]" : "max-h-0"
-                      } overflow-y-auto`}
+                      className={`transition-max-height duration-300 ease-in-out ${amountExpanded ? "max-h-[500px]" : "max-h-0"
+                        } overflow-y-auto`}
                     >
                       {amountExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">

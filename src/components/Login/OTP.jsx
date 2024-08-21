@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", ""]);
- const {lastSearch }= useSelector((state) => state.auth);
+  const { lastSearch } = useSelector((state) => state.auth);
 
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
@@ -83,18 +83,15 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
       if (response && response.data) {
         if (response.data.profile === false)
           navigate(`/enter-detail?token=${response.data.token}`);
-        else if (lastSearch){
-          
-          navigate('/search',{state:{query:lastSearch}});
-          
-        } 
-        else navigate("/");
+        else if (lastSearch) {
+          navigate("/search", { state: { query: lastSearch } });
+        } else navigate("/");
       } else {
         throw new Error("Invalid OTP");
       }
     } catch (error) {
       setLoading(false);
-      console.log("Error verifying OTP:", error.message);
+      ReactToast("Error verifying OTP:", error.message);
     }
   };
   const handleResendOTP = () => {
@@ -113,19 +110,20 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
             onKeyDown={(e) => handleKeyDown(e, index)}
             ref={(el) => (inputsRef.current[index] = el)}
             maxLength="1"
-            className="w-12 h-12 text-center border border-[#007EC4] rounded-md"
+            className="w-12 h-12 text-center border border-[#D7B56D] rounded-md"
             onPaste={handlePaste}
           />
         ))}
       </div>
       <div className="flex w-full flex-col md:flex-row  items-center gap-1">
-
         {loading ? (
           <motion.button
-            whileTap={{ scale: 0.85 }} className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-1/2">
+            whileTap={{ scale: 0.85 }}
+            className="bg-[#D7B56D] text-white h-[45px] rounded-md mt-5 w-1/2"
+          >
             <div className="flex justify-center items-center">
               <motion.div
-                className="w-4 h-4 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
+                className="w-4 h-4 border-4 border-t-4 border-t-[#D7B56D] border-gray-200 rounded-full"
                 variants={spinnerVariants}
                 animate="animate"
               />
@@ -135,28 +133,32 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
           <motion.button
             whileTap={{ scale: 0.85 }}
             onClick={onSubmit}
-            className="bg-[#007EC4] text-white h-[45px] rounded-md mt-5 w-1/2"
+            className="bg-[#D7B56D] text-white h-[45px] rounded-md mt-5 w-1/2"
           >
             Verify OTP
           </motion.button>
         )}
         <div className="text-center h-full w-1/2 flex justify-center items-center ">
           {timer > 0 ? (
-            <p >Resend OTP in {timer} seconds</p>
+            <p>Resend OTP in {timer} seconds</p>
           ) : (
             <motion.button
               whileTap={{ scale: 0.85 }}
               onClick={handleResendOTP}
-              className="text-[#007EC4] border border-[#007EC4] bg-white h-[45px] rounded-md mt-5 w-full"
+              className="text-[#D7B56D] border border-[#D7B56D] bg-white h-[45px] rounded-md mt-5 w-full"
               disabled={secondLoading}
             >
-              {secondLoading ? <div className="flex justify-center items-center">
-                <motion.div
-                  className="w-4 h-4 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
-                  variants={spinnerVariants}
-                  animate="animate"
-                />
-              </div> : "Resend OTP"}
+              {secondLoading ? (
+                <div className="flex justify-center items-center">
+                  <motion.div
+                    className="w-4 h-4 border-4 border-t-4 border-t-[#D7B56D] border-gray-200 rounded-full"
+                    variants={spinnerVariants}
+                    animate="animate"
+                  />
+                </div>
+              ) : (
+                "Resend OTP"
+              )}
             </motion.button>
           )}
         </div>

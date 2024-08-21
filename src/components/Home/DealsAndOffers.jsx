@@ -59,7 +59,7 @@ const DealsAndOffers = () => {
               </span>
             </div>
             <div>
-              <button className="text-white bg-[#007EC4] w-[30%] text-sm py-3 rounded-lg ">
+              <button className="text-white bg-[#D7B56D] w-[30%] text-sm py-3 rounded-lg ">
                 Get the deal
               </button>
             </div>

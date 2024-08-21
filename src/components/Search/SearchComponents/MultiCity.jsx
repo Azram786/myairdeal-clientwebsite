@@ -28,7 +28,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
   );
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [selectedFlights, setSelectedFlights] = useState(
-    flightProps.map(() => ({ flightIndex: 0, priceIndex: 0 }))
+    flightProps.map(() => ({}))
   );
 
   const navigate = useNavigate();
@@ -146,9 +146,6 @@ const MultiCity = ({ flightProps, passenger, query }) => {
       };
     });
 
-    console.log("Booking:", bookingData);
-
-    console.log("Booking:", bookingData);
     if (!token) {
       ReactToast("Please login first");
       navigate("/sign-in", { state: { booking: query } });
@@ -173,12 +170,12 @@ const MultiCity = ({ flightProps, passenger, query }) => {
         activeTabIndex={activeTabIndex}
         passenger={passenger}
       /> */}
-       <button
+      <button
         className="absolute top-3 right-0 z-50 flex flex-col items-center justify-center  lg-custom:hidden"
         onClick={toggleSidebar}
       >
-        <BsFillFilterSquareFill className="w-6 h-6 text-blue-600" />
-        <div className="text-xs text-blue-600">Filters</div>
+        <BsFillFilterSquareFill className="w-6 h-6 white" />
+        <div className="text-xs white">Filters</div>
       </button>
       <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
         <div
@@ -194,9 +191,8 @@ const MultiCity = ({ flightProps, passenger, query }) => {
             width: "auto",
           }}
         >
-      
           <button
-            className="absolute top-4  right-4 z-50 text-blue-600 lg-custom:hidden"
+            className="absolute top-4  right-4 z-50 white lg-custom:hidden"
             onClick={() => setIsSidebarOpen(false)}
           >
             <FaTimes className="w-6 h-6" />
@@ -295,7 +291,6 @@ const MultiCity = ({ flightProps, passenger, query }) => {
         </Tabs>
       </div>
 
-      {console.log(selectedFlights[0].priceIndex, "heoo")}
       {(selectedFlights[0]?.priceIndex != null ||
         selectedFlights[1]?.priceIndex != null) && (
         <BookingCard

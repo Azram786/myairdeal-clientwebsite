@@ -217,7 +217,7 @@ const FlightList = () => {
 
       const tripInfos = res.data.searchResult.tripInfos;
 
-      console.log(tripInfos, "tripInfos");
+
       if (!tripInfos) {
         ReactToast("No flights found on this route")
         return
@@ -238,8 +238,8 @@ const FlightList = () => {
         setMulticity(Object.values(tripInfos));
       }
     } catch (error) {
-      console.log(error);
-      ReactToast('Some issue in your search')
+      ReactToast(error.message);
+      // ReactToast('Some issue in your search')
       navigate('/')
     } finally {
       setLoading(false);
@@ -247,7 +247,7 @@ const FlightList = () => {
   };
 
   useEffect(() => {
-    console.log("nithin----------------------------------")
+
     getData();
   }, [data]);
 

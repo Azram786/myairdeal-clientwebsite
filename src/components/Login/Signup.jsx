@@ -28,7 +28,12 @@ const Signup = () => {
 
   const validate = () => {
     let isValid = true;
-    const newValidation = { email: "", firstName: "", lastName: "", isAgreed: "" };
+    const newValidation = {
+      email: "",
+      firstName: "",
+      lastName: "",
+      isAgreed: "",
+    };
     if (!formData.firstName) {
       newValidation.firstName = "First name is required.";
       isValid = false;
@@ -45,7 +50,8 @@ const Signup = () => {
       isValid = false;
     }
     if (!isAgreed) {
-      newValidation.isAgreed = "You must agree to the terms and privacy policies.";
+      newValidation.isAgreed =
+        "You must agree to the terms and privacy policies.";
       isValid = false;
     }
 
@@ -54,7 +60,7 @@ const Signup = () => {
   };
 
   const onSubmit = async () => {
-    setLoading(true)
+    setLoading(true);
     if (!validate()) return;
 
     try {
@@ -68,12 +74,12 @@ const Signup = () => {
           },
         }
       );
-      setLoading(false)
+      setLoading(false);
       if (data.request.status === 200) navigate("/");
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       // console.log(error.message);
-      ReactToast("Something went wrong try again")
+      ReactToast("Something went wrong try again");
     }
   };
 
@@ -172,7 +178,7 @@ const Signup = () => {
             )}
             <button
               onClick={onSubmit}
-              className="bg-[#007EC4] text-white h-[45px] rounded-md"
+              className="bg-[#D7B56D] text-white h-[45px] rounded-md"
             >
               Add Details
             </button>

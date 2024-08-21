@@ -1,4 +1,3 @@
-
 // import React, { useState } from "react";
 // import { FaArrowRight, FaTimes } from "react-icons/fa";
 // import SubmitAmendment from "./SubmitAmendment";
@@ -48,7 +47,7 @@
 
 //   return (
 //     <div className="mx-3 flex flex-col gap-4 my-4">
-//       <div className="bg-[#007EC4] text-white font-bold p-4 rounded-md">
+//       <div className="bg-[#D7B56D] text-white font-bold p-4 rounded-md">
 //         Quick links
 //       </div>
 //       {links.map((link, index) => (
@@ -58,7 +57,7 @@
 //             <p className="text-sm text-gray-700">{link.description}</p>
 //           </div>
 //           <button
-//             className="bg-[#007EC4] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 text-white rounded-md md:rounded-r-lg flex items-center"
+//             className="bg-[#D7B56D] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 text-white rounded-md md:rounded-r-lg flex items-center"
 //             onClick={() => handleButtonClick(link)}
 //           >
 //             <FaArrowRight className="text-xl" />
@@ -102,32 +101,29 @@ import SubmitAmendment from "./SubmitAmendment";
 import TicketRaising from "./TicketRaising";
 
 const TicketLinks = ({ singleBookingData, bookingFilter }) => {
-  console.log({ bookingFilter })
-
-  console.log({ singleBookingData });
-
   const allLinks = [
     {
       title: "Raise a Ticket",
-      for: 'raise',
+      for: "raise",
       description: "Further contact details can be found at",
     },
     {
       title: "Cancel Ticket",
-      for: 'cancel',
+      for: "cancel",
       description: "Further contact details can be found at",
     },
-    {
-      title: "Check refunds and refund status",
-      for: 'refund',
-      description: "Further contact details can be found at",
-    },
+    // {
+    //   title: "Check refunds and refund status",
+    //   for: 'refund',
+    //   description: "Further contact details can be found at",
+    // },
   ];
 
   // Filter the links based on bookingFilter
-  const links = bookingFilter === "UPCOMING"
-    ? allLinks
-    : allLinks.filter(link => link.for !== 'cancel');
+  const links =
+    bookingFilter === "UPCOMING"
+      ? allLinks
+      : allLinks.filter((link) => link.for !== "cancel");
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedLink, setSelectedLink] = useState(null);
@@ -143,26 +139,29 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
   };
 
   const handleButtonClick = (link) => {
-    if (link.for === 'raise' || link.for === 'cancel') {
+    if (link.for === "raise" || link.for === "cancel") {
       openModalHandler(link);
-    } else if (link.for === 'refund') {
+    } else if (link.for === "refund") {
       return null;
     }
   };
 
   return (
     <div className="mx-3 flex flex-col gap-4 my-4">
-      <div className="bg-[#007EC4] text-white font-bold p-4 rounded-md">
+      <div className="text-[#D7B56D] bg-[#1B1D29] font-bold p-4 rounded-md">
         Quick links
       </div>
       {links.map((link, index) => (
-        <div key={index} className="flex flex-col md:flex-row items-center justify-between bg-blue-100 border-t border-blue-200 rounded-lg p-4">
+        <div
+          key={index}
+          className="flex flex-col sm:flex-row md:items-center justify-none md:justify-between text-white bg-[#1B1D29] border-t border-blue-200 rounded-lg p-4"
+        >
           <div className="flex-1">
             <h3 className="text-lg font-semibold">{link.title}</h3>
-            <p className="text-sm text-gray-700">{link.description}</p>
+            <p className="text-sm text-white">{link.description}</p>
           </div>
           <button
-            className="bg-[#007EC4] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 text-white rounded-md md:rounded-r-lg flex items-center"
+            className="text-black h-full px-4 py-2 mt-4 md:mt-0 md:px-8 bg-white rounded-md md:rounded-r-lg flex items-center w-max"
             onClick={() => handleButtonClick(link)}
           >
             <FaArrowRight className="text-xl" />
@@ -175,7 +174,9 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
           <div className="bg-white flex justify-center flex-col rounded-lg shadow-xl w-[90%] md:w-1/2  md:mx-auto ">
             <div className="flex justify-between items-center p-4 border-b">
               <h2 className="text-2xl font-bold">
-                {selectedLink.for === 'raise' ? 'Raise a Ticket' : 'Cancel Ticket'}
+                {selectedLink.for === "raise"
+                  ? "Raise a Ticket"
+                  : "Cancel Ticket"}
               </h2>
               <button
                 onClick={closeModal}
@@ -185,10 +186,16 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
               </button>
             </div>
             <div className="p-2 overflow-y-auto no-scroll flex justify-center items-center ">
-              {selectedLink.for === 'raise' ? (
-                <TicketRaising bookingId={singleBookingData?.order?.bookingId} closeModal={closeModal} />
+              {selectedLink.for === "raise" ? (
+                <TicketRaising
+                  bookingId={singleBookingData?.order?.bookingId}
+                  closeModal={closeModal}
+                />
               ) : (
-                <SubmitAmendment setModalIsOpen={setModalIsOpen} singleBookingData={singleBookingData} />
+                <SubmitAmendment
+                  setModalIsOpen={setModalIsOpen}
+                  singleBookingData={singleBookingData}
+                />
               )}
             </div>
           </div>
@@ -199,4 +206,3 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
 };
 
 export default TicketLinks;
-

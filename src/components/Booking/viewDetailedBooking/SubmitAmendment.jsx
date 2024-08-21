@@ -8,10 +8,6 @@ import { PiAirplaneInFlightDuotone } from "react-icons/pi";
 import CancelConfirmModal from "./CancelConfirmModal";
 import ReactToast from "../../util/ReactToast";
 const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
-
-
-
-
   const { token } = useSelector((state) => state.auth);
   const [bookingId] = useState(singleBookingData.order.bookingId);
   const [fullBookingData, setFullbookingData] = useState({});
@@ -21,18 +17,27 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
   const [cancelWholeTicket, setCancelWholeTicket] = useState(false);
   const [remarks, setRemarks] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [amendmentLoading, setAmendmentLoadin] = useState(false)
+  const [amendmentLoading, setAmendmentLoadin] = useState(false);
+  const [openDropdowns, setOpenDropdowns] = useState([]);
+
+  const toggleDropdown = (tripIndex) => {
+    if (openDropdowns.includes(tripIndex)) {
+      setOpenDropdowns(openDropdowns.filter((index) => index !== tripIndex));
+    } else {
+      setOpenDropdowns([...openDropdowns, tripIndex]);
+    }
+  };
+
   const openModal = () => {
-    if (!remarks) toast("enter remarks");
+    if (!remarks) ReactToast("Please Enter Remarks");
     else {
       setIsModalOpen(true);
     }
-  }
+  };
 
   function convertDateFormat(inputDate) {
+    const formattedDate = inputDate.split("T")[0];
 
-    const formattedDate = inputDate.split('T')[0];
-    console.log({ formattedDate })
     return formattedDate;
   }
 
@@ -51,7 +56,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
       setFullbookingData(response.data.data);
       setLoading(false);
     } catch (error) {
-      console.log(error.message);
+      ReactToast(error.message);
       setLoading(false);
     }
   };
@@ -75,15 +80,17 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
     if (cancelWholeTicket) return;
     setSelectedTrips((prevSelectedTrips) => {
       if (prevSelectedTrips.includes(tripIndex)) {
-
         setSelectedTravelers((prevSelectedTravelers) =>
-          prevSelectedTravelers.filter((traveler) => !traveler.startsWith(`${tripIndex}-`))
+          prevSelectedTravelers.filter(
+            (traveler) => !traveler.startsWith(`${tripIndex}-`)
+          )
         );
         return prevSelectedTrips.filter((index) => index !== tripIndex);
       } else {
-
         setSelectedTravelers((prevSelectedTravelers) =>
-          prevSelectedTravelers.filter((traveler) => !traveler.startsWith(`${tripIndex}-`))
+          prevSelectedTravelers.filter(
+            (traveler) => !traveler.startsWith(`${tripIndex}-`)
+          )
         );
         return [...prevSelectedTrips, tripIndex];
       }
@@ -124,12 +131,14 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
     }
 
     const tripsData = selectedTrips.map((tripIndex) => {
-
       const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
-      console.log({ trip })
+
       const tripData = {
         src: trip?.sI[0].da.code,
-        dest: trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code,
+        dest:
+          trip.sI.length === 1
+            ? trip?.sI[0].aa.code
+            : trip?.sI[trip.sI.length - 1].aa.code,
         departureDate: convertDateFormat(trip?.sI[0].dt),
       };
 
@@ -137,7 +146,8 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
         .filter((traveler) => traveler.startsWith(`${tripIndex}-`))
         .map((traveler) => {
           const travelerIndex = parseInt(traveler.split("-")[1]);
-          const travelerData = fullBookingData?.itemInfos?.AIR?.travellerInfos[travelerIndex];
+          const travelerData =
+            fullBookingData?.itemInfos?.AIR?.travellerInfos[travelerIndex];
           return {
             fn: travelerData.fN,
             ln: travelerData.lN,
@@ -158,7 +168,10 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
         const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
         const tripData = {
           src: trip?.sI[0].da.code,
-          dest: trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code,
+          dest:
+            trip.sI.length === 1
+              ? trip?.sI[0].aa.code
+              : trip?.sI[trip.sI.length - 1].aa.code,
           departureDate: convertDateFormat(trip?.sI[0].dt),
         };
 
@@ -166,7 +179,8 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
           .filter((traveler) => traveler.startsWith(`${tripIndex}-`))
           .map((traveler) => {
             const travelerIndex = parseInt(traveler.split("-")[1]);
-            const travelerData = fullBookingData?.itemInfos?.AIR?.travellerInfos[travelerIndex];
+            const travelerData =
+              fullBookingData?.itemInfos?.AIR?.travellerInfos[travelerIndex];
             return {
               fn: travelerData.fN,
               ln: travelerData.lN,
@@ -190,15 +204,12 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
   };
 
   const submitAmendment = async () => {
-    setAmendmentLoadin(true)
+    setAmendmentLoadin(true);
     const data = getFormattedData();
-    console.log({ data });
-    console.log({ cancelWholeTicket, selectedTravelers, selectedTrips });
 
     try {
       if (!remarks) toast("enter remarks");
       else {
-
         const headers = {
           Authorization: `Bearer ${token}`,
         };
@@ -209,36 +220,29 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
             { bookingId: data.bookingId, remarks, type: data.type },
             { headers }
           );
-          console.log({ response });
         } else {
           const response = await axios.post(
             `${import.meta.env.VITE_SERVER_URL}booking/submit-amendment`,
             data,
             { headers }
           );
-          console.log({ response })
         }
       }
-      setAmendmentLoadin(false)
-      setModalIsOpen(false)
-
-
+      setAmendmentLoadin(false);
+      setModalIsOpen(false);
     } catch (error) {
-      ReactToast(error.response.data.errors[0].message)
-      setAmendmentLoadin(false)
-      setModalIsOpen(false)
+      ReactToast(error.response.data.errors[0].message);
+      setAmendmentLoadin(false);
+      setModalIsOpen(false);
       toast(error.response.data.errors[0].message);
-
     }
   };
 
   const handleConfirm = (selection) => {
-    console.log(`User selected: ${selection}`);
     if (selection == "no") {
-      ReactToast("press yes to confirm submit amendment")
+      ReactToast("press yes to confirm submit amendment");
     } else {
-
-      submitAmendment()
+      submitAmendment();
     }
   };
 
@@ -249,7 +253,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
           {Loading ? (
             <div className="flex justify-center items-center w-full h-full">
               <motion.div
-                className="w-12 h-12 border-4 border-t-4 border-t-[#007EC4] border-gray-200 rounded-full"
+                className="w-12 h-12 border-4 border-t-4 border-t-[#D7B56D] border-gray-200 rounded-full"
                 variants={spinnerVariants}
                 animate="animate"
               />
@@ -257,72 +261,130 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
           ) : (
             <div>
               <div className="mt-2">
-                <h3 className="text-2xl font-bold mb-4 text-center">Select the Trips and Passengers to Cancel</h3>
+                <h3 className="text-base md:text-lg lg:text-xl font-semibold mb-4 text-center">
+                  Select the Trips and Passengers to Cancel
+                </h3>
                 <label className="flex items-center mt-2">
                   <input
                     type="checkbox"
-                    className="form-checkbox h-6 w-6 text-blue-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                    className="form-checkbox h-6 w-6 text-[#1B1D29] border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
                     onChange={handleCancelWholeTicket}
                     checked={cancelWholeTicket}
                   />
-                  <span className={`ml-3 font-bold border p-1 rounded-md ${cancelWholeTicket ? 'border-blue-700 bg-blue-200' : 'bg-gray-100'}`}>
-                    Cancel Whole Ticket
+                  <span
+                    className={`ml-3 text-sm  font-semibold border p-1 rounded-md ${
+                      cancelWholeTicket
+                        ? "border-[#1B1D29] bg-blue-200"
+                        : "bg-gray-100"
+                    }`}
+                  >
+                    Cancel Entire Ticket
                   </span>
                 </label>
 
-                {fullBookingData?.itemInfos?.AIR?.tripInfos.map((trip, tripIndex) => (
-                  <div key={tripIndex} className="mt-4">
-                    <div className={`flex flex-col gap-1 p-2 mb-2 font-extrabold border rounded-lg ${selectedTrips.includes(tripIndex) && "border-blue-700 bg-blue-200"}`}>
-                      Trip {tripIndex + 1}
-
-                      <p className="text-blue-700 text-2xl
-                        
-                        font-extrabold">
-                        {trip?.sI[0].da.code} -
-                        {trip.sI.length === 1 ? trip?.sI[0].aa.code : trip?.sI[trip.sI.length - 1].aa.code}
-                      </p>
-                      <label className="flex items-center mt-2">
-                        <input
-                          type="checkbox"
-                          className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
-                          onChange={() => handleTripSelection(tripIndex)}
-                          checked={selectedTrips.includes(tripIndex)}
-                          disabled={cancelWholeTicket}
-                        />
-                        <span className="ml-3  font-semibold">Cancel this trip</span>
-                      </label>
-                    </div>
-                    {fullBookingData?.itemInfos?.AIR?.travellerInfos.map((traveler, travelerIndex) => (
-                      <div key={travelerIndex} className={`flex items-center p-4 bg-blue-100 rounded-lg mt-2 ${selectedTravelers.includes(`${tripIndex}-${travelerIndex}`) ? 'border border-blue-800' : ''}`}>
-                        <div className="h-16 w-16 flex items-center justify-center bg-blue-500 text-white font-bold text-xl rounded-full mr-4">
-                          {traveler.fN.charAt(0).toUpperCase()}
+                {fullBookingData?.itemInfos?.AIR?.tripInfos.map(
+                  (trip, tripIndex) => (
+                    <div key={tripIndex} className="mt-4">
+                      <div
+                        className={`flex flex-col gap-1 p-2 mb-2 text-sm md:text-base font-bold border rounded-lg ${
+                          selectedTrips.includes(tripIndex) &&
+                          "border-[#1B1D29] bg-blue-200"
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span>
+                            Trip {tripIndex + 1}
+                            <p className="text-[#1B1D29] text-base md:text-lg font-bold">
+                              {trip?.sI[0].da.code} -
+                              {trip.sI.length === 1
+                                ? trip?.sI[0].aa.code
+                                : trip?.sI[trip.sI.length - 1].aa.code}
+                            </p>
+                          </span>
+                          <button
+                            onClick={() => toggleDropdown(tripIndex)}
+                            className="text-[#1B1D29] text-sm font-bold"
+                          >
+                            {openDropdowns.includes(tripIndex)
+                              ? "Hide Passenger(s)"
+                              : "Show Passenger(s)"}
+                          </button>
                         </div>
-                        <div>
-                          <div className="text-md font-bold">
-                            {traveler.fN} {traveler.lN}
-                          </div>
-                          <div className="text-md font-bold">
-                            {traveler.dob}
-                          </div>
-                          <div className="text-md font-bold">
-                            {traveler.pt}
-                          </div>
-                        </div>
-                        <div className="ml-auto">
+                        <label className="flex items-center mt-2">
                           <input
                             type="checkbox"
                             className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
-                            onChange={() => handleTravelerSelection(tripIndex, travelerIndex)}
-                            checked={selectedTravelers.includes(`${tripIndex}-${travelerIndex}`)}
-                            disabled={cancelWholeTicket || selectedTrips.includes(tripIndex)}
+                            onChange={() => handleTripSelection(tripIndex)}
+                            checked={selectedTrips.includes(tripIndex)}
+                            disabled={cancelWholeTicket}
                           />
-                        </div>
+                          <span className="ml-3 text-sm font-semibold">
+                            Cancel this trip
+                          </span>
+                        </label>
                       </div>
-                    ))}
-                  </div>
-                ))}
+                      {openDropdowns.includes(tripIndex) && (
+                        <div className="ml-4">
+                          {fullBookingData?.itemInfos?.AIR?.travellerInfos.map(
+                            (traveler, travelerIndex) => (
+                              <div
+                                key={travelerIndex}
+                                className={`flex flex-wrap items-center p-4 rounded-lg mt-2 ${
+                                  selectedTravelers.includes(
+                                    `${tripIndex}-${travelerIndex}`
+                                  )
+                                    ? "border border-[#1B1D29]"
+                                    : "border"
+                                }`}
+                              >
+                                <div className="flex flex-wrap">
+                                  <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-[#1B1D29] text-white font-medium text-xl rounded-full mr-4">
+                                    {traveler.fN.charAt(0).toUpperCase()}
+                                  </div>
+                                  <div>
+                                    <div className="text-sm font-bold">
+                                      {traveler.fN} {traveler.lN}
+                                    </div>
+                                    <div className="text-sm font-bold">
+                                      {traveler.dob}
+                                    </div>
+                                    <div className="text-sm font-bold">
+                                      {traveler.pt}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="ml-auto">
+                                  <input
+                                    type="checkbox"
+                                    className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                                    onChange={() =>
+                                      handleTravelerSelection(
+                                        tripIndex,
+                                        travelerIndex
+                                      )
+                                    }
+                                    checked={selectedTravelers.includes(
+                                      `${tripIndex}-${travelerIndex}`
+                                    )}
+                                    disabled={
+                                      cancelWholeTicket ||
+                                      selectedTrips.includes(tripIndex)
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                )}
+
                 <div className="mt-4">
-                  <label className="block text-blue-700 font-semibold mb-2">Remarks</label>
+                  <label className="block text-[#1B1D29] font-semibold mb-2">
+                    Remarks
+                  </label>
                   <textarea
                     className="form-textarea mt-1 block w-[96%] rounded-md border border-gray-800 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-2"
                     rows="3"
@@ -331,21 +393,25 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                   ></textarea>
                 </div>
                 <div className="mt-8">
-
-                  {amendmentLoading ? <><div className="flex justify-center items-center h-full">
-                    <motion.div
-                      className="w-12 h-12 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
-                      variants={spinnerVariants}
-                      animate="animate"
-                    />
-                  </div></> : <button
-                    className="px-4 py-2 bg-blue-700 text-white font-semibold mb-4 rounded-md hover:bg-yellow-500 hover:text-blue-700 transition-colors"
-                    // onClick={submitAmendment}
-                    onClick={openModal}
-                  >
-                    Submit Cancellation
-                  </button>
-                  }
+                  {amendmentLoading ? (
+                    <>
+                      <div className="flex justify-center items-center h-full">
+                        <motion.div
+                          className="w-12 h-12 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                          variants={spinnerVariants}
+                          animate="animate"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <button
+                      className="px-4 py-2 bg-[#1B1D29] text-white font-semibold mb-4 rounded-md transition-colors"
+                      // onClick={submitAmendment}
+                      onClick={openModal}
+                    >
+                      Submit Cancellation
+                    </button>
+                  )}
                   <CancelConfirmModal
                     isOpen={isModalOpen}
                     onClose={closeModal}
@@ -360,7 +426,6 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
         </div>
       </div>
     </div>
-
   );
 };
 

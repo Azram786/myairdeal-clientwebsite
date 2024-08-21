@@ -69,7 +69,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log("GST Details saved:", gstDetails);
+      // console.log("GST Details saved:", gstDetails);
     }
   };
 
@@ -108,13 +108,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
             company's GST details
           </div>
         </div>
-        <div>
-          {expanded ? (
-            <FaChevronUp />
-          ) : (
-            <FaChevronDown />
-          )}
-        </div>
+        <div>{expanded ? <FaChevronUp /> : <FaChevronDown />}</div>
       </div>
       {expanded && (
         <div className="p-4 bg-white">
@@ -198,7 +192,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
           </div>
           <div className="mt-6 flex justify-end">
             <button
-              className="bg-[#007ec4] text-white px-4 py-2 rounded hover:bg-[#006aa3] transition-colors"
+              className="text-[#D7B56D] bg-[#1B1D29] text-sm md:text-base px-4 py-2 rounded  transition-colors"
               onClick={handleSaveGSTDetails}
             >
               Save GST Details

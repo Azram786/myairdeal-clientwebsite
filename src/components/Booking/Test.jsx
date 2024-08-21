@@ -221,7 +221,7 @@ const AddDetails = ({
   const [isInternational, setIsInternational] = useState(
     flightData?.conditions?.pcs || false
   );
-  console.log({ isInternational })
+ 
   const [contactDetails, setContactDetails] = useState({
     email: null,
     phoneNumber: null,
@@ -287,9 +287,9 @@ const AddDetails = ({
     );
     setPassengers(newPassengers);
   }, [numAdults, numChildren, numInfants, generatePassengers, setPassengers]);
-  console.log({ contactDetails })
+
   const validatePassengerDetails = (passenger) => {
-    console.log({ passenger, nithin: "nihtinakn" });
+
 
     const isBasicDetailsFilled = !!(
       passenger.title &&
@@ -297,12 +297,12 @@ const AddDetails = ({
       passenger.lastName
     );
 
-    console.log({
-      title: !!passenger.title,
-      firstName: !!passenger.firstName,
-      lastName: !!passenger.lastName,
-      isBasicDetailsFilled
-    });
+    // ({
+    //   title: !!passenger.title,
+    //   firstName: !!passenger.firstName,
+    //   lastName: !!passenger.lastName,
+    //   isBasicDetailsFilled
+    // });
 
     const isInternationalDetailsFilled = isInternational
       ? !!(
@@ -313,32 +313,32 @@ const AddDetails = ({
       )
       : true;
 
-    console.log({
-      isInternational,
-      isInternationalDetailsFilled,
-      passportNumber: !!passenger.passportNumber,
-      nationality: !!passenger.nationality,
-      issueDate: !!passenger.issueDate,
-      expiryDate: !!passenger.expiryDate
-    });
+    // console.log({
+    //   isInternational,
+    //   isInternationalDetailsFilled,
+    //   passportNumber: !!passenger.passportNumber,
+    //   nationality: !!passenger.nationality,
+    //   issueDate: !!passenger.issueDate,
+    //   expiryDate: !!passenger.expiryDate
+    // });
 
     const isDobRequired = passenger.passengerType === "INFANT" || passenger.passengerType === "CHILD";
     const isDobFilled = isDobRequired ? !!passenger.dob : true;
 
-    console.log({
-      passengerType: passenger.passengerType,
-      isDobRequired,
-      isDobFilled,
-      dob: !!passenger.dob
-    });
+    // console.log({
+    //   passengerType: passenger.passengerType,
+    //   isDobRequired,
+    //   isDobFilled,
+    //   dob: !!passenger.dob
+    // });
     const contactValid = contactDetails.email && contactDetails.phoneNumber ? true : false
-    console.log({ contactValid })
+    // console.log({ contactValid })
 
     const isValid = isBasicDetailsFilled &&
       (isInternational ? isInternationalDetailsFilled : true) &&
       isDobFilled;
 
-    console.log({ isValid, isBasicDetailsFilled, isInternationalDetailsFilled, isDobFilled });
+    // console.log({ isValid, isBasicDetailsFilled, isInternationalDetailsFilled, isDobFilled });
     if (contactValid)
       return isValid;
     else return false
@@ -346,7 +346,7 @@ const AddDetails = ({
 
   const checkAllPassengersCompleted = useCallback(() => {
     const areAllPassengersValid = passengers.every(validatePassengerDetails);
-    console.log({ areAllPassengersValid })
+    // console.log({ areAllPassengersValid })
     setIsPassengersCompleted(areAllPassengersValid);
     return areAllPassengersValid;
   }, [passengers, isInternational]);
@@ -354,7 +354,7 @@ const AddDetails = ({
 
   const handleProceedToReview = useCallback(() => {
     const areAllPassengersValid = checkAllPassengersCompleted();
-    console.log({ areAllPassengersValid })
+    // console.log({ areAllPassengersValid })
     if (areAllPassengersValid) {
       onData({ passengers, gstDetails });
       setCurrentStep((p) => p + 1);
@@ -365,7 +365,7 @@ const AddDetails = ({
     }
   }, [passengers, gstDetails, onData, setCurrentStep, checkAllPassengersCompleted]);
   const toggleCard = (cardName) => {
-    console.log({ isPassengersCompleted })
+    // console.log({ isPassengersCompleted })
     if (cardName === "travellers" || isPassengersCompleted) {
       setExpandedCard((prev) => ({
         ...prev,

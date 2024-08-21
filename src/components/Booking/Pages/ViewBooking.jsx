@@ -40,20 +40,20 @@ const FlightBookings = () => {
           config
         );
       }
-      console.log({ response });
+
       if (response.status === 200) {
         setLoading(false);
         setBookingData(response.data);
       }
       setLoading(false);
     } catch (error) {
-      console.log(error.message);
+      ReactToast(error.message);
       setLoading(false);
       setBookingData([]);
     }
   };
 
-  console.log({ bookingData });
+ 
 
   useEffect(() => {
     getBookingData();
@@ -94,7 +94,7 @@ const FlightBookings = () => {
           <div className="flex h-full w-full  justify-between">
             <button
               className={`py-2 w-1/3 px-6 text-black  font-semibold  border-b-2 ${bookingFilter === "UPCOMING"
-                ? "border-blue-600"
+                ? "border-[#1B1D29]"
                 : "border-transparent"
                 }`}
               onClick={() => setBookingFilter("UPCOMING")}
@@ -103,7 +103,7 @@ const FlightBookings = () => {
             </button>
             <button
               className={`py-2 w-1/3 px-6 text-black border-l-2 font-semibold border-l-slate-300 border-b-2 ${bookingFilter === "COMPLETED"
-                ? "border-blue-600"
+                ? "border-[#1B1D29]"
                 : "border-transparent"
                 }`}
               onClick={() => setBookingFilter("COMPLETED")}
@@ -112,7 +112,7 @@ const FlightBookings = () => {
             </button>
             <button
               className={`py-2 w-1/3 px-6 border-l-2 border-l-slate-300 font-semibold text-black border-b-2 ${bookingFilter === "CANCELLED"
-                ? "border-blue-600"
+                ? "border-[#1B1D29]"
                 : "border-transparent"
                 } `}
               onClick={() => setBookingFilter("CANCELLED")}

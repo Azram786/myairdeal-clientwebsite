@@ -56,7 +56,7 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
             key={index + start}
             onClick={() => handleCountChange(type, index + start)}
             className={`${count == index + start
-              ? "bg-[#1F61BC] text-white"
+              ? "bg-[#D7B56D] text-white"
               : "bg-gray-200 text-black"
               } rounded p-1 w-8`}
           >
@@ -123,7 +123,7 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
                   <span className="text-[.8rem]">{classType}</span>
                   <span
                     className={`${formData.cabinClass === classType
-                      ? "bg-[#1F61BC] border-black border"
+                      ? "bg-[#D7B56D] border-black border"
                       : "border-black border"
                       } w-5 h-5 rounded-full flex items-center justify-center`}
                   >
@@ -136,7 +136,7 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
             )}
           </div>
           <button
-            className="bg-[#1F61BC] text-white rounded mt-4 p-1 md:p-2 w-full"
+            className="bg-[#D7B56D] text-black rounded mt-4 p-1 md:p-2 w-full"
             onClick={() => setModelIsOpen(false)}
           >
             DONE

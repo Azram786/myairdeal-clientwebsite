@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsaModifySearch, setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
 import PassengerSelector from "./PassengerSelector";
 import getCountryCode from "../util/getCity";
+import { AsYouType } from "libphonenumber-js";
 const FilterSection = ({
   formData,
   setFormData,
@@ -37,7 +38,7 @@ const FilterSection = ({
   const { isModifySearch } = useSelector((state) => state.auth)
   const { token } = useSelector((state) => state.auth);
   const [Loading, setLoading] = useState(false);
-
+  const [preferredAirline, setPrefferedAirLine] = useState()
   const dispatch = useDispatch();
 
   //filter state for country code
@@ -47,6 +48,8 @@ const FilterSection = ({
   //state for modal
   const [modalIsOpen, setModelIsOpen] = useState(false);
 
+
+  const [preferredAirlines, setPrefferedAirLines] = useState([])
   // state for filteration
 
   //changing type-of-travel
@@ -56,13 +59,13 @@ const FilterSection = ({
 
   //set country code where from
   const setContryCodeFrom = (value) => {
-    console.log({ countryCodeFrom: value });
+
     setFormData((prev) => ({ ...prev, fromCityOrAirport: value }));
   };
 
   //set country code where to
   const setContryCodeTo = (value) => {
-    console.log({ contryCodeTo: value });
+
 
     if (formData.fromCityOrAirport === value && value !== "") {
       ReactToast("You cannot select the same airport twice");
@@ -113,7 +116,15 @@ const FilterSection = ({
       callback([]);
     }
   };
+  const getPreferedAirLine = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`)
 
+      setPrefferedAirLines(response.data.preferredAirlines)
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
   // API search for second select tag
   const getCountriesHandlerTwo = async (inputValue, callback) => {
     try {
@@ -155,6 +166,9 @@ const FilterSection = ({
       setDefaultOptions(options);
     } catch (error) { }
   };
+  useEffect(() => {
+    getPreferedAirLine()
+  }, [])
 
   const submitHandler = async () => {
     try {
@@ -408,8 +422,8 @@ const FilterSection = ({
         };
       }
 
-      console.log({ query });
-      dispatch(setLastSearch(query));
+      console.log({ query, saving })
+      // dispatch(setLastSearch(query));
       dispatch(setResentSearch(saving));
       if (token) {
         const response = await axios.post(
@@ -428,7 +442,7 @@ const FilterSection = ({
       dispatch(setIsaModifySearch(false))
     } catch (error) {
       setLoading(false);
-      console.log(error.message);
+      // console.log(error.message);
       ReactToast("Something went wrong");
     }
   };
@@ -447,9 +461,9 @@ const FilterSection = ({
 `}>
         {/* type of travel selecting section */}
 
-        <div className="flex justify-center md:justify-stretch  text-white ">
+        <div className="flex justify-center md:justify-stretch text-white ">
           <button
-            className={`bg-[#007EC4] text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#01324D]"
+            className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
@@ -457,7 +471,7 @@ const FilterSection = ({
             One way
           </button>
           <button
-            className={`bg-[#007EC4] text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#01324D]"
+            className={`bg-[#1B1D29]  text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#D7B56D] text-black"
               } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
@@ -465,7 +479,7 @@ const FilterSection = ({
             Round trip
           </button>
           <button
-            className={` bg-[#007EC4] text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#01324D]"
+            className={` bg-[#1B1D29]  text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#D7B56D] text-black"
               }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
@@ -528,6 +542,9 @@ const FilterSection = ({
             <div className="flex flex-col md:flex-row    w-full  lg-custom:w-1/2 gap-2">
               <div className="  rounded   flex items-center border md:w-1/2  py-2 ">
                 <div className="flex items-center text-sm md:text-base justify-center gap-4   w-full ">
+                  {
+                    console.log({'foofy':formData.travelDate})
+                  }
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}
@@ -660,11 +677,18 @@ const FilterSection = ({
                 name=""
                 className="border w-3/4  cursor-pointer  md:w-auto rounded-md l p-2 md:p-1    bg-white"
                 id=""
+                value={preferredAirline}
+                onChange={(e) => setPrefferedAirLine(e.target.value)}
+
               >
                 <option className="" value="" disabled selected>
                   Select Prefered Airline
                 </option>
-                <option value="">ethiad</option>
+                <option value={null}>
+                  Select all
+                </option>
+                {preferredAirlines.map((value) => <option value={value.code}>{value.name}</option>)}
+
               </select>
             </div>
             <div className=" text-sm md:text-base flex gap-2 p-1 w-full  cursor-pointer justify-center items-center md:w-1/3  ">
@@ -690,7 +714,7 @@ const FilterSection = ({
               // form submition
               onClick={submitHandler}
               className=" flex items-center mt-2 
-              space-x-2  text-white bg-[#01324D] p-3 rounded"
+              space-x-2  text-white bg-[#1B1D29] p-3 rounded"
             >
               <FaTelegramPlane className="text-white text-lg" />
               <span>{Loading ? "Searching..." : "Search Flights"}</span>

@@ -1,15 +1,15 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { logout, setIsaModifySearch } from "../../store/slices/aut.slice";
+import { logout, setIsaModifySearch, setUser } from "../../store/slices/aut.slice";
 import main_logo from "../../assets/home/logo/main_logo.png";
 import { IoNotificationsCircle, IoPersonCircleOutline } from "react-icons/io5";
 import { AiOutlineLogout } from "react-icons/ai";
 import { FiMenu } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import Avatar from '../../assets/home/banner/avatar.png'
-import { ImNotification } from "react-icons/im";
+import axios from "axios";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -33,12 +33,44 @@ const Header = () => {
     navigate("/sign-in");
     setMobileMenuOpen(false);
   };
+  const getProfileData = async () => {
+    try {
+      if (token) {
 
+
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}user/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+ 
+        const profileData = {
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          email: response.data.email,
+          phone: ` ${response.data.phone}`,
+          country: {
+            dialCode: response.data.country.dialCode,
+            countryCode: response.data.country.countryCode,
+            countryName: response.data.country.countryName
+          },
+        };
+        dispatch(setUser(profileData))
+
+      }
+    } catch (error) {
+      ReactToast(error.message);
+
+    }
+  };
+  useEffect(() => {
+    getProfileData()
+  }, [])
   const NavLinks = ({ mobile = false }) => (
     <>
       <Link
         to="/"
-        className={`font-semibold text-center border-r px-3 ${location.pathname === "/" ? "text-[#1F61BC]" : "text-gray-600"
+        className={`font-semibold text-center border-r px-3 ${location.pathname === "/" ? "text-[#c79834]" : "text-white"
           } ${mobile ? "block py-2" : ""}`}
         onClick={() => {
           dispatch(setIsaModifySearch(false))
@@ -47,33 +79,38 @@ const Header = () => {
       >
         Home
       </Link>
-      <Link
-        to="/view-booking"
-        className={`font-semibold border-r px-3 ${location.pathname === "/view-booking" ? "text-[#1F61BC]" : "text-gray-600"
-          } ${mobile ? "block py-2" : ""}`}
-        onClick={() => mobile && setMobileMenuOpen(false)}
-      >
-        My Bookings
-      </Link>
-      <Link
-        to="#"
-        className={`font-semibold  px-2 ${location.pathname === "/notifications" ? "text-[#1F61BC]" : "text-gray-600"
-          } ${mobile ? "block py-2" : ""}`}
-        onClick={() => mobile && setMobileMenuOpen(false)}
-      >
-        {/* Notifications */}
+      {token &&
+        <>
+          <Link
+            to="/view-booking"
+            className={`font-semibold border-r px-3 ${location.pathname === "/view-booking" ? "text-[#c79834]" : "text-white"
+              } ${mobile ? "block py-2" : ""}`}
+            onClick={() => mobile && setMobileMenuOpen(false)}
+          >
+            My Bookings
+          </Link>
+          <Link
+            to="#"
+            className={`font-semibold  px-2 ${location.pathname === "/notifications" ? "text-[#c79834]" : "text-white"
+              } ${mobile ? "block py-2" : ""}`}
+            onClick={() => mobile && setMobileMenuOpen(false)}
+          >
+            {/* Notifications */}
 
-        <IoNotificationsCircle className="text-3xl " />
-      </Link>
+            <IoNotificationsCircle className="text-3xl " />
+          </Link>
+        </>}
+
+
     </>
   );
 
   return (
-    <div className="bg-white shadow-md">
+    <div className="bg-[#1B1D29] shadow-md">
       <div className=" mx-auto px-8 py-2 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <img src={main_logo} alt="logo" className="h-10 mr-2" />
-          <h3 className="text-[#1F61BC] text-xl font-bold">My Air Deal</h3>
+          <h3 className="text-white text-xl font-bold">My <span className="text-[#D7B56D]">Air</span> Deal</h3>
         </Link>
         <div className="hidden md:flex items-center ">
           <NavLinks />
@@ -92,7 +129,7 @@ const Header = () => {
                   alt="User"
                   className="w-8 h-8 rounded-full"
                 />
-                <span className="ml-2 text-gray-700">{user?.firstName}</span>
+                <span className="ml-2 text-white">{user?.firstName}</span>
               </div>
               <AnimatePresence>
                 {dropdownOpen && (
@@ -104,7 +141,7 @@ const Header = () => {
                   >
                     <Link
                       to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                      className="block px-4 py-2 text-sm text-black hover:bg-gray-100 flex items-center"
                       onClick={() => setDropdownOpen(false)}
                     >
                       <IoPersonCircleOutline className="mr-2" />
@@ -112,7 +149,7 @@ const Header = () => {
                     </Link>
                     <button
                       onClick={handleSignOut}
-                      className=" text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                      className=" text-left px-4 py-2 text-sm text-black hover:bg-gray-100 flex items-center"
                     >
                       <AiOutlineLogout className="mr-2" />
                       Sign Out
@@ -123,7 +160,7 @@ const Header = () => {
             </div>
           ) : (
             <button
-              className="bg-[#1F61BC] text-white px-4 py-2 rounded-md"
+              className="bg-[#D7B56D] text-black px-4 py-2 rounded-md"
               onClick={() => handleNavigate("/sign-in")}
             >
               Login
@@ -150,21 +187,21 @@ const Header = () => {
                 <div className="flex text-center flex-col text-sm justify-center items-center gap-4">
                   <Link
                     to="/profile"
-                    className="block py-2 text-gray-600"
+                    className="block py-2 text-white"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Profile
                   </Link>
                   <button
                     onClick={handleSignOut}
-                    className="block w-full text-center py-2 text-gray-600"
+                    className="block w-full text-center py-2 text-white"
                   >
                     Sign Out
                   </button>
                 </div>
               ) : (
                 <button
-                  className="block w-full text-center py-2 text-[#1F61BC] font-semibold"
+                  className="block w-full text-center py-2 bg-[#D7B56D]  text-black font-semibold"
                   onClick={() => handleNavigate("/sign-in")}
                 >
                   Login

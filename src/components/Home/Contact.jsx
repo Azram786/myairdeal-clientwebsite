@@ -97,7 +97,7 @@ import { FiArrowRight } from "react-icons/fi";
 
 const Contact = () => {
   return (
-    <div className="w-full bg-[#0A2945] py-10 max-w-[1900px] min-w-[250px] mx-auto font-poppins">
+    <div className="w-full bg-[#1B1D29] py-10 max-w-[1900px] min-w-[250px] mx-auto font-poppins">
       <div className="md:flex-row flex flex-col gap-4 sm:px-10 items-center">
         {/* Image Section */}
         <div
@@ -118,11 +118,11 @@ const Contact = () => {
         {/* Contact Form Section */}
         <div className="flex flex-col w-full justify-center items-center">
           <div className="mb-5 px-6 md:w-[85%]   lg:mb-10  ">
-            <h2 className="text-base font-sans text-gray-500 font-bold">
+            <h2 className="text-base font-sans text-white font-bold">
               Contact us
             </h2>
             <div className="flex w-full">
-              <h1 className="text-white w-full text-start text-2xl sm:text-3xl lg:text-4xl font-bold">
+              <h1 className="text-[#D7B56D] w-full text-start text-2xl sm:text-3xl lg:text-4xl font-bold">
                 Let us know how we can help you!
               </h1>
             </div>
@@ -131,14 +131,14 @@ const Contact = () => {
             <form className="px-6">
               <div className="grid  grid-cols-1 lg-custom:grid-cols-2 gap-4">
                 <div className="flex flex-col">
-                  <label htmlFor="name" className="text-white text-sm">
+                  <label htmlFor="name" className="text-white  text-sm">
                     Name
                   </label>
                   <input
                     type="text"
                     id="name"
                     placeholder="Enter Your Name"
-                    className=" p-2 mt-1 text-xs rounded-md bg-[#0A2945] border border-gray-500 text-white"
+                    className=" p-2 mt-1 text-xs rounded-md  border border-gray-500 text-black bg-white"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -149,7 +149,7 @@ const Contact = () => {
                     type="email"
                     id="email"
                     placeholder="Enter Your Email"
-                    className=" p-2 mt-1 text-xs rounded-md bg-[#0A2945] border border-gray-500 text-white"
+                    className=" p-2 mt-1 text-xs rounded-md bg-white border border-gray-500 text-black"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -160,7 +160,7 @@ const Contact = () => {
                     type="tel"
                     id="number"
                     placeholder="Enter Your Number"
-                    className=" p-2 mt-1 text-xs rounded-md bg-[#0A2945] border border-gray-500 text-white"
+                    className=" p-2 mt-1 text-xs rounded-md bg-white border border-gray-500 text-black"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -169,7 +169,7 @@ const Contact = () => {
                   </label>
                   <select
                     id="enquiry"
-                    className=" p-2 mt-1 text-xs rounded-md bg-[#0A2945] border border-gray-500 text-white"
+                    className=" p-2 mt-1 text-xs rounded-md bg-white border border-gray-500 text-black"
                   >
                     <option value="" disabled>
                       Select an option
@@ -184,13 +184,13 @@ const Contact = () => {
                   <textarea
                     id="message"
                     placeholder="Your Message"
-                    className=" w-[95%] p-2 mt-1 text-sm rounded-md bg-[#0A2945] border border-gray-500 text-white h-20"
+                    className=" w-[95%] p-2 mt-1 text-sm rounded-md bg-white border border-gray-500 text-black h-20"
                   >
 
                   </textarea>
                 </div>
                 <div className="sm:col-span-2 flex items-center gap-2">
-                  <input type="checkbox" id="terms" className="text-blue-900" />
+                  <input type="checkbox" id="terms" className="text-[#1B1D29]" />
                   <label htmlFor="terms" className="text-white text-sm">
                     I agree with Terms of Use and Privacy Policy
                   </label>
@@ -198,7 +198,7 @@ const Contact = () => {
               </div>
 
               <div className="w-full">
-                <button className=" mt-4 py-2  flex gap-2 items-center justify-between w-full text-white rounded-lg bg-gradient-to-r from-blue-900 via-blue-700 to-blue-400">
+                <button className=" mt-4 py-2  flex gap-2 items-center justify-between w-full text-black rounded-lg bg-gradient-to-r from-[#D7B56D] via-[#ceb275] to-[#d7c295]">
                   <span className="px-3">Send Message</span>{" "}
                   <span className="text-xs -rotate-90 px-3">
                     <FaChevronDown />
@@ -210,7 +210,7 @@ const Contact = () => {
               <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg-custom:grid-cols-3 gap-4 mt-6">
                 <div className="flex items-start gap-2">
                   <div className="flex-shrink-0 p-1 rounded-full bg-white">
-                    <IoCallOutline className="text-blue-900 text-[1.25rem]" />
+                    <IoCallOutline className="text-[#D7B56D] text-[1.25rem]" />
                   </div>
                   <div className="flex flex-col text-sm">
                     <span className="text-white font-semibold">Phone</span>
@@ -219,7 +219,7 @@ const Contact = () => {
                 </div>
                 <div className="flex items-start gap-2">
                   <div className="flex-shrink-0 p-1 rounded-full bg-white">
-                    <CiLocationOn className="text-blue-900 text-[1.25rem]" />
+                    <CiLocationOn className="text-[#D7B56D] text-[1.25rem]" />
                   </div>
                   <div className="flex flex-col text-sm">
                     <span className="text-white font-semibold">Address</span>
@@ -230,7 +230,7 @@ const Contact = () => {
                 </div>
                 <div className="flex flex-1 items-start gap-2">
                   <div className="flex-shrink-0 p-1 rounded-full bg-white">
-                    <CiMail className="text-blue-900 text-[1.25rem]" />
+                    <CiMail className="text-[#D7B56D] text-[1.25rem]" />
                   </div>
                   <div className="flex flex-col text-sm">
                     <span className="text-white font-semibold">Email</span>

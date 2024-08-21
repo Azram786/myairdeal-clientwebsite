@@ -72,8 +72,6 @@ import { BsFillFilterSquareFill } from "react-icons/bs";
 const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
-  console.log("flightProps in Oneway:", flightProps);
-
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
     maxPrice: 100000,
@@ -85,7 +83,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const token = useSelector((state) => state.auth.token);
   const [selectedFlight, setSelectedFlight] = useState([
-    { flightIndex: 0, priceIndex: 0 },
+    // { flightIndex: 0, priceIndex: 0 },
   ]);
   const navigate = useNavigate();
 
@@ -146,9 +144,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
   };
 
   useEffect(() => {
-    console.log("Filters changed:", filters);
     const newFilteredFlights = flightProps.filter((flight) => {
-      console.log("Processing flight:", flight);
       const price = calculateTotalPrice(flight);
       const stops = getStopsCount(flight);
       const departureHour = new Date(flight.sI[0].dt).getHours();
@@ -182,7 +178,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
       );
     });
 
-    console.log("New filtered flights:", newFilteredFlights);
     setFilteredFlights(newFilteredFlights);
   }, [filters, flightProps, calculateTotalPrice]);
 
@@ -199,7 +194,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
             selected.priceIndex
           ].id,
       }));
-      console.log("Processing bookings:", bookings);
 
       if (!token) {
         ReactToast("Please login first");
@@ -224,7 +218,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
-  console.log(filteredFlights, "filtered flights");
   return (
     <div className="flex relative md:flex-row flex-col">
       {/* <OneWaySideBar
@@ -239,8 +232,8 @@ const Oneway = ({ flightProps, passenger, query }) => {
         className="absolute top-10 right-0 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
         onClick={toggleSidebar}
       >
-        <BsFillFilterSquareFill className="w-6 h-6 text-blue-600" />
-        <div className="text-xs text-blue-600">Filters</div>
+        <BsFillFilterSquareFill className="w-6 h-6 white" />
+        <div className="text-xs white">Filters</div>
       </button>
       <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
         <div
@@ -257,7 +250,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
           }}
         >
           <button
-            className="absolute top-2 right-4 z-50 text-blue-600  lg-custom:hidden"
+            className="absolute top-2 right-4 z-50 white  lg-custom:hidden"
             onClick={() => setIsSidebarOpen(false)}
           >
             <FaTimes className="w-6 h-6" />
@@ -364,8 +357,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
             </div>
           </TabPane>
         </Tabs>
-
-        {console.log(selectedFlight, "djloe")}
       </div>
       {selectedFlight.length > 0 && (
         <BookingCard

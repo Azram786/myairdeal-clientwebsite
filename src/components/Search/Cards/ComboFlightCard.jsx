@@ -28,9 +28,12 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
     const selectedPrice = priceList[priceIndex];
     if (!selectedPrice) return 0;
 
-    return Object.entries(selectedPrice.fd).reduce((total, [passengerType, details]) => {
-      return total + (details.fC.TF * (passenger[passengerType] || 0));
-    }, 0);
+    return Object.entries(selectedPrice.fd).reduce(
+      (total, [passengerType, details]) => {
+        return total + details.fC.TF * (passenger[passengerType] || 0);
+      },
+      0
+    );
   };
 
   const totalPrice = calculateTotalPrice(selectedPriceIndex);
@@ -58,9 +61,9 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false
+      hour12: false,
     };
-    return date.toLocaleString('en-US', options);
+    return date.toLocaleString("en-US", options);
   };
 
   const renderTabs = () => {
@@ -170,7 +173,9 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                           Taxes and fees
                           <FareToolTip taxDetails={details.afC.TAF} />
                         </div>
-                        <div>₹{details.fC.TAF.toFixed(2)} x {count}</div>
+                        <div>
+                          ₹{details.fC.TAF.toFixed(2)} x {count}
+                        </div>
                         <div>₹{(details.fC.TAF * count).toFixed(2)}</div>
                       </div>
                     </div>
@@ -290,10 +295,11 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                     className={`
                    text-xs text-start space-y-2 flex shrink-0 items-center min-w-24 md:w-fit
                 p-1 mb-2 cursor-pointer 
-                  ${selectedPrice === index
-                        ? "border border-[#007EC4] rounded-md"
-                        : "border border-gray-200 hover:border-blue-300 rounded-md"
-                      }
+                  ${
+                    selectedPrice === index
+                      ? "border border-[#D7B56D] rounded-md"
+                      : "border border-gray-200 hover:border-blue-300 rounded-md"
+                  }
                 `}
                   >
                     <div className="flex flex-col w-full text-xs">
@@ -332,17 +338,17 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
               <div>
                 <button
                   onClick={() => setShowDetails(!showDetails)}
-                  className="text-[#007EC4] text-sm mt-2"
+                  className="text-[#D7B56D] text-sm mt-2"
                 >
                   {showDetails ? (
                     <span className="text-black">
                       {/* Fare Details :{" "} */}
-                      <span className="text-[#007EC4]">Hide Details</span>
+                      <span className="text-[#D7B56D]">Hide Details</span>
                     </span>
                   ) : (
                     <span className="text-black">
                       {/* Fare Details :{" "} */}
-                      <span className="text-[#007EC4]">View Details</span>
+                      <span className="text-[#D7B56D]">View Details</span>
                     </span>
                   )}
                 </button>
@@ -360,8 +366,6 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
           </div>
         </div>
 
-
-
         {showDetails && (
           <div className="mt-4 border-t overflow-x-auto   border-gray-200 pt-4">
             <div className="mb-2   flex">
@@ -376,9 +380,9 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                   onClick={() => setActiveTab(tab)}
                   className={`py-2  px-4 text-sm ${
                     activeTab === tab
-                      ? "text-[#007EC4] font-bold border-b-2 border-[#007EC4]"
+                      ? "text-[#D7B56D] font-bold border-b-2 border-[#D7B56D]"
                       : "text-gray-500"
-                    }`}
+                  }`}
                 >
                   {tab}
                 </button>

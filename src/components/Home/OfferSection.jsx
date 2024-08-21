@@ -238,28 +238,28 @@ const OfferSection = () => {
       className="h-full"
     >
       <div style={{ backgroundImage: `url(${background})` }} className="h-full">
-        <div className="md:px-16 px-3 py-10 mx-auto bg-gradient-to-b from-[#1966AB]/80 to-[#0E385E]/80 max-w-[1900px] min-w-[250px] overflow-hidden">
+        <div className="md:px-16 px-3 py-10 mx-auto  bg-[#1B1D29] max-w-[1900px] min-w-[250px] overflow-hidden">
           <div className="flex w-full justify-between">
-            <div className="flex flex-col text-white px-5 items-start gap-4 2xl:gap-6 ">
+            <div className="flex flex-col text-[#D7B56D] px-5 items-start gap-4 2xl:gap-6 ">
               <h2 className="font-semibold text-[1.3rem] md:text-4xl 2xl:text-[2.2rem] ">
                 Explore places together
               </h2>
-              <div className="font-light text-sm md:text-base 2xl:text-2xl">
+              <div className="text-white  font-light text-sm md:text-base 2xl:text-2xl">
                 Discover the latest offers and news and start planning your next
                 trip with us.
               </div>
             </div>
-            <div className="flex items-center border-2 rounded-lg w-full md:w-[20%] h-10 relative">
+            <div className="flex items-center border-2 border-white rounded-lg w-full md:w-[20%] h-10 relative">
               <select
                 className="appearance-none flex justify-center  text-white items-center px-7  w-full outline-none sm:w-1/2 sm:mx-auto rounded-lg text-center font-light bg-transparent md:w-3/4 2xl:w-3/4 2xl:p-4"
                 name=""
                 id=""
                 defaultValue="i"
               >
-                <option className="text-black w-full bg-gray-100" value="i">
+                <option className="text-black w-full " value="i">
                   International
                 </option>
-                <option className="text-black bg-gray-100" value="d">
+                <option className="text-black " value="d">
                   Domestic
                 </option>
               </select>

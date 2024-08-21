@@ -12,15 +12,16 @@ const CancelConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
     if (!isModalOpen) return null;
 
     const handleConfirm = () => {
-        console.log("nithin")
-        if (!selection) ReactToast("choose yes or no")
-        else {
+        
+        // if (!selection) ReactToast("choose yes or no")
+        // else {
 
 
             onConfirm(selection);
 
             onClose();
-        }
+            // ReactToast("Cancel Request sent sucessfully!")
+        // }
     };
 
     return (
@@ -36,7 +37,7 @@ const CancelConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
                 </button>
                 <h2 className="text-2xl font-bold mb-4">{title}</h2>
                 <p className="text-gray-700 mb-6">{message}</p>
-                <div className="flex justify-center space-x-4">
+                {/* <div className="flex justify-center space-x-4">
                     <button
                         className={`px-4 py-2 rounded ${selection === 'yes' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'
                             } hover:bg-green-600 hover:text-white transition-colors`}
@@ -51,10 +52,10 @@ const CancelConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
                     >
                         No
                     </button>
-                </div>
+                </div> */}
                 <div className="mt-6 text-center">
                     <button
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-[#1B1D29] transition-colors"
                         onClick={handleConfirm}
                     // disabled={!selection}
                     >

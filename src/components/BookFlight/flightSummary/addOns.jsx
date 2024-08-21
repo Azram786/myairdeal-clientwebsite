@@ -14,7 +14,6 @@ const AddonsCard = ({
   flightData,
   bookingId,
 }) => {
-  console.log({ bookingId }, "BOOKING ID");
   const [activeButton, setActiveButton] = useState("");
   const [seatMapData, setSeatMapData] = useState(null);
   const [checkLoading, setCheckLoading] = useState(false);
@@ -38,7 +37,7 @@ const AddonsCard = ({
       );
 
       if (response.status == 200) {
-        console.log({ response });
+        // console.log({ response });
         setSeatMapData(response?.data);
       } else if (response.status === 400) {
         setSeatMapData("Seat Map is not available");
@@ -73,15 +72,14 @@ const AddonsCard = ({
         </div>
         <div>{expanded ? <FaChevronUp /> : <FaChevronDown />}</div>
       </div>
-      {
-        expanded &&
+      {expanded && (
         <div className="p-4">
           <div className="flex space-x-4 mb-4">
             <button
               onClick={() => setActiveButton("seatSelection")}
               className={`text-sm md:text-base px-4 py-2 rounded ${
                 activeButton === "seatSelection"
-                  ? "bg-[#007ec4] text-white"
+                  ? "text-[#D7B56D] bg-[#1B1D29]"
                   : "bg-gray-200 text-gray-700"
               }`}
             >
@@ -94,7 +92,7 @@ const AddonsCard = ({
               onClick={() => setActiveButton("addBagAndMeal")}
               className={`text-sm md:text-base px-4 py-2 rounded ${
                 activeButton === "addBagAndMeal"
-                  ? "bg-[#007ec4] text-white"
+                  ? "text-[#D7B56D] bg-[#1B1D29]"
                   : "bg-gray-200 text-gray-700"
               }`}
             >
@@ -124,7 +122,7 @@ const AddonsCard = ({
             />
           )}
         </div>
-      }
+      )}
     </div>
   );
 };

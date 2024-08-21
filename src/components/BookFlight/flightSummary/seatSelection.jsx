@@ -60,8 +60,6 @@ const SeatSelection = ({
     setIsModalOpen(true);
   };
 
-  console.log("seatMapData", seatMapData);
-
   return (
     <div className="grid grid-cols-1 ">
       <div>
@@ -84,7 +82,7 @@ const SeatSelection = ({
                     {isSeatMapAvailable ? (
                       <button
                         onClick={() => handleShowSeatMap(flightId)}
-                        className="bg-[#007ec4] text-white text-sm px-4 py-2 rounded"
+                        className="bg-[#1B1D29] text-[#D7B56D] text-sm px-4 py-2 rounded"
                       >
                         Show Seat Map
                       </button>

@@ -14,9 +14,9 @@ const DynamicForm = ({
   formData,
   form,
   dateDynamic,
+  setDate
 }) => {
   const [startDate, setStartDate] = useState(dateDynamic);
-  console.log({ form })
 
   useEffect(() => {
     setForm({ travelDate: startDate });
@@ -24,16 +24,19 @@ const DynamicForm = ({
 
   useEffect(() => {
     setStartDate(() => dateDynamic);
-    setForm({ travelDate: startDate });
+    //bug is in here
+    // setForm({ travelDate: startDate });
   }, [dateDynamic]);
-
+useEffect(()=>{
+   setForm({ travelDate: dateDynamic });
+},[dateDynamic])
   return (
 
 
-    
+
     <div className="flex flex-col p-3 md:p-0 md:flex-row justify-between relative border border-slate-400 rounded-lg gap-2 md:border-none max-w-[1800px] ">
 
-      <div className=" gap-2 md:w-[68%] flex flex-col md:flex-row relative justify-between ">
+      <div className="  gap-2 md:w-[67%] flex flex-col md:flex-row relative justify-between ">
         <div className="flex md:w-full items-center border rounded p-2 ">
           <div>
             <RiFlightTakeoffFill className="text-2xl md:text-3xl" />
@@ -42,7 +45,7 @@ const DynamicForm = ({
             <CustomSelect
               loadOptions={getCountriesHandlerOne}
               defaultOptions={defaultOptions}
-              placeholder="Where From?"
+              placeholder="Where From ?"
               icon={<RiFlightTakeoffFill />}
               setFormData={(value) => setForm({ fromCity: value })}
               value={form.fromCity}
@@ -60,7 +63,7 @@ const DynamicForm = ({
             <CustomSelect
               loadOptions={getCountriesHandlerTwo}
               defaultOptions={defaultOptions}
-              placeholder="Where To?"
+              placeholder="Where To ?"
               setFormData={(value) => setForm({ toCity: value })}
               value={form.toCity}
             />
@@ -74,10 +77,11 @@ const DynamicForm = ({
 
 
 
-      <div className="flex md:w-[33.333%] flex-col md:flex-row ">
+      <div className="flex md:w-[33.3333%] flex-col md:flex-row ">
         <div className="rounded flex  items-center border w-full">
-          <div className="flex items-center justify-between   w-full    
+          <div className="flex items-center justify-between  pl-5 w-full    
           ">
+
             <DatePicker
               minDate={formData.travelDate}
               selected={startDate}

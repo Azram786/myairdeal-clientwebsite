@@ -22,7 +22,7 @@ const SearchFilter = () => {
   const [allCountryData, setAllCountryData] = useState(data);
 
   const [formValue, setFormValue] = useState("");
-  console.log("stateValue", formValue);
+
   // state for filteration
 
   const [typeOfTravel, setTypeOfTravel] = useState("one-way");
@@ -42,7 +42,7 @@ const SearchFilter = () => {
 
   //function for filtering and getting the country code
   const filterCountryCode = (filter) => {
-    console.log("calling filter function");
+
     setFilteredCountryCode(filter);
     const codes = allCountryData.Airport.filter(
       (value) => value.countrycode === filter
@@ -50,13 +50,13 @@ const SearchFilter = () => {
       value: item.code,
       label: `${item?.name} - ${item?.code}`,
     }));
-    console.log("code", codes);
+    
     setCountryCode(() => codes);
   };
 
   //handler for changing country code
   const changeFilterValueHandler = (value) => {
-    console.log("valuefromSElect", value);
+
     setFilteredCountryCode(value);
   };
 
