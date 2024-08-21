@@ -154,14 +154,14 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
       {links.map((link, index) => (
         <div
           key={index}
-          className="flex flex-col sm:flex-row md:items-center justify-none md:justify-between text-white bg-[#1B1D29] border-t border-blue-200 rounded-lg p-4"
+          className="flex flex-col sm:flex-row md:items-center justify-none md:justify-between text-[#1B1D29] border-[#1B1D29] border  rounded-lg p-4"
         >
           <div className="flex-1">
             <h3 className="text-lg font-semibold">{link.title}</h3>
-            <p className="text-sm text-white">{link.description}</p>
+            <p className="text-sm ">{link.description}</p>
           </div>
           <button
-            className="text-black h-full px-4 py-2 mt-4 md:mt-0 md:px-8 bg-white rounded-md md:rounded-r-lg flex items-center w-max"
+            className="text-[#D7B56D] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 bg-[#1B1D29] rounded-md md:rounded-r-lg flex items-center w-max"
             onClick={() => handleButtonClick(link)}
           >
             <FaArrowRight className="text-xl" />
@@ -171,9 +171,9 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
 
       {modalIsOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-center z-50">
-          <div className="bg-white flex justify-center flex-col rounded-lg shadow-xl w-[90%] md:w-1/2  md:mx-auto ">
+          <div className="bg-white text-[#1B1D29] flex justify-center flex-col rounded-lg shadow-xl w-[90%] md:w-1/2  md:mx-auto ">
             <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="text-2xl font-bold">
+              <h2 className="text-2xl  bg-green-400 font-bold">
                 {selectedLink.for === "raise"
                   ? "Raise a Ticket"
                   : "Cancel Ticket"}

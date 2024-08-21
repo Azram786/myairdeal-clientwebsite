@@ -61,7 +61,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
                 key={heading}
                 className={` block text-center mb-1 border p-2 rounded-md cursor-pointer ${
                   selectedHeading === heading
-                    ? "bg-[#D7B56D] text-white"
+                    ? "text-[#D7B56D] bg-[#1B1D29]"
                     : "border-gray-300"
                 }`}
               >
@@ -115,7 +115,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
         <div className="flex w-full justify-center">
           <button
             type="submit"
-            className="bg-[#D7B56D] text-white px-8 py-2 rounded"
+            className="text-[#D7B56D] bg-[#1B1D29] px-8 py-2 rounded"
           >
             Submit
           </button>

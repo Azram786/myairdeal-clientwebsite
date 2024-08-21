@@ -81,9 +81,6 @@
 //     getData();
 //   }, []);
 
-
-
-
 //   if (loading) {
 //     return (
 //       <div className="w-full h-screen flex justify-center items-center">
@@ -128,7 +125,6 @@
 
 // export default FlightList;
 
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Oneway from "./SearchComponents/Oneway";
@@ -136,7 +132,7 @@ import Roundtrip from "./SearchComponents/Roundtrip";
 import Combo from "./SearchComponents/Combo";
 import MultiCity from "./SearchComponents/MultiCity";
 import FilterSection from "../Home/FilterSection";
-import Spinner from '../Profile/Spinner';
+import Spinner from "../Profile/Spinner";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import ReactToast from "../util/ReactToast";
 import { MdAirlineSeatReclineExtra, MdOutlineDateRange } from "react-icons/md";
@@ -161,16 +157,16 @@ const FlightList = () => {
   const [multicity, setMulticity] = useState([]);
   const [combo, setCombo] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { isModifySearch } = useSelector(state => state.auth)
+  const { isModifySearch } = useSelector((state) => state.auth);
   const [hasUserPressedBack, setHasUserPressedBack] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     // Push the current state to the history
-    window.history.pushState({ page: 'current' }, '');
+    window.history.pushState({ page: "current" }, "");
 
     // Handler for popstate event (back button press)
     const handlePopState = (event) => {
-      if (event.state && event.state.page === 'current') {
+      if (event.state && event.state.page === "current") {
         setHasUserPressedBack(true);
         // Optionally, you can prevent the default back action
         // window.history.pushState(null, '', window.location.href);
@@ -178,17 +174,17 @@ const FlightList = () => {
     };
 
     // Add event listener
-    window.addEventListener('popstate', handlePopState);
+    window.addEventListener("popstate", handlePopState);
 
     // Cleanup function to remove event listener
     return () => {
-      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener("popstate", handlePopState);
     };
   }, []); // Empty dependency array means this effect runs once on mount
 
   useEffect(() => {
     if (hasUserPressedBack) {
-      dispatch(setIsaModifySearch(false))
+      dispatch(setIsaModifySearch(false));
     }
   }, [hasUserPressedBack]);
   useEffect(() => {
@@ -197,7 +193,6 @@ const FlightList = () => {
       navigate("/");
     }
   }, [location.state]);
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -209,7 +204,7 @@ const FlightList = () => {
 
   const getData = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}search/flight`,
         data
@@ -217,10 +212,9 @@ const FlightList = () => {
 
       const tripInfos = res.data.searchResult.tripInfos;
 
-
       if (!tripInfos) {
-        ReactToast("No flights found on this route")
-        return
+        ReactToast("No flights found on this route");
+        return;
       }
 
       if (tripInfos.ONWARD && tripInfos.RETURN) {
@@ -240,14 +234,13 @@ const FlightList = () => {
     } catch (error) {
       ReactToast(error.message);
       // ReactToast('Some issue in your search')
-      navigate('/')
+      navigate("/");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-
     getData();
   }, [data]);
 
@@ -263,11 +256,18 @@ const FlightList = () => {
 
   return (
     <div className="min-h-screen ">
-      <Header />
-      {data && <div className="w-full py-5"><FlightSearchSummary data={data} tripType={tripType} /></div>}
+      {data && (
+        <div className="w-full py-5">
+          <FlightSearchSummary data={data} tripType={tripType} />
+        </div>
+      )}
       <div className=" border p-4  gap-4 shadow-sm rounded-md flex flex-col">
         {tripType === "oneway" && (
-          <Oneway flightProps={oneway} query={data} passenger={data?.searchQuery.paxInfo} />
+          <Oneway
+            flightProps={oneway}
+            query={data}
+            passenger={data?.searchQuery.paxInfo}
+          />
         )}
         {tripType === "roundtrip" && (
           <Roundtrip
@@ -278,7 +278,11 @@ const FlightList = () => {
           />
         )}
         {tripType === "combo" && (
-          <Combo flightprops={combo} query={data} passenger={data?.searchQuery.paxInfo} />
+          <Combo
+            flightprops={combo}
+            query={data}
+            passenger={data?.searchQuery.paxInfo}
+          />
         )}
         {tripType === "multicity" && (
           <MultiCity
@@ -288,7 +292,7 @@ const FlightList = () => {
           />
         )}
       </div>
-      <Footer />
+
       <SessionExpiredPopup
         isOpen={isSessionExpired}
         onClose={() => setIsSessionExpired(false)}
@@ -305,7 +309,7 @@ const SessionExpiredPopup = ({ isOpen, onClose }) => {
 
   const handleSearchAgain = () => {
     onClose();
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -313,7 +317,9 @@ const SessionExpiredPopup = ({ isOpen, onClose }) => {
       <div className="fixed z-50 inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
         <div className="bg-white p-6 rounded shadow-lg text-center">
           <h3 className=" font-bold mb-4 text-base">Session Expired</h3>
-          <p className="mb-6 text-sm">Your session has expired. Please search again.</p>
+          <p className="mb-6 text-sm">
+            Your session has expired. Please search again.
+          </p>
           <button
             onClick={handleSearchAgain}
             className="bg-blue-500 text-white py-2 px-4 rounded text-sm"

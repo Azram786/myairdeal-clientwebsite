@@ -84,7 +84,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                 <div className="block md:hidden font-semibold justify-center items-center">
                   {trip.sI[0].fD.aI.name}
                 </div>
-                <div className="flex border   border-blue-400  rounded-xl p-2">
+                <div className="flex border   border-[#1B1D29]  rounded-xl p-2">
                   {/* <img
                   src={FlightLogo}
                   className="h-16 w-16 rounded-lg p-1 object-contain mr-4 border border-blue-700"
