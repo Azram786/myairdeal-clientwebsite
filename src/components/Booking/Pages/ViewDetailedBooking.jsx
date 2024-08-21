@@ -100,7 +100,7 @@ const ViewDetailedBooking = () => {
       ) : (
         <div className="  p-2 border rounded-lg md:px-10  mt-3  flex justify-center items-center  ">
           <div className=" flex flex-col w-full   ">
-            <div className=" bg-[#1B1D29] border-2 gap-2 flex flex-wrap justify-between items-center text-[#D7B56D] rounded-xl px-10   py-4">
+            <div className=" bg-[#dce3e8] border-2 gap-2 flex flex-wrap justify-between items-center text-black rounded-xl px-10   py-4">
               <div className="text-[1.3rem] flex  font-bold">
                 Ticket booking
               </div>
@@ -110,7 +110,7 @@ const ViewDetailedBooking = () => {
               </div> */}
                 <div className="">
                   <button
-                    className="bg-[#1B1D29] border-white border-2 flex justify-center items-center text-[#D7B56D] p-2 w-[200px] rounded-lg"
+                    className="bg-[#0A2546] border-white border-2 flex justify-center items-center text-[#D7B56D] p-2 w-[200px] rounded-lg"
                     onClick={DownloadInvoice}
                   >
                     <CiSaveDown1 />

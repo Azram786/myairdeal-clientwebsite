@@ -47,7 +47,6 @@ const FlightSummary = () => {
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
 
-
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
       navigate("/search");
@@ -160,6 +159,7 @@ const FlightSummary = () => {
     return `${hours}h ${minutes}m`;
   }
 
+  console.log({ passengersData, passengers })
   function calculateTotalDuration(segments) {
     if (!segments || segments.length === 0) return "N/A";
 
@@ -219,7 +219,7 @@ const FlightSummary = () => {
 
 
   return (
-    <div className=" min-h-screen my-auto ">
+    <div className=" min-h-screen my-auto  ">
       {/* <Header /> */}
       <div className="  sm:text-sm md:text-lg w-[90vw] flex-wrap mx-auto pt-4 ">
         <div
@@ -456,6 +456,7 @@ const FlightSummary = () => {
                   </button>
                 </div>
               </>
+
             ) : currentStep === 1 ? (
               <AddDetails
                 bookingId={data?.bookingId}
@@ -502,7 +503,9 @@ const FlightSummary = () => {
                   <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                     <span className="text-sm md:text-base ">Base fare</span>
                     <span>
-                      ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
+                      ₹{" "}
+                      {data?.totalPriceInfo?.totalFareDetail?.fC?.BF +
+                        commision}
                     </span>
                   </div>
                   <div className="mt-2">
@@ -557,7 +560,7 @@ const FlightSummary = () => {
                               ₹{" "}
                               {
                                 data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
-                                  ?.YR
+                                  ?.YR || "N/A"
                               }
                             </span>
                           </div>
@@ -691,14 +694,14 @@ const FlightSummary = () => {
                     >
                       {amountExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
-                          <div className="flex justify-between">
+                          {/* <div className="flex justify-between">
                             <span>Commission</span>
                             <span>₹ {commision}</span>
-                          </div>
-                          <div className="flex justify-between">
+                          </div> */}
+                          {/* <div className="flex justify-between">
                             <span>TDS</span>
                             <span>N/A</span>
-                          </div>
+                          </div> */}
                           <div className="flex justify-between font-medium">
                             <span>Net Price</span>
                             <span>

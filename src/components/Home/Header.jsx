@@ -70,7 +70,7 @@ const Header = () => {
     <>
       <Link
         to="/"
-        className={`font-medium py-2 text-center border-r border-[#D7B56D] px-3 ${location.pathname === "/" ? "bg-[#D7B56D] text-[#1B1D29]" : "text-[#D7B56D]"
+        className={`font-medium py-2 text-center border-r border-[#D7B56D] mx- px-3 ${location.pathname === "/" ? "bg-[#D7B56D] text-[#1B1D29]" : "text-[#D7B56D]"
           } ${mobile ? "block py-2" : ""}`}
         onClick={() => {
           dispatch(setIsaModifySearch(false))
@@ -160,7 +160,7 @@ const Header = () => {
             </div>
           ) : (
             <button
-              className="bg-[#D7B56D] text-[#1B1D29] px-4 py-2 rounded-md"
+              className="bg-[#D7B56D] text-[#1B1D29] px-4 py-2 cursor-pointer mx-4 rounded-md"
               onClick={() => handleNavigate("/sign-in")}
             >
               Login

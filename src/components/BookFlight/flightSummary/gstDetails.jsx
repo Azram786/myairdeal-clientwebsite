@@ -155,9 +155,8 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
                   name={id}
                   value={gstDetails[id] || ""}
                   onChange={handleInputChange}
-                  className={`${inputClass} ${
-                    errors[id] ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`${inputClass} ${errors[id] ? "border-red-500" : "border-gray-300"
+                    }`}
                   placeholder={placeholder}
                   maxLength={maxLength}
                 />
@@ -180,9 +179,8 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
               value={gstDetails.address || ""}
               onChange={handleInputChange}
               rows="3"
-              className={`${inputClass} ${
-                errors.address ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`${inputClass} ${errors.address ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="Enter Registered Address"
               maxLength={70}
             />

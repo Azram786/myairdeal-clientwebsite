@@ -5,28 +5,21 @@ import background1 from "../../assets/service/world2.png";
 
 function Card(props) {
   return (
-   <div className="bg-white bg-cover relative overflow-hidden rounded-xl p-6 shadow-md w-28 md:w-52 h-max md:h-60">
-  {/* Expanding blue background */}
-  <div className="absolute inset-0 bg-sky-100 transition-transform transform scale-0 hover:scale-100 duration-300 ease-in-out z-0"></div>
-
-  {/* Content */}
-  <div className="relative z-10">
-    <div className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4 bg-transparent border-solid border-4 border-[#1B1D29] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm ">
-      <img
-        src={props?.imgURL}
-        alt="plane"
-        className="transition-transform transform hover:rotate-45"
-      />
+    <div className="bg-white bg-cover relative pb-12 transition-transform transform hover:scale-105 duration-300 ease-in-out text-sky-950 rounded-xl p-6 shadow-md w-28 md:w-52 h-max md:h-60">
+      <div className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4 bg-white border-solid border-4 border-[#1B1D29] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm ">
+        <img
+          src={props?.imgURL}
+          alt="plane"
+          className="transition-transform transform "
+        />
+      </div>
+      <h2 className="text-sm sm:text-xl text-[#D7B56D] font-semibold mb-2 z-10">
+        {props?.head}
+      </h2>
+      <p className="text-sm sm:text-base font-medium text-[#1B1D29] z-10">
+        {props?.para}
+      </p>
     </div>
-    <h2 className="text-sm sm:text-xl text-[#D7B56D] font-semibold mb-2">
-      {props?.head}
-    </h2>
-    <p className="text-sm sm:text-base font-medium text-[#1B1D29]">
-      {props?.para}
-    </p>
-  </div>
-</div>
-
   );
 }
 

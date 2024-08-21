@@ -126,7 +126,7 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex ">
+    <div className="h-[90vh] flex ">
       <div className="flex  w-[90%] mx-auto">
         {/* <div
           onClick={() => {

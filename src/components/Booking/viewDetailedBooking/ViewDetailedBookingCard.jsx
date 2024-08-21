@@ -28,7 +28,7 @@ const ViewDetailedBookingCard = ({
   return (
     <div className=" border-l-0 w-full lg:w-[72%]">
       <div className="rounded-lg my-2">
-        <div className="flex justify-between items-center bg-[#1B1D29] border-2 flex-wrap p-4 rounded-t-xl text-[#D7B56D]">
+        <div className="flex justify-between items-center bg-[white] border-2 flex-wrap p-4 rounded-t-xl text-[black]">
           <div className="flex w-full  flex-col md:flex-row justify-end ">
             <div className="">
               {" "}
@@ -46,8 +46,8 @@ const ViewDetailedBookingCard = ({
               </div>
               <div className="text-base  lg:text-lg  flex-col md:flex-row font-semibold flex w-full justify-between">
                 <div className=" flex ">
-                  <p className="text-white">ID:</p>
-                  <span className="text-slate-200 px-2">
+                  <p className="text-black">ID:</p>
+                  <span className="text-slate-600 px-2">
                     {singleBookingData?.order.bookingId}
                   </span>
                 </div>
@@ -72,7 +72,7 @@ const ViewDetailedBookingCard = ({
           return (
             <div key={index}>
               <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
-                <div className="border-2 border-[#D7B56D] flex gap-3 p-2 rounded-lg flex-col w-full lg-custom:w-1/2 ">
+                <div className="border-2 bg-[#dce3e9] flex gap-3 p-2 rounded-lg flex-col w-full lg-custom:w-1/2 ">
                   <div className="  w-full">
                     <div className="  text-left flex pl-2 items-center">
                       <div>
@@ -163,7 +163,7 @@ const ViewDetailedBookingCard = ({
                   </div>
                 </div>
                 <div className="w-full  flex flex-col lg:items-center justify-center lg:justify-start">
-                  <div className="justify-center p-2 border-2 border-[#D7B56D]  rounded-lg flex items-center gap-3">
+                  <div className="justify-center p-2  rounded-lg flex items-center gap-3">
                     <h1 className="text-base md:text-xl  font-semibold text-gray-800 ">
                       Total Duration :
                     </h1>

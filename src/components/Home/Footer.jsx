@@ -179,7 +179,7 @@ const Footer = () => {
             <div>My <span className="text-[#D7B56D]">Air</span> Deal</div>
           </div>
 
-          <div className=" gap-2  px-2 grid  grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 justify-start w-[50%] text-white text-2xl   mr-1">
+          <div className="cursor-pointer gap-2  px-2 grid  grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 justify-start w-[50%] text-white text-2xl   mr-1">
             <div>
               <FaFacebook className="hover:text-[#D7B56D]"/>
             </div>
@@ -197,35 +197,35 @@ const Footer = () => {
         <div className="flex md:w-3/4 text-center md:text-start pb-6 sm:pb-0 ">
           <div className="grid lg:grid-cols-5  gap-4 md:grid-cols-4 sm:grid-cols-3 px-6 py-4 md:px-0 grid-cols-2 text-start  w-full place-content-start">
             <div className="  font-light flex flex-col gap-1  ">
-              <h2 className="font-semibold text-[#D7B56D]  mt-5 ">Our Destinations</h2>
-              <div className="text-sm">Canada</div>
-              <div className="text-sm"> Alaska</div>
-              <div className="text-sm">France</div>
-              <div className="text-sm">Iceland</div>
+              <h2 className=" font-semibold text-[#D7B56D]  mt-5 ">Our Destinations</h2>
+              <div className="cursor-pointer text-sm">Canada</div>
+              <div className=" cursor-pointer text-sm"> Alaska</div>
+              <div className="cursor-pointer text-sm">France</div>
+              <div className="cursor-pointer text-sm">Iceland</div>
             </div>
             <div className="text-white font-light flex flex-col gap-1 ">
               <h2 className="font-semibold  text-[#D7B56D]  mt-5 ">Our Activities</h2>
-              <div className="text-sm">Northern Lights</div>
-              <div className="text-sm">Cruising & sailing</div>
-              <div className="text-sm">Multi-activites</div>
-              <div className="text-sm">Kayaing</div>
+              <div className=" cursor-pointer text-sm">Northern Lights</div>
+              <div className="cursor-pointer text-sm">Cruising & sailing</div>
+              <div className="cursor-pointer text-sm">Multi-activites</div>
+              <div className="cursor-pointer text-sm">Kayaing</div>
             </div>
             <div className="text-white font-light flex flex-col gap-1 ">
               <h2 className="font-semibold  text-[#D7B56D]   mt-5 ">Travel Blogs</h2>
-              <div className="text-sm">Bali Travel Guide</div>
-              <div className="text-sm">Sri Lanka Travel Guide</div>
-              <div className="text-sm">Peru Travel Guide</div>
-              <div className="text-sm">Bali Travel Guide</div>
+              <div className="cursor-pointer text-sm">Bali Travel Guide</div>
+              <div className="cursor-pointer text-sm">Sri Lanka Travel Guide</div>
+              <div className="cursor-pointer text-sm">Peru Travel Guide</div>
+              <div className="cursor-pointer text-sm">Bali Travel Guide</div>
             </div>
             <div className="text-white font-light flex flex-col gap-1 ">
               <h2 className="font-semibold  mt-5  text-[#D7B56D]  ">About Us</h2>
-              <div className="text-sm">Our Story</div>
-              <div className="text-sm">Work with us</div>
+              <div className="cursor-pointer text-sm">Our Story</div>
+              <div className="cursor-pointer text-sm">Work with us</div>
             </div>
             <div className="text-white  font-light flex flex-col gap-1 md:pr-1">
               <h2 className="font-semibold  text-[#D7B56D]   mt-5 ">Contact us</h2>
-              <div className="text-sm">Our Story</div>
-              <div className="text-sm">Work with us</div>
+              <div className="cursor-pointer text-sm">Our Story</div>
+              <div className="cursor-pointer text-sm">Work with us</div>
             </div>
           </div>
         </div>
