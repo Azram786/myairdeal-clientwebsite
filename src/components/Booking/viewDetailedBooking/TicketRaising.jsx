@@ -94,7 +94,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
               </p>
             )}
           </div>
-          <div>
+          {/* <div>
             <label className="block mb-1">Select Product</label>
             <select
               {...register("product", {
@@ -110,7 +110,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
             {errors.product && (
               <p className="text-red-500 text-sm">{errors.product.message}</p>
             )}
-          </div>
+          </div> */}
         </div>
         <div className="flex w-full justify-center">
           <button
