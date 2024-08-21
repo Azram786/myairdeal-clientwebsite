@@ -560,7 +560,7 @@ const FlightSummary = () => {
                               ₹{" "}
                               {
                                 data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
-                                  ?.YR
+                                  ?.YR || "N/A"
                               }
                             </span>
                           </div>
@@ -699,10 +699,10 @@ const FlightSummary = () => {
                             <span>Commission</span>
                             <span>₹ {commision}</span>
                           </div> */}
-                          <div className="flex justify-between">
+                          {/* <div className="flex justify-between">
                             <span>TDS</span>
                             <span>N/A</span>
-                          </div>
+                          </div> */}
                           <div className="flex justify-between font-medium">
                             <span>Net Price</span>
                             <span>
