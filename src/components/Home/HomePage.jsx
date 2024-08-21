@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Header from "./Header";
 import Banner from "./Banner";
 import FilterSection from "./FilterSection";
 import OfferSection from "./OfferSection";
 import Contact from "./Contact";
-import Footer from "./Footer";
+
 import Spinner from "../Profile/Spinner";
 import RecentSearch from "./ResentSearch";
 import axios from "axios";
@@ -208,7 +207,7 @@ const HomePage = () => {
         </div>
       ) : (
         <>
-          <Header />
+         
           <Banner />
           <FilterSection
             formData={formData}
@@ -230,7 +229,7 @@ const HomePage = () => {
           <Testimonials />
           <Contact />
           <DownloadApp />
-          <Footer />
+ 
         </>
       )}
     </div>

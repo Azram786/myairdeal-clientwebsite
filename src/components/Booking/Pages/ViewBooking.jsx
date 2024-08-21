@@ -61,7 +61,7 @@ const FlightBookings = () => {
 
   return (
     <>
-      <Header />
+  
       <div className="xl:mx-[5vw]  min-w-[350px] min-h-screen lg:mx-[3vw] my-5 bg-white xl:p-[2vw] lg:p-[1vw] rounded-md z-50">
         {/* <div className="flex justify-between items-center rounded-lg mb-5 px-3 py-4 border">
           <div className="flex h-12 space-x-[1px] justify-between bg-slate-300 w-full">
@@ -157,8 +157,7 @@ const FlightBookings = () => {
           )}
         </div>
       </div>
-      
-        <Footer />
+
      
     </>
   );
