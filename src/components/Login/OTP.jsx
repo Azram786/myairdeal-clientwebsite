@@ -110,7 +110,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
             onKeyDown={(e) => handleKeyDown(e, index)}
             ref={(el) => (inputsRef.current[index] = el)}
             maxLength="1"
-            className="w-12 h-12 text-center border border-[#D7B56D] rounded-md"
+            className="w-12 h-12 text-center border border-[#D7B56D]  rounded-md"
             onPaste={handlePaste}
           />
         ))}
@@ -133,12 +133,12 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
           <motion.button
             whileTap={{ scale: 0.85 }}
             onClick={onSubmit}
-            className="bg-[#D7B56D] text-white h-[45px] rounded-md mt-5 w-1/2"
+            className="bg-[#D7B56D] text-[#1B1D29] h-[45px] rounded-md mt-5 w-1/2"
           >
             Verify OTP
           </motion.button>
         )}
-        <div className="text-center h-full w-1/2 flex justify-center items-center ">
+        <div className="text-center  text-sm h-full w-1/2 flex justify-center items-center ">
           {timer > 0 ? (
             <p>Resend OTP in {timer} seconds</p>
           ) : (

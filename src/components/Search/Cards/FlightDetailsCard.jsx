@@ -353,7 +353,7 @@ const FlightDetailsCard = ({
               <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold w-16 sm:w-32 md:min-w-44 text-gray-500">
                 {/* <span>{convertToHoursMinutes(totalDuration)}</span> */}
                 <span>{totalDuration}</span>
-                <FaPlane className="mx-2 text-[#1B1D29] text-3xl" />
+                <FaPlane className="mx-2 text-[#D7B56D] text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (
                     <span>

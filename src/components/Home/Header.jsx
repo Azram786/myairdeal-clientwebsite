@@ -70,7 +70,7 @@ const Header = () => {
     <>
       <Link
         to="/"
-        className={`font-semibold text-center border-r px-3 ${location.pathname === "/" ? "text-[#c79834]" : "text-white"
+        className={`font-medium py-2 text-center border-r border-[#D7B56D] px-3 ${location.pathname === "/" ? "bg-[#D7B56D] text-[#1B1D29]" : "text-[#D7B56D]"
           } ${mobile ? "block py-2" : ""}`}
         onClick={() => {
           dispatch(setIsaModifySearch(false))
@@ -83,7 +83,7 @@ const Header = () => {
         <>
           <Link
             to="/view-booking"
-            className={`font-semibold border-r px-3 ${location.pathname === "/view-booking" ? "text-[#c79834]" : "text-white"
+            className={`font-medium py-2 border-[#D7B56D] border-r px-3 ${location.pathname === "/view-booking" ? "bg-[#D7B56D] text-[#1B1D29]" : "text-[#D7B56D]"
               } ${mobile ? "block py-2" : ""}`}
             onClick={() => mobile && setMobileMenuOpen(false)}
           >
@@ -91,7 +91,7 @@ const Header = () => {
           </Link>
           <Link
             to="#"
-            className={`font-semibold  px-2 ${location.pathname === "/notifications" ? "text-[#c79834]" : "text-white"
+            className={`font-semibold  px-2 ${location.pathname === "/notifications" ? "text-[#c79834]" : "text-[#D7B56D]"
               } ${mobile ? "block py-2" : ""}`}
             onClick={() => mobile && setMobileMenuOpen(false)}
           >
@@ -160,7 +160,7 @@ const Header = () => {
             </div>
           ) : (
             <button
-              className="bg-[#D7B56D] text-black px-4 py-2 rounded-md"
+              className="bg-[#D7B56D] text-[#1B1D29] px-4 py-2 rounded-md"
               onClick={() => handleNavigate("/sign-in")}
             >
               Login
@@ -169,7 +169,7 @@ const Header = () => {
         </div>
         <div className="md:hidden">
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            <FiMenu size={24} />
+            <FiMenu className="text-[#D7B56D]" size={24} />
           </button>
         </div>
       </div>
@@ -181,20 +181,20 @@ const Header = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-t"
           >
-            <div className="flex text-center flex-col mx-auto px-4">
+            <div className="flex text-center flex-wrap mx-auto px-4">
               <NavLinks mobile />
               {token ? (
-                <div className="flex text-center flex-col text-sm justify-center items-center gap-4">
+                <div className="flex bg-green-400 w-max flex-wrap text-sm  gap-4">
                   <Link
                     to="/profile"
-                    className="block py-2 text-white"
+                    className="block py-2 text-[#1B1D29]"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Profile
                   </Link>
                   <button
                     onClick={handleSignOut}
-                    className="block w-full text-center py-2 text-white"
+                    className="block w-full text-center py-2 text-[#1B1D29]"
                   >
                     Sign Out
                   </button>
