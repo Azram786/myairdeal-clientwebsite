@@ -1,22 +1,32 @@
 import React from "react";
 import Content from "./content";
 import background from "../../assets/service/world.png";
+import background1 from "../../assets/service/world2.png";
 
 function Card(props) {
   return (
+   <div className="bg-white bg-cover relative overflow-hidden rounded-xl p-6 shadow-md w-28 md:w-52 h-max md:h-60">
+  {/* Expanding blue background */}
+  <div className="absolute inset-0 bg-sky-100 transition-transform transform scale-0 hover:scale-100 duration-300 ease-in-out z-0"></div>
 
-      <div className="bg-white relative transition-transform transform hover:scale-105 duration-300 ease-in-out text-sky-950 rounded-xl p-6 shadow-md w-28  md:w-52 h-max md:h-60">
-        <img
-          src={props?.imgURL}
-          alt="plane"
-          className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4 bg-sky-100 border-solid border-4 border-[#1B1D29] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm"
-        />
-        <h2 className="text-sm sm:text-2xl text-[#1B1D29] font-semibold mb-2">
-          {props?.head}
-        </h2>
-        <p className="text-sm sm:text-lg text-[#1B1D29]  ">{props?.para}</p>
-      </div>
- 
+  {/* Content */}
+  <div className="relative z-10">
+    <div className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4 bg-transparent border-solid border-4 border-[#1B1D29] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm ">
+      <img
+        src={props?.imgURL}
+        alt="plane"
+        className="transition-transform transform hover:rotate-45"
+      />
+    </div>
+    <h2 className="text-sm sm:text-xl text-[#D7B56D] font-semibold mb-2">
+      {props?.head}
+    </h2>
+    <p className="text-sm sm:text-base font-medium text-[#1B1D29]">
+      {props?.para}
+    </p>
+  </div>
+</div>
+
   );
 }
 
@@ -34,10 +44,11 @@ function createCard(content) {
 function Service() {
   return (
     <div
-      style={{ backgroundImage: `url(${background})` }}
+      style={{ backgroundImage: `url(${background1})` }}
       className="bg-cover  w-full mx-auto text-center py-12"
     >
-      <div className="text-[#D7B56D] text-base font-bold mb-2">Services</div>
+      {" "}
+      ` `<div className="text-[#D7B56D] text-base font-bold mb-2">Services</div>
       <div className="text-[#D7B56D] text-xl sm:text-3xl font-bold mb-8">
         We Offer Best Services
       </div>
@@ -49,9 +60,6 @@ function Service() {
 }
 
 export default Service;
-
-
-
 
 // import React from "react";
 // import Content from "./content";
@@ -113,4 +121,3 @@ export default Service;
 // }
 
 // export default Service;
-

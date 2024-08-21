@@ -28,14 +28,18 @@ const ViewDetailedBookingCard = ({
   return (
     <div className=" border-l-0 w-full lg:w-[72%]">
       <div className="rounded-lg my-2">
-        <div className="flex justify-between items-center bg-[#1B1D29] flex-wrap p-4 rounded-t-xl text-white">
+        <div className="flex justify-between items-center bg-[#1B1D29] border-2 flex-wrap p-4 rounded-t-xl text-[#D7B56D]">
           <div className="flex w-full  flex-col md:flex-row justify-end ">
-            <div className="h-16 w-16 flex items-center justify-center bg-white text-[#D7B56D] font-bold text-xl rounded-full mr-4">
-              {singleBookingData?.gstInfo?.registeredName
-                ?.charAt(0)
-                .toUpperCase() || user?.firstName.charAt(0)}
+            <div className="">
+              {" "}
+              <div className="h-16 w-16 flex items-center justify-center bg-[#1B1D29] border-2 border-white text-[#D7B56D] font-bold text-xl rounded-full ">
+                {singleBookingData?.gstInfo?.registeredName
+                  ?.charAt(0)
+                  .toUpperCase() || user?.firstName.charAt(0)}
+              </div>
             </div>
-            <div className="w-full  ">
+
+            <div className="w-full pl-4  ">
               <div className="text-base md:text-lg font-semibold uppercase ">
                 {/* {user?.firstName} {user?.lastName} */}
                 {singleBookingData?.gstInfo?.registeredName || user?.firstName}
@@ -68,7 +72,7 @@ const ViewDetailedBookingCard = ({
           return (
             <div key={index}>
               <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
-                <div className="bg-[#D0E7F4] flex gap-3 p-2 rounded-lg flex-col w-full lg-custom:w-1/2 ">
+                <div className="border-2 border-[#D7B56D] flex gap-3 p-2 rounded-lg flex-col w-full lg-custom:w-1/2 ">
                   <div className="  w-full">
                     <div className="  text-left flex pl-2 items-center">
                       <div>
@@ -121,7 +125,7 @@ const ViewDetailedBookingCard = ({
                           Non Stop
                         </div>
                       ) : (
-                        <div className="text-center text-sm font-bold text-blue-500">
+                        <div className="text-center text-sm font-bold text-[#1B1D29]">
                           Connection
                         </div>
                       )}
@@ -159,11 +163,11 @@ const ViewDetailedBookingCard = ({
                   </div>
                 </div>
                 <div className="w-full  flex flex-col lg:items-center justify-center lg:justify-start">
-                  <div className="justify-center p-2 bg-[#D0E7F4]  rounded-lg flex items-center gap-3">
+                  <div className="justify-center p-2 border-2 border-[#D7B56D]  rounded-lg flex items-center gap-3">
                     <h1 className="text-base md:text-xl  font-semibold text-gray-800 ">
-                      Total Duration
+                      Total Duration :
                     </h1>
-                    <h1 className="text-base md:text-xl  font-bold text-gray-500 uppercase">
+                    <h1 className="text-base md:text-xl  font-semibold text-gray-500 uppercase">
                       {value.sI.length === 1
                         ? calculateDuration(value.sI[0].dt, value.sI[0].at)
                         : calculateDuration(
@@ -175,7 +179,7 @@ const ViewDetailedBookingCard = ({
 
                   <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-[80%] lg:w-full mx-auto  ">
                     <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
                         <MdDateRange />
                       </div>
                       <div>
@@ -188,7 +192,7 @@ const ViewDetailedBookingCard = ({
                       </div>
                     </div>
                     <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
                         <IoIosTime />
                       </div>
                       <div>
@@ -201,7 +205,7 @@ const ViewDetailedBookingCard = ({
                       </div>
                     </div>
                     <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3 ">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded  ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded  ">
                         <IoIosTime />
                       </div>
                       <div>
@@ -219,7 +223,7 @@ const ViewDetailedBookingCard = ({
                     </div>
 
                     <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
                         <BsDoorClosedFill />
                       </div>
                       <div>
@@ -234,7 +238,7 @@ const ViewDetailedBookingCard = ({
                       </div>
                     </div>
                     <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
                         <BsDoorClosedFill />
                       </div>
                       <div>
@@ -247,7 +251,7 @@ const ViewDetailedBookingCard = ({
                       </div>
                     </div>
                     <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-white bg-[#1B1D29] p-2 rounded  ">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded  ">
                         <MdOutlineAirlineSeatReclineExtra />
                       </div>
                       <div>
@@ -267,14 +271,14 @@ const ViewDetailedBookingCard = ({
                   <>
                     <button
                       onClick={() => toggleDropdown(index)}
-                      className="bg-[#1B1D29] text-white w-full py-2 rounded-lg"
+                      className="bg-[#1B1D29] text-[#D7B56D] w-full py-2 rounded-lg"
                     >
                       {openConnectionIndex === index
                         ? "Hide Connections"
                         : "View Connections"}
                     </button>
                     {openConnectionIndex === index && (
-                      <div className="bg-[#F3F7F9] text-slate-600 p-2">
+                      <div className="bg-[#f7eed8] text-[#1B1D29] p-2">
                         {value.sI.map((singleValue, index) => {
                           const layoverDuration = previousArrivalTime
                             ? calculateDuration(
@@ -288,11 +292,7 @@ const ViewDetailedBookingCard = ({
                             <React.Fragment key={index}>
                               {index !== 0 && (
                                 <div className="text-sm text-gray-500 mt-4">
-                                  <span>
-                                    There is a Special No Meal fare Provided by
-                                    the Airline
-                                  </span>
-                                  <div className="flex justify-between bg-blue-900 text-white p-3 rounded-md mt-4 mb-4">
+                                  <div className="flex justify-between bg-[#1B1D29] text-[#D7B56D] p-3 rounded-md mt-4 mb-4">
                                     <div className="text-sm">
                                       Require to change plane
                                     </div>
