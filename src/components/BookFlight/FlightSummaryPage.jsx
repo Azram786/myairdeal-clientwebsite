@@ -38,7 +38,7 @@ const FlightSummary = () => {
 
 
   const location = useLocation();
-  const [seatMapData, setSeatMapData] = useState(null); 
+  const [seatMapData, setSeatMapData] = useState(null);
   const { bookings } = location.state || {};
   const navigate = useNavigate();
   const [commision, setComission] = useState(0);
@@ -115,7 +115,7 @@ const FlightSummary = () => {
   const [amountExpanded, setAmountExpanded] = useState(false);
   const [mealExpanded, setIsMealExpanded] = useState(false);
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
 
     dispatch(setIsaModifySearch(false))
@@ -219,7 +219,7 @@ const FlightSummary = () => {
 
 
   return (
-    <div className=" min-h-screen my-auto">
+    <div className=" min-h-screen my-auto ">
       <Header />
       <div className="  sm:text-sm md:text-lg w-[90vw] flex-wrap mx-auto pt-4 ">
         <div
@@ -298,7 +298,7 @@ const FlightSummary = () => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="flex flex-col md:flex-row w-full  ">
+                                  <div className="flex flex-col md:flex-row w-full   ">
                                     <div className="flex-col text-center md:text-left w-full md:w-[40%]">
                                       <div className="text-lg font-bold ">
                                         {segment.da.code}

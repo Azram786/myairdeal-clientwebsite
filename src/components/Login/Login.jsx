@@ -149,13 +149,13 @@ const Login = () => {
                   <img className="h-[80px]" src={Logo} alt="Logo" />
                 </Link>
               </div>
-              <div className="text-[1.6rem] font-bold text-[#1F61BC]">
-                <h3>My Air Deal</h3>
+              <div className="text-[1.6rem] font-bold text-[#1B1D29]">
+                <h3>My <span className="text-[#D7B56D]"> Air</span> Deal</h3>
               </div>
             </div>
             <h2 className="font-medium text-[2.3rem]">Login</h2>
             <div className="mb-3">
-              <h3 className="font-light text-[#112211] text-[1.2rem]">
+              <h3 className="font-semibold text-[#1B1D29] text-[1.2rem]">
                 Login to access your Golobe account.
               </h3>
             </div>
@@ -186,7 +186,7 @@ const Login = () => {
                 whileTap={{ scale: 0.85 }}
                 disabled={loading}
                 onClick={handleSubmit}
-                className="bg-[#D7B56D] text-white h-[45px] rounded-md mt-5"
+                className="bg-[#D7B56D] text-[#1B1D29] font-semibold h-[45px] rounded-md mt-5"
               >
                 {loading ? (
                   <div className="flex justify-center items-center">
@@ -210,7 +210,7 @@ const Login = () => {
             )}
           </motion.div>
         </div>
-        <div className="hidden  md:w-[50%] md:flex md:items-center md:h-full">
+        <div className="hidden  md:w-[50%]  md:flex md:items-center md:h-full">
           <div className="h-full flex w-full justify-center items-center">
             <motion.img
               initial={{ opacity: 0 }}

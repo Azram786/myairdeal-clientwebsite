@@ -204,13 +204,13 @@ const AddDetails = ({
       <div className="flex flex-wrap justify-between mt-5 mx-4">
         <button
           onClick={() => setCurrentStep((p) => p - 1)}
-          className="bg-gray-400 m-2 textpsm md:text-base text-black py-2 px-4 rounded"
+          className="text-[#D7B56D] hover:text-[#1B1D29] bg-[#1B1D29] hover:bg-[#D7B56D] m-2 textpsm md:text-base  py-2 px-4 rounded"
         >
           Previous
         </button>
         <button
           onClick={handleProceedToReview}
-          className="bg-[#D7B56D] m-2 text-sm md:text-base text-black py-2 px-4 rounded"
+          className=" text-[#D7B56D] hover:text-[#1B1D29] bg-[#1B1D29] hover:bg-[#D7B56D] m-2 text-sm md:text-base  py-2 px-4 rounded"
         >
           Proceed to Review
         </button>

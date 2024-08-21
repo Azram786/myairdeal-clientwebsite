@@ -11,6 +11,8 @@ import Profile from "./components/Profile/Profile";
 
 import Review from "./components/BookFlight/Review";
 import Signup from "./components/Login/Signup";
+import Header from "./components/Home/Header";
+import Footer from "./components/Home/Footer";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -18,6 +20,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/sign-in" element={!token ? <Login /> : <HomePage />} />
@@ -39,6 +42,7 @@ function App() {
           {/* <Route path="/review" element={<Review />} /> */}
           <Route path="/enter-detail" element={<Signup />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   );

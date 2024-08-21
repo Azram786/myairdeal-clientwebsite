@@ -466,7 +466,7 @@ const UserProfile = () => {
                   My Account
                 </div>
                 <div
-                  className="bg-[#284E82] text-white p-6 rounded-lg text-center"
+                  className="bg-[#1B1D29] text-white p-6 rounded-lg text-center"
                   style={{
                     backgroundImage: `url(${world})`,
                     backgroundSize: "cover",
@@ -475,10 +475,10 @@ const UserProfile = () => {
                   <div className="rounded-full mx-auto mb-4 w-24 h-24 bg-white flex items-center justify-center text-[#D7B56D] text-3xl font-bold uppercase">
                     {user?.firstName?.charAt(0)}
                   </div>
-                  <h1 className="text-2xl font-bold uppercase">
+                  <h1 className="text-2xl font-bold text-[#D7B56D] uppercase">
                     {user?.firstName} {user?.lastName}
                   </h1>
-                  <p className="font-bold text-xl">{user?.phone}</p>
+                  <p className="font-bold text-xl text-[#D7B56D]">{user?.phone}</p>
                 </div>
                 <div className="flex  item-center justify-center px-10 ">
                   <div className="md:p-6 pl-2 md:pl-0  flex flex-col w-full  justify-center items-center   py-2    lg:w-1/2">
@@ -506,7 +506,7 @@ const UserProfile = () => {
                                 )}
                               </>
                             ) : (
-                              <p className="mt-1 p-2  w-3/4 md:text-xl font-semibold text-[#1F61BC] uppercase">
+                              <p className="mt-1 p-2  w-3/4 md:text-xl font-semibold text-[#1B1D29] uppercase">
                                 {userData.firstName}
                               </p>
                             )}
@@ -532,7 +532,7 @@ const UserProfile = () => {
                                 )}
                               </>
                             ) : (
-                              <p className="mt-1 p-2 w-3/4 md:text-xl font-semibold text-[#1F61BC] uppercase">
+                              <p className="mt-1 p-2 w-3/4 md:text-xl font-semibold text-[#1B1D29] uppercase">
                                 {userData.lastName}
                               </p>
                             )}
@@ -552,7 +552,7 @@ const UserProfile = () => {
                                 className="w-full md:w-3/4"
                               />
                             ) : (
-                              <p className="mt-1 p-2 w-3/4 md:text-xl font-semibold text-[#1F61BC] uppercase">
+                              <p className="mt-1 p-2 w-3/4 md:text-xl font-semibold text-[#1B1D29] uppercase">
                                 {userData.country.countryName} (+
                                 {userData.country.dialCode})
                               </p>
@@ -579,7 +579,7 @@ const UserProfile = () => {
                                 )}
                               </>
                             ) : (
-                              <p className="mt-1 w-3/4 p-2  md:text-xl font-semibold text-[#1F61BC] uppercase">
+                              <p className="mt-1 w-3/4 p-2  md:text-xl font-semibold text-[#1B1D29] uppercase">
                                 {userData.email}
                               </p>
                             )}
@@ -602,13 +602,13 @@ const UserProfile = () => {
                             <button
                               onClick={handleSave}
                               disabled={savingLoading}
-                              className="bg-white border border-[#284E82] text-[#284E82] px-4  py-2 rounded mt-4"
+                              className=" border bg-[#1B1D29] text-[#D7B56D] px-4  py-2 rounded mt-4"
                             >
                               Save
                             </button>
                             <button
                               onClick={handleCancel}
-                              className="bg-white border border-[#284E82] text-[#284E82] px-4 w-1/2 py-2 rounded mt-4"
+                              className=" border bg-[#1B1D29] text-[#D7B56D] px-4 w-1/2 py-2 rounded mt-4"
                             >
                               Cancel
                             </button>
@@ -616,7 +616,7 @@ const UserProfile = () => {
                         ) : (
                           <button
                             onClick={handleEdit}
-                            className="bg-[white] text-[#284E82] border border-[#284E82]   px-4 py-2 rounded mt-4"
+                            className=" bg-[#1B1D29] border text-[#D7B56D]   px-4 py-2 rounded mt-4"
                           >
                             Edit Profile
                           </button>

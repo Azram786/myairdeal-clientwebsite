@@ -542,9 +542,7 @@ const FilterSection = ({
             <div className="flex flex-col md:flex-row    w-full  lg-custom:w-1/2 gap-2">
               <div className="  rounded   flex items-center border md:w-1/2  py-2 ">
                 <div className="flex items-center text-sm md:text-base justify-center gap-4   w-full ">
-                  {
-                    console.log({'foofy':formData.travelDate})
-                  }
+
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}
@@ -625,7 +623,7 @@ const FilterSection = ({
                 </div>
 
                 {modalIsOpen && (
-                  <div className=" z-10 absolute items-center top-[59px] right-0 left-0 md:-left-80  border-[2px] rounded-lg ">
+                  <div className=" z-10 absolute items-center top-[59px] right-0 left-0 md:-left-80 bg-white  border-[2px] rounded-lg ">
                     <PassengerSelector
                       formData={formData}
                       setModelIsOpen={setModelIsOpen}
@@ -657,12 +655,33 @@ const FilterSection = ({
                 className=" outline-none border cursor-pointer rounded-md md:w-auto p-2 w-3/4 md:p-1  bg-white"
                 name="fare_type"
                 value={formData.pft}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    pft: e.target.value,
-                  }))
-                }
+                // onChange={(e) =>
+                //   setFormData((prev) => ({
+                //     ...prev,
+                //     pft: e.target.value,
+                //   }))
+                // }
+                onChange={(e) => {
+                  const newPftValue = e.target.value;
+
+                  setFormData((prev) => {
+                    // If the new value of pft is not "REGULAR", reset CHILD and INFANT to "0"
+                    if (newPftValue !== "REGULAR") {
+                      return {
+                        ...prev,
+                        pft: newPftValue,
+                        CHILD: "0",
+                        INFANT: "0",
+                      };
+                    }
+
+                    // Otherwise, just update the pft value
+                    return {
+                      ...prev,
+                      pft: newPftValue,
+                    };
+                  });
+                }}
               >
                 <option disabled selected value="">
                   Fare Type
