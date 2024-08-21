@@ -13,8 +13,8 @@ import Review from "./Review";
 import AddDetails from "./flightSummary/addDetails";
 import { ApiData } from "./dummy-meal";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import defaultAirline from "../../assets/home/logo/defaultAirline.png";
 import { set } from "react-hook-form";
 import PaymentPage from "./PaymentPage";
@@ -25,6 +25,7 @@ import Header from "../Home/Header";
 import Footer from "../Home/Footer";
 import FlightLanding from "../../assets/booking/viewDetailedBookings/flightLanding.svg";
 import ShowBaggageInfo from "./Util/ShowBaggageInfo";
+import { setIsaModifySearch } from "../../store/slices/aut.slice";
 
 const FlightSummary = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -34,10 +35,10 @@ const FlightSummary = () => {
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
-  // const [Passenger, setPassenger] = useState(null);
+
 
   const location = useLocation();
-  const [seatMapData, setSeatMapData] = useState(null); // For seat map API
+  const [seatMapData, setSeatMapData] = useState(null);
   const { bookings } = location.state || {};
   const navigate = useNavigate();
   const [commision, setComission] = useState(0);
@@ -113,6 +114,12 @@ const FlightSummary = () => {
   const [taxesExpanded, setTaxesExpanded] = useState(false);
   const [amountExpanded, setAmountExpanded] = useState(false);
   const [mealExpanded, setIsMealExpanded] = useState(false);
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+
+    dispatch(setIsaModifySearch(false))
+  }, [])
 
   // const toggleTaxes = (index) => {
   //   setTaxesExpanded((prev) =>
@@ -210,8 +217,9 @@ const FlightSummary = () => {
     );
   }
 
+
   return (
-    <div className=" min-h-screen my-auto">
+    <div className=" min-h-screen my-auto ">
       <Header />
       <div className="  sm:text-sm md:text-lg w-[90vw] flex-wrap mx-auto pt-4 ">
         <div
