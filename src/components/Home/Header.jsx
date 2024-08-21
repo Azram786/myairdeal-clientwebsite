@@ -184,7 +184,7 @@ const Header = () => {
             <div className="flex text-center flex-wrap mx-auto px-4">
               <NavLinks mobile />
               {token ? (
-                <div className="flex bg-green-400 w-max flex-wrap text-sm  gap-4">
+                <div className="flex  w-max flex-wrap text-sm  gap-4">
                   <Link
                     to="/profile"
                     className="block py-2 text-[#1B1D29]"

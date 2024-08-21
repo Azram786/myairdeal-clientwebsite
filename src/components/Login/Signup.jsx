@@ -84,7 +84,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="h-screen flex">
+    <div className="h-max flex">
       <div className="flex w-[90%] mx-auto">
         <div className="w-[45%] hidden md:flex items-center h-full mx-9">
           <div className="h-full flex w-full justify-center items-center">
@@ -97,13 +97,13 @@ const Signup = () => {
               <div>
                 <img className="h-[80px]" src={Logo} alt="" />
               </div>
-              <div className="text-[1.6rem] font-bold text-[#1F61BC]">
-                <h3>My Air Deal</h3>
+              <div className="text-[1.6rem] font-bold text-[#1B1D29]">
+                <h3>My <span className="text-[#D7B56D]">Air</span> Deal</h3>
               </div>
             </div>
-            <h2 className="font-medium text-[2.3rem]">Enter Details</h2>
+            <h2 className="font-medium text-xl md:text-4xl">Enter Details</h2>
             <div className="mb-3">
-              <h3 className="font-light text-[#112211] text-[1.2rem]">
+              <h3 className="font-light text-sm md:text-base text-[#112211] text-[1.2rem]">
                 Let's get you all set up so you can access your personal
                 account.
               </h3>
@@ -178,7 +178,7 @@ const Signup = () => {
             )}
             <button
               onClick={onSubmit}
-              className="bg-[#D7B56D] text-white h-[45px] rounded-md"
+              className="text-[#D7B56D] bg-[#1B1D29] h-[45px] rounded-md"
             >
               Add Details
             </button>
