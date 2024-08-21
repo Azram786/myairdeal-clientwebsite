@@ -220,7 +220,7 @@ const FlightSummary = () => {
 
   return (
     <div className=" min-h-screen my-auto ">
-
+      {/* <Header /> */}
       <div className="  sm:text-sm md:text-lg w-[90vw] flex-wrap mx-auto pt-4 ">
         <div
           className="flex flex-col w-full  flex-wrap lg-custom:flex-row gap-4   
@@ -719,7 +719,7 @@ const FlightSummary = () => {
           <SessionTimer sessionTimeout={data?.conditions?.st} />
         )}
       </div>
-   
+      <Footer />
     </div>
   );
 };

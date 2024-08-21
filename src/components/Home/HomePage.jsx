@@ -208,7 +208,7 @@ const HomePage = () => {
       ) : (
         <>
          
-          <Banner />
+          {/* <Banner /> */}
           <FilterSection
             formData={formData}
             setFormData={setFormData}

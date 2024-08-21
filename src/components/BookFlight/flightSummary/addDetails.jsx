@@ -101,6 +101,8 @@ const AddDetails = ({
     [createPassenger]
   );
 
+  console.log({ contactDetails, passengers })
+  
   useEffect(() => {
     const newPassengers = generatePassengers(
       numAdults,
