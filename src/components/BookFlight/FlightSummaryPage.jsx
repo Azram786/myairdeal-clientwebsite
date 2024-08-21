@@ -46,7 +46,6 @@ const FlightSummary = () => {
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
 
-
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
       navigate("/search");
@@ -229,8 +228,9 @@ const FlightSummary = () => {
             {currentStep === 0 ? (
               <>
                 <div
-                  className={`pb-4 border h-max border-gray-400  max-h-[50vh] ${data?.tripInfos.length > 1 && "overflow-scroll"
-                    } overflow-x-hidden`}
+                  className={`pb-4 border h-max border-gray-400  max-h-[50vh] ${
+                    data?.tripInfos.length > 1 && "overflow-scroll"
+                  } overflow-x-hidden`}
                 >
                   {data?.tripInfos?.map((item, index) => {
                     return (
@@ -271,8 +271,8 @@ const FlightSummary = () => {
                                         <img
                                           src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
                                           onError={(e) =>
-                                          (e.currentTarget.src =
-                                            defaultAirline)
+                                            (e.currentTarget.src =
+                                              defaultAirline)
                                           }
                                           alt={segment?.fD?.aI?.code}
                                           className="w-full h-full object-contain "
@@ -464,7 +464,7 @@ const FlightSummary = () => {
                   setCurrentStep={setCurrentStep}
                   data={data}
                   passengersData={passengersData}
-                // updatePssenger={updatePssenger}
+                  // updatePssenger={updatePssenger}
                 />
               </>
             ) : currentStep === 3 ? (
@@ -474,7 +474,7 @@ const FlightSummary = () => {
                   passengersData={passengersData}
                   totalFare={amountToPay}
                   saveCommission={saveCommission}
-                // updatePssenger={updatePssenger}
+                  // updatePssenger={updatePssenger}
                 />
               </>
             ) : null}
@@ -494,7 +494,9 @@ const FlightSummary = () => {
                   <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                     <span className="text-sm md:text-base ">Base fare</span>
                     <span>
-                      ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
+                      ₹{" "}
+                      {data?.totalPriceInfo?.totalFareDetail?.fC?.BF +
+                        commision}
                     </span>
                   </div>
                   <div className="mt-2">
@@ -518,8 +520,9 @@ const FlightSummary = () => {
                       </div>
                     </div>
                     <div
-                      className={`transition-max-height duration-300 ease-in-out ${taxesExpanded ? "max-h-[500px]" : "max-h-0"
-                        } overflow-y-auto`}
+                      className={`transition-max-height duration-300 ease-in-out ${
+                        taxesExpanded ? "max-h-[500px]" : "max-h-0"
+                      } overflow-y-auto`}
                     >
                       {taxesExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
@@ -559,7 +562,7 @@ const FlightSummary = () => {
                   </div>
                   <div className="flex flex-col">
                     {passengers[0]?.selectedMeal?.length > 0 ||
-                      passengers[0]?.selectedBaggage?.length > 0 ? (
+                    passengers[0]?.selectedBaggage?.length > 0 ? (
                       <>
                         <div
                           className="mt-2 text-sm md:text-base flex  items-center font-medium cursor-pointer"
@@ -678,15 +681,16 @@ const FlightSummary = () => {
                       </div>
                     </div>
                     <div
-                      className={`transition-max-height duration-300 ease-in-out ${amountExpanded ? "max-h-[500px]" : "max-h-0"
-                        } overflow-y-auto`}
+                      className={`transition-max-height duration-300 ease-in-out ${
+                        amountExpanded ? "max-h-[500px]" : "max-h-0"
+                      } overflow-y-auto`}
                     >
                       {amountExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
-                          <div className="flex justify-between">
+                          {/* <div className="flex justify-between">
                             <span>Commission</span>
                             <span>₹ {commision}</span>
-                          </div>
+                          </div> */}
                           <div className="flex justify-between">
                             <span>TDS</span>
                             <span>N/A</span>
