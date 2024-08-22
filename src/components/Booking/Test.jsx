@@ -1,215 +1,348 @@
 import React, { useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaArrowRight, FaTimes } from "react-icons/fa";
+import SubmitAmendment from "./SubmitAmendment";
+import TicketRaising from "./TicketRaising";
+import timeFormatChanger from "../../util/timeFormatChanger";
+import dateDateFormatChanger from "../../util/dateDateFormatChanger";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import Spinner from "../../Profile/Spinner";
 
-const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
-  const [errors, setErrors] = useState({});
+const ViewAmendmentDetails = ({ amendment }) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [amendmentData, setAmendmentData] = useState(null);
+  const { token } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setGstDetails((prev) => ({ ...prev, [name]: value }));
-  //   validateField(name, value);
-  // };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    console.log(`Field Changed: ${name}, New Value: ${value}`);
-    
-    setGstDetails((prev) => ({ ...prev, [name]: value }));
-    validateField(name, value);
+  const [trips] = useState([
+    {
+      src: "BOM",
+      dest: "DEL",
+      departureDate: "2020-10-16T00:30",
+      flightNumbers: ["329"],
+      airlines: ["G8"],
+      travellers: [
+        {
+          fn: "CBD",
+          ln: "CBD",
+          amendmentCharges: 3000.0,
+          refundableamount: 8515.0,
+          totalFare: 11515.0,
+        },
+        {
+          fn: "ABC",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8515.0,
+          totalFare: 11515.0,
+        },
+        {
+          fn: "QWE",
+          ln: "QWE",
+          amendmentCharges: 3000.0,
+          refundableamount: 8515.0,
+          totalFare: 11515.0,
+        },
+        {
+          fn: "CVBN",
+          ln: "CVB",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+        {
+          fn: "KSHITIJ",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8515.0,
+          totalFare: 11515.0,
+        },
+        {
+          fn: "ASD",
+          ln: "ASD",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+      ],
+    },
+    {
+      src: "DEL",
+      dest: "MAA",
+      departureDate: "2020-10-18T01:30",
+      flightNumbers: ["520"],
+      airlines: ["G8"],
+      travellers: [
+        {
+          fn: "KSHITIJ",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "QWE",
+          ln: "QWE",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "ABC",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "CVBN",
+          ln: "CVB",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+        {
+          fn: "CBD",
+          ln: "CBD",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "ASD",
+          ln: "ASD",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+      ],
+    },
+    {
+      src: "MAA",
+      dest: "HYD",
+      departureDate: "2020-10-20T01:30",
+      flightNumbers: ["530"],
+      airlines: ["G8"],
+      travellers: [
+        {
+          fn: "KSHITIJ",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "QWE",
+          ln: "QWE",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "ABC",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "CVBN",
+          ln: "CVB",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+        {
+          fn: "CBD",
+          ln: "CBD",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "ASD",
+          ln: "ASD",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+      ],
+    },
+  ]);
+
+  const [singleTripDetails, setSingleTripDetails] = useState(trips[0])
+  const openModalHandler = () => {
+    setModalIsOpen(true);
   };
-  
 
-  const validateField = (name, value) => {
-    let error = "";
-    switch (name) {
-      case "gstNumber":
-        error =
-          value && !validateGSTNumber(value)
-            ? "Please enter a valid 15-digit GST Number"
-            : "";
-        break;
-      case "companyName":
-        error =
-          value.length > 35
-            ? "Company Name should not exceed 35 characters"
-            : "";
-        break;
-      case "email":
-        error = !/\S+@\S+\.\S+/.test(value)
-          ? "Please enter a valid email address"
-          : "";
-        break;
-      case "phone":
-        error = !/^\d{10}$/.test(value)
-          ? "Please enter a valid 10-digit phone number"
-          : "";
-        break;
-      case "address":
-        error =
-          value.length > 70 ? "Address should not exceed 70 characters" : "";
-        break;
-      default:
-        break;
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleButtonClick = (link) => {
+    openModalHandler();
+  };
+
+  const getAmendmentDetails = async (id) => {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}booking/view-amendment`,
+        { amendmentId: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setAmendmentData(response.data);
+      setLoading(false);
+    } catch (error) {
+      ReactToast(error.message);
     }
-    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+  const MyComponent = (departureDate) => {
+    const date = new Date(departureDate);
+    const formattedDate = date.toLocaleDateString(); // Format date (e.g., "10/20/2020")
+    const formattedTime = date.toLocaleTimeString(); // Format time (e.g., "1:30:00 AM")
+
+    return (
+      <span className="font-semibold text-[#84724a]">
+        {`${formattedDate}  `}
+        <span className="text-black">{`  ${formattedTime}`}</span>
+      </span>
+    );
   };
 
-  const validateGSTNumber = (gstNumber) => {
-    const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
-    return gstRegex.test(gstNumber);
-  };
-
-  const handleSaveGSTDetails = () => {
-    const newErrors = {};
-    const validators = {
-      gstNumber: validateGSTNumber,
-      companyName: (value) => value.length <= 35,
-      email: (value) => /\S+@\S+\.\S+/.test(value),
-      phone: (value) => /^\d{10}$/.test(value),
-      address: (value) => value.length <= 70,
-    };
-
-    Object.keys(validators).forEach((key) => {
-      if (!validators[key](gstDetails[key])) {
-        newErrors[key] = getErrorMessage(key, gstDetails[key]);
-      }
-    });
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      // console.log("GST Details saved:", gstDetails);
-    }
-  };
-
-  const getErrorMessage = (name, value) => {
-    switch (name) {
-      case "gstNumber":
-        return "Please enter a valid 15-digit GST Number";
-      case "companyName":
-        return "Company Name should not exceed 35 characters";
-      case "email":
-        return "Please enter a valid email address";
-      case "phone":
-        return "Please enter a valid 10-digit phone number";
-      case "address":
-        return "Address should not exceed 70 characters";
-      default:
-        return "";
-    }
-  };
-
-  const inputClass = `block w-full max-w-md py-2 px-3 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`;
+  if (amendment.length < 1) return;
 
   return (
-    <div className="rounded-lg overflow-hidden">
-      <div
-        // className="p-4 bg-gray-50 cursor-pointer flex justify-between items-center "
-        className="p-3 cursor-pointer flex justify-between items-center "
-        onClick={toggleCard}
-      >
-        <div>
-          <div className="font-bold text-lg">
-            GST Number for Business Travel (optional)
-          </div>
-          <div className="text-sm text-gray-500">
-            To claim credit of GST charged by airlines, please enter your
-            company's GST details
-          </div>
-        </div>
-        <div>{expanded ? <FaChevronUp /> : <FaChevronDown />}</div>
+    <div className="mx-3 flex flex-col gap-4 my-4">
+      <div className="bg-[#D7B56D] text-white font-bold p-4 rounded-md">
+        Amendment List
       </div>
-      {expanded && (
-        <div className="p-4 bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 box-border">
-            {[
-              {
-                id: "gstNumber",
-                label: "Registration Number",
-                type: "text",
-                placeholder: "Enter 15-digit GST Number",
-                maxLength: 15,
-              },
-              {
-                id: "companyName",
-                label: "Registered Company Name",
-                type: "text",
-                placeholder: "Enter Registered Company Name",
-                maxLength: 35,
-              },
-              {
-                id: "email",
-                label: "Registered Email",
-                type: "email",
-                placeholder: "Enter Registered Email",
-              },
-              {
-                id: "phone",
-                label: "Registered Phone",
-                type: "tel",
-                placeholder: "Enter Registered Phone",
-                maxLength: 10,
-              },
-            ].map(({ id, label, type, placeholder, maxLength }) => (
-              <div key={id}>
-                <label
-                  htmlFor={id}
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  {label}
-                </label>
-                <input
-                  type={type}
-                  id={id}
-                  name={id}
-                  value={gstDetails[id] || ""}
-                  onChange={handleInputChange}
-                  className={`${inputClass} ${
-                    errors[id] ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder={placeholder}
-                  maxLength={maxLength}
-                />
-                {errors[id] && (
-                  <p className="mt-1 text-xs text-red-500">{errors[id]}</p>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 box-border">
-            <label
-              htmlFor="address"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Registered Address
-            </label>
-            <textarea
-              id="address"
-              name="address"
-              value={gstDetails.address || ""}
-              onChange={handleInputChange}
-              rows="3"
-              className={`${inputClass} ${
-                errors.address ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="Enter Registered Address"
-              maxLength={70}
-            />
-            {errors.address && (
-              <p className="mt-1 text-xs text-red-500">{errors.address}</p>
-            )}
-          </div>
-          <div className="mt-6 flex justify-end">
+      {amendment.map((value) => {
+        return (
+          <div
+            className="flex flex-col md:flex-row items-center justify-between bg-blue-100 border-t border-blue-200 rounded-lg p-4"
+            key={value.id}
+          >
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold">{value.id}</h3>
+              <p className="text-sm text-gray-700">
+                {timeFormatChanger(value.time)}
+              </p>
+              <p className="text-sm text-gray-700">
+                {dateDateFormatChanger(value.time)}
+              </p>
+            </div>
             <button
-              className="text-[#D7B56D] bg-[#1B1D29] text-sm md:text-base px-4 py-2 rounded  transition-colors"
-              onClick={handleSaveGSTDetails}
+              className="bg-[#D7B56D] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 text-white rounded-md md:rounded-r-lg flex items-center"
+              onClick={() => {
+                getAmendmentDetails(value.id);
+                handleButtonClick();
+              }}
             >
-              Save GST Details
+              View Status
             </button>
           </div>
+        );
+      })}
+
+      {modalIsOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-center z-50 ]">
+
+          <div class="bg-gray-200  flex items-center justify-center">
+            {loading ? (
+              <div className="w-full h-full">
+                <Spinner />
+              </div>
+            ) : (
+              <>
+                <div class="bg-white shadow-lg rounded-lg ">
+
+
+                  <div class="bg-gray-900 p-4 flex justify-between items-center">
+                    <h1 class="text-lg text-yellow-400 font-semibold">Amendment Details</h1>
+                    <button onClick={closeModal} class="text-yellow-400 text-lg">&times;</button>
+                  </div>
+                  <div class="p-6">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                      <div class="bg-white border border-gray-300 p-4 rounded-lg flex flex-col justify-between">
+                        <p class="text-sm text-gray-500">Amendment ID:</p>
+                        <p class="font-semibold"> {amendmentData?.amendmentId}</p>
+                      </div>
+                      <div class="bg-white border flex flex-col justify-between border-gray-300 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Amendment Status:</p>
+                        <p class="font-semibold">{amendmentData?.amendmentStatus}</p>
+                      </div>
+                      <div class="bg-white border border-gray-300 p-4 flex flex-col justify-between rounded-lg">
+                        <p class="text-sm text-gray-500">Booking Id:</p>
+                        <p class="font-semibold text-sm "> {amendmentData?.bookingId}</p>
+                      </div>
+                      <div class="bg-white border flex flex-col justify-between  border-gray-300 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Refundable Amount:</p>
+                        <p class="font-semibold "> {amendmentData?.refundableAmount}</p>
+                      </div>
+                    </div>
+                    <div className="bg-blue-50 p-4 rounded-md md:col-span-2">
+                      <div className="text-sm font-medium text-gray-600">
+                        Remarks:
+                      </div>
+                      <div className="text-lg font-semibold text-[#9b814a]">
+                        {amendmentData?.remarks}
+                      </div>
+                    </div>
+
+                    <div class="mb-6">
+                      <div class="flex space-x-2">
+                        {trips.map((trip, index) => (<button onClick={() => setSingleTripDetails(trip)} class="bg-yellow-400 text-gray-800 font-semibold py-2 px-4 rounded-lg flex flex-col gap-1"><span>Trip - {index + 1}
+                        </span> <span> {trip.src} - {trip.dest}</span></button>))}
+
+
+                      </div>
+                    </div>
+
+                    <div class="bg-gray-100 p-4 rounded-lg mb-6">
+                      <p class="text-sm text-gray-500">Trip details:</p>
+                      <div class="flex justify-between mt-2">
+                        <div>
+                          <p>Departure: <span class="font-semibold">{singleTripDetails.src}</span></p>
+                          <p>Arrival: <span class="font-semibold">{singleTripDetails.dest}</span></p>
+                          <p>Flight number: <span class="font-semibold">{singleTripDetails.flightNumbers.join(", ")}</span></p>
+                          <p>Airlines: <span class="font-semibold">{singleTripDetails.airlines.join(", ")}</span></p>
+                        </div>
+                        <div>
+                          <p>Departure Time: {MyComponent(singleTripDetails.departureDate)}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* <div>
+                      <p class="text-sm text-gray-500 mb-2">Passengers:</p>
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {singleTripDetails.travellers.map((traveller, i) =>
+                          <div key={i} class="bg-gray-800 text-white p-4 rounded-lg">
+                            <p>Name: <span class="font-semibold"> {traveller.fn} {traveller.ln}</span></p>
+                            <p>Amendment charges: <span class="font-semibold">{traveller.amendmentCharges}</span></p>
+                            <p>Refundable amount: <span class="font-semibold">{traveller.refundableamount}</span></p>
+                            <p>Total Fare: <span class="font-semibold">{traveller.totalFare}</span></p>
+                          </div>
+
+                        )}
+                      </div>
+                    </div> */}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
         </div>
       )}
     </div>
   )
 }
 
-export default GstDetails;
+export default ViewAmendmentDetails;
