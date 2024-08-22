@@ -36,7 +36,6 @@ const FlightSummary = () => {
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
-
   const location = useLocation();
   const [seatMapData, setSeatMapData] = useState(null);
   const { bookings } = location.state || {};
@@ -71,7 +70,7 @@ const FlightSummary = () => {
     setLoading(true);
     await axios
       .post(
-        `https://myairdeal-backend.onrender.com/booking/review-price`,
+        `https://api.myairdeal.com/booking/review-price`,
         {
           priceIds: bookingArray,
         },
@@ -113,12 +112,11 @@ const FlightSummary = () => {
   const [taxesExpanded, setTaxesExpanded] = useState(false);
   const [amountExpanded, setAmountExpanded] = useState(false);
   const [mealExpanded, setIsMealExpanded] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-
-    dispatch(setIsaModifySearch(false))
-  }, [])
+    dispatch(setIsaModifySearch(false));
+  }, []);
 
   // const toggleTaxes = (index) => {
   //   setTaxesExpanded((prev) =>
@@ -159,7 +157,7 @@ const FlightSummary = () => {
     return `${hours}h ${minutes}m`;
   }
 
-  console.log({ passengersData, passengers })
+  console.log({ passengersData, passengers });
   function calculateTotalDuration(segments) {
     if (!segments || segments.length === 0) return "N/A";
 
@@ -217,7 +215,6 @@ const FlightSummary = () => {
     );
   }
 
-
   return (
     <div className=" min-h-screen my-auto  ">
       {/* <Header /> */}
@@ -237,8 +234,9 @@ const FlightSummary = () => {
             {currentStep === 0 ? (
               <>
                 <div
-                  className={`pb-4 border h-max border-gray-400  max-h-[50vh] ${data?.tripInfos.length > 1 && "overflow-scroll"
-                    } overflow-x-hidden`}
+                  className={`pb-4 border h-max border-gray-400  max-h-[50vh] ${
+                    data?.tripInfos.length > 1 && "overflow-scroll"
+                  } overflow-x-hidden`}
                 >
                   {data?.tripInfos?.map((item, index) => {
                     return (
@@ -279,8 +277,8 @@ const FlightSummary = () => {
                                         <img
                                           src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
                                           onError={(e) =>
-                                          (e.currentTarget.src =
-                                            defaultAirline)
+                                            (e.currentTarget.src =
+                                              defaultAirline)
                                           }
                                           alt={segment?.fD?.aI?.code}
                                           className="w-full h-full object-contain "
@@ -456,7 +454,6 @@ const FlightSummary = () => {
                   </button>
                 </div>
               </>
-
             ) : currentStep === 1 ? (
               <AddDetails
                 bookingId={data?.bookingId}
@@ -466,6 +463,7 @@ const FlightSummary = () => {
                 setCurrentStep={setCurrentStep}
                 passengers={passengers}
                 setPassengers={setPassengers}
+                existingPassengerData={passengersData}
               />
             ) : currentStep === 2 ? (
               <>
@@ -473,7 +471,7 @@ const FlightSummary = () => {
                   setCurrentStep={setCurrentStep}
                   data={data}
                   passengersData={passengersData}
-                // updatePssenger={updatePssenger}
+                  // updatePssenger={updatePssenger}
                 />
               </>
             ) : currentStep === 3 ? (
@@ -483,7 +481,7 @@ const FlightSummary = () => {
                   passengersData={passengersData}
                   totalFare={amountToPay}
                   saveCommission={saveCommission}
-                // updatePssenger={updatePssenger}
+                  // updatePssenger={updatePssenger}
                 />
               </>
             ) : null}
@@ -529,8 +527,9 @@ const FlightSummary = () => {
                       </div>
                     </div>
                     <div
-                      className={`transition-max-height duration-300 ease-in-out ${taxesExpanded ? "max-h-[500px]" : "max-h-0"
-                        } overflow-y-auto`}
+                      className={`transition-max-height duration-300 ease-in-out ${
+                        taxesExpanded ? "max-h-[500px]" : "max-h-0"
+                      } overflow-y-auto`}
                     >
                       {taxesExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
@@ -558,10 +557,8 @@ const FlightSummary = () => {
                             <span>YR</span>
                             <span>
                               ₹{" "}
-                              {
-                                data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
-                                  ?.YR || "N/A"
-                              }
+                              {data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
+                                ?.YR || "N/A"}
                             </span>
                           </div>
                         </div>
@@ -570,7 +567,7 @@ const FlightSummary = () => {
                   </div>
                   <div className="flex flex-col">
                     {passengers[0]?.selectedMeal?.length > 0 ||
-                      passengers[0]?.selectedBaggage?.length > 0 ? (
+                    passengers[0]?.selectedBaggage?.length > 0 ? (
                       <>
                         <div
                           className="mt-2 text-sm md:text-base flex  items-center font-medium cursor-pointer"
@@ -689,8 +686,9 @@ const FlightSummary = () => {
                       </div>
                     </div>
                     <div
-                      className={`transition-max-height duration-300 ease-in-out ${amountExpanded ? "max-h-[500px]" : "max-h-0"
-                        } overflow-y-auto`}
+                      className={`transition-max-height duration-300 ease-in-out ${
+                        amountExpanded ? "max-h-[500px]" : "max-h-0"
+                      } overflow-y-auto`}
                     >
                       {amountExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">

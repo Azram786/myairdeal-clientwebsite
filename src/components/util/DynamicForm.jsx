@@ -14,7 +14,8 @@ const DynamicForm = ({
   formData,
   form,
   dateDynamic,
-  setDate
+  setDate,
+  mergeHandler
 }) => {
   const [startDate, setStartDate] = useState(dateDynamic);
 
@@ -27,9 +28,10 @@ const DynamicForm = ({
     //bug is in here
     // setForm({ travelDate: startDate });
   }, [dateDynamic]);
-useEffect(()=>{
-   setForm({ travelDate: dateDynamic });
-},[dateDynamic])
+
+  useEffect(() => {
+    setForm({ travelDate: dateDynamic });
+  }, [dateDynamic])
   return (
 
 
@@ -71,7 +73,7 @@ useEffect(()=>{
         </div>
 
         <div className=" hidden  md:flex items-center justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black w-8 h-8 rounded-full">
-          <GoArrowSwitch />
+          <GoArrowSwitch onClick={mergeHandler} />
         </div>
       </div>
 

@@ -4,7 +4,6 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
   const [flightOptions, setFlightOptions] = useState([]);
 
   useEffect(() => {
-  
     const options = flightData.tripInfos.flatMap((trip) =>
       trip.sI.map((segment) => ({
         id: segment.id,
@@ -49,7 +48,6 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
     desc
   ) => {
     setPassengers((prevPassengers) => {
-  
       const newPassengers = [...prevPassengers];
 
       const passenger = newPassengers[passengerIndex];
@@ -62,7 +60,6 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
         );
 
         if (mealIndex > -1) {
-          
           updatedMeals[mealIndex] = {
             ...updatedMeals[mealIndex],
             code: value,
@@ -70,7 +67,6 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
             desc,
           };
         } else {
-         
           updatedMeals.push({
             code: value,
             key: flightId,
@@ -90,7 +86,6 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
         );
 
         if (baggageIndex > -1) {
-
           updatedBaggage[baggageIndex] = {
             ...updatedBaggage[baggageIndex],
             code: value,
@@ -98,7 +93,6 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
             desc,
           };
         } else {
-          
           updatedBaggage.push({
             code: value,
             key: flightId,
@@ -119,13 +113,11 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
   return (
     <div className="space-y-6 ">
       {flightOptions.map((flight) => {
-     
         return (
           <div key={flight.id} className="border rounded-lg shadow-lg p-4">
             <h2 className="text-xl font-semibold mb-4">{flight.route}</h2>
 
             <div className="grid grid-cols-1 gap-4">
-         
               <div>
                 <h3 className="font-semibold text-base md:text-lg mb-2">
                   Passenger Details
@@ -139,7 +131,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                   </h3>
                   <div className="space-y-2">
                     {passengers.map((passenger, index) =>
-                      passenger.passengerType !== "infant" ? (
+                      passenger.passengerType !== "INFANT" ? (
                         <div key={index} className="text-sm">
                           <div className="font-semibold text-sm md:text-base">
                             {`${passenger.passengerType} ${passenger.typeCount}`}
@@ -209,57 +201,61 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                     Select Meal
                   </h3>
                   <div className="space-y-2">
-                    {passengers.map((passenger, index) => (
-                      <div key={index}>
-                        <div className="text-sm md:text-base font-semibold">
-                          {`${passenger.passengerType} ${passenger.typeCount}`}
-                        </div>
+                    {passengers.map((passenger, index) =>
+                      passenger.passengerType !== "INFANT" ? (
+                        <div key={index}>
+                          <div className="text-sm md:text-base font-semibold">
+                            {`${passenger.passengerType} ${passenger.typeCount}`}
+                          </div>
 
-                        {/* Meal Selection Dropdown */}
-                        <select
-                          value={
-                            passenger.selectedMeal?.find(
-                              (meal) => meal.key === flight.id
-                            )?.code || ""
-                          }
-                          onChange={(e) => {
-                            const selectedMeal = flight.mealOptions.find(
-                              (meal) => meal.code === e.target.value
-                            );
-                            updateAddonSelection(
-                              index,
-                              flight.id,
-                              "meal",
-                              e.target.value,
-                              selectedMeal?.amount || 0,
-                              selectedMeal?.desc || ""
-                            );
-                          }}
-                          className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 text-sm bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        >
-                          <option className="font-medium" value="">Select a meal</option>
-                          {flight.mealOptions.map((meal) => (
-                            <option key={meal.code} value={meal.code}>
-                              {meal.desc} - ₹{meal.amount}
+                          {/* Meal Selection Dropdown */}
+                          <select
+                            value={
+                              passenger.selectedMeal?.find(
+                                (meal) => meal.key === flight.id
+                              )?.code || ""
+                            }
+                            onChange={(e) => {
+                              const selectedMeal = flight.mealOptions.find(
+                                (meal) => meal.code === e.target.value
+                              );
+                              updateAddonSelection(
+                                index,
+                                flight.id,
+                                "meal",
+                                e.target.value,
+                                selectedMeal?.amount || 0,
+                                selectedMeal?.desc || ""
+                              );
+                            }}
+                            className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 text-sm bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            <option className="font-medium" value="">
+                              Select a meal
                             </option>
-                          ))}
-                        </select>
+                            {flight.mealOptions.map((meal) => (
+                              <option key={meal.code} value={meal.code}>
+                                {meal.desc} - ₹{meal.amount}
+                              </option>
+                            ))}
+                          </select>
 
-                        {/* Display selected meal details */}
-                        {passenger.selectedMeal?.map(
-                          (meal) =>
-                            meal.key === flight.id && (
-                              <div
-                                key={meal.code}
-                                className="mt-2 text-sm text-gray-600"
-                              >
-                                <div>{`Selected Meal: ${meal.desc}`}</div>
-                                <div>{`Amount: ₹${meal.amount}`}</div>
-                              </div>
-                            )
-                        )}
-                      </div>
-                    ))}
+                          {/* Display selected meal details */}
+                          {passenger.selectedMeal?.map(
+                            (meal) =>
+                              meal.key === flight.id && (
+                                <div
+                                  key={meal.code}
+                                  className="mt-2 text-sm text-gray-600"
+                                >
+                                  <div>{`Selected Meal: ${meal.desc}`}</div>
+                                  <div>{`Amount: ₹${meal.amount}`}</div>
+                                </div>
+                              )
+                          )}
+                        </div>
+                      ) : null
+                    )}
                   </div>
                 </div>
               ) : (

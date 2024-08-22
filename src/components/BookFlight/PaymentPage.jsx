@@ -17,7 +17,6 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
 
   const calculatePassengerDetails = useMemo(() => {
     return passengersData?.passengers?.map((passenger) => {
-      const baseFare = data?.totalPriceInfo?.totalFareDetail.fC?.TF || 0;
       const mealsCost = Object.values(passenger.selectedMeal || {}).reduce(
         (sum, meal) => sum + (meal.amount || 0),
         0
@@ -30,12 +29,11 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         (sum, baggage) => sum + (baggage.amount || 0),
         0
       );
-      const totalCost = baseFare + mealsCost + seatsCost + baggageCost;
+      const totalCost = mealsCost + seatsCost + baggageCost;
 
       return {
         name: `${passenger.firstName} ${passenger.lastName}`,
         type: passenger.passengerType,
-        baseFare,
         mealsCost,
         seatsCost,
         baggageCost,
@@ -45,10 +43,13 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   }, [passengersData, data]);
 
   const totalAmount = useMemo(() => {
-    return calculatePassengerDetails.reduce(
+    const passengerTotalCost = calculatePassengerDetails.reduce(
       (sum, passenger) => sum + passenger.totalCost,
       0
     );
+
+    const totalFare = data?.totalPriceInfo?.totalFareDetail.fC?.TF || 0;
+    return passengerTotalCost + totalFare;
   }, [calculatePassengerDetails]);
 
   const getMarkUp = async () => {
@@ -109,25 +110,33 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   }, [isProcessing]);
 
   const prepareApiData = (paymentResponse) => {
-    const travellerInfo = passengersData.passengers.map((passenger) => ({
-      ti: passenger.title,
-      fN: passenger.firstName,
-      lN: passenger.lastName,
-      pt: passenger.passengerType,
-      // dob: passenger.dob,
-      ssrSeatInfos: passenger?.selectedSeat?.map((seat) => ({
-        key: seat.key,
-        code: seat.code,
-      })),
-      ssrBaggageInfos: passenger?.selectedBaggage?.map((baggage) => ({
-        key: baggage.key,
-        code: baggage.code,
-      })),
-      ssrMealInfos: passenger?.selectedMeal?.map((meal) => ({
-        key: meal.key,
-        code: meal.code,
-      })),
-    }));
+    const travellerInfo = passengersData.passengers.map((passenger) => {
+      const passengerData = {
+        ti: passenger.title,
+        fN: passenger.firstName,
+        lN: passenger.lastName,
+        pt: passenger.passengerType,
+        ssrSeatInfos: passenger?.selectedSeat?.map((seat) => ({
+          key: seat.key,
+          code: seat.code,
+        })),
+        ssrBaggageInfos: passenger?.selectedBaggage?.map((baggage) => ({
+          key: baggage.key,
+          code: baggage.code,
+        })),
+        ssrMealInfos: passenger?.selectedMeal?.map((meal) => ({
+          key: meal.key,
+          code: meal.code,
+        })),
+      };
+
+      // Conditionally include 'dob' if the passenger is an infant
+      if (passenger.passengerType === "INFANT") {
+        passengerData.dob = passenger.dob;
+      }
+
+      return passengerData;
+    });
 
     const apiData = {
       booking: {

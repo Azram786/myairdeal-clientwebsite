@@ -446,6 +446,16 @@ const FilterSection = ({
       ReactToast("Something went wrong");
     }
   };
+  const mergeHandler = () => {
+    try {
+      const cityFrom = formData.fromCityOrAirport;
+      const cityTo = formData.toCityOrAirport;
+      setFormData((prev) => ({ ...prev, fromCityOrAirport: cityTo, toCityOrAirport: cityFrom }))
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   useEffect(() => {
     fetchDefaultOptions();
@@ -511,16 +521,13 @@ const FilterSection = ({
                     myFormData={formData}
                     setFormData={setContryCodeFrom}
                     defaultOptions={defaultOptions}
-                    // defaultValue={resentSearchFilter[0][0] ? {
-                    //   value: resentSearchFilter[0][0].value,
-                    //   label: resentSearchFilter[0][0].label
-                    // } : null}
+
                     value={formData?.fromCityOrAirport}
                   />
                 </div>
               </div>
               <div className="md:flex  hidden sm:items-center  justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2  -translate-y-1/2 bg-black w-8 h-8 rounded-full ">
-                <GoArrowSwitch />
+                <GoArrowSwitch onClick={mergeHandler} />
               </div>
               <div className="flex md:ml-2   text-sm md:text-base items-center border rounded p-2 md:w-1/2 ">
                 <div>
