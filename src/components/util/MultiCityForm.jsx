@@ -119,27 +119,27 @@ const MultiCityForm = ({
     try {
       // Create a copy of the dynamicFormData array to avoid mutating the state directly
       const updatedFormData = [...dynamicFormData];
-  
+
       // Get the current object at the specified index
       const currentData = updatedFormData[index];
-  
+
       // Swap the values of fromCity and toCity
       updatedFormData[index] = {
         ...currentData,
         fromCity: currentData.toCity,
         toCity: currentData.fromCity,
       };
-  
+
       // Update the state with the modified array
       setDynamicFormData(updatedFormData);
-  
+
       console.log("After Swap:", updatedFormData[index]);
-  
+
     } catch (error) {
       console.error("Error while swapping cities:", error);
     }
   };
-  
+
   console.log({ dynamicFormData })
 
   const removeLastFormHandler = () => {

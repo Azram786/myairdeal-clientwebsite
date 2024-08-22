@@ -13,6 +13,7 @@ import Review from "./components/BookFlight/Review";
 import Signup from "./components/Login/Signup";
 import Header from "./components/Home/Header";
 import Footer from "./components/Home/Footer";
+import EnquiryForm from "./components/Home/EnquiryForm";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -38,8 +39,9 @@ function App() {
             element={token ? <FlightSummaryPage /> : <Login />}
           />
           <Route path="/profile" element={token ? <Profile /> : <Login />} />
+          <Route path="/enquiry" element={token ? <EnquiryForm /> : <Login />} />
 
-  
+
           <Route path="/enter-detail" element={<Signup />} />
         </Routes>
         <Footer />

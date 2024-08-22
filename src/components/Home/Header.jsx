@@ -43,7 +43,7 @@ const Header = () => {
             Authorization: `Bearer ${token}`
           }
         });
- 
+
         const profileData = {
           firstName: response.data.firstName,
           lastName: response.data.lastName,
@@ -79,7 +79,7 @@ const Header = () => {
       >
         Home
       </Link>
-      {token &&
+      {token && user &&
         <>
           <Link
             to="/view-booking"
@@ -88,6 +88,16 @@ const Header = () => {
             onClick={() => mobile && setMobileMenuOpen(false)}
           >
             My Bookings
+          </Link>
+          <Link
+            to="/enquiry"
+            className={`font-semibold  px-2 ${location.pathname === "/enquiry" ? "text-[#c79834]" : "text-[#D7B56D]"
+              } ${mobile ? "block py-2" : ""}`}
+            onClick={() => mobile && setMobileMenuOpen(false)}
+          >
+            {/* Notifications */}
+            Enquiry
+            {/* <IoNotificationsCircle className="text-3xl " /> */}
           </Link>
           <Link
             to="#"
@@ -114,7 +124,7 @@ const Header = () => {
         </Link>
         <div className="hidden md:flex items-center ">
           <NavLinks />
-          {token ? (
+          {token && user ? (
             <div className="relative px-1">
               <div
                 className="flex items-center cursor-pointer"
@@ -183,7 +193,7 @@ const Header = () => {
           >
             <div className="flex text-center flex-wrap mx-auto px-4">
               <NavLinks mobile />
-              {token ? (
+              {token && user ? (
                 <div className="flex  w-max flex-wrap text-sm  gap-4">
                   <Link
                     to="/profile"
