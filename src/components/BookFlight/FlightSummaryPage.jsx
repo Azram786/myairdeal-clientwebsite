@@ -722,7 +722,7 @@ const FlightSummary = () => {
           <SessionTimer sessionTimeout={data?.conditions?.st} />
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

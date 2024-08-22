@@ -83,7 +83,8 @@ useEffect(()=>{
           ">
 
             <DatePicker
-              minDate={formData.travelDate}
+              // minDate={formData.travelDate}
+              minDate={dateDynamic}
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               customInput={<CustomInput CustomIcon={MdOutlineDateRange} />}
