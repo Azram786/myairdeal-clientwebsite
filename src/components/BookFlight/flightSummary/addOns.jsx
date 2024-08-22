@@ -39,6 +39,7 @@ const AddonsCard = ({
       if (response.status == 200) {
         // console.log({ response });
         setSeatMapData(response?.data);
+        console.log("seatMapData", response?.data);
       } else if (response.status === 400) {
         setSeatMapData("Seat Map is not available");
       }
