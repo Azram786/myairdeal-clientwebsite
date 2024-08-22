@@ -251,9 +251,13 @@ const Oneway = ({ flightProps, passenger, query }) => {
         <BookingCard
           passenger={passenger}
           selectedPriceIndex={selectedFlight}
-          selectedFlights={selectedFlight.map(
-            (selected) => filteredFlights[selected.flightIndex]
-          )}
+          // selectedFlights={selectedFlight.map(
+          //   (selected) => filteredFlights[selected.flightIndex]
+          // )}
+          selectedFlights={selectedFlight.map((selected) => ({
+            ...filteredFlights[selected.flightIndex],
+            selectedPriceIndex: selected.priceIndex,
+          }))}
           totalPrice={getTotalPrice()}
           onBook={handleBooking}
           calculateTotalPrice={calculateTotalPrice}

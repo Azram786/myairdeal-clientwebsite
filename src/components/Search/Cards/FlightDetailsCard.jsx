@@ -154,7 +154,7 @@ const FlightDetailsCard = ({
                   >
                     <div className="flex items-center w-full text-left pl-0 md:pl-6 lg-custom:pl-0 md:w-[26%]">
                       <img
-                        src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                        src={`https://api.myairdeal.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
                         alt={segment?.fD?.aI?.code}
                         className="md:size-10 size-8 rounded-md mr-4"
                       />
@@ -436,7 +436,11 @@ const FlightDetailsCard = ({
             <p className="text-[50px]">
               <GiRollingSuitcase />
             </p>
-            <p className="font-bold text-xs">Included:<br/>Carry on bag</p>
+            <p className="font-bold text-xs">
+              Included:
+              <br />
+              Carry on bag
+            </p>
             <div className="text-xs font-bold">
               {flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.cB}
             </div>
@@ -445,7 +449,9 @@ const FlightDetailsCard = ({
         <div className="flex justify-end  w-full">
           <button
             className={`${
-              isSelected ? "bg-[#D7B56D] text-[#1B1D29]" : "bg-[#1B1D29] text-[#D7B56D]"
+              isSelected
+                ? "bg-[#D7B56D] text-[#1B1D29]"
+                : "bg-[#1B1D29] text-[#D7B56D]"
             }  font-semibold md:w-48 text-center  px-16 py-2 rounded-md mt-4 md:mt-0`}
             onClick={() => onSelect(localSelectedPriceIndex)}
           >
