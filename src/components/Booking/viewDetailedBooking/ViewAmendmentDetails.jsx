@@ -301,8 +301,8 @@ const ViewAmendmentDetails = ({ amendment }) => {
                           <button
                             key={index}
                             onClick={() => setSingleTripDetails(trip)}
-                            className={`${singleTripDetails === trip ? 'bg-yellow-600 text-gray-800' : 'bg-black text-yellow-600'
-                            } ] font-semibold py-2 px-4 rounded-lg flex flex-col gap-1 mb-2`}
+                            className={`${singleTripDetails === trip ? 'bg-yellow-600 text-gray-800' : 'bg-gray-700 text-white'
+                            } ] font-semibold uppercase py-2 px-4 rounded-lg flex flex-col gap-1 mb-2`}
                           >
                             <span>Trip - {index + 1}</span>
                             <span>{trip.src} - {trip.dest}</span>
