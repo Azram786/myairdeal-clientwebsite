@@ -46,18 +46,17 @@ const FilterSection = ({
 
   const [runJoyride, setRunJoyride] = useState(false);
 
-  // useEffect(() => {
-  //   sessionStorage.setItem("joyride", "notexecuted"); // Mark it as executed
-  //   // Check if joyride was previously run from localStorage
-  //   const storedJoyride = sessionStorage.getItem("joyride");
-
-  //   if (storedJoyride === "executed") {
-  //     setRunJoyride(false); // Don't run joyride again if it has been executed
-  //   } else if(storedJoyride !== "executed") {
-  //     setRunJoyride(true); // Run joyride if it has not been executed yet
-  //     sessionStorage.setItem("joyride", "executed"); // Mark it as executed
-  //   }
-  // }, [runJoyride]);
+  useEffect(() => {
+    const storedJoyride = localStorage.getItem("joyride");
+  
+    if (storedJoyride === "executed") {
+      setRunJoyride(false); 
+    } else {
+      setRunJoyride(true); 
+      localStorage.setItem("joyride", "executed"); 
+    }
+  }, []);
+  
 
   // State for Joyride steps
   const [joyrideSteps] = useState([
@@ -168,7 +167,7 @@ const FilterSection = ({
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`
       );
-
+    
       setPrefferedAirLines(response.data.preferredAirlines);
     } catch (error) {
       console.log(error.message);
@@ -474,6 +473,7 @@ const FilterSection = ({
       }
 
       console.log({ query, saving });
+      console.log({ query, saving });
       // dispatch(setLastSearch(query));
       dispatch(setResentSearch(saving));
       if (token) {
@@ -490,6 +490,7 @@ const FilterSection = ({
 
       setLoading(false);
       navigate(`/search`, { state: { query } });
+      dispatch(setIsaModifySearch(false));
       dispatch(setIsaModifySearch(false));
     } catch (error) {
       setLoading(false);
@@ -532,9 +533,7 @@ const FilterSection = ({
             className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
               typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
             }`}
-            className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
-              typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
-            }`}
+            
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
           >
@@ -774,6 +773,10 @@ const FilterSection = ({
                 <option className="" value="" disabled selected>
                   Select Prefered Airline
                 </option>
+                <option value={null}>Select all</option>
+                {preferredAirlines.map((value) => (
+                  <option value={value.code}>{value.name}</option>
+                ))}
                 <option value={null}>Select all</option>
                 {preferredAirlines.map((value) => (
                   <option value={value.code}>{value.name}</option>

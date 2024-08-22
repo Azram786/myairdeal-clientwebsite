@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, {  useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { logout, setIsaModifySearch, setUser } from "../../store/slices/aut.slice";
@@ -89,21 +89,30 @@ const Header = () => {
           >
             My Bookings
           </Link>
-          <Link
-            to="#"
-            className={`font-semibold  px-2 ${location.pathname === "/notifications" ? "text-[#c79834]" : "text-[#D7B56D]"
-              } ${mobile ? "block py-2" : ""}`}
-            onClick={() => mobile && setMobileMenuOpen(false)}
-          >
-            {/* Notifications */}
-
-            <IoNotificationsCircle className="text-3xl " />
-          </Link>
+    
         </>}
 
 
     </>
   );
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    // Function to handle clicks outside the dropdown
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    // Attach the event listener
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen, setDropdownOpen]);
 
   return (
     <div className="bg-[#1B1D29] shadow-md">
@@ -117,7 +126,7 @@ const Header = () => {
           {token ? (
             <div className="relative px-1">
               <div
-                className="flex items-center cursor-pointer"
+                className="flex items-center cursor-pointer ml-2"
                 onClick={handleDropdownToggle}
               >
                 <img
@@ -141,7 +150,7 @@ const Header = () => {
                   >
                     <Link
                       to="/profile"
-                      className="block px-4 py-2 text-sm text-black hover:bg-gray-100 flex items-center"
+                      className=" px-4 py-2 text-sm text-black hover:bg-gray-100 flex items-center"
                       onClick={() => setDropdownOpen(false)}
                     >
                       <IoPersonCircleOutline className="mr-2" />

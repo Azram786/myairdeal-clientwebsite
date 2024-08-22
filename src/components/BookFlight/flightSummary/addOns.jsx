@@ -5,6 +5,7 @@ import SeatSelection from "./seatSelection";
 import axios from "axios";
 // import {test, flightData, booking} from '../../BookFlight/Seats/dummy'
 import { useSelector } from "react-redux";
+import ReactJoyride from "react-joyride";
 
 const AddonsCard = ({
   passengers,
@@ -59,14 +60,53 @@ const AddonsCard = ({
   useEffect(() => {
     checkSeatSelection();
   }, []);
+
+  const [runJoyride, setRunJoyride] = useState(true);
+
+// // Check sessionStorage for Joyride execution on first load
+// useEffect(() => {
+//   // Check if Joyride has been executed before
+//   const storedJoyride = sessionStorage.getItem("joyride");
+
+//   if (storedJoyride === "executed") {
+//     setRunJoyride(false); // Joyride has already run, don't run it again
+//   } else {
+//     setRunJoyride(true); // Joyride has not run, start it
+//     sessionStorage.setItem("joyride", "executed"); // Mark as executed
+//   }
+// }, []); // Empty dependency array to run this effect only once on component mount
+
+// Joyride steps
+const [joyrideSteps] = useState([
+  {
+    target: ".addons-seat",
+    content: "Choose your travel type (One-way, Round-trip, or Multi-city)",
+  },
+  {
+    target: ".addons-meals-and-baggage",
+    content: "Select your departure city or airport.",
+  },
+]);
   return (
     <div className="">
+      <ReactJoyride
+      steps={joyrideSteps}
+      run={runJoyride}
+      continuous
+      showSkipButton
+      showProgress
+      styles={{
+        options: {
+          zIndex: 10000, // Ensure Joyride modals are on top
+        },
+      }}
+    />
       <div
         className="p-3 border-b border-gray-300 cursor-pointer flex justify-between items-center"
         onClick={toggleCard}
       >
         <div>
-          <div className="font-bold text-lg">Add Ons</div>
+          <div className="font-bold text-lg ">Add Ons</div>
           <div className="text-sm text-gray-500">
             Select additional services for your flight.
           </div>
@@ -75,10 +115,10 @@ const AddonsCard = ({
       </div>
       {expanded && (
         <div className="p-4">
-          <div className="flex space-x-4 mb-4">
+          <div className="flex space-x-4 mb-4 ">
             <button
               onClick={() => setActiveButton("seatSelection")}
-              className={`text-sm md:text-base px-4 py-2 rounded ${
+              className={`text-sm md:text-base px-4 py-2 rounded addons-seat${
                 activeButton === "seatSelection"
                   ? "text-[#D7B56D] bg-[#1B1D29]"
                   : "bg-gray-200 text-gray-700"
@@ -91,7 +131,7 @@ const AddonsCard = ({
             </button> */}
             <button
               onClick={() => setActiveButton("addBagAndMeal")}
-              className={`text-sm md:text-base px-4 py-2 rounded ${
+              className={`text-sm md:text-base px-4 py-2 rounded  addons-meals-and-baggage  ${
                 activeButton === "addBagAndMeal"
                   ? "text-[#D7B56D] bg-[#1B1D29]"
                   : "bg-gray-200 text-gray-700"

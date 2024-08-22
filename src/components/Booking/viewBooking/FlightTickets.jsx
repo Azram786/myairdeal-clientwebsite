@@ -67,6 +67,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
       ReactToast(error);
     }
   };
+  console.log({ booking }, "Flight Details");
 
   return (
     <div className="flex flex-col  gap-5 lg:flex-row justify-between items-end xl:p-6 p-2 shadow-md  rounded-lg">
@@ -101,12 +102,20 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
               <div className="flex w-full flex-row justify-between text-[#D7B56D] md:bg-transparent bg-[#1B1D29] md:text-black rounded-md md:rounded-none p-2  md:w-[100%]  py-2 md:border-r-2 md:border-gray-300  sm:flex-row md:flex-row  gap-3  ">
                 <div className="flex w-full justify-between  gap-4 md:gap-1   flex-col  ">
-                  <div className="text-base md:text-base  mr-2  line-clamp-1 ">
-                    <span className="md:hidden tracking-widest">
-                      {" "}
-                      {trip.sI[0].da.code}{" "}
+                  <div className="text-base md:text-base mr-2  line-clamp-1">
+                    {/* Tooltip for smaller screens (shows airport code) */}
+                    <span
+                      className="md:hidden tracking-widest"
+                      title={`Airport Code: ${trip.sI[0].da.code} - Departure Airport: ${trip.sI[0].da.name}`}
+                    >
+                      {trip.sI[0].da.code}
                     </span>
-                    <span className=" hidden md:block  ">
+
+                    {/* Tooltip for medium and larger screens (shows airport name) */}
+                    <span
+                      className="hidden md:block"
+                      title={`Airport Code: ${trip.sI[0].da.code} - Departure Airport: ${trip.sI[0].da.name}`}
+                    >
                       {trip.sI[0].da.name}
                     </span>
                   </div>
@@ -118,7 +127,25 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
                 <div className="flex w-full justify-between  gap-4 md:gap-1 pl-40 md:pl-0 flex-col ">
                   <div className=" text-base md:text-base   font-medium flex flex-col ">
-                    <div className="text-base md:text-base mr-2  line-clamp-1 ">
+                    <div className="text-base md:text-base mr-2  line-clamp-1">
+                      {/* Tooltip for smaller screens (shows airport code) */}
+                      <span
+                        className="md:hidden tracking-widest"
+                        title={`Airport Code: ${trip.sI[0].aa.code} - Departure Airport: ${trip.sI[0].aa.name}`}
+                      >
+                        {trip.sI[0].da.code}
+                      </span>
+
+                      {/* Tooltip for medium and larger screens (shows airport name) */}
+                      <span
+                        className="hidden md:block "
+                        title={`Airport Code: ${trip.sI[0].aa.code} - Departure Airport: ${trip.sI[0].aa.name}`}
+                      >
+                        {trip.sI[0].aa.name}
+                      </span>
+                    </div>
+
+                    {/* <div className="text-base md:text-base mr-2  line-clamp-1 ">
                       <span className="md:hidden tracking-widest  flex">
                         {trip.sI.length === 1
                           ? trip.sI[0].aa.code
@@ -130,7 +157,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                           ? trip.sI[0].aa.name
                           : trip.sI[trip.sI.length - 1].aa.name}
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="text-base md:text-lg font-bold">
                     {trip.sI.length === 1
