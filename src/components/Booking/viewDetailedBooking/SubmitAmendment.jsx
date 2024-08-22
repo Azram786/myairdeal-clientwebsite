@@ -260,8 +260,8 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
             </div>
           ) : (
             <div>
-              <div className="mt-2">
-                <h3 className="text-base md:text-lg lg:text-xl font-semibold mb-4 text-center">
+              <div >
+                <h3 className="text-base md:text-lg  font-semibold mb-4 text-left">
                   Select the Trips and Passengers to Cancel
                 </h3>
                 <label className="flex items-center mt-2">
@@ -272,13 +272,13 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                     checked={cancelWholeTicket}
                   />
                   <span
-                    className={`ml-3 text-sm  font-semibold border p-1 rounded-md ${
+                    className={`ml-3 md:text-sm  font-semibold  p-1 rounded-md ${
                       cancelWholeTicket
-                        ? "border-[#1B1D29] bg-blue-200"
+                        ? "border-[#1B1D29]"
                         : "bg-gray-100"
                     }`}
                   >
-                    Cancel Entire Ticket
+                    Select to cancel all the trip
                   </span>
                 </label>
 

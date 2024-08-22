@@ -64,14 +64,16 @@ import flightLogo from "../../../assets/home/logo/image 40.png";
 import OneWaySideBar from "./OneWaySidebar";
 import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ReactToast from "../../util/ReactToast";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { BsFillFilterSquareFill } from "react-icons/bs";
+import { setLastSearch } from "../../../store/slices/aut.slice";
 
 const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
+  const dispatch = useDispatch();
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
     maxPrice: 100000,
@@ -183,6 +185,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const handleFlightSelection = (flightIndex, priceIndex) => {
     setSelectedFlight([{ flightIndex, priceIndex }]);
+    console.log(selectedFlight[0].priceIndex);
   };
 
   const handleBooking = () => {
@@ -198,6 +201,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
       if (!token) {
         ReactToast("Please login first");
         navigate("/sign-in");
+        dispatch(setLastSearch(bookings));
       }
 
       navigate("/book-flight", { state: { bookings } });
@@ -219,7 +223,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
-    <div className="flex relative md:flex-row flex-col">
+    <div className="flex  relative md:flex-row flex-col">
       {/* <OneWaySideBar
         flights={flightProps}
         filters={filters}
@@ -237,7 +241,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
       </button>
       <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
         <div
-          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 rounded-xl bg-white transform ${
+          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 lg-custom:z-0 rounded-xl bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
           style={{
@@ -362,9 +366,13 @@ const Oneway = ({ flightProps, passenger, query }) => {
         <BookingCard
           passenger={passenger}
           selectedPriceIndex={selectedFlight}
-          selectedFlights={selectedFlight.map(
-            (selected) => filteredFlights[selected.flightIndex]
-          )}
+          // selectedFlights={selectedFlight.map(
+          //   (selected) => filteredFlights[selected.flightIndex]
+          // )}
+          selectedFlights={selectedFlight.map((selected) => ({
+            ...filteredFlights[selected.flightIndex],
+            selectedPriceIndex: selected.priceIndex,
+          }))}
           totalPrice={getTotalPrice()}
           onBook={handleBooking}
           calculateTotalPrice={calculateTotalPrice}

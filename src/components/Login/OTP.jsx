@@ -9,6 +9,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", ""]);
   const { lastSearch } = useSelector((state) => state.auth);
+  console.log(lastSearch, "lastSearch");
 
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
@@ -84,7 +85,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
         if (response.data.profile === false)
           navigate(`/enter-detail?token=${response.data.token}`);
         else if (lastSearch) {
-          navigate("/search", { state: { query: lastSearch } });
+          navigate("/book-flight", { state: { bookings: lastSearch } });
         } else navigate("/");
       } else {
         throw new Error("Invalid OTP");
@@ -100,7 +101,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
 
   return (
     <div>
-      <div className="flex gap-7  md:gap-2 w-full justify-center md:justify-evenly">
+      <div className="flex gap-7   md:gap-2 w-full justify-center md:justify-evenly">
         {otp.map((digit, index) => (
           <input
             key={index}
@@ -157,7 +158,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
                   />
                 </div>
               ) : (
-                "Resend OTP"
+                `Resend OTP ${lastSearch}`
               )}
             </motion.button>
           )}

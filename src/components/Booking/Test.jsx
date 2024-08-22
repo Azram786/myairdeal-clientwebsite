@@ -1,426 +1,348 @@
+import React, { useState } from "react";
+import { FaArrowRight, FaTimes } from "react-icons/fa";
+import SubmitAmendment from "./SubmitAmendment";
+import TicketRaising from "./TicketRaising";
+import timeFormatChanger from "../../util/timeFormatChanger";
+import dateDateFormatChanger from "../../util/dateDateFormatChanger";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import Spinner from "../../Profile/Spinner";
 
-// import React, { useState, useEffect, useCallback } from "react";
-// import TravellersDetails from "./travellers";
-// import AddonsCard from "./addOns";
-// import GstDetails from "./gstDetails";
-// import ReactToast from "../../util/ReactToast";
+const ViewAmendmentDetails = ({ amendment }) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [amendmentData, setAmendmentData] = useState(null);
+  const { token } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
 
-// const AddDetails = ({
-//   bookingId,
-//   flightData,
-//   onData,
-//   setCurrentStep,
-//   passengers,
-//   setPassengers,
-// }) => {
-//   const [gstDetails, setGstDetails] = useState({
-//     gstNumber: "",
-//     companyName: "",
-//     address: "",
-//     email: "",
-//     phone: "",
-//   });
-
-//   const [expandedCard, setExpandedCard] = useState({
-//     travellers: true,
-//     addons: false,
-//     gst: false,
-//   });
-
-//   const [isPassengersCompleted, setIsPassengersCompleted] = useState(false);
-
-//   const [numAdults, setNumAdults] = useState(
-//     flightData?.searchQuery?.paxInfo?.ADULT
-//   );
-//   const [numChildren, setNumChildren] = useState(
-//     flightData?.searchQuery?.paxInfo?.CHILD
-//   );
-//   const [numInfants, setNumInfants] = useState(
-//     flightData?.searchQuery?.paxInfo?.INFANT
-//   );
-
-//   const isInternational = flightData?.conditions?.isa;
-
-//   const createPassenger = useCallback(
-//     (type, count) => {
-//       const basePassenger = {
-//         title: "",
-//         firstName: "",
-//         lastName: "",
-//         passengerType: type,
-//         dob: "",
-//         SelectedSeat: [],
-//         selectedBaggage: [],
-//         selectedMeal: [],
-//         typeCount: count,
-//       };
-
-//       if (isInternational) {
-//         return {
-//           ...basePassenger,
-//           passportNumber: "",
-//           nationality: "",
-//           issueDate: "",
-//           expiryDate: "",
-//         };
-//       }
-
-//       return basePassenger;
-//     },
-//     [isInternational]
-//   );
-
-//   const generatePassengers = useCallback(
-//     (numAdults, numChildren, numInfants) => {
-//       let passengers = [];
-//       let adultCount = 1;
-//       let childCount = 1;
-//       let infantCount = 1;
-
-//       for (let i = 0; i < numAdults; i++) {
-//         passengers.push(createPassenger("ADULT", adultCount++));
-//       }
-//       for (let i = 0; i < numChildren; i++) {
-//         passengers.push(createPassenger("CHILD", childCount++));
-//       }
-//       for (let i = 0; i < numInfants; i++) {
-//         passengers.push(createPassenger("INFANT", infantCount++));
-//       }
-
-//       return passengers;
-//     },
-//     [createPassenger]
-//   );
-
-//   useEffect(() => {
-//     const newPassengers = generatePassengers(
-//       numAdults,
-//       numChildren,
-//       numInfants
-//     );
-//     setPassengers(newPassengers);
-//   }, [numAdults, numChildren, numInfants, generatePassengers, setPassengers]);
-
-//   const handleProceedToReview = useCallback(async () => {
-//     const isValid = await document
-//       .getElementById("travellers-form")
-//       ?.validateContactDetails();
-//     if (isValid) {
-//       onData({ passengers, gstDetails });
-//       setCurrentStep((p) => p + 1);
-//     } else {
-//       ReactToast(
-//         "Please fill out all required fields correctly before proceeding to review."
-//       );
-//     }
-//   }, [passengers, gstDetails, onData, setCurrentStep]);
-
-//   const [contactDetails, setContactDetails] = useState({
-//     email: null,
-//     phoneNumber: null,
-//     dialCode: null,
-//   })
-//   console.log(contactDetails)
-//   const toggleCard = (cardName) => {
-//     if (cardName === 'travellers' || isPassengersCompleted) {
-//       setExpandedCard((prev) => ({
-//         ...prev,
-//         [cardName]: !prev[cardName],
-//       }));
-//     } else {
-//       ReactToast("Please complete passenger details first.");
-//     }
-//   };
-
-//   return (
-//     <div className="shadow-lg ">
-//       <TravellersDetails
-//         expanded={expandedCard.travellers}
-//         toggleCard={() => toggleCard('travellers')}
-//         passengers={passengers}
-//         setPassengers={setPassengers}
-//         flightData={flightData}
-//         setIsPassengersCompleted={setIsPassengersCompleted}
-//         isInternational={isInternational}
-//         contactDetails={contactDetails}
-//         setContactDetails={setContactDetails}
-//       />
-//       <AddonsCard
-//         expanded={expandedCard.addons}
-//         toggleCard={() => toggleCard('addons')}
-//         flightData={flightData}
-//         passengers={passengers}
-//         setPassengers={setPassengers}
-//       />
-//       <GstDetails
-//         expanded={expandedCard.gst}
-//         toggleCard={() => toggleCard('gst')}
-//         gstDetails={gstDetails}
-//         setGstDetails={setGstDetails}
-//       />
-//       <div className="flex justify-between mt-5">
-//         <button
-//           onClick={() => setCurrentStep((p) => p - 1)}
-//           className="bg-gray-400 text-white py-2 px-4 rounded"
-//         >
-//           Previous
-//         </button>
-//         <button
-//           onClick={handleProceedToReview}
-//           className="bg-blue-400 text-white py-2 px-4 rounded"
-//         >
-//           Proceed to Review
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AddDetails;
-import React, { useState, useEffect, useCallback } from "react";
-import TravellersDetails from "./travellers";
-import AddonsCard from "./addOns";
-import GstDetails from "./gstDetails";
-import ReactToast from "../../util/ReactToast";
-
-const AddDetails = ({
-  bookingId,
-  flightData,
-  onData,
-  setCurrentStep,
-  passengers,
-  setPassengers,
-}) => {
-  const [gstDetails, setGstDetails] = useState({
-    gstNumber: "",
-    companyName: "",
-    address: "",
-    email: "",
-    phone: "",
-  });
-
-  const [expandedCard, setExpandedCard] = useState({
-    travellers: true,
-    addons: false,
-    gst: false,
-  });
-
-  const [isPassengersCompleted, setIsPassengersCompleted] = useState(false);
-
-  const [numAdults, setNumAdults] = useState(
-    flightData?.searchQuery?.paxInfo?.ADULT
-  );
-  const [numChildren, setNumChildren] = useState(
-    flightData?.searchQuery?.paxInfo?.CHILD
-  );
-  const [numInfants, setNumInfants] = useState(
-    flightData?.searchQuery?.paxInfo?.INFANT
-  );
-
-  // const isInternational = flightData?.conditions?.isa;
-  const [isInternational, setIsInternational] = useState(
-    flightData?.conditions?.pcs || false
-  );
- 
-  const [contactDetails, setContactDetails] = useState({
-    email: null,
-    phoneNumber: null,
-    dialCode: null,
-  });
-
-  const createPassenger = useCallback(
-    (type, count) => {
-      const basePassenger = {
-        title: "",
-        firstName: "",
-        lastName: "",
-        passengerType: type,
-        dob: "",
-        selectedSeat: [],
-        selectedBaggage: [],
-        selectedMeal: [],
-        typeCount: count,
-      };
-
-      if (isInternational) {
-        return {
-          ...basePassenger,
-          passportNumber: "",
-          nationality: "",
-          issueDate: "",
-          expiryDate: "",
-        };
-      }
-
-      return basePassenger;
+  const [trips] = useState([
+    {
+      src: "BOM",
+      dest: "DEL",
+      departureDate: "2020-10-16T00:30",
+      flightNumbers: ["329"],
+      airlines: ["G8"],
+      travellers: [
+        {
+          fn: "CBD",
+          ln: "CBD",
+          amendmentCharges: 3000.0,
+          refundableamount: 8515.0,
+          totalFare: 11515.0,
+        },
+        {
+          fn: "ABC",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8515.0,
+          totalFare: 11515.0,
+        },
+        {
+          fn: "QWE",
+          ln: "QWE",
+          amendmentCharges: 3000.0,
+          refundableamount: 8515.0,
+          totalFare: 11515.0,
+        },
+        {
+          fn: "CVBN",
+          ln: "CVB",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+        {
+          fn: "KSHITIJ",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8515.0,
+          totalFare: 11515.0,
+        },
+        {
+          fn: "ASD",
+          ln: "ASD",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+      ],
     },
-    [isInternational]
-  );
-
-  const generatePassengers = useCallback(
-    (numAdults, numChildren, numInfants) => {
-      let passengers = [];
-      let adultCount = 1;
-      let childCount = 1;
-      let infantCount = 1;
-
-      for (let i = 0; i < numAdults; i++) {
-        passengers.push(createPassenger("ADULT", adultCount++));
-      }
-      for (let i = 0; i < numChildren; i++) {
-        passengers.push(createPassenger("CHILD", childCount++));
-      }
-      for (let i = 0; i < numInfants; i++) {
-        passengers.push(createPassenger("INFANT", infantCount++));
-      }
-
-      return passengers;
+    {
+      src: "DEL",
+      dest: "MAA",
+      departureDate: "2020-10-18T01:30",
+      flightNumbers: ["520"],
+      airlines: ["G8"],
+      travellers: [
+        {
+          fn: "KSHITIJ",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "QWE",
+          ln: "QWE",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "ABC",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "CVBN",
+          ln: "CVB",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+        {
+          fn: "CBD",
+          ln: "CBD",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "ASD",
+          ln: "ASD",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+      ],
     },
-    [createPassenger]
-  );
+    {
+      src: "MAA",
+      dest: "HYD",
+      departureDate: "2020-10-20T01:30",
+      flightNumbers: ["530"],
+      airlines: ["G8"],
+      travellers: [
+        {
+          fn: "KSHITIJ",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "QWE",
+          ln: "QWE",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "ABC",
+          ln: "BISHT",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "CVBN",
+          ln: "CVB",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+        {
+          fn: "CBD",
+          ln: "CBD",
+          amendmentCharges: 3000.0,
+          refundableamount: 8024.0,
+          totalFare: 11024.0,
+        },
+        {
+          fn: "ASD",
+          ln: "ASD",
+          amendmentCharges: 0.0,
+          refundableamount: 1500.0,
+          totalFare: 1500.0,
+        },
+      ],
+    },
+  ]);
 
-  useEffect(() => {
-    const newPassengers = generatePassengers(
-      numAdults,
-      numChildren,
-      numInfants
-    );
-    setPassengers(newPassengers);
-  }, [numAdults, numChildren, numInfants, generatePassengers, setPassengers]);
-
-  const validatePassengerDetails = (passenger) => {
-
-
-    const isBasicDetailsFilled = !!(
-      passenger.title &&
-      passenger.firstName &&
-      passenger.lastName
-    );
-
-    // ({
-    //   title: !!passenger.title,
-    //   firstName: !!passenger.firstName,
-    //   lastName: !!passenger.lastName,
-    //   isBasicDetailsFilled
-    // });
-
-    const isInternationalDetailsFilled = isInternational
-      ? !!(
-        passenger.passportNumber &&
-        passenger.nationality &&
-        passenger.issueDate &&
-        passenger.expiryDate
-      )
-      : true;
-
-    // console.log({
-    //   isInternational,
-    //   isInternationalDetailsFilled,
-    //   passportNumber: !!passenger.passportNumber,
-    //   nationality: !!passenger.nationality,
-    //   issueDate: !!passenger.issueDate,
-    //   expiryDate: !!passenger.expiryDate
-    // });
-
-    const isDobRequired = passenger.passengerType === "INFANT" || passenger.passengerType === "CHILD";
-    const isDobFilled = isDobRequired ? !!passenger.dob : true;
-
-    // console.log({
-    //   passengerType: passenger.passengerType,
-    //   isDobRequired,
-    //   isDobFilled,
-    //   dob: !!passenger.dob
-    // });
-    const contactValid = contactDetails.email && contactDetails.phoneNumber ? true : false
-    // console.log({ contactValid })
-
-    const isValid = isBasicDetailsFilled &&
-      (isInternational ? isInternationalDetailsFilled : true) &&
-      isDobFilled;
-
-    // console.log({ isValid, isBasicDetailsFilled, isInternationalDetailsFilled, isDobFilled });
-    if (contactValid)
-      return isValid;
-    else return false
+  const [singleTripDetails, setSingleTripDetails] = useState(trips[0])
+  const openModalHandler = () => {
+    setModalIsOpen(true);
   };
 
-  const checkAllPassengersCompleted = useCallback(() => {
-    const areAllPassengersValid = passengers.every(validatePassengerDetails);
-    // console.log({ areAllPassengersValid })
-    setIsPassengersCompleted(areAllPassengersValid);
-    return areAllPassengersValid;
-  }, [passengers, isInternational]);
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
+  const handleButtonClick = (link) => {
+    openModalHandler();
+  };
 
-  const handleProceedToReview = useCallback(() => {
-    const areAllPassengersValid = checkAllPassengersCompleted();
-    // console.log({ areAllPassengersValid })
-    if (areAllPassengersValid) {
-      onData({ passengers, gstDetails });
-      setCurrentStep((p) => p + 1);
-    } else {
-      ReactToast(
-        "Please fill out all required fields correctly before proceeding to review."
+  const getAmendmentDetails = async (id) => {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}booking/view-amendment`,
+        { amendmentId: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-    }
-  }, [passengers, gstDetails, onData, setCurrentStep, checkAllPassengersCompleted]);
-  const toggleCard = (cardName) => {
-    // console.log({ isPassengersCompleted })
-    if (cardName === "travellers" || isPassengersCompleted) {
-      setExpandedCard((prev) => ({
-        ...prev,
-        [cardName]: !prev[cardName],
-      }));
-    } else {
-      ReactToast("Please complete passenger details first.");
+
+      setAmendmentData(response.data);
+      setLoading(false);
+    } catch (error) {
+      ReactToast(error.message);
     }
   };
-  useEffect(() => {
-    checkAllPassengersCompleted();
-  }, [passengers, checkAllPassengersCompleted]);
-  return (
-    <div className=" pb-6 shadow-lg ">
-      <TravellersDetails
-        expanded={expandedCard.travellers}
-        toggleCard={() => toggleCard("travellers")}
-        passengers={passengers}
-        setPassengers={setPassengers}
-        flightData={flightData}
-        setIsPassengersCompleted={setIsPassengersCompleted}
-        isInternational={isInternational}
-        contactDetails={contactDetails}
-        setContactDetails={setContactDetails}
-      />
-      <AddonsCard
-        expanded={expandedCard.addons}
-        toggleCard={() => toggleCard("addons")}
-        flightData={flightData}
-        passengers={passengers}
-        setPassengers={setPassengers}
-        bookingId={bookingId}
-      />
-      <GstDetails
-        expanded={expandedCard.gst}
-        toggleCard={() => toggleCard("gst")}
-        gstDetails={gstDetails}
-        setGstDetails={setGstDetails}
-      />
-      <div className="flex justify-between mt-5">
-        <button
-          onClick={() => setCurrentStep((p) => p - 1)}
-          className="bg-gray-400 text-white py-2 px-4 rounded"
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleProceedToReview}
-          className="bg-blue-400 text-white py-2 px-4 rounded"
-        >
-          Proceed to Review
-        </button>
-      </div>
-    </div>
-  );
-};
+  const MyComponent = (departureDate) => {
+    const date = new Date(departureDate);
+    const formattedDate = date.toLocaleDateString(); // Format date (e.g., "10/20/2020")
+    const formattedTime = date.toLocaleTimeString(); // Format time (e.g., "1:30:00 AM")
 
-export default AddDetails;
+    return (
+      <span className="font-semibold text-[#84724a]">
+        {`${formattedDate}  `}
+        <span className="text-black">{`  ${formattedTime}`}</span>
+      </span>
+    );
+  };
+
+  if (amendment.length < 1) return;
+
+  return (
+    <div className="mx-3 flex flex-col gap-4 my-4">
+      <div className="bg-[#D7B56D] text-white font-bold p-4 rounded-md">
+        Amendment List
+      </div>
+      {amendment.map((value) => {
+        return (
+          <div
+            className="flex flex-col md:flex-row items-center justify-between bg-blue-100 border-t border-blue-200 rounded-lg p-4"
+            key={value.id}
+          >
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold">{value.id}</h3>
+              <p className="text-sm text-gray-700">
+                {timeFormatChanger(value.time)}
+              </p>
+              <p className="text-sm text-gray-700">
+                {dateDateFormatChanger(value.time)}
+              </p>
+            </div>
+            <button
+              className="bg-[#D7B56D] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 text-white rounded-md md:rounded-r-lg flex items-center"
+              onClick={() => {
+                getAmendmentDetails(value.id);
+                handleButtonClick();
+              }}
+            >
+              View Status
+            </button>
+          </div>
+        );
+      })}
+
+      {modalIsOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-center z-50 ]">
+
+          <div class="bg-gray-200  flex items-center justify-center">
+            {loading ? (
+              <div className="w-full h-full">
+                <Spinner />
+              </div>
+            ) : (
+              <>
+                <div class="bg-white shadow-lg rounded-lg ">
+
+
+                  <div class="bg-gray-900 p-4 flex justify-between items-center">
+                    <h1 class="text-lg text-yellow-400 font-semibold">Amendment Details</h1>
+                    <button onClick={closeModal} class="text-yellow-400 text-lg">&times;</button>
+                  </div>
+                  <div class="p-6">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                      <div class="bg-white border border-gray-300 p-4 rounded-lg flex flex-col justify-between">
+                        <p class="text-sm text-gray-500">Amendment ID:</p>
+                        <p class="font-semibold"> {amendmentData?.amendmentId}</p>
+                      </div>
+                      <div class="bg-white border flex flex-col justify-between border-gray-300 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Amendment Status:</p>
+                        <p class="font-semibold">{amendmentData?.amendmentStatus}</p>
+                      </div>
+                      <div class="bg-white border border-gray-300 p-4 flex flex-col justify-between rounded-lg">
+                        <p class="text-sm text-gray-500">Booking Id:</p>
+                        <p class="font-semibold text-sm "> {amendmentData?.bookingId}</p>
+                      </div>
+                      <div class="bg-white border flex flex-col justify-between  border-gray-300 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Refundable Amount:</p>
+                        <p class="font-semibold "> {amendmentData?.refundableAmount}</p>
+                      </div>
+                    </div>
+                    <div className="bg-blue-50 p-4 rounded-md md:col-span-2">
+                      <div className="text-sm font-medium text-gray-600">
+                        Remarks:
+                      </div>
+                      <div className="text-lg font-semibold text-[#9b814a]">
+                        {amendmentData?.remarks}
+                      </div>
+                    </div>
+
+                    <div class="mb-6">
+                      <div class="flex space-x-2">
+                        {trips.map((trip, index) => (<button onClick={() => setSingleTripDetails(trip)} class="bg-yellow-400 text-gray-800 font-semibold py-2 px-4 rounded-lg flex flex-col gap-1"><span>Trip - {index + 1}
+                        </span> <span> {trip.src} - {trip.dest}</span></button>))}
+
+
+                      </div>
+                    </div>
+
+                    <div class="bg-gray-100 p-4 rounded-lg mb-6">
+                      <p class="text-sm text-gray-500">Trip details:</p>
+                      <div class="flex justify-between mt-2">
+                        <div>
+                          <p>Departure: <span class="font-semibold">{singleTripDetails.src}</span></p>
+                          <p>Arrival: <span class="font-semibold">{singleTripDetails.dest}</span></p>
+                          <p>Flight number: <span class="font-semibold">{singleTripDetails.flightNumbers.join(", ")}</span></p>
+                          <p>Airlines: <span class="font-semibold">{singleTripDetails.airlines.join(", ")}</span></p>
+                        </div>
+                        <div>
+                          <p>Departure Time: {MyComponent(singleTripDetails.departureDate)}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* <div>
+                      <p class="text-sm text-gray-500 mb-2">Passengers:</p>
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {singleTripDetails.travellers.map((traveller, i) =>
+                          <div key={i} class="bg-gray-800 text-white p-4 rounded-lg">
+                            <p>Name: <span class="font-semibold"> {traveller.fn} {traveller.ln}</span></p>
+                            <p>Amendment charges: <span class="font-semibold">{traveller.amendmentCharges}</span></p>
+                            <p>Refundable amount: <span class="font-semibold">{traveller.refundableamount}</span></p>
+                            <p>Total Fare: <span class="font-semibold">{traveller.totalFare}</span></p>
+                          </div>
+
+                        )}
+                      </div>
+                    </div> */}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default ViewAmendmentDetails;

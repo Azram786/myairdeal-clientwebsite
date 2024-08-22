@@ -161,6 +161,7 @@ const FlightList = () => {
   const [hasUserPressedBack, setHasUserPressedBack] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+    window.scrollTo(0, 0);
     // Push the current state to the history
     window.history.pushState({ page: "current" }, "");
 
@@ -211,9 +212,11 @@ const FlightList = () => {
       );
 
       const tripInfos = res.data.searchResult.tripInfos;
-
+      console.log(tripInfos, "tripInfos");
       if (!tripInfos) {
         ReactToast("No flights found on this route");
+        navigate("/no-flights");
+
         return;
       }
 
@@ -226,7 +229,7 @@ const FlightList = () => {
         setOneWay(tripInfos.ONWARD);
       } else if (tripInfos.COMBO) {
         setTripType("combo");
-        setCombo(Object.values(tripInfos.COMBO));
+        setCombo(tripInfos.COMBO);
       } else {
         setTripType("multicity");
         setMulticity(Object.values(tripInfos));
@@ -246,7 +249,7 @@ const FlightList = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
+      <div className="w-full  h-screen flex justify-center items-center">
         <div className="flex-col flex gap-3">
           <Spinner /> <h1 className="italic">Loading available flights..</h1>
         </div>
@@ -257,7 +260,7 @@ const FlightList = () => {
   return (
     <div className="min-h-screen ">
       {data && (
-        <div className="w-full py-5">
+        <div className="w-full pt-1">
           <FlightSearchSummary data={data} tripType={tripType} />
         </div>
       )}
@@ -279,7 +282,7 @@ const FlightList = () => {
         )}
         {tripType === "combo" && (
           <Combo
-            flightprops={combo}
+            flightProps={combo}
             query={data}
             passenger={data?.searchQuery.paxInfo}
           />

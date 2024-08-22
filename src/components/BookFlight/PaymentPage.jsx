@@ -130,10 +130,23 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         })),
       };
 
+      if (passenger.passportNumber !== "") {
+        passengerData.pNum = passenger.passportNumber;
+        passengerData.eD = passenger.expiryDate;
+        passengerData.pNat = passenger.nationality;
+        passengerData.pid = passenger.issueDate;
+        passengerData.dob = passenger.dob;
+      }
       // Conditionally include 'dob' if the passenger is an infant
       if (passenger.passengerType === "INFANT") {
         passengerData.dob = passenger.dob;
       }
+
+      if (passenger.dob === "") {
+        delete passengerData.dob;
+      }
+
+      console.log("passengerData", passengerData);
 
       return passengerData;
     });
@@ -159,8 +172,8 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         //   contacts: passengersData.passengers.map((p) => p.phone),
         // },
         deliveryInfo: {
-          emails: ["rjoshuasujith@gmail.com"],
-          contacts: ["8105823389"],
+          emails: [`${passengersData.contactDetails.email}`],
+          contacts: [`${passengersData.contactDetails.phoneNumber}`],
         },
       },
       searchQuery: data?.searchQuery,

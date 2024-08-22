@@ -37,11 +37,11 @@ const TermsAndConditions = () => {
           please contact:
         </p>
         <address className="mt-4 not-italic">
-          <p>Golobe Group Q.C.S.C</p>
-          <p>Golobe Tower</p>
-          <p>P.O. Box: 22550</p>
-          <p>Doha, State of Qatar</p>
-          <p>Further contact details can be found at</p>
+          <p>My <span className="text-[#D7B56D]">Air</span> Deal</p>
+          <p>2nd Floor, Anjali Plaza,</p>
+          <p>Jayanagar,Bengaluru,</p>
+          <p> India-560076</p>
+          {/* <p>Further contact details can be found at</p> */}
         </address>
       </section>
     </div>

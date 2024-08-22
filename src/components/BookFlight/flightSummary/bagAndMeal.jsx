@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactJoyride from "react-joyride";
 
 const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
   const [flightOptions, setFlightOptions] = useState([]);
@@ -59,21 +60,27 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
           (meal) => meal.key === flightId && meal.passengerId === passenger.id
         );
 
-        if (mealIndex > -1) {
-          updatedMeals[mealIndex] = {
-            ...updatedMeals[mealIndex],
-            code: value,
-            amount,
-            desc,
-          };
+        if (value === "") {
+          if (mealIndex > -1) {
+            updatedMeals.splice(mealIndex, 1);
+          }
         } else {
-          updatedMeals.push({
-            code: value,
-            key: flightId,
-            amount,
-            desc,
-            passengerId: passenger.id,
-          });
+          if (mealIndex > -1) {
+            updatedMeals[mealIndex] = {
+              ...updatedMeals[mealIndex],
+              code: value,
+              amount,
+              desc,
+            };
+          } else {
+            updatedMeals.push({
+              code: value,
+              key: flightId,
+              amount,
+              desc,
+              passengerId: passenger.id,
+            });
+          }
         }
 
         passenger.selectedMeal = updatedMeals;
@@ -85,21 +92,27 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
             baggage.key === flightId && baggage.passengerId === passenger.id
         );
 
-        if (baggageIndex > -1) {
-          updatedBaggage[baggageIndex] = {
-            ...updatedBaggage[baggageIndex],
-            code: value,
-            amount,
-            desc,
-          };
+        if (value === "") {
+          if (baggageIndex > -1) {
+            updatedBaggage.splice(baggageIndex, 1);
+          }
         } else {
-          updatedBaggage.push({
-            code: value,
-            key: flightId,
-            amount,
-            desc,
-            passengerId: passenger.id,
-          });
+          if (baggageIndex > -1) {
+            updatedBaggage[baggageIndex] = {
+              ...updatedBaggage[baggageIndex],
+              code: value,
+              amount,
+              desc,
+            };
+          } else {
+            updatedBaggage.push({
+              code: value,
+              key: flightId,
+              amount,
+              desc,
+              passengerId: passenger.id,
+            });
+          }
         }
 
         passenger.selectedBaggage = updatedBaggage;
@@ -109,9 +122,65 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
       return newPassengers;
     });
   };
+  const [runJoyride, setRunJoyride] = useState(true);
+
+  // useEffect(() => {
+  //   sessionStorage.setItem("joyride", "notexecuted"); // Mark it as executed
+  //   // Check if joyride was previously run from localStorage
+  //   const storedJoyride = sessionStorage.getItem("joyride");
+
+  //   if (storedJoyride === "executed") {
+  //     setRunJoyride(false); // Don't run joyride again if it has been executed
+  //   } else if(storedJoyride !== "executed") {
+  //     setRunJoyride(true); // Run joyride if it has not been executed yet
+  //     sessionStorage.setItem("joyride", "executed"); // Mark it as executed
+  //   }
+  // }, [runJoyride]);
+
+  // State for Joyride steps
+  const [joyrideSteps] = useState([
+    {
+      target: ".flight-type-buttons",
+      content: "Choose your travel type (One-way, Round-trip, or Multi-city)",
+    },
+    {
+      target: ".from-city-select",
+      content: "Select your departure city or airport.",
+    },
+    {
+      target: ".to-city-select",
+      content: "Select your destination city or airport.",
+    },
+    {
+      target: ".travel-date-picker",
+      content: "Pick your travel date here.",
+    },
+    {
+      target: ".travel-passenger-details",
+      content:
+        "Select the number of passengers and class preferences traveling with you.",
+    },
+    {
+      target: ".search-button",
+      content: "Hit this button to search for flights.",
+    },
+  ]);
 
   return (
     <div className="space-y-6 ">
+      <ReactJoyride
+        steps={joyrideSteps}
+        run={runJoyride}
+        continuous={true}
+        scrollToFirstStep={true}
+        showProgress={true}
+        showSkipButton={true}
+        callback={(data) => {
+          if (data.action === "reset") {
+            setRunJoyride(false);
+          }
+        }}
+      />
       {flightOptions.map((flight) => {
         return (
           <div key={flight.id} className="border rounded-lg shadow-lg p-4">
@@ -129,7 +198,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                   <h3 className="font-semibold md:text-lg mb-2 text-base">
                     Select Baggage
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-2 ">
                     {passengers.map((passenger, index) =>
                       passenger.passengerType !== "INFANT" ? (
                         <div key={index} className="text-sm">
@@ -158,7 +227,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                                 selectedBaggage?.desc || ""
                               );
                             }}
-                            className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="mt-1 block w-[80%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm flight-type-buttons"
                           >
                             <option className="font-medium" value="">
                               Select a Baggage
@@ -180,6 +249,21 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                                 >
                                   <div>{`Selected Baggage: ${baggage.desc}`}</div>
                                   <div>{`Amount: ₹${baggage.amount}`}</div>
+                                  <button
+                                    className="mt-2 text-sm px-1 py-1 text-[#D7B56D] bg-[#1B1D29] rounded"
+                                    onClick={() => {
+                                      updateAddonSelection(
+                                        index,
+                                        flight.id,
+                                        "baggage",
+                                        "",
+                                        "",
+                                        ""
+                                      );
+                                    }}
+                                  >
+                                    Remove Baggage
+                                  </button>
                                 </div>
                               )
                           )}
@@ -197,7 +281,7 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
               {/* Meal Selections */}
               {flight.mealOptions && flight.mealOptions.length > 0 ? (
                 <div>
-                  <h3 className="font-semibold text-sm md:text-base mb-2">
+                  <h3 className="font-semibold text-sm md:text-base mb-2 .search-button">
                     Select Meal
                   </h3>
                   <div className="space-y-2">
@@ -250,6 +334,21 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                                 >
                                   <div>{`Selected Meal: ${meal.desc}`}</div>
                                   <div>{`Amount: ₹${meal.amount}`}</div>
+                                  <button
+                                    className="mt-2 text-sm px-1 py-1 text-[#D7B56D] bg-[#1B1D29] rounded"
+                                    onClick={() => {
+                                      updateAddonSelection(
+                                        index,
+                                        flight.id,
+                                        "meal",
+                                        "",
+                                        "",
+                                        ""
+                                      );
+                                    }}
+                                  >
+                                    Remove Meal
+                                  </button>
                                 </div>
                               )
                           )}

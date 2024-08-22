@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Banner from "./Banner";
+import { useLocation } from 'react-router-dom';
 import FilterSection from "./FilterSection";
 import OfferSection from "./OfferSection";
 import Contact from "./Contact";
@@ -17,6 +18,13 @@ import { FiTable } from "react-icons/fi";
 import { setUser } from "../../store/slices/aut.slice";
 
 const HomePage = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    console.log('ScrollToTop effect triggered');
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  
   const [loading, setLoading] = useState(false);
   const { token, resentSearch } = useSelector((state) => state.auth);
   const [ResentSearchData, setResentSearchData] = useState([]);
@@ -57,6 +65,7 @@ const HomePage = () => {
         }
       );
       setResentSearchData(response.data.data);
+   
     } catch (error) {
       console.log(error.message);
     }
@@ -237,3 +246,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
