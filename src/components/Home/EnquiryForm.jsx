@@ -202,16 +202,16 @@ const EnquiryForm = () => {
                     <div key={index} className="mb-2">
                         <div
                             className="p-3 bg-[#282C35] rounded-md flex justify-between items-center cursor-pointer"
-                            onClick={() => toggleEnquiryDetails(enquiry.id)}
+                            onClick={() => toggleEnquiryDetails(enquiry._id)}
                         >
                             <div className="text-sm">
                                 {enquiry.type} - {enquiry.email}
                             </div>
                             <div>
-                                {expandedEnquiry === enquiry.id ? <FaChevronUp /> : <FaChevronDown />}
+                                {expandedEnquiry === enquiry._id ? <FaChevronUp /> : <FaChevronDown />}
                             </div>
                         </div>
-                        {expandedEnquiry === enquiry.id && (
+                        {expandedEnquiry === enquiry._id && (
                             <div className="p-3 bg-[#D7B56D] text-black rounded-md mt-2 text-sm">
                                 <p><strong>Phone:</strong> {enquiry.phone}</p>
                                 <p><strong>Description:</strong> {enquiry.description}</p>
