@@ -59,21 +59,27 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
           (meal) => meal.key === flightId && meal.passengerId === passenger.id
         );
 
-        if (mealIndex > -1) {
-          updatedMeals[mealIndex] = {
-            ...updatedMeals[mealIndex],
-            code: value,
-            amount,
-            desc,
-          };
+        if (value === "") {
+          if (mealIndex > -1) {
+            updatedMeals.splice(mealIndex, 1);
+          }
         } else {
-          updatedMeals.push({
-            code: value,
-            key: flightId,
-            amount,
-            desc,
-            passengerId: passenger.id,
-          });
+          if (mealIndex > -1) {
+            updatedMeals[mealIndex] = {
+              ...updatedMeals[mealIndex],
+              code: value,
+              amount,
+              desc,
+            };
+          } else {
+            updatedMeals.push({
+              code: value,
+              key: flightId,
+              amount,
+              desc,
+              passengerId: passenger.id,
+            });
+          }
         }
 
         passenger.selectedMeal = updatedMeals;
@@ -85,21 +91,27 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
             baggage.key === flightId && baggage.passengerId === passenger.id
         );
 
-        if (baggageIndex > -1) {
-          updatedBaggage[baggageIndex] = {
-            ...updatedBaggage[baggageIndex],
-            code: value,
-            amount,
-            desc,
-          };
+        if (value === "") {
+          if (baggageIndex > -1) {
+            updatedBaggage.splice(baggageIndex, 1);
+          }
         } else {
-          updatedBaggage.push({
-            code: value,
-            key: flightId,
-            amount,
-            desc,
-            passengerId: passenger.id,
-          });
+          if (baggageIndex > -1) {
+            updatedBaggage[baggageIndex] = {
+              ...updatedBaggage[baggageIndex],
+              code: value,
+              amount,
+              desc,
+            };
+          } else {
+            updatedBaggage.push({
+              code: value,
+              key: flightId,
+              amount,
+              desc,
+              passengerId: passenger.id,
+            });
+          }
         }
 
         passenger.selectedBaggage = updatedBaggage;
@@ -180,6 +192,21 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                                 >
                                   <div>{`Selected Baggage: ${baggage.desc}`}</div>
                                   <div>{`Amount: ₹${baggage.amount}`}</div>
+                                  <button
+                                    className="mt-2 text-sm px-1 py-1 text-[#D7B56D] bg-[#1B1D29] rounded"
+                                    onClick={() => {
+                                      updateAddonSelection(
+                                        index,
+                                        flight.id,
+                                        "baggage",
+                                        "",
+                                        "",
+                                        ""
+                                      );
+                                    }}
+                                  >
+                                    Remove Baggage
+                                  </button>
                                 </div>
                               )
                           )}
@@ -250,6 +277,21 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                                 >
                                   <div>{`Selected Meal: ${meal.desc}`}</div>
                                   <div>{`Amount: ₹${meal.amount}`}</div>
+                                  <button
+                                    className="mt-2 text-sm px-1 py-1 text-[#D7B56D] bg-[#1B1D29] rounded"
+                                    onClick={() => {
+                                      updateAddonSelection(
+                                        index,
+                                        flight.id,
+                                        "meal",
+                                        "",
+                                        "",
+                                        ""
+                                      );
+                                    }}
+                                  >
+                                    Remove Meal
+                                  </button>
                                 </div>
                               )
                           )}

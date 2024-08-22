@@ -6,14 +6,16 @@ import flightLogo from "../../../assets/home/logo/image 40.png";
 import SideBar from "./SideBar";
 import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ReactToast from "../../util/ReactToast";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { BsFillFilterSquareFill } from "react-icons/bs";
+import { setLastSearch } from "../../../store/slices/aut.slice";
 
 const { TabPane } = Tabs;
 
 const MultiCity = ({ flightProps, passenger, query }) => {
+  const dispatch = useDispatch();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const token = useSelector((state) => state.auth.token);
 
@@ -148,7 +150,8 @@ const MultiCity = ({ flightProps, passenger, query }) => {
 
     if (!token) {
       ReactToast("Please login first");
-      navigate("/sign-in", { state: { booking: query } });
+      navigate("/sign-in");
+      dispatch(setLastSearch(bookingData));
     }
     navigate("/book-flight", { state: { bookings: bookingData } });
   };

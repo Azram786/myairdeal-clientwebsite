@@ -3,11 +3,12 @@ import RoundSideBar from "./Roundsidebar";
 import BookingCard from "./BookingCards";
 import ReactToast from "../../util/ReactToast";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import RoundTripCard from "../Cards/RoundTripFlightCard";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { BsFillFilterSquareFill } from "react-icons/bs";
+import { setLastSearch } from "../../../store/slices/aut.slice";
 
 const RoundTrip = ({
   onwardProps = [],
@@ -15,6 +16,7 @@ const RoundTrip = ({
   passenger,
   query,
 }) => {
+  const dispatch = useDispatch();
   const [filteredOnward, setFilteredOnward] = useState([]);
   const [filteredReturn, setFilteredReturn] = useState([]);
   const [activeDirection, setActiveDirection] = useState("onward");
@@ -390,6 +392,7 @@ const RoundTrip = ({
     if (!token) {
       ReactToast("Please login first");
       navigate("/sign-in");
+      dispatch(setLastSearch(data));
       return;
     }
     navigate("/book-flight", { state: { bookings: data } });

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from "react";
 import { Tabs } from "antd";
 import FlightDetailsCard from "../Cards/FlightDetailsCard";
@@ -7,37 +6,43 @@ import flightLogo from "../../../assets/home/logo/image 40.png";
 import OneWaySideBar from "./OneWaySidebar";
 import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ReactToast from "../../util/ReactToast";
+import { setLastSearch } from "../../../store/slices/aut.slice";
 
 const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
-
-
+  console.log("combo request", flightProps);
+  const dispatch = useDispatch();
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
     maxPrice: 100000,
     stops: [],
     departureTime: [],
     arrivalTime: [],
-    airlines: []
+    airlines: [],
   });
 
   const token = useSelector((state) => state.auth.token);
-  const [selectedFlight, setSelectedFlight] = useState([{ flightIndex: 0, priceIndex: 0 }]);
+  const [selectedFlight, setSelectedFlight] = useState([
+    { flightIndex: 0, priceIndex: 0 },
+  ]);
   const navigate = useNavigate();
 
-  const calculateTotalPrice = useMemo(() => (flight) => {
-    let total = 0;
-    const priceList = flight.totalPriceList[0].fd;
-    for (const passengerType in passenger) {
-      if (priceList[passengerType]) {
-        total += priceList[passengerType].fC.TF * passenger[passengerType];
+  const calculateTotalPrice = useMemo(
+    () => (flight) => {
+      let total = 0;
+      const priceList = flight.totalPriceList[0].fd;
+      for (const passengerType in passenger) {
+        if (priceList[passengerType]) {
+          total += priceList[passengerType].fC.TF * passenger[passengerType];
+        }
       }
-    }
-    return total;
-  }, [passenger]);
+      return total;
+    },
+    [passenger]
+  );
 
   const getStopsCount = (flight) => {
     return flight.sI.length - 1;
@@ -73,7 +78,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
   // }, [filters, flightProps, calculateTotalPrice]);
 
   const isHourInRange = (hour, range) => {
-    const [start, end] = range.split('-').map(Number);
+    const [start, end] = range.split("-").map(Number);
     if (start < end) {
       return hour >= start && hour < end;
     } else {
@@ -82,24 +87,39 @@ const Oneway = ({ flightProps, passenger, query }) => {
   };
 
   useEffect(() => {
-
-    const newFilteredFlights = flightProps.filter(flight => {
-
+    const newFilteredFlights = flightProps.filter((flight) => {
       const price = calculateTotalPrice(flight);
       const stops = getStopsCount(flight);
       const departureHour = new Date(flight.sI[0].dt).getHours();
-      const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
+      const arrivalHour = new Date(
+        flight.sI[flight.sI.length - 1].at
+      ).getHours();
       const airline = flight.sI[0].fD.aI.name;
 
       const priceMatch = price <= filters.maxPrice;
-      const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString()) || (stops >= 3 && filters.stops.includes("3+"));
-      const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => isHourInRange(departureHour, range));
-      const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => isHourInRange(arrivalHour, range));
-      const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
+      const stopsMatch =
+        filters.stops.length === 0 ||
+        filters.stops.includes(stops.toString()) ||
+        (stops >= 3 && filters.stops.includes("3+"));
+      const departureMatch =
+        filters.departureTime.length === 0 ||
+        filters.departureTime.some((range) =>
+          isHourInRange(departureHour, range)
+        );
+      const arrivalMatch =
+        filters.arrivalTime.length === 0 ||
+        filters.arrivalTime.some((range) => isHourInRange(arrivalHour, range));
+      const airlineMatch =
+        filters.airlines.length === 0 || filters.airlines.includes(airline);
 
-      return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
+      return (
+        priceMatch &&
+        stopsMatch &&
+        departureMatch &&
+        arrivalMatch &&
+        airlineMatch
+      );
     });
-
 
     setFilteredFlights(newFilteredFlights);
   }, [filters, flightProps, calculateTotalPrice]);
@@ -110,15 +130,18 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const handleBooking = () => {
     if (selectedFlight.length > 0) {
-      const bookings = selectedFlight?.map(selected => ({
+      const bookings = selectedFlight?.map((selected) => ({
         flightDetails: filteredFlights[selected.flightIndex].sI,
-        priceId: filteredFlights[selected.flightIndex].totalPriceList[selected.priceIndex].id
+        priceId:
+          filteredFlights[selected.flightIndex].totalPriceList[
+            selected.priceIndex
+          ].id,
       }));
 
-
       if (!token) {
-        ReactToast('Please login first')
+        ReactToast("Please login first");
         navigate("/sign-in");
+        dispatch(setLastSearch(bookings));
       }
 
       navigate("/book-flight", { state: { bookings } });
@@ -153,23 +176,41 @@ const Oneway = ({ flightProps, passenger, query }) => {
                 <span className="flex flex-col justify-center ">
                   <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
                   <p className="text-[10px]">
-                    {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric'
-                    }).format(new Date(filteredFlights[0].sI[0].dt)).split('/').join('-')}
+                    {filteredFlights[0]?.sI[0] &&
+                      new Intl.DateTimeFormat("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
+                        .format(new Date(filteredFlights[0].sI[0].dt))
+                        .split("/")
+                        .join("-")}
                   </p>
                 </span>
                 <ArrowRightOutlined />
                 <span className="flex flex-col justify-center ">
-                  <p>{filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]?.aa?.city}</p>
+                  <p>
+                    {
+                      filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]
+                        ?.aa?.city
+                    }
+                  </p>
                   <p className="text-[10px]">
-
-                    {filteredFlights[0]?.sI[0] && new Intl.DateTimeFormat('en-GB', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric'
-                    }).format(new Date(filteredFlights[0].sI[filteredFlights[0]?.sI.length - 1].at)).split('/').join('-')}
+                    {filteredFlights[0]?.sI[0] &&
+                      new Intl.DateTimeFormat("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
+                        .format(
+                          new Date(
+                            filteredFlights[0].sI[
+                              filteredFlights[0]?.sI.length - 1
+                            ].at
+                          )
+                        )
+                        .split("/")
+                        .join("-")}
                   </p>
                 </span>
               </span>
@@ -184,9 +225,17 @@ const Oneway = ({ flightProps, passenger, query }) => {
                     passenger={passenger}
                     logo={flightLogo}
                     flightDetails={flight}
-                    isSelected={selectedFlight.some(selected => selected.flightIndex === index)}
-                    selectedPriceIndex={selectedFlight.find(selected => selected.flightIndex === index)?.priceIndex}
-                    onSelect={(priceIndex) => handleFlightSelection(index, priceIndex)}
+                    isSelected={selectedFlight.some(
+                      (selected) => selected.flightIndex === index
+                    )}
+                    selectedPriceIndex={
+                      selectedFlight.find(
+                        (selected) => selected.flightIndex === index
+                      )?.priceIndex
+                    }
+                    onSelect={(priceIndex) =>
+                      handleFlightSelection(index, priceIndex)
+                    }
                     totalPrice={calculateTotalPrice(flight)}
                   />
                 ))
@@ -196,14 +245,14 @@ const Oneway = ({ flightProps, passenger, query }) => {
             </div>
           </TabPane>
         </Tabs>
-
-   
       </div>
       {selectedFlight.length > 0 && (
         <BookingCard
           passenger={passenger}
           selectedPriceIndex={selectedFlight}
-          selectedFlights={selectedFlight.map(selected => filteredFlights[selected.flightIndex])}
+          selectedFlights={selectedFlight.map(
+            (selected) => filteredFlights[selected.flightIndex]
+          )}
           totalPrice={getTotalPrice()}
           onBook={handleBooking}
           calculateTotalPrice={calculateTotalPrice}

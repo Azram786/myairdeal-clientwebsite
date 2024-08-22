@@ -64,14 +64,16 @@ import flightLogo from "../../../assets/home/logo/image 40.png";
 import OneWaySideBar from "./OneWaySidebar";
 import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ReactToast from "../../util/ReactToast";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { BsFillFilterSquareFill } from "react-icons/bs";
+import { setLastSearch } from "../../../store/slices/aut.slice";
 
 const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
+  const dispatch = useDispatch();
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
     maxPrice: 100000,
@@ -198,6 +200,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
       if (!token) {
         ReactToast("Please login first");
         navigate("/sign-in");
+        dispatch(setLastSearch(bookings));
       }
 
       navigate("/book-flight", { state: { bookings } });
