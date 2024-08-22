@@ -65,6 +65,7 @@ const HomePage = () => {
         }
       );
       setResentSearchData(response.data.data);
+   
     } catch (error) {
       console.log(error.message);
     }

@@ -248,7 +248,7 @@ const FlightList = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
+      <div className="w-full  h-screen flex justify-center items-center">
         <div className="flex-col flex gap-3">
           <Spinner /> <h1 className="italic">Loading available flights..</h1>
         </div>
@@ -259,7 +259,7 @@ const FlightList = () => {
   return (
     <div className="min-h-screen ">
       {data && (
-        <div className="w-full py-5">
+        <div className="w-full pt-1">
           <FlightSearchSummary data={data} tripType={tripType} />
         </div>
       )}

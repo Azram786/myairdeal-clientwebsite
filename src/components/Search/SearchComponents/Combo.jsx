@@ -162,6 +162,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
   return (
     <div className="flex md:flex-row flex-col">
       <OneWaySideBar
+      
         flights={flightProps}
         filters={filters}
         setFilters={setFilters}

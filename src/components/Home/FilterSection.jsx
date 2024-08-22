@@ -47,13 +47,15 @@ const FilterSection = ({
   const [runJoyride, setRunJoyride] = useState(false);
 
   useEffect(() => {
+    localStorage.setItem("joyride", "notexecuted"); 
     const storedJoyride = localStorage.getItem("joyride");
   
-    if (storedJoyride === "executed") {
-      setRunJoyride(false); 
-    } else {
+    if (storedJoyride === "notexecuted") {
+
       setRunJoyride(true); 
       localStorage.setItem("joyride", "executed"); 
+    } else {
+     
     }
   }, []);
   
@@ -498,6 +500,16 @@ const FilterSection = ({
       ReactToast("Something went wrong");
     }
   };
+  const mergeHandler = () => {
+    try {
+      const cityFrom = formData.fromCityOrAirport;
+      const cityTo = formData.toCityOrAirport;
+      setFormData((prev) => ({ ...prev, fromCityOrAirport: cityTo, toCityOrAirport: cityFrom }))
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   useEffect(() => {
     fetchDefaultOptions();
@@ -505,6 +517,8 @@ const FilterSection = ({
 
   return (
     <div className=" flex flex-col items-center  min-h-[200px]   justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
+     {
+      runJoyride &&
       <ReactJoyride
         steps={joyrideSteps}
         run={runJoyride}
@@ -518,6 +532,7 @@ const FilterSection = ({
           }
         }}
       />
+     } 
       {/* <div className="     md:rounded-xl w-[90%] mt-4  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   "> */}
       <div
         className={`
@@ -582,16 +597,13 @@ const FilterSection = ({
                     myFormData={formData}
                     setFormData={setContryCodeFrom}
                     defaultOptions={defaultOptions}
-                    // defaultValue={resentSearchFilter[0][0] ? {
-                    //   value: resentSearchFilter[0][0].value,
-                    //   label: resentSearchFilter[0][0].label
-                    // } : null}
+
                     value={formData?.fromCityOrAirport}
                   />
                 </div>
               </div>
               <div className="md:flex  hidden sm:items-center  justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2  -translate-y-1/2 bg-black w-8 h-8 rounded-full ">
-                <GoArrowSwitch />
+                <GoArrowSwitch onClick={mergeHandler} />
               </div>
               <div className="flex md:ml-2   text-sm md:text-base items-center border rounded p-2 md:w-1/2 to-city-select ">
                 <div>

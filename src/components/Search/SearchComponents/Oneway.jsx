@@ -222,7 +222,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
-    <div className="flex relative md:flex-row flex-col">
+    <div className="flex  relative md:flex-row flex-col">
       {/* <OneWaySideBar
         flights={flightProps}
         filters={filters}

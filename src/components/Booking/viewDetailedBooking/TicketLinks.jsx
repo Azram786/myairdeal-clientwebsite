@@ -170,17 +170,17 @@ const TicketLinks = ({ singleBookingData, bookingFilter }) => {
       ))}
 
       {modalIsOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-center z-50">
-          <div className="bg-white text-[#1B1D29] flex justify-center flex-col rounded-lg shadow-xl w-[90%] md:w-1/2  md:mx-auto ">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="text-2xl  bg-green-400 font-bold">
+        <div className="fixed inset-0   bg-black bg-opacity-50 flex w-full justify-center items-center z-50">
+          <div className="bg-white rounded-t-xl text-[#1B1D29] flex justify-center flex-col rounded-lg shadow-xl w-[90%] md:w-1/2  md:mx-auto ">
+            <div className="flex justify-between items-center p-4 border-b  bg-[#1B1D29] text-[#D7B56D] rounded-t-xl ">
+              <h2 className="text-xl  font-bold">
                 {selectedLink.for === "raise"
                   ? "Raise a Ticket"
                   : "Cancel Ticket"}
               </h2>
               <button
                 onClick={closeModal}
-                className="text-gray-500 hover:text-gray-700 transition-colors"
+                className="text-[#D7B56D]  transition-colors"
               >
                 <FaTimes className="text-xl" />
               </button>

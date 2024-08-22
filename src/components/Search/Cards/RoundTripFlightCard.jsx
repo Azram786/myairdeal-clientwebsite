@@ -164,7 +164,7 @@ const RoundTripCard = ({
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex w-full overscroll-x-auto   flex-col  justify-start "
+                className="flex w-full overscroll-x-auto   flex-col  justify-start bg-[#f0e1c0]"
               >
                 <div className="text-sm w-max ml-2  flex flex-col md:flex-row  text-black font-bold">
                   {segment.da.city} → {segment.aa.city}
@@ -256,8 +256,8 @@ const RoundTripCard = ({
         );
       case "Fare Details":
         return (
-          <div className="flex flex-col p-2">
-            <div className="grid grid-cols-3 w-full place-items-center text-sm border-b pb-2 mb-2">
+          <div className="flex flex-col p-2 bg-[#f0e1c0]">
+            <div className="grid grid-cols-3 w-full place-items-center text-sm border-b pb-2 mb-2 ">
               <div className="font-bold">TYPE</div>
               <div className="font-bold">Fare</div>
               <div className="font-bold">Total</div>
@@ -310,14 +310,14 @@ const RoundTripCard = ({
         );
       case "Fare Rules":
         return (
-          <div className="py-2 pl-6 text-xs ">
+          <div className="py-2 pl-6 text-xs bg-[#f0e1c0] ">
             <h2 className="font-bold mb-2">Fare Rules</h2>
             <p>Insert fare rules information here.</p>
           </div>
         );
       case "Baggage Information":
         return (
-          <div className="grid py-2 grid-cols-3 text-xs pl-6 gap-4">
+          <div className="grid py-2 grid-cols-3 text-xs pl-6 gap-4 bg-[#f0e1c0]">
             <div className="font-bold">SECTOR</div>
             <div className="font-bold">CHECKIN</div>
             <div className="font-bold">CABIN</div>
@@ -467,7 +467,7 @@ ${
                 <div className="w-2/3 text-xs">
                   <button
                     onClick={() => setShowDetails(!showDetails)}
-                    className=" text-sm mt-2"
+                    className=" text-sm mt-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
                   >
                     {showDetails ? (
                       <span className="text-black">

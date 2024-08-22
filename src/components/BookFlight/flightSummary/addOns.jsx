@@ -118,7 +118,7 @@ const [joyrideSteps] = useState([
           <div className="flex space-x-4 mb-4 ">
             <button
               onClick={() => setActiveButton("seatSelection")}
-              className={`text-sm md:text-base px-4 py-2 rounded addons-seat${
+              className={`text-sm md:text-base px-4 py-2 rounded ${
                 activeButton === "seatSelection"
                   ? "text-[#D7B56D] bg-[#1B1D29]"
                   : "bg-gray-200 text-gray-700"
@@ -131,7 +131,7 @@ const [joyrideSteps] = useState([
             </button> */}
             <button
               onClick={() => setActiveButton("addBagAndMeal")}
-              className={`text-sm md:text-base px-4 py-2 rounded  addons-meals-and-baggage  ${
+              className={`text-sm md:text-base px-4 py-2 rounded  ${
                 activeButton === "addBagAndMeal"
                   ? "text-[#D7B56D] bg-[#1B1D29]"
                   : "bg-gray-200 text-gray-700"
