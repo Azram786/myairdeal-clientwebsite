@@ -21,7 +21,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsaModifySearch, setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
+import {
+  setIsaModifySearch,
+  setLastSearch,
+  setResentSearch,
+} from "../../store/slices/aut.slice";
 import PassengerSelector from "./PassengerSelector";
 import getCountryCode from "../util/getCity";
 import { AsYouType } from "libphonenumber-js";
@@ -32,13 +36,12 @@ const FilterSection = ({
   setDynamicFormData,
   setTypeOfTravel,
   typeOfTravel,
-
 }) => {
   const navigate = useNavigate();
-  const { isModifySearch } = useSelector((state) => state.auth)
+  const { isModifySearch } = useSelector((state) => state.auth);
   const { token } = useSelector((state) => state.auth);
   const [Loading, setLoading] = useState(false);
-  const [preferredAirline, setPrefferedAirLine] = useState()
+  const [preferredAirline, setPrefferedAirLine] = useState();
   const dispatch = useDispatch();
 
   //filter state for country code
@@ -48,8 +51,7 @@ const FilterSection = ({
   //state for modal
   const [modalIsOpen, setModelIsOpen] = useState(false);
 
-
-  const [preferredAirlines, setPrefferedAirLines] = useState([])
+  const [preferredAirlines, setPrefferedAirLines] = useState([]);
   // state for filteration
 
   //changing type-of-travel
@@ -59,14 +61,11 @@ const FilterSection = ({
 
   //set country code where from
   const setContryCodeFrom = (value) => {
-
     setFormData((prev) => ({ ...prev, fromCityOrAirport: value }));
   };
 
   //set country code where to
   const setContryCodeTo = (value) => {
-
-
     if (formData.fromCityOrAirport === value && value !== "") {
       ReactToast("You cannot select the same airport twice");
     } else {
@@ -100,7 +99,8 @@ const FilterSection = ({
   const getCountriesHandlerOne = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL
+        `${
+          import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
@@ -118,18 +118,21 @@ const FilterSection = ({
   };
   const getPreferedAirLine = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`)
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`
+      );
 
-      setPrefferedAirLines(response.data.preferredAirlines)
+      setPrefferedAirLines(response.data.preferredAirlines);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
+  };
   // API search for second select tag
   const getCountriesHandlerTwo = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL
+        `${
+          import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
@@ -152,7 +155,8 @@ const FilterSection = ({
   const fetchDefaultOptions = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL
+        `${
+          import.meta.env.VITE_SERVER_URL
         }search/airport-country-code?countrycode=IN`
       );
       const options = response.data.data.map((item) => {
@@ -164,11 +168,11 @@ const FilterSection = ({
       });
 
       setDefaultOptions(options);
-    } catch (error) { }
+    } catch (error) {}
   };
   useEffect(() => {
-    getPreferedAirLine()
-  }, [])
+    getPreferedAirLine();
+  }, []);
 
   const submitHandler = async () => {
     try {
@@ -422,7 +426,7 @@ const FilterSection = ({
         };
       }
 
-      console.log({ query, saving })
+      console.log({ query, saving });
       // dispatch(setLastSearch(query));
       dispatch(setResentSearch(saving));
       if (token) {
@@ -439,7 +443,7 @@ const FilterSection = ({
 
       setLoading(false);
       navigate(`/search`, { state: { query } });
-      dispatch(setIsaModifySearch(false))
+      dispatch(setIsaModifySearch(false));
     } catch (error) {
       setLoading(false);
       // console.log(error.message);
@@ -454,33 +458,38 @@ const FilterSection = ({
   return (
     <div className=" flex flex-col items-center  min-h-[200px]   justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
       {/* <div className="     md:rounded-xl w-[90%] mt-4  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   "> */}
-      <div className={`
+      <div
+        className={`
   md:rounded-xl w-[90%] mt-4 p-2 shadow-md border border-gray-200 bg-white 
   flex gap-2 flex-col justify-center md:px-5 md:gap-4
-  ${!isModifySearch ? 'relative md:top-[-60px]' : ''}
-`}>
+  ${!isModifySearch ? "relative md:top-[-60px]" : ""}
+`}
+      >
         {/* type of travel selecting section */}
 
         <div className="flex justify-center md:justify-stretch text-white ">
           <button
-            className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
-              }`}
+            className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
+              typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
+            }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
           >
             One way
           </button>
           <button
-            className={`bg-[#1B1D29]  text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#D7B56D] text-black"
-              } `}
+            className={`bg-[#1B1D29]  text-sm md:text-base md:p-3 p-2 border-2 ${
+              typeOfTravel === "round-trip" && "bg-[#D7B56D] text-black"
+            } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
           >
             Round trip
           </button>
           <button
-            className={` bg-[#1B1D29]  text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#D7B56D] text-black"
-              }`}
+            className={` bg-[#1B1D29]  text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${
+              typeOfTravel === "multi-city" && "bg-[#D7B56D] text-black"
+            }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
           >
@@ -542,7 +551,6 @@ const FilterSection = ({
             <div className="flex flex-col md:flex-row    w-full  lg-custom:w-1/2 gap-2">
               <div className="  rounded   flex items-center border md:w-1/2  py-2 ">
                 <div className="flex items-center text-sm md:text-base justify-center gap-4   w-full ">
-
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}
@@ -613,10 +621,11 @@ const FilterSection = ({
                     <input
                       className="pl-1 font-bold outline-none cursor-pointer "
                       type="text"
-                      value={`${Number(formData.ADULT) +
+                      value={`${
+                        Number(formData.ADULT) +
                         Number(formData.CHILD) +
                         Number(formData.INFANT)
-                        } | ${formData.cabinClass}`}
+                      } | ${formData.cabinClass}`}
                       readOnly
                     />
                   </div>
@@ -698,16 +707,14 @@ const FilterSection = ({
                 id=""
                 value={preferredAirline}
                 onChange={(e) => setPrefferedAirLine(e.target.value)}
-
               >
                 <option className="" value="" disabled selected>
                   Select Prefered Airline
                 </option>
-                <option value={null}>
-                  Select all
-                </option>
-                {preferredAirlines.map((value) => <option value={value.code}>{value.name}</option>)}
-
+                <option value={null}>Select all</option>
+                {preferredAirlines.map((value) => (
+                  <option value={value.code}>{value.name}</option>
+                ))}
               </select>
             </div>
             <div className=" text-sm md:text-base flex gap-2 p-1 w-full  cursor-pointer justify-center items-center md:w-1/3  ">

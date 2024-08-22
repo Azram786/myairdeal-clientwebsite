@@ -211,7 +211,7 @@ const FlightList = () => {
       );
 
       const tripInfos = res.data.searchResult.tripInfos;
-
+      console.log(tripInfos, "tripInfos");
       if (!tripInfos) {
         ReactToast("No flights found on this route");
         return;
@@ -226,7 +226,7 @@ const FlightList = () => {
         setOneWay(tripInfos.ONWARD);
       } else if (tripInfos.COMBO) {
         setTripType("combo");
-        setCombo(Object.values(tripInfos.COMBO));
+        setCombo(tripInfos.COMBO);
       } else {
         setTripType("multicity");
         setMulticity(Object.values(tripInfos));
@@ -279,7 +279,7 @@ const FlightList = () => {
         )}
         {tripType === "combo" && (
           <Combo
-            flightprops={combo}
+            flightProps={combo}
             query={data}
             passenger={data?.searchQuery.paxInfo}
           />
