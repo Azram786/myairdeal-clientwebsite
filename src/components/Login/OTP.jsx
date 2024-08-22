@@ -100,7 +100,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
 
   return (
     <div>
-      <div className="flex gap-7  md:gap-2 w-full justify-center md:justify-evenly">
+      <div className="flex gap-7   md:gap-2 w-full justify-center md:justify-evenly">
         {otp.map((digit, index) => (
           <input
             key={index}

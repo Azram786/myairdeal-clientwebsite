@@ -130,6 +130,7 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
           }}
           render={({ field }) => (
             <Select
+          
               value={selectedNationality}
               placeholder={<CustomPlaceholder placeholder={"Nationality"} />}
               options={options}
@@ -145,6 +146,7 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
                   borderRadius: '4px',
                   borderWidth: '1px',
                   height: '100%',
+                 
                   '&:hover': {
                     borderColor: state.isFocused ? '#2684FF' : provided.borderColor,
                   },
@@ -155,10 +157,16 @@ const PassportDetails = forwardRef(({ passenger, index, updatePassenger, conditi
                 dropdownIndicator: (provided) => ({
                   ...provided,
                   color: errors.nationality ? 'red' : provided.color,
+                  
                 }),
                 valueContainer: (provided) => ({
                   ...provided,
                   padding: '0 8px',
+                  
+                }),
+                menu: (provided) => ({
+                  ...provided,
+                  zIndex: 9999, // Add your desired zIndex value here
                 }),
               }}
             />

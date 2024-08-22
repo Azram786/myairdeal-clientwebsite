@@ -11,18 +11,14 @@ import { FaSpinner } from "react-icons/fa";
 import ProgressBar from "./ProgressBar";
 import Review from "./Review";
 import AddDetails from "./flightSummary/addDetails";
-import { ApiData } from "./dummy-meal";
 import axios from "axios";
 import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import defaultAirline from "../../assets/home/logo/defaultAirline.png";
-import { set } from "react-hook-form";
 import PaymentPage from "./PaymentPage";
 import SessionTimer from "./SessionTimer";
 import ReactToast from "./Util/ReactToast";
 import Spinner from "../Profile/Spinner";
-import Header from "../Home/Header";
-import Footer from "../Home/Footer";
 import FlightLanding from "../../assets/booking/viewDetailedBookings/flightLanding.svg";
 import ShowBaggageInfo from "./Util/ShowBaggageInfo";
 import { setIsaModifySearch } from "../../store/slices/aut.slice";
@@ -234,20 +230,31 @@ const FlightSummary = () => {
             {currentStep === 0 ? (
               <>
                 <div
-                  className={`pb-4 border h-max border-gray-400  max-h-[50vh] ${
-                    data?.tripInfos.length > 1 && "overflow-scroll"
+                  className={`pb-4 border  border-gray-400   h-max ${
+                    data?.tripInfos.length > 1
                   } overflow-x-hidden`}
                 >
+                  <div className="flex justify-end m-2">
+                    <button
+                      className="w-full sm:w-3/4 md:w-[20%] h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-[#1B1D29] text-[#D7B56D] hover:text-[#1B1D29] hover:bg-[#D7B56D]  rounded-md text-sm sm:text-base flex items-center justify-center"
+                      onClick={handleSaveAndContinue}
+                    >
+                      {isSeatMapLoading ? (
+                        <FaSpinner className="animate-spin mr-2 text-xs sm:text-base" />
+                      ) : (
+                        "Add Details"
+                      )}
+                    </button>
+                  </div>
                   {data?.tripInfos?.map((item, index) => {
                     return (
                       <div key={index} className=" rounded-lg p-2   ">
-                        <div className=" flex flex-wrap items-center justify-between bg-[#1B1D29] text-white  p-2 rounded-t-lg">
+                        <div className="flex justify-center py-3 px-4"></div>
+                        <div className=" flex flex-wrap items-center justify-between bg-[#1B1D29] text-[#D7B56D]  p-2 rounded-t-lg">
                           <div className="text-base sm:text-lg font-semibold flex items-center">
                             <span>{item.sI[0].da.city}</span>
                             <FaArrowRight className="mx-2 inline" />
                             <span>{item.sI[item.sI.length - 1].aa.city}</span>
-                          </div>
-                          <div className="flex justify-center items-center gap-2">
                             <div className="text-white text-sm mt-1 sm:mt-0 sm:ml-2">
                               On{" "}
                               {new Date(item.sI[0].dt).toLocaleDateString(
@@ -260,6 +267,9 @@ const FlightSummary = () => {
                                 }
                               )}
                             </div>
+                          </div>
+                          <div className="flex justify-center items-center gap-2">
+                            
                             <div className="text-sm md:text-base  font-semibold text-white flex items-center">
                               <FaRegClock className="mr-2 " />
                               {calculateTotalDuration(item.sI)}
@@ -297,7 +307,7 @@ const FlightSummary = () => {
                                     </div>
                                   </div>
                                   <div className="flex flex-col md:flex-row w-full   ">
-                                    <div className="flex-col text-center md:text-left w-full md:w-[40%]">
+                                    <div className=" flex-col text-center md:text-left w-full md:w-[40%]">
                                       <div className="text-lg font-bold ">
                                         {segment.da.code}
                                       </div>
@@ -310,24 +320,33 @@ const FlightSummary = () => {
                                       <div className="text-sm">
                                         {segment.da.terminal || "N/A"}
                                       </div>
-                                      <div className="text-sm font-semibold">
-                                        {new Date(
-                                          segment.dt
-                                        ).toLocaleTimeString([], {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                          hour12: true,
-                                        })}
-                                      </div>
-                                      <div className="text-sm font-semibold">
-                                        {new Date(
-                                          item.sI[0].dt
-                                        ).toLocaleDateString("en-US", {
-                                          weekday: "long",
-                                          year: "numeric",
-                                          month: "short",
-                                          day: "numeric",
-                                        })}
+                                      <div className="text-sm font-semibold flex gap-1 ">
+                                        <div>
+                                          {new Date(
+                                            item.sI[0].dt
+                                          ).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            day: "numeric",
+                                          })}
+                                        </div>
+                                        ,
+                                        <div>
+                                          {new Date(
+                                            item.sI[0].dt
+                                          ).toLocaleDateString("en-US", {
+                                            weekday: "short",
+                                          })}
+                                        </div>
+                                        ,
+                                        <div>
+                                          {new Date(
+                                            segment.dt
+                                          ).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: false,
+                                          })}
+                                        </div>
                                       </div>
                                     </div>
                                     <div className="flex-col text-center my-2 md:my-0 w-full mr-32 md:w-[40%]">
@@ -362,9 +381,10 @@ const FlightSummary = () => {
                                       </div>
 
                                       <div className="text-center text-semibold text-sm">
-                                        {item.sI.length === 1
+                                        {/* {item.sI.length === 1
                                           ? "Non Stop"
-                                          : item.sI.length + "Stops"}
+                                          : item.sI.length + "Stops"} */}
+                                        Non-Stop
                                       </div>
                                     </div>
                                     <div className="flex-col text-center md:text-left w-full md:w-[40%] ">
@@ -380,24 +400,33 @@ const FlightSummary = () => {
                                       <div className="text-sm">
                                         {segment.aa.terminal || "N/A"}
                                       </div>
-                                      <div className="text-sm font-semibold">
-                                        {new Date(
-                                          segment.at
-                                        ).toLocaleTimeString([], {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                          hour12: true,
-                                        })}
-                                      </div>
-                                      <div className="text-sm font-semibold">
-                                        {new Date(
-                                          item.sI[0].dt
-                                        ).toLocaleDateString("en-US", {
-                                          weekday: "long",
-                                          year: "numeric",
-                                          month: "short",
-                                          day: "numeric",
-                                        })}
+                                      <div className="text-sm font-semibold flex gap-1">
+                                        <div>
+                                          {new Date(
+                                            item.sI[0].dt
+                                          ).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            day:"numeric"
+                                          })}
+                                        </div>
+                                        ,
+                                        <div>
+                                          {new Date(
+                                            item.sI[0].dt
+                                          ).toLocaleDateString("en-US", {
+                                            weekday: "short",
+                                          })}
+                                        </div>
+                                        ,
+                                        <div>
+                                          {new Date(
+                                            segment.at
+                                          ).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: false,
+                                          })}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -409,13 +438,13 @@ const FlightSummary = () => {
                                   <ShowBaggageInfo item={item} />
                                 </div>
                               </div>
-                              <div className="text-sm text-gray-500 mt-4">
+                              <div className="text-sm text-gray-500 mt-4 justify-center items-center flex ">
                                 {/* <span>
                                   There is a Special No Meal fare Provided by
                                   the Airline
                                 </span> */}
                                 {index !== item.sI.length - 1 && (
-                                  <div className="flex justify-between bg-[#1B1D29] text-white p-3 rounded-md mt-4 mb-4">
+                                  <div className="flex justify-between bg-[#FFDE99] text-black p-3 rounded-xl mt-2 mb-4 w-[50%]">
                                     <div className="text-sm">
                                       Require to change plane
                                     </div>
@@ -443,13 +472,13 @@ const FlightSummary = () => {
                 </div>
                 <div className="flex justify-center py-3 px-4">
                   <button
-                    className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-[#1B1D29] text-[#D7B56D]  rounded-md text-sm sm:text-base flex items-center justify-center"
+                    className="w-full sm:w-3/4 md:w-1/2 h-10 sm:h-12 px-4 sm:px-6 font-poppins bg-[#1B1D29] text-[#D7B56D] hover:text-[#1B1D29] hover:bg-[#D7B56D]  rounded-md text-sm sm:text-base flex items-center justify-center"
                     onClick={handleSaveAndContinue}
                   >
                     {isSeatMapLoading ? (
                       <FaSpinner className="animate-spin mr-2 text-xs sm:text-base" />
                     ) : (
-                      "Save and Continue"
+                      "Add Details"
                     )}
                   </button>
                 </div>
@@ -720,7 +749,6 @@ const FlightSummary = () => {
           <SessionTimer sessionTimeout={data?.conditions?.st} />
         )}
       </div>
-      <Footer />
     </div>
   );
 };

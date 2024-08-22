@@ -194,6 +194,12 @@ const AddDetails = ({
 
   return (
     <div className="pb-6 shadow-lg">
+      <button
+          onClick={() => setCurrentStep((p) => p - 1)}
+          className="text-[#D7B56D] hover:text-[#1B1D29] bg-[#1B1D29] hover:bg-[#D7B56D] m-2 textpsm md:text-base  py-2 px-4 rounded"
+        >
+          Previous
+        </button>
       <TravellersDetails
         expanded={expandedCard.travellers}
         toggleCard={() => toggleCard("travellers")}

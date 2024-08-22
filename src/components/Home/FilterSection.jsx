@@ -16,7 +16,6 @@ import MultiCityForm from "../util/MultiCityForm";
 // import Modal from "../util/CustomModal";
 import ReactToast from "../util/ReactToast";
 
-
 import "react-datepicker/dist/react-datepicker.css";
 
 import formatDate from "../util/DateFormatChanger";
@@ -45,8 +44,23 @@ const FilterSection = ({
   const [preferredAirline, setPrefferedAirLine] = useState();
   const dispatch = useDispatch();
 
-   // State for Joyride steps
-   const [joyrideSteps] = useState([
+  const [runJoyride, setRunJoyride] = useState(false);
+
+  // useEffect(() => {
+  //   sessionStorage.setItem("joyride", "notexecuted"); // Mark it as executed
+  //   // Check if joyride was previously run from localStorage
+  //   const storedJoyride = sessionStorage.getItem("joyride");
+
+  //   if (storedJoyride === "executed") {
+  //     setRunJoyride(false); // Don't run joyride again if it has been executed
+  //   } else if(storedJoyride !== "executed") {
+  //     setRunJoyride(true); // Run joyride if it has not been executed yet
+  //     sessionStorage.setItem("joyride", "executed"); // Mark it as executed
+  //   }
+  // }, [runJoyride]);
+
+  // State for Joyride steps
+  const [joyrideSteps] = useState([
     {
       target: ".flight-type-buttons",
       content: "Choose your travel type (One-way, Round-trip, or Multi-city)",
@@ -64,17 +78,15 @@ const FilterSection = ({
       content: "Pick your travel date here.",
     },
     {
-      target:".travel-passenger-details",
-      content: "Select the number of passengers and class preferences traveling with you.",
+      target: ".travel-passenger-details",
+      content:
+        "Select the number of passengers and class preferences traveling with you.",
     },
     {
       target: ".search-button",
       content: "Hit this button to search for flights.",
     },
   ]);
-
-  
-
 
   //filter state for country code
   const [countryCodeone, setCountryCodeOne] = useState("IN");
@@ -86,7 +98,7 @@ const FilterSection = ({
   const [preferredAirlines, setPrefferedAirLines] = useState([]);
 
   // Joyride state
-  const [runJoyride, setRunJoyride] = useState(true);
+
   // state for filteration
 
   //changing type-of-travel
@@ -576,7 +588,7 @@ const FilterSection = ({
                   />
                 </div>
               </div>
-              <div className="md:flex  hidden sm:items-center  justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2  -translate-y-1/2 bg-black w-8 h-8 rounded-full "> 
+              <div className="md:flex  hidden sm:items-center  justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2  -translate-y-1/2 bg-black w-8 h-8 rounded-full ">
                 <GoArrowSwitch />
               </div>
               <div className="flex md:ml-2   text-sm md:text-base items-center border rounded p-2 md:w-1/2 to-city-select ">
