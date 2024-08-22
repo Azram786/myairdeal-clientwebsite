@@ -61,7 +61,9 @@ const Banner = () => {
 
   const getBanners = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}banner/get-banners-user`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}banner/get-banners-user`
+      );
       // console.log({ banners: response },"Banners");
       setBanners(response.data);
     } catch (error) {
@@ -95,10 +97,10 @@ const Banner = () => {
 
       <div className="relative items-start h-full left-[10%] flex flex-col justify-center text-white w-2/3">
         <h3 className="font-semibold leading-[1.5] flex-wrap text-[1.2rem] md:text-[2rem]">
-          {banners[currentSlide]?.headingOne }
+          {banners[currentSlide]?.headingOne}
         </h3>
         <h4 className="md:mt-3 text-[1.2rem] font-poppins md:text-[1.5rem] lg:text-2x 2xl:text-[1.7rem]">
-        {banners[currentSlide]?.headingTwo}
+          {banners[currentSlide]?.headingTwo}
         </h4>
         <div>
           <button
@@ -110,7 +112,7 @@ const Banner = () => {
             }
             className="bg-[#1B1D29] px-6 text-xs md:text-base rounded-md mt-4 py-2"
           >
-              {banners[currentSlide]?.buttonText}
+            {banners[currentSlide]?.buttonText}
           </button>
         </div>
       </div>
@@ -135,8 +137,9 @@ const Banner = () => {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full ${currentSlide === index ? "bg-white" : "bg-gray-400"
-              }`}
+            className={`w-3 h-3 rounded-full ${
+              currentSlide === index ? "bg-white" : "bg-gray-400"
+            }`}
           ></button>
         ))}
       </div>

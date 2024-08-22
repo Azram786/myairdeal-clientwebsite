@@ -202,7 +202,6 @@ const PassportDetails = forwardRef(
               />
             )}
           />
-
           <Controller
             name="passportNumber"
             control={control}

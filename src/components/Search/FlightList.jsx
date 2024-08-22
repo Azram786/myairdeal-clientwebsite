@@ -161,6 +161,7 @@ const FlightList = () => {
   const [hasUserPressedBack, setHasUserPressedBack] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+    window.scrollTo(0, 0);
     // Push the current state to the history
     window.history.pushState({ page: "current" }, "");
 
@@ -214,8 +215,8 @@ const FlightList = () => {
       console.log(tripInfos, "tripInfos");
       if (!tripInfos) {
         ReactToast("No flights found on this route");
-        navigate("/no-flights")
-        
+        navigate("/no-flights");
+
         return;
       }
 

@@ -90,6 +90,10 @@ const FlightSummary = () => {
       });
   };
 
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[currentStep])
+
   useEffect(() => {
     getData();
   }, []);
@@ -269,7 +273,6 @@ const FlightSummary = () => {
                             </div>
                           </div>
                           <div className="flex justify-center items-center gap-2">
-                            
                             <div className="text-sm md:text-base  font-semibold text-white flex items-center">
                               <FaRegClock className="mr-2 " />
                               {calculateTotalDuration(item.sI)}
@@ -406,7 +409,7 @@ const FlightSummary = () => {
                                             item.sI[0].dt
                                           ).toLocaleDateString("en-US", {
                                             month: "short",
-                                            day:"numeric"
+                                            day: "numeric",
                                           })}
                                         </div>
                                         ,
