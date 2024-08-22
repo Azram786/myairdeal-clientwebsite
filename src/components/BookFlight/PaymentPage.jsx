@@ -130,6 +130,13 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         })),
       };
 
+      if (passenger.passportNumber !== "") {
+        passengerData.pNum = passenger.passportNumber;
+        passengerData.eD = passenger.expiryDate;
+        passengerData.pNat = passenger.nationality;
+        passengerData.pid = passenger.issueDate;
+      }
+
       // Conditionally include 'dob' if the passenger is an infant
       if (passenger.passengerType === "INFANT") {
         passengerData.dob = passenger.dob;
