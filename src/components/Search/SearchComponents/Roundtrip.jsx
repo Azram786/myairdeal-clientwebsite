@@ -446,7 +446,7 @@ const RoundTrip = ({
       </button>
       <div className="relative w-[20%] h-full flex flex-wrap flex-col lg-custom:flex-row ">
         <div
-          className={`fixed h-full overflow-y-auto lg-custom:static m-2 top-0 bottom-0 right-0 z-50 rounded-xl w-full bg-white transform ${
+          className={`fixed h-full overflow-y-auto lg-custom:static m-2 top-0 bottom-0 right-0 z-50 lg-custom:z-0 rounded-xl w-full bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
           style={{

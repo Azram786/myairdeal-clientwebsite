@@ -13,6 +13,8 @@ import Review from "./components/BookFlight/Review";
 import Signup from "./components/Login/Signup";
 import Header from "./components/Home/Header";
 import Footer from "./components/Home/Footer";
+import Test from "./components/Booking/Test";
+import NoFlights from "./components/Search/NoFlights";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -33,6 +35,7 @@ function App() {
             element={token ? <ViewDetailedBooking /> : <Login />}
           />
           <Route path="/search" element={<FlightList />} />
+          <Route path="/no-flights" element={<NoFlights />} />
           <Route
             path="/book-flight"
             element={token ? <FlightSummaryPage /> : <Login />}
@@ -41,6 +44,8 @@ function App() {
 
           {/* <Route path="/review" element={<Review />} /> */}
           <Route path="/enter-detail" element={<Signup />} />
+          
+
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -101,7 +101,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
               <div className="flex w-full flex-row justify-between text-[#D7B56D] md:bg-transparent bg-[#1B1D29] md:text-black rounded-md md:rounded-none p-2  md:w-[100%]  py-2 md:border-r-2 md:border-gray-300  sm:flex-row md:flex-row  gap-3  ">
                 <div className="flex w-full justify-between  gap-4 md:gap-1   flex-col  ">
-                  <div className="text-base md:text-base  mr-2  line-clamp-1 ">h
+                  <div className="text-base md:text-base  mr-2  line-clamp-1 ">
                     <span className="md:hidden tracking-widest">
                       {" "}
                       {trip.sI[0].da.code}{" "}

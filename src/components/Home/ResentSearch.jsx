@@ -27,7 +27,7 @@ const RecentSearch = ({ ResentSearchData }) => {
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
     responsive: [
       {
@@ -55,12 +55,12 @@ const RecentSearch = ({ ResentSearchData }) => {
   return (
     <div className=" w-[90%]  text-center rounded-xl my-4 mb-10 justify-center mx-auto flex flex-col gap-5">
       <h1 className="font-semibold px-4 text-start text-2xl">Recent Search</h1>
-      <div className="px-4 ">
+      <div className="  ">
         <Slider {...settings}>
           {ResentSearchData?.map((search, index) => (
             <div
               key={index}
-              className="rounded-2xl shadow-lg max-w-60 md:max-w-72 my-4 p-4 border gap-4 border-[#D7B56D] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
+              className="rounded-2xl  shadow-lg max-w-60 md:max-w-64 my-4 p-4 border gap-4 border-[#D7B56D] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
               onClick={() => {
                 setResentStateHandler(search);
               }}

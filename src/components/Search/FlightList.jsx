@@ -214,6 +214,8 @@ const FlightList = () => {
 
       if (!tripInfos) {
         ReactToast("No flights found on this route");
+        navigate("/no-flights")
+        
         return;
       }
 

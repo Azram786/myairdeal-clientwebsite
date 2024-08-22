@@ -237,7 +237,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
       </button>
       <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
         <div
-          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 rounded-xl bg-white transform ${
+          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 lg-custom:z-0 rounded-xl bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
           style={{
