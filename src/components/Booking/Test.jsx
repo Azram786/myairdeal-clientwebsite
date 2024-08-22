@@ -170,6 +170,7 @@ const ViewAmendmentDetails = ({ amendment }) => {
     },
   ]);
 
+  const [singleTripDetails, setSingleTripDetails] = useState(trips[0])
   const openModalHandler = () => {
     setModalIsOpen(true);
   };
@@ -200,6 +201,18 @@ const ViewAmendmentDetails = ({ amendment }) => {
     } catch (error) {
       ReactToast(error.message);
     }
+  };
+  const MyComponent = (departureDate) => {
+    const date = new Date(departureDate);
+    const formattedDate = date.toLocaleDateString(); // Format date (e.g., "10/20/2020")
+    const formattedTime = date.toLocaleTimeString(); // Format time (e.g., "1:30:00 AM")
+
+    return (
+      <span className="font-semibold text-[#84724a]">
+        {`${formattedDate}  `}
+        <span className="text-black">{`  ${formattedTime}`}</span>
+      </span>
+    );
   };
 
   if (amendment.length < 1) return;
@@ -239,146 +252,93 @@ const ViewAmendmentDetails = ({ amendment }) => {
 
       {modalIsOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-center z-50 ]">
-          <div className="bg-white flex justify-center flex-col rounded-lg shadow-xl w-[90%] md:w-1/2 md:mx-auto max-h-[90vh]">
+
+          <div class="bg-gray-200  flex items-center justify-center">
             {loading ? (
-              <div className="h-[50vh]">
+              <div className="w-full h-full">
                 <Spinner />
               </div>
             ) : (
               <>
-                <div className="flex justify-between items-center p-4 border-b  ">
-                  <h2 className="text-2xl font-bold">Amendment Details</h2>
-                  <button
-                    onClick={closeModal}
-                    className="text-gray-500 hover:text-gray-700 transition-colors"
-                  >
-                    <FaTimes className="text-xl" />
-                  </button>
-                </div>
-                <div className="p-2 overflow-y-auto no-scroll flex flex-col gap-4 h-80">
-                  <div className="bg-white p-6 rounded-lg shadow-md">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-blue-50 p-4 rounded-md">
-                        <div className="text-sm font-medium text-gray-600">
-                          Amendment ID:
-                        </div>
-                        <div className="text-lg font-semibold text-blue-700">
-                          {amendmentData?.amendmentId}
-                        </div>
-                      </div>
-                      <div className="bg-blue-50 p-4 rounded-md">
-                        <div className="text-sm font-medium text-gray-600">
-                          Amendment Status:
-                        </div>
-                        <div className="text-lg font-semibold text-blue-700">
-                          {amendmentData?.amendmentStatus}
-                        </div>
-                      </div>
-                      <div className="bg-blue-50 p-4 rounded-md">
-                        <div className="text-sm font-medium text-gray-600">
-                          Booking ID:
-                        </div>
-                        <div className="text-lg font-semibold text-blue-700">
-                          {amendmentData?.bookingId}
-                        </div>
-                      </div>
-                      <div className="bg-blue-50 p-4 rounded-md">
-                        <div className="text-sm font-medium text-gray-600">
-                          Refundable Amount:
-                        </div>
-                        <div className="text-lg font-semibold text-blue-700">
-                          {amendmentData?.refundableAmount}
-                        </div>
-                      </div>
-                      <div className="bg-blue-50 p-4 rounded-md md:col-span-2">
-                        <div className="text-sm font-medium text-gray-600">
-                          Remarks:
-                        </div>
-                        <div className="text-lg font-semibold text-blue-700">
-                          {amendmentData?.remarks}
-                        </div>
-                      </div>
-                    </div>
+                <div class="bg-white shadow-lg rounded-lg ">
+
+
+                  <div class="bg-gray-900 p-4 flex justify-between items-center">
+                    <h1 class="text-lg text-yellow-400 font-semibold">Amendment Details</h1>
+                    <button onClick={closeModal} class="text-yellow-400 text-lg">&times;</button>
                   </div>
-                  <div className="bg-white p-6 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 mb-4">
-                      Trip Details
+                  <div class="p-6">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                      <div class="bg-white border border-gray-300 p-4 rounded-lg flex flex-col justify-between">
+                        <p class="text-sm text-gray-500">Amendment ID:</p>
+                        <p class="font-semibold"> {amendmentData?.amendmentId}</p>
+                      </div>
+                      <div class="bg-white border flex flex-col justify-between border-gray-300 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Amendment Status:</p>
+                        <p class="font-semibold">{amendmentData?.amendmentStatus}</p>
+                      </div>
+                      <div class="bg-white border border-gray-300 p-4 flex flex-col justify-between rounded-lg">
+                        <p class="text-sm text-gray-500">Booking Id:</p>
+                        <p class="font-semibold text-sm "> {amendmentData?.bookingId}</p>
+                      </div>
+                      <div class="bg-white border flex flex-col justify-between  border-gray-300 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Refundable Amount:</p>
+                        <p class="font-semibold "> {amendmentData?.refundableAmount}</p>
+                      </div>
                     </div>
-                    {trips.map((trip, index) => (
-                      <div key={index} className="mb-4 border-b pb-4  px-1">
-                        <div className="mb-2">
-                          <span className="font-medium  text-gray-700">
-                            Source:
-                          </span>{" "}
-                          {trip.src}
+                    <div className="bg-blue-50 p-4 rounded-md md:col-span-2">
+                      <div className="text-sm font-medium text-gray-600">
+                        Remarks:
+                      </div>
+                      <div className="text-lg font-semibold text-[#9b814a]">
+                        {amendmentData?.remarks}
+                      </div>
+                    </div>
+
+                    <div class="mb-6">
+                      <div class="flex space-x-2">
+                        {trips.map((trip, index) => (<button onClick={() => setSingleTripDetails(trip)} class="bg-yellow-400 text-gray-800 font-semibold py-2 px-4 rounded-lg flex flex-col gap-1"><span>Trip - {index + 1}
+                        </span> <span> {trip.src} - {trip.dest}</span></button>))}
+
+
+                      </div>
+                    </div>
+
+                    <div class="bg-gray-100 p-4 rounded-lg mb-6">
+                      <p class="text-sm text-gray-500">Trip details:</p>
+                      <div class="flex justify-between mt-2">
+                        <div>
+                          <p>Departure: <span class="font-semibold">{singleTripDetails.src}</span></p>
+                          <p>Arrival: <span class="font-semibold">{singleTripDetails.dest}</span></p>
+                          <p>Flight number: <span class="font-semibold">{singleTripDetails.flightNumbers.join(", ")}</span></p>
+                          <p>Airlines: <span class="font-semibold">{singleTripDetails.airlines.join(", ")}</span></p>
                         </div>
-                        <div className="mb-2">
-                          <span className="font-medium text-gray-700">
-                            Destination:
-                          </span>{" "}
-                          {trip.dest}
-                        </div>
-                        <div className="mb-2">
-                          <span className="font-medium text-gray-700">
-                            Departure Date:
-                          </span>{" "}
-                          {trip.departureDate}
-                        </div>
-                        <div className="mb-2">
-                          <span className="font-medium text-gray-700">
-                            Flight Numbers:
-                          </span>{" "}
-                          {trip.flightNumbers.join(", ")}
-                        </div>
-                        <div className="mb-2">
-                          <span className="font-medium text-gray-700">
-                            Airlines:
-                          </span>{" "}
-                          {trip.airlines.join(", ")}
-                        </div>
-                        <div className="mt-4">
-                          <div className="font-medium text-gray-700 mb-2">
-                            Travellers:
-                          </div>
-                          {trip.travellers.map((traveller, i) => (
-                            <div
-                              key={i}
-                              className="bg-slate-300 p-2 rounded-md mb-2"
-                            >
-                              <div>
-                                <span className="font-medium text-gray-600">
-                                  Name:
-                                </span>{" "}
-                                {traveller.fn} {traveller.ln}
-                              </div>
-                              <div>
-                                <span className="font-medium text-gray-600">
-                                  Amendment Charges:
-                                </span>{" "}
-                                {traveller.amendmentCharges}
-                              </div>
-                              <div>
-                                <span className="font-medium text-gray-600">
-                                  Refundable Amount:
-                                </span>{" "}
-                                {traveller.refundableamount}
-                              </div>
-                              <div>
-                                <span className="font-medium text-gray-600">
-                                  Total Fare:
-                                </span>{" "}
-                                {traveller.totalFare}
-                              </div>
-                            </div>
-                          ))}
+                        <div>
+                          <p>Departure Time: {MyComponent(singleTripDetails.departureDate)}</p>
                         </div>
                       </div>
-                    ))}
+                    </div>
+
+                    {/* <div>
+                      <p class="text-sm text-gray-500 mb-2">Passengers:</p>
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {singleTripDetails.travellers.map((traveller, i) =>
+                          <div key={i} class="bg-gray-800 text-white p-4 rounded-lg">
+                            <p>Name: <span class="font-semibold"> {traveller.fn} {traveller.ln}</span></p>
+                            <p>Amendment charges: <span class="font-semibold">{traveller.amendmentCharges}</span></p>
+                            <p>Refundable amount: <span class="font-semibold">{traveller.refundableamount}</span></p>
+                            <p>Total Fare: <span class="font-semibold">{traveller.totalFare}</span></p>
+                          </div>
+
+                        )}
+                      </div>
+                    </div> */}
                   </div>
                 </div>
               </>
             )}
           </div>
+
         </div>
       )}
     </div>

@@ -251,42 +251,42 @@ const ViewAmendmentDetails = ({ amendment }) => {
       })}
 
       {modalIsOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-center z-50 ]">
 
-          <div class="bg-gray-200 min-h-screen flex items-center justify-center">
+
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-start z-50 overflow-y-auto pt-4 pb-4">
+          <div className="bg-gray-200 w-full max-w-4xl m-auto">
             {loading ? (
-              <div className="w-full h-full">
-                <Spinner />
-              </div>
+             <div className="w-full h-[80vh] flex justify-center items-center">
+             <Spinner />
+           </div>
             ) : (
               <>
-                <div class="bg-white shadow-lg rounded-lg ">
 
-
-                  <div class="bg-gray-900 p-4 rounded-t-lg flex justify-between items-center">
-                    <h1 class="text-lg text-yellow-400 font-semibold">Amendment Details</h1>
-                    <button onClick={closeModal} class="text-yellow-400 text-lg">&times;</button>
+                <div className="bg-white shadow-lg rounded-lg">
+                  <div className="bg-gray-900 p-4 flex justify-between items-center sticky top-0 z-10">
+                    <h1 className="text-lg text-yellow-400 font-semibold">Amendment Details</h1>
+                    <button onClick={closeModal} className="text-yellow-400 text-lg">&times;</button>
                   </div>
-                  <div class="p-6">
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                      <div class="bg-white border border-gray-300 p-4 rounded-lg flex flex-col justify-between">
-                        <p class="text-sm text-gray-500">Amendment ID:</p>
-                        <p class="font-semibold"> {amendmentData?.amendmentId}</p>
+                  <div className="p-6 max-h-[calc(100vh-8rem)] overflow-y-auto">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                      <div className="bg-white border border-gray-300 p-4 rounded-lg flex flex-col justify-between">
+                        <p className="text-sm text-gray-500">Amendment ID:</p>
+                        <p className="font-semibold">{amendmentData?.amendmentId}</p>
                       </div>
-                      <div class="bg-white border flex flex-col justify-between border-gray-300 p-4 rounded-lg">
-                        <p class="text-sm text-gray-500">Amendment Status:</p>
-                        <p class="font-semibold">{amendmentData?.amendmentStatus}</p>
+                      <div className="bg-white border flex flex-col justify-between border-gray-300 p-4 rounded-lg">
+                        <p className="text-sm text-gray-500">Amendment Status:</p>
+                        <p className="font-semibold">{amendmentData?.amendmentStatus}</p>
                       </div>
-                      <div class="bg-white border border-gray-300 p-4 flex flex-col justify-between rounded-lg">
-                        <p class="text-sm text-gray-500">Booking Id:</p>
-                        <p class="font-semibold text-sm "> {amendmentData?.bookingId}</p>
+                      <div className="bg-white border border-gray-300 p-4 flex flex-col justify-between rounded-lg">
+                        <p className="text-sm text-gray-500">Booking Id:</p>
+                        <p className="font-semibold text-sm">{amendmentData?.bookingId}</p>
                       </div>
-                      <div class="bg-white border flex flex-col justify-between  border-gray-300 p-4 rounded-lg">
-                        <p class="text-sm text-gray-500">Refundable Amount:</p>
-                        <p class="font-semibold "> {amendmentData?.refundableAmount}</p>
+                      <div className="bg-white border flex flex-col justify-between border-gray-300 p-4 rounded-lg">
+                        <p className="text-sm text-gray-500">Refundable Amount:</p>
+                        <p className="font-semibold">{amendmentData?.refundableAmount}</p>
                       </div>
                     </div>
-                    <div className="bg-blue-50 p-4 rounded-md md:col-span-2">
+                    <div className="bg-blue-50 p-4 rounded-md md:col-span-2 mb-6">
                       <div className="text-sm font-medium text-gray-600">
                         Remarks:
                       </div>
@@ -295,23 +295,30 @@ const ViewAmendmentDetails = ({ amendment }) => {
                       </div>
                     </div>
 
-                    <div class="mb-6">
-                      <div class="flex space-x-2">
-                        {trips.map((trip, index) => (<button onClick={() => setSingleTripDetails(trip)} class="bg-yellow-400 text-gray-800 font-semibold py-2 px-4 rounded-lg flex flex-col gap-1"><span>Trip - {index + 1}
-                        </span> <span> {trip.src} - {trip.dest}</span></button>))}
-
-
+                    <div className="mb-6">
+                      <div className="flex space-x-2 flex-wrap">
+                        {trips.map((trip, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setSingleTripDetails(trip)}
+                            className={`${singleTripDetails === trip ? 'bg-yellow-600 text-gray-800' : 'bg-black text-yellow-600'
+                            } ] font-semibold py-2 px-4 rounded-lg flex flex-col gap-1 mb-2`}
+                          >
+                            <span>Trip - {index + 1}</span>
+                            <span>{trip.src} - {trip.dest}</span>
+                          </button>
+                        ))}
                       </div>
                     </div>
 
-                    <div class="bg-gray-100 p-4 rounded-lg mb-6">
-                      <p class="text-sm text-gray-500">Trip details:</p>
-                      <div class="flex justify-between mt-2">
+                    <div className="bg-gray-100 p-4 rounded-lg mb-6">
+                      <p className="text-sm text-gray-500">Trip details:</p>
+                      <div className="flex justify-between mt-2">
                         <div>
-                          <p>Departure: <span class="font-semibold">{singleTripDetails.src}</span></p>
-                          <p>Arrival: <span class="font-semibold">{singleTripDetails.dest}</span></p>
-                          <p>Flight number: <span class="font-semibold">{singleTripDetails.flightNumbers.join(", ")}</span></p>
-                          <p>Airlines: <span class="font-semibold">{singleTripDetails.airlines.join(", ")}</span></p>
+                          <p>Departure: <span className="font-semibold">{singleTripDetails.src}</span></p>
+                          <p>Arrival: <span className="font-semibold">{singleTripDetails.dest}</span></p>
+                          <p>Flight number: <span className="font-semibold">{singleTripDetails.flightNumbers.join(", ")}</span></p>
+                          <p>Airlines: <span className="font-semibold">{singleTripDetails.airlines.join(", ")}</span></p>
                         </div>
                         <div>
                           <p>Departure Time: {MyComponent(singleTripDetails.departureDate)}</p>
@@ -319,26 +326,26 @@ const ViewAmendmentDetails = ({ amendment }) => {
                       </div>
                     </div>
 
-                    <div>
-                      <p class="text-sm text-gray-500 mb-2">Passengers:</p>
-                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        {singleTripDetails.travellers.map((traveller, i) =>
-                          <div key={i} class="bg-gray-800 text-white p-4 rounded-lg">
-                            <p>Name: <span class="font-semibold"> {traveller.fn} {traveller.ln}</span></p>
-                            <p>Amendment charges: <span class="font-semibold">{traveller.amendmentCharges}</span></p>
-                            <p>Refundable amount: <span class="font-semibold">{traveller.refundableamount}</span></p>
-                            <p>Total Fare: <span class="font-semibold">{traveller.totalFare}</span></p>
-                          </div>
 
+                    <div>
+                      <p className="text-sm text-gray-500 mb-2">Passengers:</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {singleTripDetails.travellers.map((traveller, i) =>
+                          <div key={i} className="bg-gray-800 text-white p-4 rounded-lg">
+                            <p>Name: <span className="font-semibold">{traveller.fn} {traveller.ln}</span></p>
+                            <p>Amendment charges: <span className="font-semibold">{traveller.amendmentCharges}</span></p>
+                            <p>Refundable amount: <span className="font-semibold">{traveller.refundableamount}</span></p>
+                            <p>Total Fare: <span className="font-semibold">{traveller.totalFare}</span></p>
+                          </div>
                         )}
                       </div>
                     </div>
+
                   </div>
                 </div>
               </>
             )}
           </div>
-
         </div>
       )}
     </div>
