@@ -532,6 +532,9 @@ const FilterSection = ({
             className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
               typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
             }`}
+            className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
+              typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
+            }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
           >
