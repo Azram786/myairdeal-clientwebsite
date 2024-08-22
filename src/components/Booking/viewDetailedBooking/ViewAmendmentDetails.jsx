@@ -331,7 +331,7 @@ const ViewAmendmentDetails = ({ amendment }) => {
                       <p className="text-sm text-gray-500 mb-2">Passengers:</p>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         {singleTripDetails.travellers.map((traveller, i) =>
-                          <div key={i} className="bg-gray-800 text-white p-4 rounded-lg">
+                          <div key={i} className="bg-gray-500 text-white p-4 rounded-lg">
                             <p>Name: <span className="font-semibold">{traveller.fn} {traveller.ln}</span></p>
                             <p>Amendment charges: <span className="font-semibold">{traveller.amendmentCharges}</span></p>
                             <p>Refundable amount: <span className="font-semibold">{traveller.refundableamount}</span></p>
