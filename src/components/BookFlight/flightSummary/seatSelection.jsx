@@ -60,6 +60,12 @@ const SeatSelection = ({
     setIsModalOpen(true);
   };
 
+  const isSeatMapAvailableForFlight = (flightId) => {
+    const seatData = seatMapData?.tripSeatMap?.tripSeat[flightId]?.sData;
+    const seatInfo = seatMapData?.tripSeatMap?.tripSeat[flightId]?.sInfo;
+    return isSeatMapAvailable && seatData && seatInfo;
+  };
+
   return (
     <div className="grid grid-cols-1 ">
       <div>
@@ -71,6 +77,11 @@ const SeatSelection = ({
             >
               {trip.sI.map((segment, segIndex) => {
                 const flightId = segment?.id;
+                const passengersWithSelectedSeats = passengers.filter(
+                  (passenger) =>
+                    passenger.selectedSeat.length > 0 &&
+                    passenger.selectedSeat.some((seat) => seat.key === flightId)
+                );
                 return (
                   <div key={segIndex} className="flex flex-col space-y-2  ">
                     <div className="flex items-center space-x-3">
@@ -78,8 +89,27 @@ const SeatSelection = ({
                       <span className="text-lg">→</span>
                       <span className="font-medium">{segment?.aa?.city}</span>
                     </div>
-
-                    {isSeatMapAvailable ? (
+                    <div>
+                      {passengersWithSelectedSeats.map((passenger, index) => (
+                        <div key={index}>
+                          <div className="text-sm">
+                            {passenger.firstName} {passenger.lastName} :{" "}
+                            {
+                              passenger.selectedSeat.find(
+                                (seat) => seat.key === flightId
+                              )?.code
+                            }{" "}
+                            , Rs &nbsp;
+                            {
+                              passenger.selectedSeat.find(
+                                (seat) => seat.key === flightId
+                              )?.amount
+                            }
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {!isSeatMapAvailableForFlight(flightId) ? (
                       <button
                         onClick={() => handleShowSeatMap(flightId)}
                         className="bg-[#1B1D29] text-[#D7B56D] text-sm px-4 py-2 rounded"

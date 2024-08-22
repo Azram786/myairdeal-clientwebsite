@@ -42,7 +42,7 @@ function App() {
           />
           <Route path="/profile" element={token ? <Profile /> : <Login />} />
 
-          {/* <Route path="/review" element={<Review />} /> */}
+  
           <Route path="/enter-detail" element={<Signup />} />
           
 

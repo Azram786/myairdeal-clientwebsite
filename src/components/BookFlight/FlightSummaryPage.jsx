@@ -36,7 +36,6 @@ const FlightSummary = () => {
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
-
   const location = useLocation();
   const [seatMapData, setSeatMapData] = useState(null);
   const { bookings } = location.state || {};
@@ -71,7 +70,7 @@ const FlightSummary = () => {
     setLoading(true);
     await axios
       .post(
-        `https://myairdeal-backend.onrender.com/booking/review-price`,
+        `https://api.myairdeal.com/booking/review-price`,
         {
           priceIds: bookingArray,
         },
@@ -113,12 +112,11 @@ const FlightSummary = () => {
   const [taxesExpanded, setTaxesExpanded] = useState(false);
   const [amountExpanded, setAmountExpanded] = useState(false);
   const [mealExpanded, setIsMealExpanded] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-
-    dispatch(setIsaModifySearch(false))
-  }, [])
+    dispatch(setIsaModifySearch(false));
+  }, []);
 
   // const toggleTaxes = (index) => {
   //   setTaxesExpanded((prev) =>
@@ -159,6 +157,7 @@ const FlightSummary = () => {
     return `${hours}h ${minutes}m`;
   }
 
+  console.log({ passengersData, passengers });
   function calculateTotalDuration(segments) {
     if (!segments || segments.length === 0) return "N/A";
 
@@ -216,10 +215,9 @@ const FlightSummary = () => {
     );
   }
 
-
   return (
-    <div className=" min-h-screen my-auto ">
-
+    <div className=" min-h-screen my-auto  ">
+      {/* <Header /> */}
       <div className="  sm:text-sm md:text-lg w-[90vw] flex-wrap mx-auto pt-4 ">
         <div
           className="flex flex-col w-full  flex-wrap lg-custom:flex-row gap-4   
@@ -465,6 +463,7 @@ const FlightSummary = () => {
                 setCurrentStep={setCurrentStep}
                 passengers={passengers}
                 setPassengers={setPassengers}
+                existingPassengerData={passengersData}
               />
             ) : currentStep === 2 ? (
               <>
@@ -558,10 +557,8 @@ const FlightSummary = () => {
                             <span>YR</span>
                             <span>
                               ₹{" "}
-                              {
-                                data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
-                                  ?.YR || "N/A"
-                              }
+                              {data?.totalPriceInfo?.totalFareDetail?.afC?.TAF
+                                ?.YR || "N/A"}
                             </span>
                           </div>
                         </div>
@@ -723,7 +720,7 @@ const FlightSummary = () => {
           <SessionTimer sessionTimeout={data?.conditions?.st} />
         )}
       </div>
-   
+      <Footer />
     </div>
   );
 };

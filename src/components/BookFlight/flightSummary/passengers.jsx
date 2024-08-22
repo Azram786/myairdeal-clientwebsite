@@ -187,14 +187,14 @@ const PassengerForm = forwardRef(({ passenger, index, updatePassenger, condition
                   </MenuItem>
                   {passenger.passengerType === "ADULT" ? (
                     [
-                      <MenuItem key="MR" value="MR">Mr</MenuItem>,
-                      <MenuItem key="MRS" value="MRS">Mrs</MenuItem>,
-                      <MenuItem key="MS" value="MS">Ms</MenuItem>
+                      <MenuItem key="Mr" value="Mr">Mr</MenuItem>,
+                      <MenuItem key="Mrs" value="Mrs">Mrs</MenuItem>,
+                      <MenuItem key="Ms" value="Ms">Ms</MenuItem>
                     ]
                   ) : (
                     [
-                      <MenuItem key="MS" value="MS">Ms</MenuItem>,
-                      <MenuItem key="MASTER" value="MASTER">Master</MenuItem>
+                      <MenuItem key="Ms" value="Ms">Ms</MenuItem>,
+                      <MenuItem key="Master" value="Master">Master</MenuItem>
                     ]
                   )}
                 </Select>

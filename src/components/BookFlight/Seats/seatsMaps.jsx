@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactToast from "../Util/ReactToast";
 import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
+import passengers from "../flightSummary/passengers";
 
 const SeatMap = ({
   Passengers,
@@ -10,6 +11,7 @@ const SeatMap = ({
   setModalClose,
   flightId,
 }) => {
+  console.log(Passengers, "hey");
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [flightDetails, setFlightDetails] = useState({});
   const [sData, setSData] = useState(null);
@@ -41,22 +43,42 @@ const SeatMap = ({
         });
 
         const tripSeat = booking?.tripSeatMap?.tripSeat[flightId];
+        console.log("heeeee", tripSeat);
         if (tripSeat) {
           setSData(tripSeat.sData);
           setSInfo(tripSeat.sInfo);
         }
       }
     }
+
+    // Pre-select seats that are already selected by passengers
+
+    const preSelectedSeats = Passengers.flatMap((passenger) =>
+      Array.isArray(passenger.selectedSeat)
+        ? passenger.selectedSeat
+            .filter((seat) => seat.key === flightId) // Filter seats with the correct flightId
+            .map((seat) => ({
+              key: seat.key,
+              code: seat.code,
+              amount: seat.amount,
+            }))
+        : []
+    );
+    setSelectedSeats(preSelectedSeats);
   }, [flightData, booking, flightId]);
 
   const toggleSeat = (seat) => {
     if (!seat.isBooked) {
       setSelectedSeats((prevSeats) => {
-        const seatIndex = prevSeats.findIndex((s) => s.code === seat.seatNo);
+        const seatIndex = prevSeats.findIndex(
+          (s) => s.code === seat.seatNo && s.key === flightId
+        );
 
         // If the seat is already selected, unselect it
         if (seatIndex !== -1) {
-          const updatedSeats = prevSeats.filter((s) => s.code !== seat.seatNo);
+          const updatedSeats = prevSeats.filter(
+            (s) => s.code !== seat.seatNo && s.key === flightId
+          );
           onSeatSelect(updatedSeats.length, null);
           return updatedSeats;
         }
@@ -88,7 +110,7 @@ const SeatMap = ({
   };
 
   const isSeatSelected = (seatNo) =>
-    selectedSeats.some((seat) => seat.code === seatNo);
+    selectedSeats.some((seat) => seat.code === seatNo && seat.key === flightId);
 
   const renderSeat = (seat) => {
     let className =
@@ -126,7 +148,11 @@ const SeatMap = ({
 
   const renderSeatMap = () => {
     if (!sData || !sInfo) {
-      return <div className="text-sm font-semibold">Loading Seat Map...</div>;
+      return (
+        <div className="text-sm font-semibold">
+          Seat Map Not Available for this Trip
+        </div>
+      );
     }
 
     const rows = [];
@@ -154,7 +180,7 @@ const SeatMap = ({
   return (
     <div className="container ">
       <p className="text-base font-semibold ">
-        Your booking is protected by MyAirDeal
+        Your booking is protected by MyAirDeal {flightId}
       </p>
       <div className="flex flex-col gap-6 md:flex-row w-full justify-around">
         {/* First portion for displaying the data - make it sticky */}
@@ -206,14 +232,16 @@ const SeatMap = ({
                     Seat
                   </h1>
                   <div className="flex flex-col">
-                    {selectedSeats?.map((seat) => (
-                      <p
-                        key={seat?.code}
-                        className="truncate text-sm font-semibold"
-                      >
-                        {seat?.code}
-                      </p>
-                    ))}
+                    {selectedSeats
+                      ?.filter((seat) => seat.key === flightId)
+                      .map((seat) => (
+                        <p
+                          key={seat?.code}
+                          className="truncate text-sm font-semibold"
+                        >
+                          {seat?.code}
+                        </p>
+                      ))}
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-center">
@@ -221,14 +249,16 @@ const SeatMap = ({
                     Fee
                   </h1>
                   <div>
-                    {selectedSeats?.map((seat) => (
-                      <p
-                        key={seat?.code}
-                        className="truncate text-sm font-sm font-semibold"
-                      >
-                        ₹ {seat?.amount}
-                      </p>
-                    ))}
+                    {selectedSeats
+                      ?.filter((seat) => seat.key === flightId)
+                      .map((seat) => (
+                        <p
+                          key={seat?.code}
+                          className="truncate text-sm font-sm font-semibold"
+                        >
+                          ₹ {seat?.amount}
+                        </p>
+                      ))}
                   </div>
                 </div>
               </div>

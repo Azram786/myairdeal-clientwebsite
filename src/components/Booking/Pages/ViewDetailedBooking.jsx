@@ -25,6 +25,7 @@ const ViewDetailedBooking = () => {
   const { bookingId, bookingFilter } = queryParams;
   const [loading, setLoading] = useState(true);
   const [amendment, setAmendment] = useState([]);
+  const [data,setData]=useState(null)
   const getSingleTicketDetailHandler = async () => {
     try {
       setLoading(true);
@@ -38,10 +39,12 @@ const ViewDetailedBooking = () => {
           },
         }
       );
-
+      console.log({ data: response.data })
       setSearchQuery(response.data.searchQuery);
       setSingleBookingData(response.data.data);
       setAmendment(response.data.amendment);
+      setData(response.data.completeBookingData
+      )
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -146,7 +149,8 @@ const ViewDetailedBooking = () => {
                         {
                           singleBookingData?.itemInfos.AIR.totalPriceInfo
                             .totalFareDetail.fC.BF
-                        }
+                         + Math.abs(  singleBookingData?.itemInfos.AIR.totalPriceInfo
+                          .totalFareDetail.fC.TF - data?.payment?.amount)}
                       </div>
                     </div>
                     <div className=" flex flex-col">
@@ -207,10 +211,8 @@ const ViewDetailedBooking = () => {
                     <div>Total</div>
                     <div className="flex">
                       ₹{" "}
-                      {
-                        singleBookingData?.itemInfos.AIR.totalPriceInfo
-                          .totalFareDetail.fC.TF
-                      }
+                    
+                      {data?.payment?.amount}
                     </div>
                   </div>
                 </div>
