@@ -61,7 +61,10 @@ const Banner = () => {
 
   const getBanners = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}banner/get-banners-user`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}banner/get-banners-user`
+      );
+      // console.log({ banners: response },"Banners");
       setBanners(response.data);
     } catch (error) {
       ReactToast(error);
@@ -123,6 +126,7 @@ const Banner = () => {
             className="bg-[#1B1D29] text-white rounded-md mt-4 py-2 px-6 md:px-8 text-xs md:text-base w-32"
           >
             {banners[currentSlide]?.buttonText}
+          
           </button>
         </div>
       </div>
@@ -149,8 +153,9 @@ const Banner = () => {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full ${currentSlide === index ? "bg-white" : "bg-gray-400"
-              }`}
+            className={`w-3 h-3 rounded-full ${
+              currentSlide === index ? "bg-white" : "bg-gray-400"
+            }`}
           ></button>
         ))}
       </div>

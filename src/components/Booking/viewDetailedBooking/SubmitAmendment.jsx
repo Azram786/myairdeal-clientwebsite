@@ -245,10 +245,25 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
       submitAmendment();
     }
   };
+  const [activeTrip, setActiveTrip] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+
+  const trips = [
+    { id: 1, title: 'Trip 1', details: 'Details of Trip 1' },
+    { id: 2, title: 'Trip 2', details: 'Details of Trip 2' },
+    { id: 3, title: 'Trip 3', details: 'Details of Trip 3' },
+    { id: 4, title: 'Trip 4', details: 'Details of Trip 4' },
+    { id: 5, title: 'Trip 5', details: 'Details of Trip 5' },
+  ];
+
+  const handleClick = (tripId) => {
+    setActiveTrip(tripId);
+    setShowDetails(true);
+  };
 
   return (
     <div className="px-4 py-4 flex justify-center items-center  h-[70vh] w-full">
-      <div className="px-4 py-4 h-[50vh] bg-white  w-full rounded-lg">
+      <div className="px-4 py-4 h-[70vh] bg-white  w-full rounded-lg">
         <div className="transition-padding duration-300 h-full w-full">
           {Loading ? (
             <div className="flex justify-center items-center w-full h-full">
@@ -272,7 +287,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                     checked={cancelWholeTicket}
                   />
                   <span
-                    className={`ml-3 md:text-sm  font-semibold  p-1 rounded-md ${
+                    className={`ml-3 md:text-sm  font-semibold  p-1 rounded-md mb-2 ${
                       cancelWholeTicket ? "border-[#1B1D29]" : "bg-gray-100"
                     }`}
                   >
@@ -280,7 +295,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                   </span>
                 </label>
 
-                {fullBookingData?.itemInfos?.AIR?.tripInfos.map(
+                {/* {fullBookingData?.itemInfos?.AIR?.tripInfos.map(
                   (trip, tripIndex) => (
                     <div key={tripIndex} className="mt-4 bg-green-400 ">
                       <div
@@ -382,8 +397,35 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                     </div>
                     
                   )
-                )}
+                )} */}
+               <div>
+      <div className="w-full border-2 bg-blue-100 flex gap-2 overflow-x-scroll">
+        {trips.map((trip) => (
+          <div
+            key={trip.id}
+            className={`min-w-32 h-16 rounded-md cursor-pointer flex justify-center items-center p-2 ${
+              activeTrip === trip.id ? 'bg-red-600' : 'bg-red-400'
+            }`}
+            onClick={() => handleClick(trip.id)}
+          >
+            <div>
+              <h1>{trip.title}</h1>
+              <h2>Trip Details</h2>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-end text-semibold text-sm my-2 cursor-pointer">
+        <h1>Show Passengers</h1>
+      </div>
 
+      {showDetails && activeTrip && (
+        <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-100">
+          <h2 className="text-lg font-bold mb-2">Trip Details</h2>
+          <p>{trips.find((trip) => trip.id === activeTrip)?.details}</p>
+        </div>
+      )}
+    </div>
                 <div className="mt-4">
                   <label className="block text-[#1B1D29] font-semibold mb-2">
                     Remarks

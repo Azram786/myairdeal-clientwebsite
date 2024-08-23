@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import Logo from "../../assets/home/logo/FinalLogo.jpg";
 import {
   logout,
   setIsaModifySearch,
@@ -123,7 +124,7 @@ const Header = () => {
       <div className=" mx-auto px-8 py-2 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           {/* <img src={main_logo} alt="logo" className="h-10 mr-2" /> */}
-          <h3 className="text-white text-xl font-bold">
+          <h3 className="text-white text-2xl font-bold">
             My <span className="text-[#D7B56D]">Air</span> Deal
           </h3>
         </Link>

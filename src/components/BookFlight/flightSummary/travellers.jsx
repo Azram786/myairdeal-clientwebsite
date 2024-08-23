@@ -1,11 +1,10 @@
-
 import React, { useState, useRef } from "react";
 import PassengerForm from "./passengers";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { TextField } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import "./CustomPhoneInput.css";
-import 'react-phone-input-2/lib/style.css'
+import "react-phone-input-2/lib/style.css";
 
 const TravellersCard = ({
   passengers,
@@ -31,8 +30,6 @@ const TravellersCard = ({
   // console.log({ updatedPassengers })
   // setPassengers(updatedPassengers);
   const updatePassenger = (index, field, value) => {
-
-
     // Copy the passengers array to avoid direct mutation
     const updatedPassengers = [...passengers];
 
@@ -41,8 +38,6 @@ const TravellersCard = ({
       ...updatedPassengers[index],
       [field]: value,
     };
-
-
 
     // Set the state with the updated array
     setPassengers(() => updatedPassengers);
@@ -123,7 +118,6 @@ const TravellersCard = ({
                     updatePassenger={updatePassenger}
                     condition={condition}
                     setPassengers={setPassengers}
-
                   />
                 ))}
             </div>
@@ -174,8 +168,8 @@ const TravellersCard = ({
                       const dialCode = `+${country.dialCode}`;
                       const phoneNumber = value.slice(country.dialCode.length);
 
-                      setContactDetails(prevDetails => ({
-                        ...prevDetails,  // Spread the existing state
+                      setContactDetails((prevDetails) => ({
+                        ...prevDetails, // Spread the existing state
                         phoneNumber: phoneNumber,
                         dialCode: dialCode,
                       }));
@@ -191,13 +185,11 @@ const TravellersCard = ({
                         });
                       }
                     }}
-
-
                     inputProps={{
                       name: "phone",
                       required: true,
                       autoFocus: true,
-                      className: "custom-input",
+                      className: "w-full border rounded px-12 py-1",
                     }}
                   />
                   {errors.phone && (

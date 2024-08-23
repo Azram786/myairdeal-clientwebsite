@@ -168,6 +168,7 @@ const FlightList = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
   useEffect(() => {
+    window.scrollTo(0, 0);
     // Push the current state to the history
     window.history.pushState({ page: "current" }, "");
 

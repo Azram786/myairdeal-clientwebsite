@@ -23,6 +23,16 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
 
   const data = flightDetails.sI;
   const priceList = flightDetails?.totalPriceList;
+  const groupFlightsByDate = (flights) => {
+    return flights.reduce((acc, flight) => {
+      const flightDate = formatDateTime(flight.dt).split(", ")[0]; // Only take the date part
+      if (!acc[flightDate]) {
+        acc[flightDate] = [];
+      }
+      acc[flightDate].push(flight);
+      return acc;
+    }, {});
+  };
 
   const calculateTotalPrice = (priceIndex) => {
     const selectedPrice = priceList[priceIndex];
@@ -66,79 +76,143 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
     return date.toLocaleString("en-US", options);
   };
 
+  function calculateLayoverTime(segments) {
+    if (segments.length <= 1) return null;
+  
+    let totalLayoverTime = 0;
+    for (let i = 0; i < segments.length - 1; i++) {
+      const arrivalTime = new Date(segments[i].at);
+      const departureTime = new Date(segments[i + 1].dt);
+      totalLayoverTime += (departureTime - arrivalTime) / (1000 * 60);
+    }
+  
+    const hours = Math.floor(totalLayoverTime / 60);
+    const minutes = Math.round(totalLayoverTime % 60);
+    return `${hours}h ${minutes}m`;
+  }
+  const groupedFlights = groupFlightsByDate(data);
+
   const renderTabs = () => {
     switch (activeTab) {
-      case "Flight Details ":
+      case "Flight Details":
         return (
-          <div className="w-full">
-            {data.map((segment, index) => (
-              <div
-                key={index}
-                className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
-              >
-                <div className="flex items-center">
-                  <img
-                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
-                    onError={(e) => (e.currentTarget.src = defaultAirline)}
-                    alt={segment?.fD?.aI?.code}
-                    className="w-10 h-10 mr-4"
-                  />
-                  <div>
-                    <div className="font-bold text-sm">
-                      {segment.fD.aI.name} {segment.fD.fN}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.city} → {segment.aa.city}{" "}
-                      {formatDateTime(segment.dt)}
-                    </div>
-                  </div>
+          <div className="w-full bg-[#f0e1c0] overflow-scroll">
+          {Object.keys(groupedFlights).map((date, dateIndex) => {
+            const flightsForDate = groupedFlights[date];
+            const sourceCity = flightsForDate[0]?.da?.city;
+            const finalDestinationCity =
+              flightsForDate[flightsForDate.length - 1]?.aa?.city;
+        
+            return (
+              <div key={dateIndex} className="mb-8">
+                {/* Source to Destination Header */}
+                <div className="text-lg font-bold text-gray-700 mb-4">
+                  {sourceCity} to {finalDestinationCity}
                 </div>
-                <div className="flex items-center">
-                  <div className="text-right mr-8">
-                    <div className="font-bold">
-                      {formatDateTime(segment.dt).split(",")[1].trim()}
+        
+                {/* Group of Flights for the Same Date */}
+                {flightsForDate.map((segment, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
+                  >
+                    <div className="flex items-center w-full text-left pl-0 md:pl-6 lg-custom:pl-0 md:w-[26%]">
+                      <img
+                        src={`${
+                          import.meta.env.VITE_SERVER_URL
+                        }uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                        onError={(e) =>
+                          (e.currentTarget.src = defaultAirline)
+                        }
+                        alt={segment?.fD?.aI?.code}
+                        className="md:size-10 size-8 rounded-md mr-4"
+                      />
+                      <div className="flex flex-col">
+                        <div className="text-xs font-bold text-[#1B1D29]">
+                          {segment.da.city} → {segment.aa.city}
+                        </div>
+                        <div className="font-bold text-sm">
+                          <span className="text-[10px] text-gray-600">
+                            {flightDetails.totalPriceList[0].fd.ADULT.cc}
+                          </span>
+                          <br />
+                          {segment.fD.aI.name} {segment.fD.fN}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {formatDateTime(segment.dt)}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.city}, {segment.da.country}
+        
+                    <div className="flex gap-2 mt-2 items-center w-full md:w-[70%] justify-around md:gap-8 bg-green-400">
+                      <div className="p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%]">
+                        <div className="font-bold text-xs md:text-sm">
+                          {formatDateTime(segment.dt)}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {segment.da.city}, {segment.da.country}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {segment.da.name}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {segment.da.terminal || "N/A"}
+                        </div>
+                      </div>
+        
+                      <div className="flex justify-center w-20 md:min-w-[25%] lg-custom:min-w-[35%] mr-0 md:mr-6 flex-col items-center">
+                        <div className="text-[10px] md:text-xs text-end text-gray-500">
+                          {segment.stops === 0
+                            ? "Non-Stop"
+                            : `${segment.stops} Stop(s)`}
+                        </div>
+                        <FaPlane className="my-2 text-gray-400" />
+                        <div className="text-xs text-gray-500">
+                          {convertToHoursMinutes(segment.duration)}
+                        </div>
+                      </div>
+        
+                      <div className="text-left p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%] ml-0 lg-custom:ml-8">
+                        <div className="font-bold text-xs md:text-sm">
+                          {formatDateTime(segment.at)}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {segment.aa.city}, {segment.aa.country}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {segment.aa.name}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {segment.aa.terminal || "N/A"}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.name}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.da.terminal || "N/A"}
-                    </div>
+        
+                    {/* Display Layover Time for Connecting Flights */}
+                    {index < flightsForDate.length - 1 && (
+                      <div className="w-full flex justify-center mt-2">
+                        <div className="px-4 flex justify-between py-2 lg-custom:w-1/2 border border-gray-200 bg-gray-100 rounded-full text-xs md:text-sm">
+                          <span className="font-bold">
+                            Require to change Plane
+                          </span>
+                          <span>
+                            <span className="font-bold ml-4">
+                              Layover Time:
+                            </span>{" "}
+                            {calculateLayoverTime([segment, flightsForDate[index + 1]])}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex flex-col items-center mx-4">
-                    <div className="text-xs text-gray-500">
-                      {segment.stops === 0
-                        ? "Non-Stop"
-                        : `${segment.stops} Stop(s)`}
-                    </div>
-                    <FaPlane className="my-2 text-gray-400" />
-                    <div className="text-xs text-gray-500">
-                      {/* {convertToHoursMinutes(segment.duration)} */}
-                      {calculateDuration(segment.dt, segment.at)}
-                    </div>
-                  </div>
-                  <div className="text-left ml-8">
-                    <div className="font-bold">
-                      {formatDateTime(segment.at)}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.aa.city}, {segment.aa.country}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.aa.name}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {segment.aa.terminal || "N/A"}
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })}
+        </div>
+        
         );
+
       case "Fare Details":
         return (
           <div className="w-full">
@@ -221,6 +295,7 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
   };
 
   const startSegment = data[0];
+  console.log({ startSegment }, "hdsjgfahdklxjfmclwas");
   const endSegment = data[data.length - 1];
   const displayedPrices = showAllPrices ? priceList : priceList;
 
@@ -230,62 +305,103 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
     0
   );
 
+  const groupedSegments = [];
+  let currentGroup = [];
+
+  data.forEach((segment) => {
+    if (segment.sN === 0) {
+      if (currentGroup.length > 0) {
+        groupedSegments.push(currentGroup);
+      }
+      currentGroup = [segment];
+    } else if (segment.sN === 1 && currentGroup.length > 0) {
+      currentGroup.push(segment);
+      groupedSegments.push(currentGroup);
+      currentGroup = [];
+    }
+  });
+
+  // Handle any remaining segments if there's an incomplete group
+  if (currentGroup.length > 0) {
+    groupedSegments.push(currentGroup);
+  }
+
+
   return (
     <>
       <div className="border p-4 rounded-lg m-2 justify-between items-center overflow-x-auto bg-white shadow-md">
         <div className="flex   flex-col md:flex-row  justify-between items-stretch  mb-2">
           <div className="flex flex-col w-full ">
-            <div className="flex justify-around">
-              <div className="md:hidden">
-                <img
-                  src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-                  onError={(e) => (e.currentTarget.src = defaultAirline)}
-                  alt={startSegment?.fD?.aI?.code}
-                  className="size-12 hidden mr-6"
-                />
-              </div>
-              <div className="md:flex-row flex-col flex justify-center items-center mb-4 md:mb-0">
-                <img
-                  src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-                  onError={(e) => (e.currentTarget.src = defaultAirline)}
-                  alt={startSegment?.fD?.aI?.code}
-                  className="size-12 md:flex hidden  mr-6"
-                />
-                <div>
-                  <h1 className="text-base font-bold">
-                    {startSegment.da.code}
-                  </h1>
-                  {/* <h1 className="text-sm text-gray-500">{startSegment.da.city}</h1> */}
-                  <h1 className="text-xs">{formatDateTime(startSegment.dt)}</h1>
-                </div>
-              </div>
-              <div className="flex items-center mb-4 md:mb-0">
-                <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
-                <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
-                  <span>{convertToHoursMinutes(totalDuration)}</span>
-                  <FaPlane className="mx-2 text-blue-800 text-3xl" />
-                  <div className="flex items-center">
-                    {isConnectionFlight ? (
-                      <span>
-                        {data.length - 1} stop{data.length > 2 ? "s" : ""}
-                        {data.length === 2 && ` via ${data[0].aa.city}`}
-                      </span>
-                    ) : (
-                      <span>Non-stop flight</span>
-                    )}
-                  </div>
-                </div>
-                <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-20"></div>
-              </div>
-              <div className="flex md:text-start text-end  items-center mb-4 md:mb-0">
-                <div>
-                  <h1 className="text-base font-bold">{endSegment.aa.code}</h1>
-                  {/* <h1 className="text-sm text-gray-500">{endSegment.aa.city}</h1> */}
-                  <h1 className="text-xs">{formatDateTime(endSegment.at)}</h1>
-                </div>
-              </div>
-            </div>
+            <div className="flex flex-col gap-4 ">
+              {groupedSegments.map((group, index) => {
+                const startSegment = group[0]; 
+                const endSegment = group[group.length - 1]; 
+                const totalDuration = group.reduce(
+                  (acc, segment) => acc + segment.duration,
+                  0
+                );
 
+                // Check if it's a connecting flight
+                const isConnectionFlight = group.length > 1;
+
+                return (
+                  <div
+                    key={index}
+                    className="flex justify-around bg-white p-4 rounded-md"
+                  >
+                    {/* Departure Information */}
+                    <div className="flex flex-col items-center">
+                      <img
+                        src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                        onError={(e) => (e.currentTarget.src = defaultAirline)}
+                        alt={startSegment?.fD?.aI?.code}
+                        className="size-12"
+                      />
+                      <h1 className="text-base font-bold">
+                        {startSegment.da.code}
+                      </h1>
+                      <h1 className="text-xs">
+                        {formatDateTime(startSegment.dt)}
+                      </h1>
+                    </div>
+
+                    {/* Flight Duration and Connection Information */}
+                    <div className="flex items-center text-center">
+                      <div className="border-t border-dashed border-gray-400 w-20"></div>
+                      <div className="flex flex-col items-center text-xs font-semibold text-gray-500 mx-4">
+                        <span>{convertToHoursMinutes(totalDuration)}</span>
+                        <FaPlane className="text-[#D7B56D] text-3xl" />
+                        {isConnectionFlight ? (
+                          <span>
+                            {group.length - 1} stop{group.length > 2 ? "s" : ""}
+                            {group.length === 2 && ` via ${group[0].aa.city}`}
+                          </span>
+                        ) : (
+                          <span>Non-stop flight</span>
+                        )}
+                      </div>
+                      <div className="border-t border-dashed border-gray-400 w-20"></div>
+                    </div>
+
+                    {/* Arrival Information */}
+                    <div className="flex flex-col items-center">
+                      <img
+                        src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${endSegment?.fD?.aI?.code}.png`}
+                        onError={(e) => (e.currentTarget.src = defaultAirline)}
+                        alt={endSegment?.fD?.aI?.code}
+                        className="size-12"
+                      />
+                      <h1 className="text-base font-bold">
+                        {endSegment.aa.code}
+                      </h1>
+                      <h1 className="text-xs">
+                        {formatDateTime(endSegment.at)}
+                      </h1>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
             <div className="flex flex-col w-full  overflow-x-auto">
               <div className="flex  mt-3 gap-2 overflow-x-auto items-start">
                 {displayedPrices.map((price, index) => (
@@ -367,8 +483,8 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
         </div>
 
         {showDetails && (
-          <div className="mt-4 border-t overflow-x-auto   border-gray-200 pt-4">
-            <div className="mb-2   flex">
+          <div className=" border-t  border-gray-200 pt-4 ">
+            <div className="text-xs mb-2 md:text-sm px-0 md:px-4 shrink-0 flex overflow-x-auto  bg-white">
               {[
                 "Flight Details",
                 "Fare Details",
@@ -378,9 +494,9 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`py-2  px-4 text-sm ${
+                  className={`py-2  px-2 md:px-3 shrink-0 text-sm  ${
                     activeTab === tab
-                      ? "text-[#D7B56D] font-bold border-b-2 border-[#D7B56D]"
+                      ? "text-[#1B1D29]  font-bold border-b-2 border-[#1B1D29]"
                       : "text-gray-500"
                   }`}
                 >
@@ -388,6 +504,7 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                 </button>
               ))}
             </div>
+            {/* function for the cards */}
             {renderTabs()}
           </div>
         )}

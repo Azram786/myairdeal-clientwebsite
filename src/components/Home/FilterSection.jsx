@@ -47,18 +47,15 @@ const FilterSection = ({
   const [runJoyride, setRunJoyride] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("joyride", "notexecuted"); 
     const storedJoyride = localStorage.getItem("joyride");
-  
-    if (storedJoyride === "notexecuted") {
+    if (!storedJoyride) localStorage.setItem("joyride", "notexecuted");
 
-      setRunJoyride(true); 
-      localStorage.setItem("joyride", "executed"); 
+    if (storedJoyride === "notexecuted") {
+      setRunJoyride(true);
+      localStorage.setItem("joyride", "executed");
     } else {
-     
     }
   }, []);
-  
 
   // State for Joyride steps
   const [joyrideSteps] = useState([
@@ -169,7 +166,7 @@ const FilterSection = ({
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`
       );
-    
+
       setPrefferedAirLines(response.data.preferredAirlines);
     } catch (error) {
       console.log(error.message);
@@ -504,12 +501,15 @@ const FilterSection = ({
     try {
       const cityFrom = formData.fromCityOrAirport;
       const cityTo = formData.toCityOrAirport;
-      setFormData((prev) => ({ ...prev, fromCityOrAirport: cityTo, toCityOrAirport: cityFrom }))
-
+      setFormData((prev) => ({
+        ...prev,
+        fromCityOrAirport: cityTo,
+        toCityOrAirport: cityFrom,
+      }));
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
+  };
 
   useEffect(() => {
     fetchDefaultOptions();
@@ -517,22 +517,21 @@ const FilterSection = ({
 
   return (
     <div className=" flex flex-col items-center  min-h-[200px]   justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
-     {
-      runJoyride &&
-      <ReactJoyride
-        steps={joyrideSteps}
-        run={runJoyride}
-        continuous={true}
-        scrollToFirstStep={false}
-        showProgress={true}
-        showSkipButton={true}
-        callback={(data) => {
-          if (data.action === "reset") {
-            setRunJoyride(false);
-          }
-        }}
-      />
-     } 
+      {runJoyride && (
+        <ReactJoyride
+          steps={joyrideSteps}
+          run={runJoyride}
+          continuous={true}
+          scrollToFirstStep={false}
+          showProgress={true}
+          showSkipButton={true}
+          callback={(data) => {
+            if (data.action === "reset") {
+              setRunJoyride(false);
+            }
+          }}
+        />
+      )}
       {/* <div className="     md:rounded-xl w-[90%] mt-4  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   "> */}
       <div
         className={`
@@ -548,7 +547,6 @@ const FilterSection = ({
             className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
               typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
             }`}
-            
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
           >
@@ -597,7 +595,6 @@ const FilterSection = ({
                     myFormData={formData}
                     setFormData={setContryCodeFrom}
                     defaultOptions={defaultOptions}
-
                     value={formData?.fromCityOrAirport}
                   />
                 </div>

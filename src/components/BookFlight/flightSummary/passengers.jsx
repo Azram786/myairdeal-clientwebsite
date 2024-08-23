@@ -278,6 +278,65 @@ const PassengerForm = forwardRef(
                 )}
               />
             </div>
+            <div>
+              {condition && (
+                <Controller
+                  name="dob"
+                  control={control}
+                  rules={{
+                    required: "Date of Birth is required",
+                    validate: {
+                      validateDOB: (value) => {
+                        const selectedDate = new Date(value);
+                        const max = new Date(
+                          getMaxDate(passenger.passengerType)
+                        );
+                        const min = new Date(
+                          getMinDate(passenger.passengerType)
+                        );
+                        if (selectedDate > max) {
+                          return `${
+                            passenger.passengerType
+                          } must be born on or before ${format(
+                            max,
+                            "yyyy-MM-dd"
+                          )}`;
+                        }
+                        if (selectedDate < min) {
+                          return `${
+                            passenger.passengerType
+                          } must be born on or after ${format(
+                            min,
+                            "yyyy-MM-dd"
+                          )}`;
+                        }
+                        return true;
+                      },
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Date of Birth"
+                      type="date"
+                      InputLabelProps={{ shrink: true }}
+                      error={!!errors.dob}
+                      helperText={errors.dob?.message}
+                      inputProps={{
+                        min: getMinDate(passenger.passengerType),
+                        max: getMaxDate(passenger.passengerType),
+                      }}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        handleInputChange("dob", e.target.value);
+                      }}
+                      onBlur={() => trigger("dob")}
+                    />
+                  )}
+                />
+              )}
+            </div>
             {condition?.dobe ||
               (passenger.passengerType === "INFANT" && (
                 <div>
@@ -339,6 +398,7 @@ const PassengerForm = forwardRef(
                 </div>
               ))}
           </div>
+
           {condition && (
             <PassportDetails
               ref={passportRef}
