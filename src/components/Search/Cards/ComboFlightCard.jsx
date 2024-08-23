@@ -144,7 +144,7 @@ const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
                       </div>
                     </div>
         
-                    <div className="flex gap-2 mt-2 items-center w-full md:w-[70%] justify-around md:gap-8 bg-green-400">
+                    <div className="flex gap-2 mt-2 items-center w-full md:w-[70%] justify-around md:gap-8 ">
                       <div className="p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%]">
                         <div className="font-bold text-xs md:text-sm">
                           {formatDateTime(segment.dt)}

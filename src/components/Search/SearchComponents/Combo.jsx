@@ -175,7 +175,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={
-              <span className="flex gap-2 bg-green-400 ">
+              <span className="flex gap-2 ">
                 <span className="flex flex-col justify-center ">
                   <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
                   <p className="text-[10px]">
