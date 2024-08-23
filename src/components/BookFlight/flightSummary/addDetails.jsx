@@ -21,6 +21,7 @@ const AddDetails = ({
     email: "",
     phone: "",
   });
+  const [gstErrors, setGstErrors] = useState({});
 
   const [expandedCard, setExpandedCard] = useState({
     travellers: true,
@@ -146,18 +147,86 @@ const AddDetails = ({
   }, [passengers]);
 
   const isContactDetailsValid = () => {
+    const phoneRegex = /^[0-9]{7,14}$/;
+    if (!/\S+@\S+\.\S+/.test(contactDetails.email)) {
+      return false;
+    }
+    if (!phoneRegex.test(contactDetails.phoneNumber)) {
+      return false;
+    }
     return contactDetails.email && contactDetails.phoneNumber;
   };
   console.log({ passengers });
 
+  const validateGSTDetails = () => {
+    const errors = {};
+
+    if (
+      gstDetails.gstNumber &&
+      !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(
+        gstDetails.gstNumber
+      )
+    ) {
+      errors.gstNumber = "Please enter a valid 15-digit GST Number";
+      ReactToast("Please enter a valid 15-digit GST Number");
+      return errors;
+    }
+    if (
+      gstDetails.companyName.length < 5 ||
+      gstDetails.companyName.length > 35
+    ) {
+      errors.companyName = "Company Name should not exceed 35 characters";
+      ReactToast(
+        "GST Details : Company Name must have atleast 5 characters not exceed 35 characters"
+      );
+      return errors;
+    }
+    if (!/\S+@\S+\.\S+/.test(gstDetails.email)) {
+      errors.email = "Please enter a valid email address";
+      ReactToast("GST Details : Please Enter a valid email address");
+      return errors;
+    }
+    if (!/^\d{10}$/.test(gstDetails.phone)) {
+      errors.phone = "Please enter a valid 10-digit phone number";
+      ReactToast("GST Details : Please enter a valid 10-digit phone number");
+      return errors;
+    }
+    if (gstDetails.address.length < 5 || gstDetails.address.length > 70) {
+      errors.address =
+        "Address should not exceed 70 characters and must be atleast 5 characters";
+      ReactToast(
+        "GST Details : Address should not exceed 70 characters and must be atleast 5 characters"
+      );
+      return errors;
+    }
+
+    return errors;
+  };
+
   const handleProceedToReview = useCallback(() => {
     const areAllPassengersValid = checkAllPassengersCompleted();
-    if (areAllPassengersValid && isContactDetailsValid()) {
+    const gstErrors = gstDetails.gstNumber ? validateGSTDetails() : {};
+    console.log(gstErrors);
+    const isGstValid = gstDetails.gstNumber
+      ? Object.keys(gstErrors).length === 0
+      : true;
+    const isContactValid = isContactDetailsValid();
+    if (!isContactValid) {
+      ReactToast(
+        "Contact Details : Please Enter Proper Email and Phone Number"
+      );
+      return;
+    }
+    if (!isGstValid) {
+      return;
+    }
+    setGstErrors(gstErrors);
+    if (areAllPassengersValid && isContactValid && isGstValid) {
       onData({ passengers, gstDetails, contactDetails });
       setCurrentStep((p) => p + 1);
     } else {
       ReactToast(
-        "Please fill out all required fields, including contact details, correctly before proceeding to review."
+        "Please fill out all required fields for passengers and contact details"
       );
     }
   }, [
@@ -225,6 +294,7 @@ const AddDetails = ({
         toggleCard={() => toggleCard("gst")}
         gstDetails={gstDetails}
         setGstDetails={setGstDetails}
+        gstErrors={gstErrors}
       />
       <div className="flex flex-wrap justify-between mt-5 mx-4">
         <button

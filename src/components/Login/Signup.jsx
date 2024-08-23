@@ -4,6 +4,7 @@ import SliderImg from "../../assets/auth/slider.png";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactToast from "../util/ReactToast";
+import { useDispatch, useSelector } from "react-redux";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Signup = () => {
     firstName: "",
     lastName: "",
   });
+  const { lastSearch } = useSelector((state) => state.auth);
   const [isAgreed, setIsAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validation, setValidation] = useState({
@@ -75,7 +77,13 @@ const Signup = () => {
         }
       );
       setLoading(false);
-      if (data.request.status === 200) navigate("/");
+      if (data.request.status === 200) {
+        if (lastSearch) {
+          navigate("/book-flight", { state: { bookings: lastSearch } });
+        } else {
+          navigate("/");
+        }
+      }
     } catch (error) {
       setLoading(false);
       // console.log(error.message);
@@ -98,7 +106,9 @@ const Signup = () => {
                 <img className="h-[80px]" src={Logo} alt="" />
               </div>
               <div className="text-[1.6rem] font-bold text-[#1B1D29]">
-                <h3>My <span className="text-[#D7B56D]">Air</span> Deal</h3>
+                <h3>
+                  My <span className="text-[#D7B56D]">Air</span> Deal
+                </h3>
               </div>
             </div>
             <h2 className="font-medium text-xl md:text-4xl">Enter Details</h2>
