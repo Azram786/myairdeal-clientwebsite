@@ -5,18 +5,18 @@ import background1 from "../../assets/service/world2.png";
 
 function Card(props) {
   return (
-    <div className="bg-white bg-cover relative pb-12 transition-transform transform hover:scale-105 duration-300 ease-in-out text-sky-950 rounded-xl p-6 shadow-md w-28 md:w-52 h-max md:h-60">
+    <div className="bg-white bg-cover relative pb-12 transition-transform transform hover:scale-105 duration-300 ease-in-out text-sky-950 rounded-xl p-6 shadow-md w-32 h-44 sm:w-44 md:w-52 md:h-60">
       <div className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4  border-solid border-4 border-[#1B1D29] bg-[#1B1D29] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm items-center justify-center">
         <img
           src={props?.imgURL}
           alt="plane"
-          className="transition-transform transform mx-auto w-14 h-12 justify-center items-center flex mt-4 "
+          className="transition-transform transform mx-auto w-10 h-10 md:w-14 md:h-12 justify-center items-center flex mt-1 md:mt-4 "
         />
       </div>
       <h2 className="text-sm sm:text-xl text-[#D7B56D] font-semibold mb-2 z-10">
         {props?.head}
       </h2>
-      <p className="text-sm sm:text-base font-medium text-[#1B1D29] z-10">
+      <p className="text-xs md:text-base font-medium flex flex-wrap text-[#1B1D29] z-10">
         {props?.para}
       </p>
     </div>
@@ -45,7 +45,7 @@ function Service() {
       <div className="text-[#D7B56D] text-xl sm:text-3xl font-bold mb-8">
         We Offer Best Services
       </div>
-      <div className="grid grid-cols-2   w-full md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 place-items-center justify-center">
+      <div className="flex flex-wrap  mx-auto w-full md:grid-cols-2 lg-custom:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-10 place-items-center justify-center">
         {Content.map(createCard)}
       </div>
     </div>

@@ -19,7 +19,7 @@ const Content = [
   {
     id: 3,
     imgURL: charteredflight,
-    head: "Chatered Flights",
+    head: "Chartered Flights",
     para: "Experience the luxury and flexibility of private chartered flights, tailored to your specific needs and preferences.",
   },
   {
