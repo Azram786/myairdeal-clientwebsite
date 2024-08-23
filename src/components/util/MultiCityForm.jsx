@@ -67,12 +67,21 @@ const MultiCityForm = ({
   //   });
   // };
   const handleFormDataChange = (index, data) => {
-    console.log({ index, data });
+    console.log({ index, data, dynamicFormData: dynamicFormData[index] });
 
-    if ((dynamicFormData[index].fromCity === data.toCity && data?.toCity !== "") || (dynamicFormData[index].toCity === data.fromCity && data.fromCity !== "")) {
-      ReactToast("You cannot select the same airport twice")
-      return
+    const fromCity1 = dynamicFormData[index]?.fromCity?.split("-")[0];
+    const toCity1 = dynamicFormData[index]?.toCity?.split("-")[0];
+    const fromCity2 = data?.fromCity?.split("-")[0];
+    const toCity2 = data?.toCity?.split("-")[0];
+
+    if (
+      (fromCity1 && toCity2 && fromCity1 === toCity2) ||
+      (toCity1 && fromCity2 && toCity1 === fromCity2)
+    ) {
+      ReactToast("You cannot select the same airport twice");
+      return;
     }
+
     setDynamicFormData((prev) => {
       const newData = [...prev];
 
