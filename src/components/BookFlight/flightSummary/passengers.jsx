@@ -125,7 +125,7 @@ const PassengerForm = forwardRef(
             ...updatedPassengers[index],
             passportNumber: pNum,
             expiryDate: eD,
-            nationality: pNat,
+            nationality: pNat || "IN",
             issueDate: pid,
             dob: dob,
           };
