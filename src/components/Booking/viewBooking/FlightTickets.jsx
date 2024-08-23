@@ -10,6 +10,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
 import ReactToast from "../../util/ReactToast";
+import timeFormatChanger from "../../util/timeFormatChanger";
 
 const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
   // Utility function to format the date
@@ -23,10 +24,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
 
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const formatTime = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
+
 
   const getSingleTripDetailHandler = async () => {
     try {
@@ -121,7 +119,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
 
                   <div className=" text-base md:text-lg  font-bold">
-                    {formatTime(trip.sI[0].dt)}
+                    {timeFormatChanger(trip.sI[0].dt)}
                   </div>
                 </div>
 
@@ -161,8 +159,8 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   </div>
                   <div className="text-base md:text-lg font-bold">
                     {trip.sI.length === 1
-                      ? formatTime(trip.sI[0].at)
-                      : formatTime(trip.sI[trip.sI.length - 1].at)}
+                      ? timeFormatChanger(trip.sI[0].at)
+                      : timeFormatChanger(trip.sI[trip.sI.length - 1].at)}
                   </div>
                 </div>
               </div>
@@ -188,7 +186,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                   <div>
                     <div className="text-sm text-gray-500">Flight time</div>
                     <div className="font-medium text-sm md:text-[15px]">
-                      {formatTime(trip.sI[0].dt)}
+                      {timeFormatChanger(trip.sI[0].dt)}
                     </div>
                   </div>
                 </div>

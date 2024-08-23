@@ -82,7 +82,7 @@ const OneWaySideBar = ({
   );
 
   return (
-    <div className="w-[80%] text-xs md:text-base border p-4 m-2 shadow-md rounded-md md:min-h-screen">
+    <div className=" max-w-[250px] text-xs md:text-base border p-4 m-2 shadow-md rounded-md md:min-h-screen">
       <div className="p-4">
         {/* Price filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">

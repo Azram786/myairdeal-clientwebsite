@@ -12,14 +12,7 @@ const MultiCityForm = ({
 }) => {
   const dynamicFormIncreaseHandler = () => {
     if (dynamicFormData.length < 5) {
-      // setDynamicFormData((prev) => [
-      //   ...prev,
-      //   {
-      //     fromCity: "",
-      //     toCity: "",
-      //     travelDate: formData.travelDate,
-      //   },
-      // ]);
+
       setDynamicFormData((prev) => {
         // Get the last entry in the array to access its toCity value
         const lastEntry = prev[prev.length - 1];
@@ -39,35 +32,23 @@ const MultiCityForm = ({
     }
   };
 
-  // const handleFormDataChange = (index, data) => {
-  //   console.log({ data, index })
-  //   setDynamicFormData((prev) => {
-  //     const newData = [...prev];
-  //     newData[index] = { ...newData[index], ...data };
-  //     return newData;
-  //   });
-  // };
-  // const handleFormDataChange = (index, data) => {
-  //   console.log({ index, data })
 
-  //   setDynamicFormData((prev) => {
 
-  //     const newData = [...prev];
-
-  //     // Update the current index with the new data
-  //     newData[index] = { ...newData[index], ...data };
-
-  //     // Check if the next index exists
-  //     if (index + 1 < newData.length && data.toCity) {
-  //       // Update the fromCity of the next object
-  //       newData[index + 1] = { ...newData[index + 1], fromCity: data.toCity };
-  //     }
-
-  //     return newData;
-  //   });
-  // };
   const handleFormDataChange = (index, data) => {
-    console.log({ index, data });
+   
+
+    const fromCity1 = dynamicFormData[index]?.fromCity?.split("-")[0];
+    const toCity1 = dynamicFormData[index]?.toCity?.split("-")[0];
+    const fromCity2 = data?.fromCity?.split("-")[0];
+    const toCity2 = data?.toCity?.split("-")[0];
+
+    if (
+      (fromCity1 && toCity2 && fromCity1 === toCity2) ||
+      (toCity1 && fromCity2 && toCity1 === fromCity2)
+    ) {
+      ReactToast("You cannot select the same airport twice");
+      return;
+    }
 
     setDynamicFormData((prev) => {
       const newData = [...prev];
@@ -107,14 +88,7 @@ const MultiCityForm = ({
 
     }
   }
-  // const mergeHandler = (index) => {
-  //   try {
-  //     console.log({ index })
 
-  //   } catch (error) {
-
-  //   }
-  // }
   const mergeHandler = (index) => {
     try {
       // Create a copy of the dynamicFormData array to avoid mutating the state directly
@@ -133,14 +107,13 @@ const MultiCityForm = ({
       // Update the state with the modified array
       setDynamicFormData(updatedFormData);
 
-      console.log("After Swap:", updatedFormData[index]);
-
+    
     } catch (error) {
       console.error("Error while swapping cities:", error);
     }
   };
 
-  console.log({ dynamicFormData })
+  
 
   const removeLastFormHandler = () => {
     if (dynamicFormData.length > 1) {
@@ -162,6 +135,9 @@ const MultiCityForm = ({
             dateDynamic={
               index === 0
                 ? formData.travelDate > dynamicFormData[index].travelDate ? formData.travelDate : dynamicFormData[index].travelDate : dynamicFormData[index].travelDate || dynamicFormData?.[index - 1].travelDate
+            }
+            minDate={
+              index === 0 ? formData.travelDate : dynamicFormData[index - 1].travelDate
             }
 
             key={index}

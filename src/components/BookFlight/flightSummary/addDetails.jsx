@@ -3,6 +3,7 @@ import TravellersDetails from "./travellers";
 import AddonsCard from "./addOns";
 import GstDetails from "./gstDetails";
 import ReactToast from "../../util/ReactToast";
+import { useLocation} from "react-router-dom";
 
 const AddDetails = ({
   bookingId,
@@ -28,6 +29,13 @@ const AddDetails = ({
     addons: false,
     gst: false,
   });
+
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    console.log("ScrollToTop effect triggered");
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const [isPassengersCompleted, setIsPassengersCompleted] = useState(false);
 

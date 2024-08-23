@@ -6,11 +6,11 @@ import background1 from "../../assets/service/world2.png";
 function Card(props) {
   return (
     <div className="bg-white bg-cover relative pb-12 transition-transform transform hover:scale-105 duration-300 ease-in-out text-sky-950 rounded-xl p-6 shadow-md w-28 md:w-52 h-max md:h-60">
-      <div className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4 bg-white border-solid border-4 border-[#1B1D29] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm ">
+      <div className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4  border-solid border-4 border-[#1B1D29] bg-[#1B1D29] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm items-center justify-center">
         <img
           src={props?.imgURL}
           alt="plane"
-          className="transition-transform transform "
+          className="transition-transform transform mx-auto w-14 h-12 justify-center items-center flex mt-4 "
         />
       </div>
       <h2 className="text-sm sm:text-xl text-[#D7B56D] font-semibold mb-2 z-10">
