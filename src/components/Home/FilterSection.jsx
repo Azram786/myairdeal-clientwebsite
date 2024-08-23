@@ -479,8 +479,6 @@ const FilterSection = ({
         };
       }
 
-      console.log({ query, saving });
-      console.log({ query, saving });
       // dispatch(setLastSearch(query));
       dispatch(setResentSearch(saving));
       if (token) {

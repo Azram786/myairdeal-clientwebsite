@@ -24,7 +24,24 @@ const ViewDetailedBookingCard = ({
   const toggleDropdown = (index) => {
     setOpenConnectionIndex(openConnectionIndex === index ? null : index);
   };
+  const [passengerDetails, setPassengerDetail] = useState(singleBookingData?.itemInfos?.AIR?.travellerInfos)
+  function formatDuration(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}m`;
+  }
+  const totalDurationHandler = (flights) => {
+    let totalDuration = 0;
 
+
+    flights.forEach(flight => {
+      totalDuration += flight.duration;
+      if (flight.cT) {
+        totalDuration += flight.cT;
+      }
+    });
+    return totalDuration
+  }
   return (
     <div className=" border-l-0 w-full lg:w-[72%]">
       <div className="rounded-lg my-2">
@@ -69,6 +86,7 @@ const ViewDetailedBookingCard = ({
           </div>
         </div>
         {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
+     
           return (
             <div key={index}>
               <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
@@ -170,12 +188,7 @@ const ViewDetailedBookingCard = ({
                       Total Duration :
                     </h1>
                     <h1 className="text-base md:text-xl  font-semibold text-gray-500 uppercase">
-                      {value.sI.length === 1
-                        ? calculateDuration(value.sI[0].dt, value.sI[0].at)
-                        : calculateDuration(
-                          value.sI[0].dt,
-                          value.sI[value.sI.length - 1].at
-                        )}
+                      {formatDuration(totalDurationHandler(value.sI))}
                     </h1>
                   </div>
 
@@ -206,6 +219,41 @@ const ViewDetailedBookingCard = ({
                         </div>
                       </div>
                     </div>
+                    <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
+                        <BsDoorClosedFill />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                          Departure Terminal
+                        </div>
+                        <div className="font-semibold text-sm w-max ">
+                          {value.sI[0].da.terminal
+                            ? value.sI[0].da.terminal
+                            : "N/A"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
+                        <MdDateRange />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                          Arrival Date
+                        </div>
+                       
+                        <div className="font-semibold text-sm ">
+                          {value.sI.length === 1
+                            ? dateDateFormatChanger(value.sI[0].at)
+                            : dateDateFormatChanger(
+                              value.sI[value.sI.length - 1].at
+                            )}
+
+                        </div>
+                      </div>
+                    </div>
                     <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3 ">
                       <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded  ">
                         <IoIosTime />
@@ -223,45 +271,18 @@ const ViewDetailedBookingCard = ({
                         </div>
                       </div>
                     </div>
-
                     <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
                       <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
                         <BsDoorClosedFill />
                       </div>
                       <div>
                         <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
-                          Terminal
+                          Arrival Terminal
                         </div>
                         <div className="font-semibold text-sm w-max ">
-                          {value.sI[0].da.terminal
-                            ? value.sI[0].da.terminal
-                            : "NA"}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <BsDoorClosedFill />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
-                          Stops
-                        </div>
-                        <div className="font-semibold text-sm ">
-                          {value.sI.length - 1}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded  ">
-                        <MdOutlineAirlineSeatReclineExtra />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
-                          Seat Class
-                        </div>
-                        <div className="font-semibold text-sm">
-                          {searchQuery.cabinClass}
+                          {value.sI[value.sI.length - 1].aa.terminal
+                            ? value.sI[value.sI.length - 1].aa.terminal
+                            : "N/A"}
                         </div>
                       </div>
                     </div>
@@ -276,41 +297,17 @@ const ViewDetailedBookingCard = ({
                       className="bg-[#1B1D29] text-[#D7B56D] w-full py-2 rounded-lg"
                     >
                       {openConnectionIndex === index
-                        ? "Hide Connections"
-                        : "View Connections"}
+                        ? "Hide Ticket Details"
+                        : "View Ticket Details"}
                     </button>
                     {openConnectionIndex === index && (
                       <div className="bg-[#f7eed8] text-[#1B1D29] p-2">
                         {value.sI.map((singleValue, index) => {
-                          const layoverDuration = previousArrivalTime
-                            ? calculateDuration(
-                              previousArrivalTime,
-                              singleValue.dt
-                            )
-                            : null;
-                          previousArrivalTime = singleValue.at;
 
+                        
                           return (
                             <React.Fragment key={index}>
-                              {index !== 0 && (
-                                <div className="text-sm text-gray-500 mt-4">
-                                  <div className="flex justify-between bg-[#1B1D29] text-[#D7B56D] p-3 rounded-md mt-4 mb-4">
-                                    <div className="text-sm">
-                                      Require to change plane
-                                    </div>
-                                    <div className="text-base font-medium">
-                                      <span className="text-sm">
-                                        <div className="text-center">
-                                          <span className="text-sm">
-                                            Total Layover Time:{" "}
-                                            {layoverDuration}
-                                          </span>
-                                        </div>
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
+
                               <div className="font-semibold text-xs border  rounded-md inline-flex items-center shadow-md p-1 space-x-2">
                                 <div className="w-5 h-5">
                                   {/* <img
@@ -362,10 +359,7 @@ const ViewDetailedBookingCard = ({
                                   <div className="flex-col items-center w-1/3">
                                     <div className="text-center">
                                       <span className="text-sm">
-                                        {calculateDuration(
-                                          singleValue.dt,
-                                          singleValue.at
-                                        )}
+                                        {formatDuration(singleValue.duration)}
                                       </span>
                                     </div>
                                     <div className="flex justify-center items-center">
@@ -401,6 +395,25 @@ const ViewDetailedBookingCard = ({
                                   </div>
                                 </div>
                               </div>
+                              {singleValue.cT && (
+                                <div className="text-sm text-gray-500 mt-4">
+                                  <div className="flex justify-between bg-[#1B1D29] text-[#D7B56D] p-3 rounded-md mt-4 mb-4">
+                                    <div className="text-sm">
+                                      Require to change plane
+                                    </div>
+                                    <div className="text-base font-medium">
+                                      <span className="text-sm">
+                                        <div className="text-center">
+                                          <span className="text-sm">
+                                            Total Layover Time:{" "}
+                                            {formatDuration(singleValue?.cT)}
+                                          </span>
+                                        </div>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             </React.Fragment>
                           );
                         })}
@@ -412,6 +425,16 @@ const ViewDetailedBookingCard = ({
             </div>
           );
         })}
+        <button
+          // onClick={() => toggleDropdown(index)}
+          className="text-[#1B1D29] bg-[#D7B56D] w-full py-2 rounded-lg mt-4"
+        >
+          {/* {openConnectionIndex === index
+                  ? "Hide Passengers"
+                  : "View Passengers"} */}
+          View Passengers
+        </button>
+        {passengerDetails.map((value)=><div>value.</div>)}
       </div>
     </div>
   );
