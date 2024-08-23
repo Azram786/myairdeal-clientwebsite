@@ -6,14 +6,16 @@ import flightLogo from "../../../assets/home/logo/image 40.png";
 import SideBar from "./SideBar";
 import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ReactToast from "../../util/ReactToast";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { BsFillFilterSquareFill } from "react-icons/bs";
+import { setLastSearch } from "../../../store/slices/aut.slice";
 
 const { TabPane } = Tabs;
 
 const MultiCity = ({ flightProps, passenger, query }) => {
+  const dispatch = useDispatch();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const token = useSelector((state) => state.auth.token);
 
@@ -148,7 +150,8 @@ const MultiCity = ({ flightProps, passenger, query }) => {
 
     if (!token) {
       ReactToast("Please login first");
-      navigate("/sign-in", { state: { booking: query } });
+      navigate("/sign-in");
+      dispatch(setLastSearch(bookingData));
     }
     navigate("/book-flight", { state: { bookings: bookingData } });
   };
@@ -171,7 +174,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
         passenger={passenger}
       /> */}
       <button
-        className="absolute top-3 right-0 z-50 flex flex-col items-center justify-center  lg-custom:hidden"
+        className="absolute top-3 right-0  flex flex-col items-center justify-center  lg-custom:hidden"
         onClick={toggleSidebar}
       >
         <BsFillFilterSquareFill className="w-6 h-6 white" />
@@ -179,7 +182,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
       </button>
       <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
         <div
-          className={`fixed h-full rounded-xl overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 bg-white transform ${
+          className={`fixed h-full rounded-xl overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 md:z-0 bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
           style={{

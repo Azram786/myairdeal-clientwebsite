@@ -33,7 +33,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
       }
     } catch (error) {
       console.error("Error creating ticket:", error);
-      ReactToast("error while Raising Ticket ");
+      ReactToast("Error while Raising Ticket ");
       // Handle error (show an error message to the user)
     }
   };

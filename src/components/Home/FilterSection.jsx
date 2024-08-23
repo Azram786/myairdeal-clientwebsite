@@ -8,7 +8,7 @@ import { FaTimes } from "react-icons/fa";
 import { MdAirlineSeatReclineExtra } from "react-icons/md";
 import { GoArrowSwitch } from "react-icons/go";
 import { FaTelegramPlane } from "react-icons/fa";
-
+import ReactJoyride from "react-joyride";
 import CustomInput from "../util/DatePickerCustom";
 import DatePicker from "react-datepicker";
 import CustomSelect from "../util/CustomSelect";
@@ -21,7 +21,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import formatDate from "../util/DateFormatChanger";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsaModifySearch, setLastSearch, setResentSearch } from "../../store/slices/aut.slice";
+import {
+  setIsaModifySearch,
+  setLastSearch,
+  setResentSearch,
+} from "../../store/slices/aut.slice";
 import PassengerSelector from "./PassengerSelector";
 import getCountryCode from "../util/getCity";
 import { AsYouType } from "libphonenumber-js";
@@ -32,14 +36,58 @@ const FilterSection = ({
   setDynamicFormData,
   setTypeOfTravel,
   typeOfTravel,
-
 }) => {
   const navigate = useNavigate();
-  const { isModifySearch } = useSelector((state) => state.auth)
+  const { isModifySearch } = useSelector((state) => state.auth);
   const { token } = useSelector((state) => state.auth);
   const [Loading, setLoading] = useState(false);
-  const [preferredAirline, setPrefferedAirLine] = useState()
+  const [preferredAirline, setPrefferedAirLine] = useState();
   const dispatch = useDispatch();
+
+  const [runJoyride, setRunJoyride] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("joyride", "notexecuted"); 
+    const storedJoyride = localStorage.getItem("joyride");
+  
+    if (storedJoyride === "notexecuted") {
+
+      setRunJoyride(true); 
+      localStorage.setItem("joyride", "executed"); 
+    } else {
+     
+    }
+  }, []);
+  
+
+  // State for Joyride steps
+  const [joyrideSteps] = useState([
+    {
+      target: ".flight-type-buttons",
+      content: "Choose your travel type (One-way, Round-trip, or Multi-city)",
+    },
+    {
+      target: ".from-city-select",
+      content: "Select your departure city or airport.",
+    },
+    {
+      target: ".to-city-select",
+      content: "Select your destination city or airport.",
+    },
+    {
+      target: ".travel-date-picker",
+      content: "Pick your travel date here.",
+    },
+    {
+      target: ".travel-passenger-details",
+      content:
+        "Select the number of passengers and class preferences traveling with you.",
+    },
+    {
+      target: ".search-button",
+      content: "Hit this button to search for flights.",
+    },
+  ]);
 
   //filter state for country code
   const [countryCodeone, setCountryCodeOne] = useState("IN");
@@ -48,8 +96,10 @@ const FilterSection = ({
   //state for modal
   const [modalIsOpen, setModelIsOpen] = useState(false);
 
+  const [preferredAirlines, setPrefferedAirLines] = useState([]);
 
-  const [preferredAirlines, setPrefferedAirLines] = useState([])
+  // Joyride state
+
   // state for filteration
 
   //changing type-of-travel
@@ -103,7 +153,8 @@ const FilterSection = ({
   const getCountriesHandlerOne = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL
+        `${
+          import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
@@ -121,18 +172,21 @@ const FilterSection = ({
   };
   const getPreferedAirLine = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`)
-
-      setPrefferedAirLines(response.data.preferredAirlines)
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}airlines/preferred-airline`
+      );
+    
+      setPrefferedAirLines(response.data.preferredAirlines);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
+  };
   // API search for second select tag
   const getCountriesHandlerTwo = async (inputValue, callback) => {
     try {
       let response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL
+        `${
+          import.meta.env.VITE_SERVER_URL
         }search/user-get-all-airports?search=${inputValue}`
       );
 
@@ -155,7 +209,8 @@ const FilterSection = ({
   const fetchDefaultOptions = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL
+        `${
+          import.meta.env.VITE_SERVER_URL
         }search/airport-country-code?countrycode=IN`
       );
       const options = response.data.data.map((item) => {
@@ -167,11 +222,11 @@ const FilterSection = ({
       });
 
       setDefaultOptions(options);
-    } catch (error) { }
+    } catch (error) {}
   };
   useEffect(() => {
-    getPreferedAirLine()
-  }, [])
+    getPreferedAirLine();
+  }, []);
 
   const submitHandler = async () => {
     try {
@@ -425,7 +480,8 @@ const FilterSection = ({
         };
       }
 
-      console.log({ query, saving })
+      console.log({ query, saving });
+      console.log({ query, saving });
       // dispatch(setLastSearch(query));
       dispatch(setResentSearch(saving));
       if (token) {
@@ -442,7 +498,8 @@ const FilterSection = ({
 
       setLoading(false);
       navigate(`/search`, { state: { query } });
-      dispatch(setIsaModifySearch(false))
+      dispatch(setIsaModifySearch(false));
+      dispatch(setIsaModifySearch(false));
     } catch (error) {
       setLoading(false);
       // console.log(error.message);
@@ -466,34 +523,56 @@ const FilterSection = ({
 
   return (
     <div className=" flex flex-col items-center  min-h-[200px]   justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
+     {
+      runJoyride &&
+      <ReactJoyride
+        steps={joyrideSteps}
+        run={runJoyride}
+        continuous={true}
+        scrollToFirstStep={true}
+        showProgress={true}
+        showSkipButton={true}
+        callback={(data) => {
+          if (data.action === "reset") {
+            setRunJoyride(false);
+          }
+        }}
+      />
+     } 
       {/* <div className="     md:rounded-xl w-[90%] mt-4  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   "> */}
-      <div className={`
+      <div
+        className={`
   md:rounded-xl w-[90%] mt-4 p-2 shadow-md border border-gray-200 bg-white 
   flex gap-2 flex-col justify-center md:px-5 md:gap-4
-  ${!isModifySearch ? 'relative md:top-[-60px]' : ''}
-`}>
+  ${!isModifySearch ? "relative md:top-[-60px]" : ""}
+`}
+      >
         {/* type of travel selecting section */}
 
-        <div className="flex justify-center md:justify-stretch text-white ">
+        <div className="flex justify-center md:justify-stretch text-white flight-type-buttons ">
           <button
-            className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
-              }`}
+            className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
+              typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
+            }`}
+            
             //click handler
             onClick={() => handleTypeOfTravelChange("one-way")}
           >
             One way
           </button>
           <button
-            className={`bg-[#1B1D29]  text-sm md:text-base md:p-3 p-2 border-2 ${typeOfTravel === "round-trip" && "bg-[#D7B56D] text-black"
-              } `}
+            className={`bg-[#1B1D29]  text-sm md:text-base md:p-3 p-2 border-2 ${
+              typeOfTravel === "round-trip" && "bg-[#D7B56D] text-black"
+            } `}
             //click handler
             onClick={() => handleTypeOfTravelChange("round-trip")}
           >
             Round trip
           </button>
           <button
-            className={` bg-[#1B1D29]  text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${typeOfTravel === "multi-city" && "bg-[#D7B56D] text-black"
-              }`}
+            className={` bg-[#1B1D29]  text-sm md:text-base rounded-r-lg md:p-3 p-2 border-2 ${
+              typeOfTravel === "multi-city" && "bg-[#D7B56D] text-black"
+            }`}
             //click handler
             onClick={() => handleTypeOfTravelChange("multi-city")}
           >
@@ -511,8 +590,8 @@ const FilterSection = ({
         <div className="flex flex-col w-full gap-2 ">
           <div className="flex flex-col  lg-custom:flex-row   w-full  gap-2 ">
             {/* {select country section} */}
-            <div className="flex  flex-col lg-custom:w-1/2 md:flex-row  relative gap-2 md:gap-2 justify-between ">
-              <div className="flex   text-sm md:text-base  items-center border rounded p-2 md:w-1/2 ">
+            <div className="flex  flex-col lg-custom:w-1/2 md:flex-row  relative gap-2 md:gap-2 justify-between  ">
+              <div className="flex   text-sm md:text-base  items-center border rounded p-2 md:w-1/2 from-city-select">
                 <div>
                   <RiFlightTakeoffLine className=" text-2xl md:text-3xl " />
                 </div>
@@ -532,7 +611,7 @@ const FilterSection = ({
               <div className="md:flex  hidden sm:items-center  justify-center text-white absolute left-1/2 top-1/2 transform -translate-x-1/2  -translate-y-1/2 bg-black w-8 h-8 rounded-full ">
                 <GoArrowSwitch onClick={mergeHandler} />
               </div>
-              <div className="flex md:ml-2   text-sm md:text-base items-center border rounded p-2 md:w-1/2 ">
+              <div className="flex md:ml-2   text-sm md:text-base items-center border rounded p-2 md:w-1/2 to-city-select ">
                 <div>
                   <RiFlightLandLine className=" text-2xl md:text-3xl " />
                 </div>
@@ -549,10 +628,9 @@ const FilterSection = ({
             </div>
 
             {/* date picker section  */}
-            <div className="flex flex-col md:flex-row    w-full  lg-custom:w-1/2 gap-2">
-              <div className="  rounded   flex items-center border md:w-1/2  py-2 ">
+            <div className="flex flex-col md:flex-row    w-full  lg-custom:w-1/2 gap-2 ">
+              <div className="  rounded   flex items-center border md:w-1/2  py-2 travel-date-picker">
                 <div className="flex items-center text-sm md:text-base justify-center gap-4   w-full ">
-
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}
@@ -607,10 +685,10 @@ const FilterSection = ({
               <div
                 //click handler
 
-                className="     text-sm md:text-base flex items-center flex-col border relative rounded-md md:w-1/2  justify-center p-3 md:p-0  cursor-pointer"
+                className="     text-sm md:text-base flex items-center flex-col border relative rounded-md md:w-1/2  justify-center p-3 md:p-0  cursor-pointer travel-passenger-details "
               >
                 <div
-                  className="flex w-full  justify-center items-center  "
+                  className="flex w-full -details justify-center items-center travel-passenger "
                   onClick={() => setModelIsOpen((prev) => !prev)}
                 >
                   <div className=" text-[2rem]  ">
@@ -623,17 +701,18 @@ const FilterSection = ({
                     <input
                       className="pl-1 font-bold outline-none cursor-pointer "
                       type="text"
-                      value={`${Number(formData.ADULT) +
+                      value={`${
+                        Number(formData.ADULT) +
                         Number(formData.CHILD) +
                         Number(formData.INFANT)
-                        } | ${formData.cabinClass}`}
+                      } | ${formData.cabinClass}`}
                       readOnly
                     />
                   </div>
                 </div>
 
                 {modalIsOpen && (
-                  <div className=" z-10 absolute items-center top-[59px] right-0 left-0 md:-left-80 bg-white  border-[2px] rounded-lg ">
+                  <div className=" z-50 absolute items-center top-[59px] right-0 left-0 md:-left-80 bg-white  border-[2px] rounded-lg ">
                     <PassengerSelector
                       formData={formData}
                       setModelIsOpen={setModelIsOpen}
@@ -708,16 +787,18 @@ const FilterSection = ({
                 id=""
                 value={preferredAirline}
                 onChange={(e) => setPrefferedAirLine(e.target.value)}
-
               >
                 <option className="" value="" disabled selected>
                   Select Prefered Airline
                 </option>
-                <option value={null}>
-                  Select all
-                </option>
-                {preferredAirlines.map((value) => <option value={value.code}>{value.name}</option>)}
-
+                <option value={null}>Select all</option>
+                {preferredAirlines.map((value) => (
+                  <option value={value.code}>{value.name}</option>
+                ))}
+                <option value={null}>Select all</option>
+                {preferredAirlines.map((value) => (
+                  <option value={value.code}>{value.name}</option>
+                ))}
               </select>
             </div>
             <div className=" text-sm md:text-base flex gap-2 p-1 w-full  cursor-pointer justify-center items-center md:w-1/3  ">
@@ -737,7 +818,7 @@ const FilterSection = ({
               />
             </div>
           </div>
-          <div className="  md:w-1/4 items-center  flex  justify-center  ">
+          <div className="  md:w-1/4 items-center  flex  justify-center search-button ">
             <button
               disabled={Loading}
               // form submition

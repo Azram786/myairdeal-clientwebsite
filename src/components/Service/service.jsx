@@ -41,7 +41,7 @@ function Service() {
       className="bg-cover  w-full mx-auto text-center py-12"
     >
       {" "}
-      ` `<div className="text-[#D7B56D] text-base font-bold mb-2">Services</div>
+      ` `<div className="text-white text-base md:text-lg font-bold mb-2">Services</div>
       <div className="text-[#D7B56D] text-xl sm:text-3xl font-bold mb-8">
         We Offer Best Services
       </div>

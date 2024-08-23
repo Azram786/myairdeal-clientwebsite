@@ -146,10 +146,10 @@ const RoundSideBar = ({
           <label
             key={stop}
             htmlFor={`stop-${stop}`}
-            className={`mb-1 border text-xs  hover:bg-blue-100 flex justify-center py-2 ${
+            className={`mb-1 border text-xs  hover:bg-[#D7B56D] flex justify-center py-2 ${
               index === 0 ? "rounded-l-md" : ""
             } ${index === stops.length - 1 ? "rounded-r-md" : ""} ${
-              filters[activeDirection].stops.includes(stop) ? "bg-blue-200" : ""
+              filters[activeDirection].stops.includes(stop) ? "bg-[#D7B56D]" : ""
             }`}
           >
             <input
@@ -199,7 +199,7 @@ const RoundSideBar = ({
   const renderTimeSection = (type, title) => (
     <div className="mb-6 border-b border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">{title}</h3>
-      <div className="grid grid-cols-4 md:grid-cols-4 place-items-center gap-2">
+      <div className="grid grid-cols-4 md:grid-cols-2 lg-custom2:grid-cols-4 place-items-center gap-2">
         {[
           { icon: <PiMountains />, time: "00-06" },
           { icon: <IoIosSunny />, time: "06-12" },
@@ -208,8 +208,8 @@ const RoundSideBar = ({
         ].map(({ icon, time }) => (
           <span
             key={time}
-            className={`border-gray-500 border  hover:bg-blue-100 text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
-              filters[activeDirection][type].includes(time) ? "bg-blue-200" : ""
+            className={`border-gray-500 border  hover:bg-[#D7B56D] text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+              filters[activeDirection][type].includes(time) ? "bg-[#D7B56D]" : ""
             }`}
             onClick={() => handleTimeChange(type, time)}
           >

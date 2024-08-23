@@ -272,7 +272,7 @@ const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
   };
 
   return (
-    <div className="flex-none md:w-1/4 text-xs md:text-base border p-4 m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex-none md:w-[10%] text-xs md:text-base border p-4 m-2 shadow-md rounded-md min-h-screen">
       <div className="p-4">
         {/* Price filter */}
         <div className="mb-6 border-b border-gray-300 pb-4">

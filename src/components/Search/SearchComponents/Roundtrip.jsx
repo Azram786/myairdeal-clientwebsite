@@ -3,11 +3,12 @@ import RoundSideBar from "./Roundsidebar";
 import BookingCard from "./BookingCards";
 import ReactToast from "../../util/ReactToast";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import RoundTripCard from "../Cards/RoundTripFlightCard";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { BsFillFilterSquareFill } from "react-icons/bs";
+import { setLastSearch } from "../../../store/slices/aut.slice";
 
 const RoundTrip = ({
   onwardProps = [],
@@ -15,6 +16,7 @@ const RoundTrip = ({
   passenger,
   query,
 }) => {
+  const dispatch = useDispatch();
   const [filteredOnward, setFilteredOnward] = useState([]);
   const [filteredReturn, setFilteredReturn] = useState([]);
   const [activeDirection, setActiveDirection] = useState("onward");
@@ -390,6 +392,7 @@ const RoundTrip = ({
     if (!token) {
       ReactToast("Please login first");
       navigate("/sign-in");
+      dispatch(setLastSearch(data));
       return;
     }
     navigate("/book-flight", { state: { bookings: data } });
@@ -446,7 +449,7 @@ const RoundTrip = ({
       </button>
       <div className="relative w-[20%] h-full flex flex-wrap flex-col lg-custom:flex-row ">
         <div
-          className={`fixed h-full overflow-y-auto lg-custom:static m-2 top-0 bottom-0 right-0 z-50 rounded-xl w-full bg-white transform ${
+          className={`fixed h-full overflow-y-auto lg-custom:static m-2 top-0 bottom-0 right-0 z-50 lg-custom:z-0 rounded-xl w-full bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
           style={{

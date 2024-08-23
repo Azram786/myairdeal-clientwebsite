@@ -120,7 +120,7 @@ const EnquiryForm = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className={`w-full p-2 border ${errors.email ? "border-red-500" : "border-gray-300"} rounded-md bg-[#282C35] text-white focus:outline-none`}
+                            className={`w-full p-2 border ${errors.email ? "border-red-500" : "border-gray-300"} rounded-md bg-white text-black focus:outline-none`}
                             placeholder="Enter your email"
                         />
                         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -162,7 +162,7 @@ const EnquiryForm = () => {
                             name="type"
                             value={formData.type}
                             onChange={handleInputChange}
-                            className={`w-full p-2 border ${errors.type ? "border-red-500" : "border-gray-300"} rounded-md bg-[#282C35] text-white focus:outline-none`}
+                            className={`w-full p-2 border ${errors.type ? "border-red-500" : "border-gray-300"} rounded-md bg-white text-black focus:outline-none`}
                         >
                             <option value="">Select a type</option>
                             <option value="Private Jet">Private Jet</option>
@@ -178,7 +178,7 @@ const EnquiryForm = () => {
                             name="description"
                             value={formData.description}
                             onChange={handleInputChange}
-                            className={`w-full p-2 border ${errors.description ? "border-red-500" : "border-gray-300"} rounded-md bg-[#282C35] text-white focus:outline-none`}
+                            className={`w-full p-2 border ${errors.description ? "border-red-500" : "border-gray-300"} rounded-md bg-white text-black focus:outline-none`}
                             placeholder="Enter your description"
                         ></textarea>
                         {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}

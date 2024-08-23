@@ -1,10 +1,15 @@
-
-
 ////// new one
 
 import React, { useMemo } from "react";
 
-const BookingCard = ({ selectedFlights, onBook, passenger }) => {
+const BookingCard = ({
+  selectedFlights,
+  onBook,
+  passenger,
+  selectedPriceIndex,
+}) => {
+  console.log("heeee", selectedPriceIndex);
+  console.log(selectedFlights);
   const calculateTotalPrice = useMemo(
     () => (flight) => {
       if (
@@ -15,7 +20,8 @@ const BookingCard = ({ selectedFlights, onBook, passenger }) => {
         return 0;
       }
       let total = 0;
-      const priceIndex = flight.selectedPriceIndex || 0;
+
+      const priceIndex = flight?.selectedPriceIndex || 0;
       const priceList = flight.totalPriceList[priceIndex].fd;
 
       for (const passengerType in passenger) {

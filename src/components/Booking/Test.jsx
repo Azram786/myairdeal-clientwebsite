@@ -342,7 +342,7 @@ const ViewAmendmentDetails = ({ amendment }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 export default ViewAmendmentDetails;

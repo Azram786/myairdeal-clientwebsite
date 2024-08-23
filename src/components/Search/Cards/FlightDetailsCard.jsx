@@ -144,7 +144,7 @@ const FlightDetailsCard = ({
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className="w-full overflow-scroll ">
+          <div className="w-full bg-[#f0e1c0] overflow-scroll ">
             {data.map((segment, index) => {
               return (
                 <>
@@ -154,7 +154,7 @@ const FlightDetailsCard = ({
                   >
                     <div className="flex items-center w-full text-left pl-0 md:pl-6 lg-custom:pl-0 md:w-[26%]">
                       <img
-                        src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                        src={`https://api.myairdeal.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
                         alt={segment?.fD?.aI?.code}
                         className="md:size-10 size-8 rounded-md mr-4"
                       />
@@ -237,7 +237,7 @@ const FlightDetailsCard = ({
         );
       case "Fare Details":
         return (
-          <div className="w-full px-4 py-2">
+          <div className="w-full bg-[#f0e1c0] px-4 py-2">
             <div className="grid grid-cols-3 text-sm w-full border-b pb-2 mb-2">
               <div className="font-bold">TYPE</div>
               <div className="font-bold">Fare</div>
@@ -292,14 +292,14 @@ const FlightDetailsCard = ({
         );
       case "Fare Rules":
         return (
-          <div className="px-4 py-2">
+          <div className="px-4 bg-[#f0e1c0] py-2">
             <h2 className="font-bold mb-2">Fare Rules</h2>
             <p>Insert fare rules information here.</p>
           </div>
         );
       case "Baggage Information":
         return (
-          <div className=" px-4 grid p-2 grid-cols-3 text-sm w-full gap-4">
+          <div className="bg-[#f0e1c0] px-4 grid p-2 grid-cols-3 text-sm w-full gap-4">
             <div className="font-bold">SECTOR</div>
             <div className="font-bold">CHECKIN</div>
             <div className="font-bold">CABIN</div>
@@ -414,7 +414,7 @@ const FlightDetailsCard = ({
             <div>
               <button
                 onClick={() => setShowDetails(!showDetails)}
-                className=" text-sm my-2"
+                className=" text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
               >
                 {showDetails ? (
                   <span className="text-black">
@@ -436,7 +436,11 @@ const FlightDetailsCard = ({
             <p className="text-[50px]">
               <GiRollingSuitcase />
             </p>
-            <p className="font-bold text-xs">Included:<br/>Carry on bag</p>
+            <p className="font-bold text-xs">
+              Included:
+              <br />
+              Carry on bag
+            </p>
             <div className="text-xs font-bold">
               {flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.cB}
             </div>
@@ -445,7 +449,9 @@ const FlightDetailsCard = ({
         <div className="flex justify-end  w-full">
           <button
             className={`${
-              isSelected ? "bg-[#D7B56D] text-[#1B1D29]" : "bg-[#1B1D29] text-[#D7B56D]"
+              isSelected
+                ? "bg-[#D7B56D] text-[#1B1D29]"
+                : "bg-[#1B1D29] text-[#D7B56D]"
             }  font-semibold md:w-48 text-center  px-16 py-2 rounded-md mt-4 md:mt-0`}
             onClick={() => onSelect(localSelectedPriceIndex)}
           >
@@ -457,7 +463,7 @@ const FlightDetailsCard = ({
       {/* show details section */}
       {showDetails && (
         <div className=" border-t  border-gray-200 pt-4 ">
-          <div className="text-xs mb-2 md:text-sm px-0 md:px-4 shrink-0 flex overflow-x-auto">
+          <div className="text-xs mb-2 md:text-sm px-0 md:px-4 shrink-0 flex overflow-x-auto  bg-white">
             {[
               "Flight Details",
               "Fare Details",
@@ -467,7 +473,7 @@ const FlightDetailsCard = ({
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-2 px-2 md:px-3 shrink-0 text-sm ${
+                className={`py-2  px-2 md:px-3 shrink-0 text-sm  ${
                   activeTab === tab
                     ? "text-[#1B1D29]  font-bold border-b-2 border-[#1B1D29]"
                     : "text-gray-500"
