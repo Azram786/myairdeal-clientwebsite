@@ -190,17 +190,19 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                             month: "short",
                             day: "numeric",
                           })}
+                          
                           ,
                           {new Date(segment.dt).toLocaleDateString("en-US", {
-                            year: "numeric",
+                            weekday: "short",
                           })}{" "}
-                        </div>
-
-                        {new Date(segment.at).toLocaleTimeString([], {
+                          {new Date(segment.at).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
-                          hour12: true,
+                          hour12: false,
                         })}
+                        </div>
+
+                        
                       </div>
                       <div className="text-sm">
                         {segment.aa.city}, {segment.aa.country}
