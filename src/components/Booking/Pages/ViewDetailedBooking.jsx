@@ -120,7 +120,7 @@ const ViewDetailedBooking = () => {
                 </div>
               </div>
             </div>
-            <div className="flex w-full flex-wrap justify-center     ">
+            <div className="flex w-full flex-wrap  justify-center     ">
               {/* <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -133,7 +133,7 @@ const ViewDetailedBooking = () => {
                 amendment={amendment}
               />
               {/* </motion.div> */}
-              <div className="m-2 w-full lg:w-[20%] flex flex-col  p-5 rounded-lg shadow-lg  border">
+              <div className="m-2 w-full lg:w-[20%] flex flex-col h-full  p-5 rounded-lg shadow-lg  border">
                 <div className=" py-4 text-[1rem]">
                   <h2 className="font-montserrat">
                     Your booking is protected by{" "}
