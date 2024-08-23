@@ -214,6 +214,7 @@ const ViewAmendmentDetails = ({ amendment }) => {
       </span>
     );
   };
+  
 
   if (amendment.length < 1) return;
 

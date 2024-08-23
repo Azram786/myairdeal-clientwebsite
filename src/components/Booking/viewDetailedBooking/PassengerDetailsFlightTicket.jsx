@@ -83,7 +83,7 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
                             <td className="p-2">{index + 1}</td>
 
                             <td className="p-2 w-1/3">
-                                {passenger?.ti} {passenger?.fN.toUpperCase()} {passenger.lN.toUpperCase()} ({passenger.pt[0]})
+                                {passenger?.ti} {passenger?.fN.toUpperCase()} {passenger.lN.toUpperCase()} ({passenger?.pt[0]})
                                 <br />
                                 <span className="text-gray-600 text-[.8rem]"> DOB:{passenger?.dob} | PM: {passenger?.pNum}|</span>
 
@@ -99,7 +99,7 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
                             <td className="p-2  flex ">
                                 {Object.keys(passenger.ssrMealInfos).map((segment) => (
                                     <div key={segment}>
-                                        {segment}: <span className="text-green-500">{passenger.ssrMealInfos[segment].desc}</span> , Seat: <span className="text-green-500">{segment === "CCU-IXZ" ? "25C" : "N/A"}</span>
+                                        {segment}: <span className="text-gray-500">{passenger.ssrMealInfos[segment].desc}</span> , Seat: <span className="text-gray-500">{segment === "CCU-IXZ" ? "25C" : "N/A"}</span>
                                     </div>
                                 ))}
                             </td>
