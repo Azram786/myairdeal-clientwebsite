@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import logo from "../../assets/home/logo/main_logo.png";
+import logo from "../../assets/home/logo/FinalLogo.jpg";
 import ReactToast from "./Util/ReactToast";
 import Spinner from "../Profile/Spinner";
 

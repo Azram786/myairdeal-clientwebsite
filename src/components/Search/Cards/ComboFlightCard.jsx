@@ -392,7 +392,11 @@ const ComboFlightCard = ({
                     {/* Departure Information */}
                     <div className="flex flex-col items-center">
                       <img
-                        src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                        src={`${
+                          import.meta.env.VITE_SERVER_URL
+                        }uploads/AirlinesLogo/${
+                          startSegment?.fD?.aI?.code
+                        }.png`}
                         onError={(e) => (e.currentTarget.src = defaultAirline)}
                         alt={startSegment?.fD?.aI?.code}
                         className="size-12"
