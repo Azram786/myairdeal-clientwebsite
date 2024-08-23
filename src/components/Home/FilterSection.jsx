@@ -523,7 +523,7 @@ const FilterSection = ({
         steps={joyrideSteps}
         run={runJoyride}
         continuous={true}
-        scrollToFirstStep={true}
+        scrollToFirstStep={false}
         showProgress={true}
         showSkipButton={true}
         callback={(data) => {

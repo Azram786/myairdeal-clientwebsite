@@ -145,6 +145,7 @@ import Footer from "../Home/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsaModifySearch } from "../../store/slices/aut.slice";
 
+
 const FlightList = () => {
   const location = useLocation();
   const { query } = location.state || {};
@@ -160,6 +161,12 @@ const FlightList = () => {
   const { isModifySearch } = useSelector((state) => state.auth);
   const [hasUserPressedBack, setHasUserPressedBack] = useState(false);
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    console.log("ScrollToTop effect triggered");
+    window.scrollTo(0, 0);
+  }, [pathname]);
   useEffect(() => {
     // Push the current state to the history
     window.history.pushState({ page: "current" }, "");
@@ -214,8 +221,8 @@ const FlightList = () => {
       console.log(tripInfos, "tripInfos");
       if (!tripInfos) {
         ReactToast("No flights found on this route");
-        navigate("/no-flights")
-        
+        navigate("/no-flights");
+
         return;
       }
 

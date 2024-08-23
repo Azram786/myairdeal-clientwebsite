@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { MdFlight } from "react-icons/md";
+import { useLocation} from "react-router-dom";
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
   const renderValue = (value) => value || "N/A";
@@ -11,6 +12,12 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
       <div key={flightId}>{renderFunction(flightId, data)}</div>
     ));
   };
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    console.log("ScrollToTop effect triggered");
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const calculateLayoverTime = (segments) => {
     if (segments.length <= 1) return null;

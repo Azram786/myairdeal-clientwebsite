@@ -42,6 +42,13 @@ const FlightSummary = () => {
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
 
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    console.log("ScrollToTop effect triggered");
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
       navigate("/search");

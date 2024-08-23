@@ -62,7 +62,6 @@ const Banner = () => {
   const getBanners = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}banner/get-banners-user`);
-      // console.log({ banners: response },"Banners");
       setBanners(response.data);
     } catch (error) {
       ReactToast(error);
@@ -72,6 +71,14 @@ const Banner = () => {
   useEffect(() => {
     getBanners();
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % banners.length);
+    }, 5000); 
+
+    return () => clearInterval(interval); 
+  }, [banners.length]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % banners.length);
@@ -87,20 +94,25 @@ const Banner = () => {
 
   return (
     <div className="relative min-w-[250px] h-[60vh] max-w-[1900px] mx-auto md:h-[50vh] lg:h-[70vh]">
-      <img
-        className="absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500"
-        src={banners[currentSlide]?.image || BannerImage}
-        alt={`Banner ${currentSlide + 1}`}
-      />
+      <div className="relative w-full h-full overflow-hidden">
+        {banners.map((banner, index) => (
+          <img
+            key={index}
+            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-10000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+            src={banner?.image || BannerImage}
+            alt={`Banner ${index + 1}`}
+          />
+        ))}
+      </div>
 
-      <div className="relative items-start h-full left-[10%] flex flex-col justify-center text-white w-2/3">
-        <h3 className="font-semibold leading-[1.5] flex-wrap text-[1.2rem] md:text-[2rem]">
-          {banners[currentSlide]?.headingOne }
-        </h3>
-        <h4 className="md:mt-3 text-[1.2rem] font-poppins md:text-[1.5rem] lg:text-2x 2xl:text-[1.7rem]">
-        {banners[currentSlide]?.headingTwo}
-        </h4>
-        <div>
+      <div className="absolute inset-0 flex items-center justify-start left-[10%] text-white w-2/3">
+        <div className="flex flex-col">
+          <h3 className="font-semibold leading-[1.5] flex-wrap text-[1.2rem] md:text-[2rem]">
+            {banners[currentSlide]?.headingOne}
+          </h3>
+          <h4 className="md:mt-3 text-[1.2rem] font-poppins md:text-[1.5rem] lg:text-2x 2xl:text-[1.7rem]">
+            {banners[currentSlide]?.headingTwo}
+          </h4>
           <button
             onClick={() =>
               window.scrollTo({
@@ -108,9 +120,9 @@ const Banner = () => {
                 behavior: "smooth",
               })
             }
-            className="bg-[#1B1D29] px-6 text-xs md:text-base rounded-md mt-4 py-2"
+            className="bg-[#1B1D29] text-white rounded-md mt-4 py-2 px-6 md:px-8 text-xs md:text-base w-32"
           >
-              {banners[currentSlide]?.buttonText}
+            {banners[currentSlide]?.buttonText}
           </button>
         </div>
       </div>
@@ -119,12 +131,14 @@ const Banner = () => {
       <button
         onClick={prevSlide}
         className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full"
+        style={{ width: "40px", height: "40px" }}
       >
         &#10094;
       </button>
       <button
         onClick={nextSlide}
         className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full"
+        style={{ width: "40px", height: "40px" }}
       >
         &#10095;
       </button>

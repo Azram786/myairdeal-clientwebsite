@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import logo from "../../assets/home/logo/main_logo.png";
@@ -14,6 +14,12 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   const [convenienceFee, setConvenienceFee] = useState(0);
   const [errors, setErrors] = useState({});
   const [markUp, setMarkUp] = useState(null);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    console.log("ScrollToTop effect triggered");
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const calculatePassengerDetails = useMemo(() => {
     return passengersData?.passengers?.map((passenger) => {
