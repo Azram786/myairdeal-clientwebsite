@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Tabs } from "antd";
-import FlightDetailsCard from "../Cards/FlightDetailsCard";
+
 import { ArrowRightOutlined } from "@ant-design/icons";
 import flightLogo from "../../../assets/home/logo/image 40.png";
-import OneWaySideBar from "./OneWaySidebar";
+
 import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ReactToast from "../../util/ReactToast";
 import { setLastSearch } from "../../../store/slices/aut.slice";
+import ComboSideBar from "./ComboSidebar";
+import ComboFlightCard from "../Cards/ComboFlightCard";
 
 const { TabPane } = Tabs;
 
@@ -26,7 +28,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const token = useSelector((state) => state.auth.token);
   const [selectedFlight, setSelectedFlight] = useState([
-    { flightIndex: 0, priceIndex: 0 },
+    // { flightIndex: 0, priceIndex: 0 },
   ]);
   const navigate = useNavigate();
 
@@ -161,19 +163,18 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   return (
     <div className="flex md:flex-row flex-col">
-      <OneWaySideBar
-      
+      <ComboSideBar
         flights={flightProps}
         filters={filters}
         setFilters={setFilters}
         passenger={passenger}
         calculateTotalPrice={calculateTotalPrice}
       />
-      <div className="flex-grow">
+      <div className="flex-grow ">
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={
-              <span className="flex gap-2">
+              <span className="hidden">
                 <span className="flex flex-col justify-center ">
                   <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
                   <p className="text-[10px]">
@@ -221,7 +222,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
             <div className="h-[630px] overflow-y-auto no-scroll">
               {filteredFlights.length > 0 ? (
                 filteredFlights.map((flight, index) => (
-                  <FlightDetailsCard
+                  <ComboFlightCard
                     key={index}
                     passenger={passenger}
                     logo={flightLogo}

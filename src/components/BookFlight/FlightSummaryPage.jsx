@@ -42,6 +42,13 @@ const FlightSummary = () => {
   }, [bookings]);
   const [passengers, setPassengers] = useState([]);
 
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    console.log("ScrollToTop effect triggered");
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   useEffect(() => {
     if (!bookings || bookings.length === 0 || bookingArray.length === 0) {
       navigate("/search");
@@ -157,7 +164,7 @@ const FlightSummary = () => {
     return `${hours}h ${minutes}m`;
   }
 
-  console.log({ passengersData, passengers });
+
   function calculateTotalDuration(segments) {
     if (!segments || segments.length === 0) return "N/A";
 
@@ -255,7 +262,7 @@ const FlightSummary = () => {
                       <div key={index} className=" rounded-lg p-2   ">
                         <div className="flex justify-center py-3 px-4"></div>
                         <div className=" flex flex-wrap items-center justify-between bg-[#1B1D29] text-[#D7B56D]  p-2 rounded-t-lg">
-                          <div className="text-base sm:text-lg font-semibold flex items-center">
+                          <div className="text-base  font-semibold flex items-center">
                             <span>{item.sI[0].da.city}</span>
                             <FaArrowRight className="mx-2 inline" />
                             <span>{item.sI[item.sI.length - 1].aa.city}</span>
@@ -323,25 +330,25 @@ const FlightSummary = () => {
                                       <div className="text-sm">
                                         {segment.da.terminal || "N/A"}
                                       </div>
-                                      <div className="text-sm font-semibold flex gap-1 ">
-                                        <div>
+                                      <div className="  text-sm font-semibold "> 
+                                       
                                           {new Date(
                                             item.sI[0].dt
                                           ).toLocaleDateString("en-US", {
                                             month: "short",
                                             day: "numeric",
                                           })}
-                                        </div>
+                                      
                                         ,
-                                        <div>
+                                      
                                           {new Date(
                                             item.sI[0].dt
                                           ).toLocaleDateString("en-US", {
                                             weekday: "short",
                                           })}
-                                        </div>
+                                        
                                         ,
-                                        <div>
+                                       
                                           {new Date(
                                             segment.dt
                                           ).toLocaleTimeString([], {
@@ -349,7 +356,7 @@ const FlightSummary = () => {
                                             minute: "2-digit",
                                             hour12: false,
                                           })}
-                                        </div>
+                                      
                                       </div>
                                     </div>
                                     <div className="flex-col text-center my-2 md:my-0 w-full mr-32 md:w-[40%]">
@@ -403,25 +410,25 @@ const FlightSummary = () => {
                                       <div className="text-sm">
                                         {segment.aa.terminal || "N/A"}
                                       </div>
-                                      <div className="text-sm font-semibold flex gap-1">
-                                        <div>
+                                      <div className="text-sm font-semibold ">
+ 
                                           {new Date(
                                             item.sI[0].dt
                                           ).toLocaleDateString("en-US", {
                                             month: "short",
                                             day: "numeric",
                                           })}
-                                        </div>
+                                      
                                         ,
-                                        <div>
+                                       
                                           {new Date(
                                             item.sI[0].dt
                                           ).toLocaleDateString("en-US", {
                                             weekday: "short",
                                           })}
-                                        </div>
+                                       
                                         ,
-                                        <div>
+                                       
                                           {new Date(
                                             segment.at
                                           ).toLocaleTimeString([], {
@@ -429,7 +436,7 @@ const FlightSummary = () => {
                                             minute: "2-digit",
                                             hour12: false,
                                           })}
-                                        </div>
+                                      
                                       </div>
                                     </div>
                                   </div>
@@ -457,7 +464,8 @@ const FlightSummary = () => {
                                           <div className="text-center">
                                             <span className="text-sm">
                                               Total Layover Time:{" "}
-                                              {calculateLayoverTime(item.sI)}
+                                              <span className="font-bold">{calculateLayoverTime(item.sI)}</span>
+                                              
                                             </span>
                                           </div>
                                         )}

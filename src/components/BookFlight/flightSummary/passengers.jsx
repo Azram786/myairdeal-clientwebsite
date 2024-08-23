@@ -139,10 +139,25 @@ const PassengerForm = forwardRef(
       setSavePassengerInfo(isChecked);
 
       if (isChecked) {
+        if (
+          passenger.title === "" ||
+          passenger.firstName === "" ||
+          passenger.lastName === ""
+        ) {
+          ReactToast("Please Fill Title FirstName and Last Name");
+          setSavePassengerInfo(false);
+          return;
+        }
         try {
           const response = await axios.put(
             `${import.meta.env.VITE_SERVER_URL}user/add-passenger`,
-            { passenger },
+            {
+              ti: passenger.title,
+              fN: passenger.firstName,
+              lN: passenger.lastName,
+              pt: passenger.passengerType,
+              dob: "",
+            },
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -156,6 +171,7 @@ const PassengerForm = forwardRef(
           // You might want to show a success message to the user here
         } catch (error) {
           // Handle error
+          ReactToast(error.response.data.error);
           console.error(
             "Error saving passenger information:",
             error.response?.data || error.message

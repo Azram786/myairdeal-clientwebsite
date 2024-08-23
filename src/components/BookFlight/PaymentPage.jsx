@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import logo from "../../assets/home/logo/main_logo.png";
@@ -14,6 +14,12 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   const [convenienceFee, setConvenienceFee] = useState(0);
   const [errors, setErrors] = useState({});
   const [markUp, setMarkUp] = useState(null);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    console.log("ScrollToTop effect triggered");
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const calculatePassengerDetails = useMemo(() => {
     return passengersData?.passengers?.map((passenger) => {
@@ -160,17 +166,15 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
           },
         ],
         travellerInfo: travellerInfo,
-        // gstInfo: {
-        //   gstNumber: passengersData.gstDetails.gstNumber,
-        //   email: passengersData.gstDetails.email,
-        //   registeredName: passengersData.gstDetails.companyName,
-        //   mobile: passengersData.gstDetails.phone,
-        //   address: passengersData.gstDetails.address,
-        // },
-        // deliveryInfo: {
-        //   emails: passengersData.passengers.map((p) => p.email),
-        //   contacts: passengersData.passengers.map((p) => p.phone),
-        // },
+        ...(passengersData.gstDetails.gstNumber?.trim() && {
+          gstInfo: {
+            gstNumber: passengersData.gstDetails.gstNumber,
+            email: passengersData.gstDetails.email,
+            registeredName: passengersData.gstDetails.companyName,
+            mobile: passengersData.gstDetails.phone,
+            address: passengersData.gstDetails.address,
+          },
+        }),
         deliveryInfo: {
           emails: [`${passengersData.contactDetails.email}`],
           contacts: [`${passengersData.contactDetails.phoneNumber}`],

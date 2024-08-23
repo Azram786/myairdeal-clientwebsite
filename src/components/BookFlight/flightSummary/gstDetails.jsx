@@ -17,7 +17,7 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
     validateField(name, value);
   };
 
-  console.log({ gstDetails })
+  console.log({ gstDetails });
 
   const validateField = (name, value) => {
     let error = "";
@@ -164,8 +164,9 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
                   name={id}
                   value={gstDetails[id] || ""}
                   onChange={handleInputChange}
-                  className={`${inputClass} ${errors[id] ? "border-red-500" : "border-gray-300"
-                    }`}
+                  className={`${inputClass} ${
+                    errors[id] ? "border-red-500" : "border-gray-300"
+                  }`}
                   placeholder={placeholder}
                   maxLength={maxLength}
                 />
@@ -188,8 +189,9 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
               value={gstDetails.address || ""}
               onChange={handleInputChange}
               rows="3"
-              className={`${inputClass} ${errors.address ? "border-red-500" : "border-gray-300"
-                }`}
+              className={`${inputClass} ${
+                errors.address ? "border-red-500" : "border-gray-300"
+              }`}
               placeholder="Enter Registered Address"
               maxLength={70}
             />
@@ -197,14 +199,14 @@ const GstDetails = ({ gstDetails, setGstDetails, expanded, toggleCard }) => {
               <p className="mt-1 text-xs text-red-500">{errors.address}</p>
             )}
           </div>
-          <div className="mt-6 flex justify-end">
+          {/* <div className="mt-6 flex justify-end">
             <button
               className="text-[#D7B56D] bg-[#1B1D29] text-sm md:text-base px-4 py-2 rounded  transition-colors"
               onClick={handleSaveGSTDetails}
             >
               Save GST Details
             </button>
-          </div>
+          </div> */}
         </div>
       )}
     </div>

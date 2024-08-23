@@ -53,7 +53,7 @@ const authSlice = createSlice({
       state.resentSearchFilter = [[], []]
     },
     setIsaModifySearch: (state, action) => {
-      console.log({ action })
+
       state.isModifySearch = action.payload
     }
   }

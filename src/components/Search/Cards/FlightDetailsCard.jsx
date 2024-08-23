@@ -144,7 +144,7 @@ const FlightDetailsCard = ({
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className="w-full bg-[#f0e1c0] overflow-scroll ">
+          <div className="w-full bg-[#f0e1c0] overflow-x-scroll ">
             {data.map((segment, index) => {
               return (
                 <>
@@ -154,7 +154,10 @@ const FlightDetailsCard = ({
                   >
                     <div className="flex items-center w-full text-left pl-0 md:pl-6 lg-custom:pl-0 md:w-[26%]">
                       <img
-                        src={`https://api.myairdeal.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                        src={`${
+                          import.meta.env.VITE_SERVER_URL
+                        }uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                        onError={(e) => (e.currentTarget.src = defaultAirline)}
                         alt={segment?.fD?.aI?.code}
                         className="md:size-10 size-8 rounded-md mr-4"
                       />
@@ -198,7 +201,7 @@ const FlightDetailsCard = ({
                         <FaPlane className="my-2 text-gray-400" />
                         <div className="text-xs text-gray-500">
                           {/* {convertToHoursMinutes(segment.duration)} */}
-                          {calculateDuration(segment.dt, segment.at)}
+                          {convertToHoursMinutes(segment.duration)}
                         </div>
                       </div>
                       <div className="text-left p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%] ml-0 lg-custom:ml-8 ">
@@ -335,7 +338,9 @@ const FlightDetailsCard = ({
 
             <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
               <img
-                src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${
+                  startSegment?.fD?.aI?.code
+                }.png`}
                 alt={startSegment?.fD?.aI?.code}
                 className="md:size-12  rounded-md  mr-6 md:flex hidden"
               />
@@ -352,7 +357,7 @@ const FlightDetailsCard = ({
               <div className="border-t  hidden sm:flex border-dashed ml-0 md:ml-4 border-gray-400 w-6 md:w-16 lg:w-[200px]"></div>
               <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold w-16 sm:w-32 md:min-w-44 text-gray-500">
                 {/* <span>{convertToHoursMinutes(totalDuration)}</span> */}
-                <span>{totalDuration}</span>
+                <span>{startSegment.duration}</span>
                 <FaPlane className="mx-2 text-[#D7B56D] text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (

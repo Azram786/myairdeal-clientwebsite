@@ -15,7 +15,8 @@ const DynamicForm = ({
   form,
   dateDynamic,
   setDate,
-  mergeHandler
+  mergeHandler,
+  minDate
 }) => {
   const [startDate, setStartDate] = useState(dateDynamic);
 
@@ -85,8 +86,8 @@ const DynamicForm = ({
           ">
 
             <DatePicker
-              // minDate={formData.travelDate}
-              minDate={dateDynamic}
+
+              minDate={minDate}
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               customInput={<CustomInput CustomIcon={MdOutlineDateRange} />}

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdFlight } from "react-icons/md";
+import { FaRegClock, FaArrowRight } from "react-icons/fa";
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
   const renderValue = (value) => value || "N/A";
@@ -54,6 +55,28 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
             key={index}
             className="border  shadow-sm border-gray-300 rounded-lg p-2 mb-4"
           >
+            <div className=" flex flex-wrap items-center justify-between bg-[#1B1D29] text-[#D7B56D]  p-2 rounded-t-lg">
+              <div className="text-base  font-semibold flex items-center">
+                <span>{item.sI[0].da.city}</span>
+                <FaArrowRight className="mx-2 inline" />
+                <span>{item.sI[item.sI.length - 1].aa.city}</span>
+                <div className="text-white text-sm mt-1 sm:mt-0 sm:ml-2">
+                  On{" "}
+                  {new Date(item.sI[0].dt).toLocaleDateString("en-US", {
+                    weekday: "short",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </div>
+              </div>
+              <div className="flex justify-center items-center gap-2">
+                <div className="text-sm md:text-base  font-semibold text-white flex items-center">
+                  <FaRegClock className="mr-2 " />
+                  {calculateTotalDuration(item.sI)}
+                </div>
+              </div>
+            </div>
             {/* <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-200 p-2 rounded-t-lg mb-2">
               <div className="text-base sm:text-lg font-bold flex items-center">
                 <span>{item.sI[0].da.city}</span>
@@ -123,7 +146,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                         {new Date(segment.dt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
-                          hour12: true,
+                          hour12: false,
                         })}
                       </div>
                       <div className="text-sm">
@@ -167,17 +190,19 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                             month: "short",
                             day: "numeric",
                           })}
+                          
                           ,
                           {new Date(segment.dt).toLocaleDateString("en-US", {
-                            year: "numeric",
+                            weekday: "short",
                           })}{" "}
-                        </div>
-
-                        {new Date(segment.at).toLocaleTimeString([], {
+                          {new Date(segment.at).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
-                          hour12: true,
+                          hour12: false,
                         })}
+                        </div>
+
+                        
                       </div>
                       <div className="text-sm">
                         {segment.aa.city}, {segment.aa.country}
@@ -188,12 +213,12 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="text-sm text-gray-500 mt-4">
+                  <div className="text-sm text-gray-500 mt-4 justify-center items-center flex ">
                     {/* <span>
                       There is a Special No Meal fare Provided by the Airline
                     </span> */}
                     {segmentIndex !== item.sI.length - 1 && (
-                      <div className="flex justify-between bg-[#1B1D29] text-white p-3 rounded-md mt-4 mb-4">
+                      <div className="flex justify-between bg-[#FFDE99] text-black p-3 rounded-xl mt-2 mb-4 w-[50%]">
                         <div className="text-sm">Require to change plane</div>
                         <div className="text-base font-medium">
                           <span className="text-sm">
@@ -201,7 +226,9 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                               <div className="text-center">
                                 <span className="text-sm">
                                   Total Layover Time:{" "}
-                                  {calculateLayoverTime(item.sI)}
+                                  <span className="font-bold">
+                                    {calculateLayoverTime(item.sI)}
+                                  </span>
                                 </span>
                               </div>
                             )}
