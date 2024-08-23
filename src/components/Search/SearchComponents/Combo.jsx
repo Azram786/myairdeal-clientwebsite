@@ -28,7 +28,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const token = useSelector((state) => state.auth.token);
   const [selectedFlight, setSelectedFlight] = useState([
-    { flightIndex: 0, priceIndex: 0 },
+    // { flightIndex: 0, priceIndex: 0 },
   ]);
   const navigate = useNavigate();
 
@@ -164,7 +164,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
   return (
     <div className="flex md:flex-row flex-col">
       <ComboSideBar
-      
         flights={flightProps}
         filters={filters}
         setFilters={setFilters}
@@ -175,7 +174,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={
-              <span className="flex gap-2 ">
+              <span className="hidden">
                 <span className="flex flex-col justify-center ">
                   <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
                   <p className="text-[10px]">
