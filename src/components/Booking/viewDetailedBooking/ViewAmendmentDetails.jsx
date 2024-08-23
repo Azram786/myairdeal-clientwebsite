@@ -229,12 +229,12 @@ const ViewAmendmentDetails = ({ amendment }) => {
             key={value.id}
           >
             <div className="flex-1">
-              <h3 className="text-lg font-semibold">{value.id}</h3>
+              <h3 className="text-lg font-semibold text-gray-700">  <span className="font-bold text-black ">Amendment ID</span> {value.id}</h3>
               <p className="text-sm text-gray-700">
-                {timeFormatChanger(value.time)}
+             <span className="font-bold">Time</span>   {timeFormatChanger(value.time)}
               </p>
               <p className="text-sm text-gray-700">
-                {dateDateFormatChanger(value.time)}
+              <span className="font-bold">Date</span>   {dateDateFormatChanger(value.time)}
               </p>
             </div>
             <button

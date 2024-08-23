@@ -101,20 +101,22 @@ const ViewDetailedBookingCard = ({
 
                   <div className="flex w-full  h-full  justify-between items-center ">
                     <div className="w-1/3 flex text-center flex-col gap-1 h-full">
+
+                      <div className="text-sm">
+                        <span>{value.sI[0].da.city}, {value.sI[0].da.country}</span>
+                      </div>
                       <div className="font-bold text-md">
                         <span>{value.sI[0].da.code}</span>
                       </div>
-                      <div className="text-sm font-medium">
-                        <span>{value.sI[0].da.city}</span>
-                      </div>
-                      <div className="font-bold text-sm  w-full">
+                      <div className="text-sm  w-full">
                         <span className="w-full">{value.sI[0].da.name}</span>
                       </div>
-                      <div className="text-sm font-medium">
-                        <span>{value.sI[0].da.country}</span>
-                      </div>
+
                     </div>
                     <div className="h-full flex flex-col w-1/3 justify-center">
+                      <div className="text-center text-sm font-semibold">
+                        {searchQuery.cabinClass}
+                      </div>
                       <div className="flex justify-center w-full items-center">
                         <hr className="w-1/3 border-t border-black" />
                         <MdFlight className="w-7 h-5 mx-2 rotate-90" />
@@ -126,11 +128,24 @@ const ViewDetailedBookingCard = ({
                         </div>
                       ) : (
                         <div className="text-center text-sm font-bold text-[#1B1D29]">
-                          Connection
+                          Stops :  <span>{value.sI.length - 1}</span>
                         </div>
                       )}
                     </div>
                     <div className="w-1/3 flex flex-col gap-1 h-full text-center">
+
+                      <div className="text-sm ">
+                        <span>
+
+                          {value.sI.length === 1
+                            ? value.sI[0].aa.city
+                            : value.sI[value.sI.length - 1].aa.city}
+                          ,
+                          {value.sI.length === 1
+                            ? value.sI[0].aa.country
+                            : value.sI[value.sI.length - 1].aa.country}
+                        </span>
+                      </div>
                       <div className="font-bold text-md">
                         <span>
                           {value.sI.length === 1
@@ -138,27 +153,14 @@ const ViewDetailedBookingCard = ({
                             : value.sI[value.sI.length - 1].aa.code}
                         </span>
                       </div>
-                      <div className="text-sm font-medium">
-                        <span>
-                          {value.sI.length === 1
-                            ? value.sI[0].aa.city
-                            : value.sI[value.sI.length - 1].aa.city}
-                        </span>
-                      </div>
-                      <div className="font-bold text-sm">
+                      <div className=" text-sm">
                         <span>
                           {value.sI.length === 1
                             ? value.sI[0].aa.name
                             : value.sI[value.sI.length - 1].aa.name}
                         </span>
                       </div>
-                      <div className="text-sm font-medium">
-                        <span>
-                          {value.sI.length === 1
-                            ? value.sI[0].aa.country
-                            : value.sI[value.sI.length - 1].aa.country}
-                        </span>
-                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -171,9 +173,9 @@ const ViewDetailedBookingCard = ({
                       {value.sI.length === 1
                         ? calculateDuration(value.sI[0].dt, value.sI[0].at)
                         : calculateDuration(
-                            value.sI[0].dt,
-                            value.sI[value.sI.length - 1].at
-                          )}
+                          value.sI[0].dt,
+                          value.sI[value.sI.length - 1].at
+                        )}
                     </h1>
                   </div>
 
@@ -216,8 +218,8 @@ const ViewDetailedBookingCard = ({
                           {value.sI.length === 1
                             ? timeFormatChanger(value.sI[0].at)
                             : timeFormatChanger(
-                                value.sI[value.sI.length - 1].at
-                              )}
+                              value.sI[value.sI.length - 1].at
+                            )}
                         </div>
                       </div>
                     </div>
@@ -282,9 +284,9 @@ const ViewDetailedBookingCard = ({
                         {value.sI.map((singleValue, index) => {
                           const layoverDuration = previousArrivalTime
                             ? calculateDuration(
-                                previousArrivalTime,
-                                singleValue.dt
-                              )
+                              previousArrivalTime,
+                              singleValue.dt
+                            )
                             : null;
                           previousArrivalTime = singleValue.at;
 
