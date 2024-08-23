@@ -163,6 +163,9 @@ const MultiCityForm = ({
               index === 0
                 ? formData.travelDate > dynamicFormData[index].travelDate ? formData.travelDate : dynamicFormData[index].travelDate : dynamicFormData[index].travelDate || dynamicFormData?.[index - 1].travelDate
             }
+            minDate={
+              index === 0 ? formData.travelDate : dynamicFormData[index].travelDate
+            }
 
             key={index}
             dynamicFormData={dynamicFormData}
