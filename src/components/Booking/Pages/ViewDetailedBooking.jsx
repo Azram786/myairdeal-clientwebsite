@@ -25,7 +25,8 @@ const ViewDetailedBooking = () => {
   const { bookingId, bookingFilter } = queryParams;
   const [loading, setLoading] = useState(true);
   const [amendment, setAmendment] = useState([]);
-  const [data,setData]=useState(null)
+  const [data, setData] = useState(null)
+ 
   const getSingleTicketDetailHandler = async () => {
     try {
       setLoading(true);
@@ -39,7 +40,7 @@ const ViewDetailedBooking = () => {
           },
         }
       );
-      console.log({ data: response.data })
+     
       setSearchQuery(response.data.searchQuery);
       setSingleBookingData(response.data.data);
       setAmendment(response.data.amendment);
@@ -119,7 +120,7 @@ const ViewDetailedBooking = () => {
                 </div>
               </div>
             </div>
-            <div className="flex w-full flex-wrap justify-center     ">
+            <div className="flex w-full flex-wrap  justify-center     ">
               {/* <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -132,7 +133,7 @@ const ViewDetailedBooking = () => {
                 amendment={amendment}
               />
               {/* </motion.div> */}
-              <div className="m-2 w-full lg:w-[20%] flex flex-col  p-5 rounded-lg shadow-lg  border">
+              <div className="m-2 w-full lg:w-[20%] flex flex-col h-full  p-5 rounded-lg shadow-lg  border">
                 <div className=" py-4 text-[1rem]">
                   <h2 className="font-montserrat">
                     Your booking is protected by{" "}
@@ -149,8 +150,8 @@ const ViewDetailedBooking = () => {
                         {
                           singleBookingData?.itemInfos.AIR.totalPriceInfo
                             .totalFareDetail.fC.BF
-                         + Math.abs(  singleBookingData?.itemInfos.AIR.totalPriceInfo
-                          .totalFareDetail.fC.TF - data?.payment?.amount)}
+                          + Math.abs(singleBookingData?.itemInfos.AIR.totalPriceInfo
+                            .totalFareDetail.fC.TF - data?.payment?.amount)}
                       </div>
                     </div>
                     <div className=" flex flex-col">
@@ -211,7 +212,7 @@ const ViewDetailedBooking = () => {
                     <div>Total</div>
                     <div className="flex">
                       ₹{" "}
-                    
+
                       {data?.payment?.amount}
                     </div>
                   </div>

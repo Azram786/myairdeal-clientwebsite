@@ -21,7 +21,7 @@ const HomePage = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    console.log('ScrollToTop effect triggered');
+ 
     window.scrollTo(0, 0);
   }, [pathname]);
   
@@ -52,7 +52,7 @@ const HomePage = () => {
     },
   ]);
 
-  console.log({ formData, dynamicFormData });
+
 
   async function getResentSearch() {
     try {
@@ -79,7 +79,7 @@ const HomePage = () => {
 
   useEffect(() => {
     if (resentSearch?.searchQuery) {
-      console.log({ query: resentSearch?.searchQuery });
+   
       setFormData((prevFormData) => ({
         ...prevFormData,
         cabinClass:
@@ -137,15 +137,7 @@ const HomePage = () => {
         const data = resentSearch.searchQuery.routeInfos
           .slice(1)
           .map((route, index) => {
-            console.log({ route, index, date: new Date(route.travelDate) });
-            console.log({
-              fromCity:
-                index === 0
-                  ? formData.toCityOrAirport || route.fromCityOrAirport.code
-                  : route.fromCityOrAirport.code,
-              toCity: route.toCityOrAirport.code,
-              travelDate: new Date(route.travelDate),
-            });
+       
             return {
               fromCity:
                 index === 0
@@ -155,7 +147,7 @@ const HomePage = () => {
               travelDate: new Date(route.travelDate),
             };
           });
-        console.log({ data });
+     
         setDynamicFormData(() => data);
       }
     }

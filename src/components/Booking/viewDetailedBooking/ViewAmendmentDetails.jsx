@@ -214,6 +214,7 @@ const ViewAmendmentDetails = ({ amendment }) => {
       </span>
     );
   };
+  
 
   if (amendment.length < 1) return;
 
@@ -229,12 +230,12 @@ const ViewAmendmentDetails = ({ amendment }) => {
             key={value.id}
           >
             <div className="flex-1">
-              <h3 className="text-lg font-semibold">{value.id}</h3>
+              <h3 className="text-lg font-semibold text-gray-700">  <span className="font-bold text-black ">Amendment ID</span> {value.id}</h3>
               <p className="text-sm text-gray-700">
-                {timeFormatChanger(value.time)}
+             <span className="font-bold">Time</span>   {timeFormatChanger(value.time)}
               </p>
               <p className="text-sm text-gray-700">
-                {dateDateFormatChanger(value.time)}
+              <span className="font-bold">Date</span>   {dateDateFormatChanger(value.time)}
               </p>
             </div>
             <button
@@ -253,12 +254,12 @@ const ViewAmendmentDetails = ({ amendment }) => {
       {modalIsOpen && (
 
 
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-start z-50 overflow-y-auto pt-4 pb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-start z-50 o pt-4 pb-4">
           <div className="bg-gray-200 w-full max-w-4xl m-auto">
             {loading ? (
-             <div className="w-full h-[80vh] flex justify-center items-center">
-             <Spinner />
-           </div>
+              <div className="w-full h-[80vh] flex justify-center items-center">
+                <Spinner />
+              </div>
             ) : (
               <>
 
@@ -302,7 +303,7 @@ const ViewAmendmentDetails = ({ amendment }) => {
                             key={index}
                             onClick={() => setSingleTripDetails(trip)}
                             className={`${singleTripDetails === trip ? 'bg-yellow-600 text-gray-800' : 'bg-gray-700 text-white'
-                            } ] font-semibold uppercase py-2 px-4 rounded-lg flex flex-col gap-1 mb-2`}
+                              } ] font-semibold uppercase py-2 px-4 rounded-lg flex flex-col gap-1 mb-2`}
                           >
                             <span>Trip - {index + 1}</span>
                             <span>{trip.src} - {trip.dest}</span>

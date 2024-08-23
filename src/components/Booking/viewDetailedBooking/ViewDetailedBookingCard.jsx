@@ -10,6 +10,7 @@ import dateDateFormatChanger from "../../util/dateDateFormatChanger";
 import calculateDuration from "../../util/calculateDuration";
 import { useSelector } from "react-redux";
 import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
+import PassengerDetailsFlightTicket from "./PassengerDetailsFlightTicket";
 
 const ViewDetailedBookingCard = ({
   singleBookingData,
@@ -20,11 +21,29 @@ const ViewDetailedBookingCard = ({
   const { token } = useSelector((state) => state.auth);
   const [openConnectionIndex, setOpenConnectionIndex] = useState(null);
   let previousArrivalTime = null;
+  const [isPassengersOpen, setIsPassengersOpen] = useState(false)
 
   const toggleDropdown = (index) => {
     setOpenConnectionIndex(openConnectionIndex === index ? null : index);
   };
+  const [passengerDetails, setPassengerDetail] = useState(singleBookingData?.itemInfos?.AIR?.travellerInfos)
+  function formatDuration(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}m`;
+  }
+  const totalDurationHandler = (flights) => {
+    let totalDuration = 0;
 
+
+    flights.forEach(flight => {
+      totalDuration += flight.duration;
+      if (flight.cT) {
+        totalDuration += flight.cT;
+      }
+    });
+    return totalDuration
+  }
   return (
     <div className=" border-l-0 w-full lg:w-[72%]">
       <div className="rounded-lg my-2">
@@ -69,6 +88,7 @@ const ViewDetailedBookingCard = ({
           </div>
         </div>
         {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
+
           return (
             <div key={index}>
               <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
@@ -101,20 +121,22 @@ const ViewDetailedBookingCard = ({
 
                   <div className="flex w-full  h-full  justify-between items-center ">
                     <div className="w-1/3 flex text-center flex-col gap-1 h-full">
+
+                      <div className="text-sm">
+                        <span>{value.sI[0].da.city}, {value.sI[0].da.country}</span>
+                      </div>
                       <div className="font-bold text-md">
                         <span>{value.sI[0].da.code}</span>
                       </div>
-                      <div className="text-sm font-medium">
-                        <span>{value.sI[0].da.city}</span>
-                      </div>
-                      <div className="font-bold text-sm  w-full">
+                      <div className="text-sm  w-full">
                         <span className="w-full">{value.sI[0].da.name}</span>
                       </div>
-                      <div className="text-sm font-medium">
-                        <span>{value.sI[0].da.country}</span>
-                      </div>
+
                     </div>
                     <div className="h-full flex flex-col w-1/3 justify-center">
+                      <div className="text-center text-sm font-semibold">
+                        {searchQuery.cabinClass}
+                      </div>
                       <div className="flex justify-center w-full items-center">
                         <hr className="w-1/3 border-t border-black" />
                         <MdFlight className="w-7 h-5 mx-2 rotate-90" />
@@ -126,11 +148,24 @@ const ViewDetailedBookingCard = ({
                         </div>
                       ) : (
                         <div className="text-center text-sm font-bold text-[#1B1D29]">
-                          Connection
+                          Stops :  <span>{value.sI.length - 1}</span>
                         </div>
                       )}
                     </div>
                     <div className="w-1/3 flex flex-col gap-1 h-full text-center">
+
+                      <div className="text-sm ">
+                        <span>
+
+                          {value.sI.length === 1
+                            ? value.sI[0].aa.city
+                            : value.sI[value.sI.length - 1].aa.city}
+                          ,
+                          {value.sI.length === 1
+                            ? value.sI[0].aa.country
+                            : value.sI[value.sI.length - 1].aa.country}
+                        </span>
+                      </div>
                       <div className="font-bold text-md">
                         <span>
                           {value.sI.length === 1
@@ -138,27 +173,14 @@ const ViewDetailedBookingCard = ({
                             : value.sI[value.sI.length - 1].aa.code}
                         </span>
                       </div>
-                      <div className="text-sm font-medium">
-                        <span>
-                          {value.sI.length === 1
-                            ? value.sI[0].aa.city
-                            : value.sI[value.sI.length - 1].aa.city}
-                        </span>
-                      </div>
-                      <div className="font-bold text-sm">
+                      <div className=" text-sm">
                         <span>
                           {value.sI.length === 1
                             ? value.sI[0].aa.name
                             : value.sI[value.sI.length - 1].aa.name}
                         </span>
                       </div>
-                      <div className="text-sm font-medium">
-                        <span>
-                          {value.sI.length === 1
-                            ? value.sI[0].aa.country
-                            : value.sI[value.sI.length - 1].aa.country}
-                        </span>
-                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -168,12 +190,7 @@ const ViewDetailedBookingCard = ({
                       Total Duration :
                     </h1>
                     <h1 className="text-base md:text-xl  font-semibold text-gray-500 uppercase">
-                      {value.sI.length === 1
-                        ? calculateDuration(value.sI[0].dt, value.sI[0].at)
-                        : calculateDuration(
-                            value.sI[0].dt,
-                            value.sI[value.sI.length - 1].at
-                          )}
+                      {formatDuration(totalDurationHandler(value.sI))}
                     </h1>
                   </div>
 
@@ -204,6 +221,41 @@ const ViewDetailedBookingCard = ({
                         </div>
                       </div>
                     </div>
+                    <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
+                        <BsDoorClosedFill />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                          Departure Terminal
+                        </div>
+                        <div className="font-semibold text-sm w-max ">
+                          {value.sI[0].da.terminal
+                            ? value.sI[0].da.terminal
+                            : "N/A"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
+                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
+                        <MdDateRange />
+                      </div>
+                      <div>
+                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                          Arrival Date
+                        </div>
+
+                        <div className="font-semibold text-sm ">
+                          {value.sI.length === 1
+                            ? dateDateFormatChanger(value.sI[0].at)
+                            : dateDateFormatChanger(
+                              value.sI[value.sI.length - 1].at
+                            )}
+
+                        </div>
+                      </div>
+                    </div>
                     <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3 ">
                       <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded  ">
                         <IoIosTime />
@@ -216,50 +268,23 @@ const ViewDetailedBookingCard = ({
                           {value.sI.length === 1
                             ? timeFormatChanger(value.sI[0].at)
                             : timeFormatChanger(
-                                value.sI[value.sI.length - 1].at
-                              )}
+                              value.sI[value.sI.length - 1].at
+                            )}
                         </div>
                       </div>
                     </div>
-
                     <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
                       <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
                         <BsDoorClosedFill />
                       </div>
                       <div>
                         <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
-                          Terminal
+                          Arrival Terminal
                         </div>
                         <div className="font-semibold text-sm w-max ">
-                          {value.sI[0].da.terminal
-                            ? value.sI[0].da.terminal
-                            : "NA"}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <BsDoorClosedFill />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
-                          Stops
-                        </div>
-                        <div className="font-semibold text-sm ">
-                          {value.sI.length - 1}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-1 items-center sm:w-1/2  md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded  ">
-                        <MdOutlineAirlineSeatReclineExtra />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
-                          Seat Class
-                        </div>
-                        <div className="font-semibold text-sm">
-                          {searchQuery.cabinClass}
+                          {value.sI[value.sI.length - 1].aa.terminal
+                            ? value.sI[value.sI.length - 1].aa.terminal
+                            : "N/A"}
                         </div>
                       </div>
                     </div>
@@ -274,41 +299,17 @@ const ViewDetailedBookingCard = ({
                       className="bg-[#1B1D29] text-[#D7B56D] w-full py-2 rounded-lg"
                     >
                       {openConnectionIndex === index
-                        ? "Hide Connections"
-                        : "View Connections"}
+                        ? "Hide Ticket Details"
+                        : "View Ticket Details"}
                     </button>
                     {openConnectionIndex === index && (
                       <div className="bg-[#f7eed8] text-[#1B1D29] p-2">
                         {value.sI.map((singleValue, index) => {
-                          const layoverDuration = previousArrivalTime
-                            ? calculateDuration(
-                                previousArrivalTime,
-                                singleValue.dt
-                              )
-                            : null;
-                          previousArrivalTime = singleValue.at;
+
 
                           return (
                             <React.Fragment key={index}>
-                              {index !== 0 && (
-                                <div className="text-sm text-gray-500 mt-4">
-                                  <div className="flex justify-between bg-[#1B1D29] text-[#D7B56D] p-3 rounded-md mt-4 mb-4">
-                                    <div className="text-sm">
-                                      Require to change plane
-                                    </div>
-                                    <div className="text-base font-medium">
-                                      <span className="text-sm">
-                                        <div className="text-center">
-                                          <span className="text-sm">
-                                            Total Layover Time:{" "}
-                                            {layoverDuration}
-                                          </span>
-                                        </div>
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
+
                               <div className="font-semibold text-xs border  rounded-md inline-flex items-center shadow-md p-1 space-x-2">
                                 <div className="w-5 h-5">
                                   {/* <img
@@ -360,10 +361,7 @@ const ViewDetailedBookingCard = ({
                                   <div className="flex-col items-center w-1/3">
                                     <div className="text-center">
                                       <span className="text-sm">
-                                        {calculateDuration(
-                                          singleValue.dt,
-                                          singleValue.at
-                                        )}
+                                        {formatDuration(singleValue.duration)}
                                       </span>
                                     </div>
                                     <div className="flex justify-center items-center">
@@ -399,6 +397,25 @@ const ViewDetailedBookingCard = ({
                                   </div>
                                 </div>
                               </div>
+                              {singleValue.cT && (
+                                <div className="text-sm text-gray-500 mt-4">
+                                  <div className="flex justify-between bg-[#1B1D29] text-[#D7B56D] p-3 rounded-md mt-4 mb-4">
+                                    <div className="text-sm">
+                                      Require to change plane
+                                    </div>
+                                    <div className="text-base font-medium">
+                                      <span className="text-sm">
+                                        <div className="text-center">
+                                          <span className="text-sm">
+                                            Total Layover Time:{" "}
+                                            {formatDuration(singleValue?.cT)}
+                                          </span>
+                                        </div>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             </React.Fragment>
                           );
                         })}
@@ -410,6 +427,17 @@ const ViewDetailedBookingCard = ({
             </div>
           );
         })}
+        <button
+          // onClick={() => toggleDropdown(index)}
+          onClick={() => setIsPassengersOpen((prev) => !prev)}
+          className="text-[#1B1D29] bg-[#D7B56D] w-full py-2 rounded-lg mt-4"
+        >
+          {/* {openConnectionIndex === index
+                  ? "Hide Passengers"
+                  : "View Passengers"} */}
+          View Passengers
+        </button>
+        {isPassengersOpen && <PassengerDetailsFlightTicket passengerDetails={passengerDetails} />}
       </div>
     </div>
   );
