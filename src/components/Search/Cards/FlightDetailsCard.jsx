@@ -154,7 +154,9 @@ const FlightDetailsCard = ({
                   >
                     <div className="flex items-center w-full text-left pl-0 md:pl-6 lg-custom:pl-0 md:w-[26%]">
                       <img
-                        src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                        src={`${
+                          import.meta.env.VITE_SERVER_URL
+                        }uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
                         onError={(e) => (e.currentTarget.src = defaultAirline)}
                         alt={segment?.fD?.aI?.code}
                         className="md:size-10 size-8 rounded-md mr-4"
@@ -336,7 +338,9 @@ const FlightDetailsCard = ({
 
             <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
               <img
-                src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${
+                  startSegment?.fD?.aI?.code
+                }.png`}
                 alt={startSegment?.fD?.aI?.code}
                 className="md:size-12  rounded-md  mr-6 md:flex hidden"
               />

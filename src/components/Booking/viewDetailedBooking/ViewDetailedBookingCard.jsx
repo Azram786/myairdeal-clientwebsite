@@ -16,17 +16,20 @@ const ViewDetailedBookingCard = ({
   singleBookingData,
   searchQuery,
   amendment,
+  total,
 }) => {
   const { user } = useSelector((state) => state.auth);
   const { token } = useSelector((state) => state.auth);
   const [openConnectionIndex, setOpenConnectionIndex] = useState(null);
   let previousArrivalTime = null;
-  const [isPassengersOpen, setIsPassengersOpen] = useState(false)
+  const [isPassengersOpen, setIsPassengersOpen] = useState(false);
 
   const toggleDropdown = (index) => {
     setOpenConnectionIndex(openConnectionIndex === index ? null : index);
   };
-  const [passengerDetails, setPassengerDetail] = useState(singleBookingData?.itemInfos?.AIR?.travellerInfos)
+  const [passengerDetails, setPassengerDetail] = useState(
+    singleBookingData?.itemInfos?.AIR?.travellerInfos
+  );
   function formatDuration(minutes) {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
@@ -35,15 +38,14 @@ const ViewDetailedBookingCard = ({
   const totalDurationHandler = (flights) => {
     let totalDuration = 0;
 
-
-    flights.forEach(flight => {
+    flights.forEach((flight) => {
       totalDuration += flight.duration;
       if (flight.cT) {
         totalDuration += flight.cT;
       }
     });
-    return totalDuration
-  }
+    return totalDuration;
+  };
   return (
     <div className=" border-l-0 w-full lg:w-[72%]">
       <div className="rounded-lg my-2">
@@ -73,14 +75,7 @@ const ViewDetailedBookingCard = ({
                 <div className="text-semibold flex ">
                   <div className="text-lg lg:text-xl pr-2 ">Price: </div>
                   <div className="text-lg lg:text-xl flex flex-wrap">
-                    ₹{" "}
-                    <span className="">
-                      {
-                        singleBookingData?.itemInfos?.AIR.totalPriceInfo
-                          .totalFareDetail.fC.TF
-                      }
-                      /-
-                    </span>
+                    ₹ <span className="">{total}/-</span>
                   </div>
                 </div>
               </div>
@@ -88,7 +83,6 @@ const ViewDetailedBookingCard = ({
           </div>
         </div>
         {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
-
           return (
             <div key={index}>
               <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
@@ -121,9 +115,10 @@ const ViewDetailedBookingCard = ({
 
                   <div className="flex w-full  h-full  justify-between items-center ">
                     <div className="w-1/3 flex text-center flex-col gap-1 h-full">
-
                       <div className="text-sm">
-                        <span>{value.sI[0].da.city}, {value.sI[0].da.country}</span>
+                        <span>
+                          {value.sI[0].da.city}, {value.sI[0].da.country}
+                        </span>
                       </div>
                       <div className="font-bold text-md">
                         <span>{value.sI[0].da.code}</span>
@@ -131,7 +126,6 @@ const ViewDetailedBookingCard = ({
                       <div className="text-sm  w-full">
                         <span className="w-full">{value.sI[0].da.name}</span>
                       </div>
-
                     </div>
                     <div className="h-full flex flex-col w-1/3 justify-center">
                       <div className="text-center text-sm font-semibold">
@@ -148,15 +142,13 @@ const ViewDetailedBookingCard = ({
                         </div>
                       ) : (
                         <div className="text-center text-sm font-bold text-[#1B1D29]">
-                          Stops :  <span>{value.sI.length - 1}</span>
+                          Stops : <span>{value.sI.length - 1}</span>
                         </div>
                       )}
                     </div>
                     <div className="w-1/3 flex flex-col gap-1 h-full text-center">
-
                       <div className="text-sm ">
                         <span>
-
                           {value.sI.length === 1
                             ? value.sI[0].aa.city
                             : value.sI[value.sI.length - 1].aa.city}
@@ -180,7 +172,6 @@ const ViewDetailedBookingCard = ({
                             : value.sI[value.sI.length - 1].aa.name}
                         </span>
                       </div>
-
                     </div>
                   </div>
                 </div>
@@ -250,9 +241,8 @@ const ViewDetailedBookingCard = ({
                           {value.sI.length === 1
                             ? dateDateFormatChanger(value.sI[0].at)
                             : dateDateFormatChanger(
-                              value.sI[value.sI.length - 1].at
-                            )}
-
+                                value.sI[value.sI.length - 1].at
+                              )}
                         </div>
                       </div>
                     </div>
@@ -268,8 +258,8 @@ const ViewDetailedBookingCard = ({
                           {value.sI.length === 1
                             ? timeFormatChanger(value.sI[0].at)
                             : timeFormatChanger(
-                              value.sI[value.sI.length - 1].at
-                            )}
+                                value.sI[value.sI.length - 1].at
+                              )}
                         </div>
                       </div>
                     </div>
@@ -305,11 +295,8 @@ const ViewDetailedBookingCard = ({
                     {openConnectionIndex === index && (
                       <div className="bg-[#f7eed8] text-[#1B1D29] p-2">
                         {value.sI.map((singleValue, index) => {
-
-
                           return (
                             <React.Fragment key={index}>
-
                               <div className="font-semibold text-xs border  rounded-md inline-flex items-center shadow-md p-1 space-x-2">
                                 <div className="w-5 h-5">
                                   {/* <img
@@ -437,7 +424,9 @@ const ViewDetailedBookingCard = ({
                   : "View Passengers"} */}
           View Passengers
         </button>
-        {isPassengersOpen && <PassengerDetailsFlightTicket passengerDetails={passengerDetails} />}
+        {isPassengersOpen && (
+          <PassengerDetailsFlightTicket passengerDetails={passengerDetails} />
+        )}
       </div>
     </div>
   );

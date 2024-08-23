@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   FaPlane,
   FaChevronDown,
@@ -10,41 +10,14 @@ import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
 import FareToolTip from "./FareTooltip";
 import calculateDuration from "../../util/calculateDuration";
 
-const ComboFlightCard = ({
-  flightDetails,
-  isSelected,
-  selectedPriceIndex,
-  onSelect,
-  passenger,
-}) => {
+const ComboFlightCard = ({ flightDetails, onBooking, passenger }) => {
   const [showAllPrices, setShowAllPrices] = useState(false);
-  const [localSelectedPriceIndex, setLocalSelectedPriceIndex] = useState(
-    selectedPriceIndex || 0
-  );
+  const [selectedPriceIndex, setSelectedPriceIndex] = useState(0);
+  const [selectedPrice, setSelectedPrice] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
   const [activeTab, setActiveTab] = useState("Flight Details");
 
-  let data;
-  let priceList = [];
-
-  useEffect(() => {
-    if (isSelected && selectedPriceIndex === null) {
-      onSelect(0);
-    }
-  }, [isSelected, selectedPriceIndex, onSelect]);
-
-  if (!flightDetails) {
-    return <div>Loading flights...</div>;
-  }
-
-  if (!Array.isArray(flightDetails)) {
-    data = flightDetails.sI;
-    priceList = flightDetails.totalPriceList || [];
-  } else {
-    data = flightDetails;
-  }
-
-  if (!data || data.length === 0) {
+  if (!flightDetails || !flightDetails.sI || flightDetails.sI.length === 0) {
     return <div>No flight details available</div>;
   }
 
@@ -78,6 +51,8 @@ const ComboFlightCard = ({
 
   const groupedFlights = groupFlightsBySN(flightDetails);
 
+  const data = flightDetails.sI;
+  const priceList = flightDetails?.totalPriceList;
   const calculateTotalPrice = (priceIndex) => {
     const selectedPrice = priceList[priceIndex];
     if (!selectedPrice) return 0;
@@ -125,11 +100,6 @@ const ComboFlightCard = ({
     const remainingMinutes = minutes % 60;
     return `${hours}h ${remainingMinutes}m`;
   }
-
-  const handlePriceSelection = (index) => {
-    setLocalSelectedPriceIndex(index);
-    onSelect(index);
-  };
 
   const renderTabs = () => {
     switch (activeTab) {
@@ -447,12 +417,12 @@ const ComboFlightCard = ({
                 {displayedPrices.map((price, index) => (
                   <div
                     key={index}
-                    onClick={() => handlePriceSelection(index)}
+                    onClick={() => setSelectedPrice(index)}
                     className={`
                    text-xs text-start space-y-2 flex shrink-0 items-center min-w-24 md:w-fit
                 p-1 mb-2 cursor-pointer 
                   ${
-                    localSelectedPriceIndex === index
+                    selectedPrice === index
                       ? "border border-[#D7B56D] rounded-md"
                       : "border border-gray-200 hover:border-blue-300 rounded-md"
                   }
@@ -510,18 +480,15 @@ const ComboFlightCard = ({
                 </button>
               </div>
             </div>
-            <div className="flex justify-end  w-full">
-              <button
-                className={`${
-                  isSelected
-                    ? "bg-[#D7B56D] text-[#1B1D29]"
-                    : "bg-[#1B1D29] text-[#D7B56D]"
-                }  font-semibold md:w-48 text-center  px-16 py-2 rounded-md mt-4 md:mt-0`}
-                onClick={() => onSelect(localSelectedPriceIndex)}
-              >
-                {isSelected ? "Selected" : "Select"}
-              </button>
-            </div>
+          </div>
+
+          <div className="flex justify-center items-end md:border-l-2 pl-3 ">
+            <button
+              onClick={() => onBooking(selectedPrice)}
+              className="bg-green-500 text-white px-4 py-2 rounded-md  md:w-36 mt-4 md:mt-0"
+            >
+              Book
+            </button>
           </div>
         </div>
 

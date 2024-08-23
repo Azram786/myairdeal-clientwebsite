@@ -166,17 +166,15 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
           },
         ],
         travellerInfo: travellerInfo,
-        // gstInfo: {
-        //   gstNumber: passengersData.gstDetails.gstNumber,
-        //   email: passengersData.gstDetails.email,
-        //   registeredName: passengersData.gstDetails.companyName,
-        //   mobile: passengersData.gstDetails.phone,
-        //   address: passengersData.gstDetails.address,
-        // },
-        // deliveryInfo: {
-        //   emails: passengersData.passengers.map((p) => p.email),
-        //   contacts: passengersData.passengers.map((p) => p.phone),
-        // },
+        ...(passengersData.gstDetails.gstNumber?.trim() && {
+          gstInfo: {
+            gstNumber: passengersData.gstDetails.gstNumber,
+            email: passengersData.gstDetails.email,
+            registeredName: passengersData.gstDetails.companyName,
+            mobile: passengersData.gstDetails.phone,
+            address: passengersData.gstDetails.address,
+          },
+        }),
         deliveryInfo: {
           emails: [`${passengersData.contactDetails.email}`],
           contacts: [`${passengersData.contactDetails.phoneNumber}`],
