@@ -247,8 +247,6 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                                   key={baggage.code}
                                   className="mt-2 text-sm text-gray-600"
                                 >
-                                  <div>{`Selected Baggage: ${baggage.desc}`}</div>
-                                  <div>{`Amount: ₹${baggage.amount}`}</div>
                                   <button
                                     className="mt-2 text-sm px-1 py-1 text-[#D7B56D] bg-[#1B1D29] rounded"
                                     onClick={() => {
@@ -332,8 +330,6 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
                                   key={meal.code}
                                   className="mt-2 text-sm text-gray-600"
                                 >
-                                  <div>{`Selected Meal: ${meal.desc}`}</div>
-                                  <div>{`Amount: ₹${meal.amount}`}</div>
                                   <button
                                     className="mt-2 text-sm px-1 py-1 text-[#D7B56D] bg-[#1B1D29] rounded"
                                     onClick={() => {
