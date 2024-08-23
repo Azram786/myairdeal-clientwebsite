@@ -49,10 +49,14 @@ const FilterSection = ({
   useEffect(() => {
 
     const storedJoyride = localStorage.getItem("joyride");
+    if (!storedJoyride) localStorage.setItem("joyride", "notexecuted");
+
     if (!storedJoyride)
       localStorage.setItem("joyride", "notexecuted");
 
     if (storedJoyride === "notexecuted") {
+      setRunJoyride(true);
+      localStorage.setItem("joyride", "executed");
 
       setRunJoyride(true);
       localStorage.setItem("joyride", "executed");
@@ -507,12 +511,15 @@ const FilterSection = ({
     try {
       const cityFrom = formData.fromCityOrAirport;
       const cityTo = formData.toCityOrAirport;
-      setFormData((prev) => ({ ...prev, fromCityOrAirport: cityTo, toCityOrAirport: cityFrom }))
-
+      setFormData((prev) => ({
+        ...prev,
+        fromCityOrAirport: cityTo,
+        toCityOrAirport: cityFrom,
+      }));
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
+  };
 
   useEffect(() => {
     fetchDefaultOptions();
@@ -520,6 +527,21 @@ const FilterSection = ({
 
   return (
     <div className=" flex flex-col items-center  min-h-[200px]   justify-between md:justify-evenly  max-w-[1800px] md:mx-auto">
+      {runJoyride && (
+        <ReactJoyride
+          steps={joyrideSteps}
+          run={runJoyride}
+          continuous={true}
+          scrollToFirstStep={false}
+          showProgress={true}
+          showSkipButton={true}
+          callback={(data) => {
+            if (data.action === "reset") {
+              setRunJoyride(false);
+            }
+          }}
+        />
+      )}
       {
         runJoyride &&
         <ReactJoyride
@@ -597,7 +619,6 @@ const FilterSection = ({
                     myFormData={formData}
                     setFormData={setContryCodeFrom}
                     defaultOptions={defaultOptions}
-
                     value={formData?.fromCityOrAirport}
                   />
                 </div>

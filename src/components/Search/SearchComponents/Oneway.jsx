@@ -58,6 +58,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { Tabs } from "antd";
+
 import FlightDetailsCard from "../Cards/FlightDetailsCard";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import flightLogo from "../../../assets/home/logo/image 40.png";
@@ -73,6 +74,7 @@ import { setLastSearch } from "../../../store/slices/aut.slice";
 const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
+  
   const dispatch = useDispatch();
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
