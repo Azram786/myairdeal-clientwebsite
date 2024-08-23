@@ -253,7 +253,7 @@ const ViewAmendmentDetails = ({ amendment }) => {
       {modalIsOpen && (
 
 
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-start z-50 overflow-y-auto pt-4 pb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex w-full justify-center items-start z-50 o pt-4 pb-4">
           <div className="bg-gray-200 w-full max-w-4xl m-auto">
             {loading ? (
               <div className="w-full h-[80vh] flex justify-center items-center">
