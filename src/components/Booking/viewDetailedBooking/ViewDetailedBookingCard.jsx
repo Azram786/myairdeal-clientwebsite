@@ -10,6 +10,7 @@ import dateDateFormatChanger from "../../util/dateDateFormatChanger";
 import calculateDuration from "../../util/calculateDuration";
 import { useSelector } from "react-redux";
 import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
+import PassengerDetailsFlightTicket from "./PassengerDetailsFlightTicket";
 
 const ViewDetailedBookingCard = ({
   singleBookingData,
@@ -20,6 +21,7 @@ const ViewDetailedBookingCard = ({
   const { token } = useSelector((state) => state.auth);
   const [openConnectionIndex, setOpenConnectionIndex] = useState(null);
   let previousArrivalTime = null;
+  const [isPassengersOpen, setIsPassengersOpen] = useState(false)
 
   const toggleDropdown = (index) => {
     setOpenConnectionIndex(openConnectionIndex === index ? null : index);
@@ -86,7 +88,7 @@ const ViewDetailedBookingCard = ({
           </div>
         </div>
         {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
-     
+
           return (
             <div key={index}>
               <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
@@ -243,7 +245,7 @@ const ViewDetailedBookingCard = ({
                         <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
                           Arrival Date
                         </div>
-                       
+
                         <div className="font-semibold text-sm ">
                           {value.sI.length === 1
                             ? dateDateFormatChanger(value.sI[0].at)
@@ -304,7 +306,7 @@ const ViewDetailedBookingCard = ({
                       <div className="bg-[#f7eed8] text-[#1B1D29] p-2">
                         {value.sI.map((singleValue, index) => {
 
-                        
+
                           return (
                             <React.Fragment key={index}>
 
@@ -427,6 +429,7 @@ const ViewDetailedBookingCard = ({
         })}
         <button
           // onClick={() => toggleDropdown(index)}
+          onClick={() => setIsPassengersOpen((prev) => !prev)}
           className="text-[#1B1D29] bg-[#D7B56D] w-full py-2 rounded-lg mt-4"
         >
           {/* {openConnectionIndex === index
@@ -434,7 +437,7 @@ const ViewDetailedBookingCard = ({
                   : "View Passengers"} */}
           View Passengers
         </button>
-        {passengerDetails.map((value)=><div>value.</div>)}
+        {isPassengersOpen && <PassengerDetailsFlightTicket passengerDetails={passengerDetails} />}
       </div>
     </div>
   );
