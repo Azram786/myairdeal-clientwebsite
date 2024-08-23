@@ -86,7 +86,7 @@ const DynamicForm = ({
           ">
 
             <DatePicker
-              // minDate={formData.travelDate}
+
               minDate={minDate}
               selected={startDate}
               onChange={(date) => setStartDate(date)}

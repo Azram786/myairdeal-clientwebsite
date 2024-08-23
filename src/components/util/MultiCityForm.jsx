@@ -69,6 +69,10 @@ const MultiCityForm = ({
   const handleFormDataChange = (index, data) => {
     console.log({ index, data });
 
+    if ((dynamicFormData[index].fromCity === data.toCity && data?.toCity !== "") || (dynamicFormData[index].toCity === data.fromCity && data.fromCity !== "")) {
+      ReactToast("You cannot select the same airport twice")
+      return
+    }
     setDynamicFormData((prev) => {
       const newData = [...prev];
 
@@ -164,7 +168,7 @@ const MultiCityForm = ({
                 ? formData.travelDate > dynamicFormData[index].travelDate ? formData.travelDate : dynamicFormData[index].travelDate : dynamicFormData[index].travelDate || dynamicFormData?.[index - 1].travelDate
             }
             minDate={
-              index === 0 ? formData.travelDate : dynamicFormData[index-1].travelDate
+              index === 0 ? formData.travelDate : dynamicFormData[index - 1].travelDate
             }
 
             key={index}
