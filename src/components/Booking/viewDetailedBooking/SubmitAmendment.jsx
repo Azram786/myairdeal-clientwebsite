@@ -228,8 +228,10 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
           );
         }
       }
+      ReactToast("Amendment Submitted")
       setAmendmentLoadin(false);
       setModalIsOpen(false);
+      window.location.reload()
     } catch (error) {
       ReactToast(error.response.data.errors[0].message);
       setAmendmentLoadin(false);
@@ -272,11 +274,10 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                     checked={cancelWholeTicket}
                   />
                   <span
-                    className={`ml-3 md:text-sm  font-semibold  p-1 rounded-md ${
-                      cancelWholeTicket
-                        ? "border-[#1B1D29]"
-                        : "bg-gray-100"
-                    }`}
+                    className={`ml-3 md:text-sm  font-semibold  p-1 rounded-md ${cancelWholeTicket
+                      ? "border-[#1B1D29]"
+                      : "bg-gray-100"
+                      }`}
                   >
                     Select to cancel all the trip
                   </span>
@@ -286,10 +287,9 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                   (trip, tripIndex) => (
                     <div key={tripIndex} className="mt-4">
                       <div
-                        className={`flex flex-col gap-1 p-2 mb-2 text-sm md:text-base font-bold border rounded-lg ${
-                          selectedTrips.includes(tripIndex) &&
+                        className={`flex flex-col gap-1 p-2 mb-2 text-sm md:text-base font-bold border rounded-lg ${selectedTrips.includes(tripIndex) &&
                           "border-[#1B1D29] bg-blue-200"
-                        }`}
+                          }`}
                       >
                         <div className="flex justify-between items-center">
                           <span>
@@ -329,13 +329,12 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                             (traveler, travelerIndex) => (
                               <div
                                 key={travelerIndex}
-                                className={`flex flex-wrap items-center p-4 rounded-lg mt-2 ${
-                                  selectedTravelers.includes(
-                                    `${tripIndex}-${travelerIndex}`
-                                  )
-                                    ? "border border-[#1B1D29]"
-                                    : "border"
-                                }`}
+                                className={`flex flex-wrap items-center p-4 rounded-lg mt-2 ${selectedTravelers.includes(
+                                  `${tripIndex}-${travelerIndex}`
+                                )
+                                  ? "border border-[#1B1D29]"
+                                  : "border"
+                                  }`}
                               >
                                 <div className="flex flex-wrap">
                                   <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-[#1B1D29] text-white font-medium text-xl rounded-full mr-4">
