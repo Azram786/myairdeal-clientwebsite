@@ -79,9 +79,9 @@ const FlightDetailsCard = ({
   const convertToHoursMinutes = (durationInMinutes) => {
     const hours = Math.floor(durationInMinutes / 60);
     const minutes = durationInMinutes % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes
+    return `${hours.toString().padStart(2)}h ${minutes
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0")}m`;
   };
 
   const formatDateTime = (dateTimeString) => {
@@ -110,25 +110,6 @@ const FlightDetailsCard = ({
   const handlePriceSelection = (index) => {
     setLocalSelectedPriceIndex(index);
     onSelect(index);
-  };
-
-  const getDayOfWeek = (dateTimeString) => {
-    const daysOfWeek = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const datePart = dateTimeString.split("T")[0];
-
-    const date = new Date(datePart);
-
-    const dayNumber = date.getDay();
-
-    return daysOfWeek[dayNumber];
   };
 
   const calculateLayoverTime = (currentSegment, nextSegment) => {
@@ -163,16 +144,16 @@ const FlightDetailsCard = ({
                       />
                       <div>
                         <div className="font-bold text-sm">
+                          <div className="text-xs text-gray-500">
+                            {segment.da.city} → {segment.aa.city}{" "}
+                            {/* {formatDateTime(segment.dt).split(",")[0]}
+                          {getDayOfWeek(segment.dt)} */}
+                          </div>
                           <span className="text-[10px] text-gray-600">
                             {flightDetails.totalPriceList[0].fd.ADULT.cc}
                           </span>{" "}
                           <br />
                           {segment.fD.aI.name} {segment.fD.fN}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {segment.da.city} → {segment.aa.city}{" "}
-                          {/* {formatDateTime(segment.dt).split(",")[0]}
-                          {getDayOfWeek(segment.dt)} */}
                         </div>
                       </div>
                     </div>
@@ -180,7 +161,23 @@ const FlightDetailsCard = ({
                     <div className="flex gap-2 mt-2 items-center w-full  md:w-[70%] justify-around  md:gap-8">
                       <div className=" p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%]">
                         <div className="font-bold text-xs  md:text-sm">
-                          {formatDateTime(segment.dt)}
+                        <div className="font-bold text-xs md:text-sm">
+                          {new Date(segment.dt).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                          ,
+                          {new Date(segment.dt).toLocaleString("en-US", {
+                            weekday: "short",
+                           
+                          })},
+                           {new Date(segment.dt).toLocaleString("en-US", {
+                           
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}
+                        </div>
                         </div>
                         <div className="text-xs  text-gray-500">
                           {segment.da.city}, {segment?.da?.country}
@@ -193,20 +190,34 @@ const FlightDetailsCard = ({
                         </div>
                       </div>
                       <div className="flex justify-center w-20  md:min-w-[25%] lg-custom:min-w-[35%] mr-0 md:mr-6 flex-col items-center ">
+                        <div className="text-xs text-gray-500">
+                          {/* {convertToHoursMinutes(segment.duration)} */}
+                          {convertToHoursMinutes(segment.duration)}
+                        </div>
+                        <FaPlane className="my-2 text-gray-400" />
                         <div className="text-[10px] md:text-xs text-end text-gray-500">
                           {segment.stops === 0
                             ? "Non-Stop"
                             : `${segment.stops} Stop(s)`}
                         </div>
-                        <FaPlane className="my-2 text-gray-400" />
-                        <div className="text-xs text-gray-500">
-                          {/* {convertToHoursMinutes(segment.duration)} */}
-                          {convertToHoursMinutes(segment.duration)}
-                        </div>
                       </div>
                       <div className="text-left p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%] ml-0 lg-custom:ml-8 ">
                         <div className="font-bold text-xs md:text-sm">
-                          {formatDateTime(segment.at)}
+                          {new Date(segment.at).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                          ,
+                          {new Date(segment.at).toLocaleString("en-US", {
+                            weekday: "short",
+                           
+                          })},
+                           {new Date(segment.at).toLocaleString("en-US", {
+                           
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}
                         </div>
                         <div className="text-xs text-gray-500">
                           {segment.aa.city}, {segment.aa.country}
@@ -357,7 +368,7 @@ const FlightDetailsCard = ({
               <div className="border-t  hidden sm:flex border-dashed ml-0 md:ml-4 border-gray-400 w-6 md:w-16 lg:w-[200px]"></div>
               <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold w-16 sm:w-32 md:min-w-44 text-gray-500">
                 {/* <span>{convertToHoursMinutes(totalDuration)}</span> */}
-                <span>{startSegment.duration}</span>
+                <span>{convertToHoursMinutes(startSegment.duration)}</span>
                 <FaPlane className="mx-2 text-[#D7B56D] text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (

@@ -145,8 +145,8 @@ const ComboFlightCard = ({
               return (
                 <div key={dateIndex} className="mb-8">
                   {/* Source to Destination Header */}
-                  <div className="text-lg font-bold text-gray-700 mb-4 pl-4 pt-2">
-                    {sourceCity} to {finalDestinationCity},on {formatDateTime(date.dt)}
+                  <div className="text-lg font-bold bg-[#1B1D29] text-[#D7B56D] mb-4 pl-4 py-2 ">
+                    {sourceCity} to {finalDestinationCity}
                   </div>
                   <div className="w-full bg-[#f0e1c0] overflow-x-scroll ">
                     {flightsForDate.map((segment, index) => (
@@ -279,19 +279,19 @@ const ComboFlightCard = ({
                       <div className="grid grid-cols-3 w-full mb-1">
                         <div>Base Price</div>
                         <div>
-                          ₹{details.fC.BF.toFixed(2)} x {count}
+                          ₹{details?.fC?.BF?.toFixed(2)} x {count}
                         </div>
-                        <div>₹{(details.fC.BF * count).toFixed(2)}</div>
+                        <div>₹{(details?.fC?.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
                         <div className="flex items-center">
                           Taxes and fees
-                          <FareToolTip taxDetails={details.afC.TAF} />
+                          <FareToolTip taxDetails={details?.afC?.TAF} />
                         </div>
                         <div>
-                          ₹{details.fC.TAF.toFixed(2)} x {count}
+                          ₹{details?.fC?.TAF?.toFixed(2)} x {count}
                         </div>
-                        <div>₹{(details.fC.TAF * count).toFixed(2)}</div>
+                        <div>₹{(details?.fC?.TAF * count).toFixed(2)}</div>
                       </div>
                     </div>
                   );
@@ -466,8 +466,8 @@ const ComboFlightCard = ({
                       <p className="font-semibold">
                         ₹ {calculateTotalPrice(index).toFixed(2)}
                       </p>
-                      <p className="text-[10px]">
-                        <span className="bg-gray-400 p-0.5 bg-opacity-50 rounded-md text-black">
+                      <p className="text-[10px] my-1">
+                        <span className="bg-gray-400 p-1 bg-opacity-50 rounded-md text-black">
                           {price?.fareIdentifier}
                         </span>{" "}
                         {price?.fd?.ADULT?.cc}
