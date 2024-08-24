@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import logo from "../../assets/home/logo/FinalLogo.jpg";
 import ReactToast from "./Util/ReactToast";
 import Spinner from "../Profile/Spinner";
+import { clearResent } from "../../store/slices/aut.slice";
 
 const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -15,6 +16,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   const [errors, setErrors] = useState({});
   const [markUp, setMarkUp] = useState(null);
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log("ScrollToTop effect triggered");
@@ -212,6 +214,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
 
       if (response.data?.status?.success) {
         ReactToast("Booking successful!");
+        dispatch(clearResent());
         navigate(
           `/view-detailed-booking?bookingId=${response?.data?.bookingId}&bookingFilter=UPCOMING`
         );

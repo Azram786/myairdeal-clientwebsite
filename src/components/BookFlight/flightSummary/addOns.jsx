@@ -36,7 +36,6 @@ const AddonsCard = ({
           },
         }
       );
-      alert("hi");
       if (response.status == 200) {
         // console.log({ response });
 
