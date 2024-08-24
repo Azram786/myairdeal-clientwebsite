@@ -194,7 +194,7 @@ const HomePage = () => {
             <RecentSearch ResentSearchData={ResentSearchData} />
           )}
 
-          <OfferSection />
+          <OfferSection setFormData={setFormData} />
           <AboutUs />
           <Service />
           <WhyChooseUs />

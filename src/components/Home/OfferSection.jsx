@@ -198,6 +198,8 @@ import Offer2 from "../../assets/home/offer/Offer2.png";
 import Offer3 from "../../assets/home/offer/Offer3.png";
 import Offer4 from "../../assets/home/offer/Offer4.png";
 import background from "../../assets/service/earth.png";
+import { useDispatch } from "react-redux";
+import { clearResent } from "../../store/slices/aut.slice";
 
 const offers = [
   {
@@ -205,28 +207,33 @@ const offers = [
     cntryName: "Melbourne",
     description: "An amazing journey",
     amount: "70k",
+    src: "MLB-Melbourne",
   },
   {
     img: Offer2,
     cntryName: "Paris",
     description: "A Paris Adventure",
     amount: "90k",
+    src: "CDG-Paris",
   },
   {
     img: Offer3,
     cntryName: "London",
     description: "London eye adventure",
     amount: "50k",
+    src: "LON-London",
   },
   {
     img: Offer4,
     cntryName: "Columbia",
     description: "An amazing journey",
     amount: "27k",
+    src: "COA-Columbia",
   },
 ];
 
-const OfferSection = () => {
+const OfferSection = ({ setFormData }) => {
+  const dispatch = useDispatch();
   return (
     <div
       style={{
@@ -283,10 +290,18 @@ const OfferSection = () => {
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                 }}
+                onClick={() => {
+                  dispatch(clearResent());
+                  window.scrollTo(0, 500);
+                  setFormData((prev) => ({
+                    ...prev,
+                    toCityOrAirport: offer.src,
+                  }));
+                }}
                 className="h-[25vh] md:h-[55vh]  w-full md:w-[260px] flex flex-wrap items-end rounded-[3%] transition-transform transform hover:scale-105 duration-300 ease-in-out"
               >
                 <div className="mb-5 w-full  px-5">
-                  <div className="flex w-full items-end justify-between">
+                  <div className="`flex w-full items-end justify-between">
                     <div>
                       <div className="font-bold text-xs md:text-[1.3rem]">
                         {offer.cntryName}
