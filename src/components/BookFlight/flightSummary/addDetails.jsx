@@ -3,7 +3,7 @@ import TravellersDetails from "./travellers";
 import AddonsCard from "./addOns";
 import GstDetails from "./gstDetails";
 import ReactToast from "../../util/ReactToast";
-import { useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const AddDetails = ({
   bookingId,
@@ -134,15 +134,19 @@ const AddDetails = ({
       passenger.lastName
     );
 
-    const isInternationalDetailsFilled = isInternational
-      ? !!(
-          passenger.passportNumber &&
-          passenger.nationality &&
-          passenger.issueDate &&
-          passenger.expiryDate &&
-          passenger.dob
-        )
-      : true;
+    let isInternationalDetailsFilled = true;
+    if (isInternational) {
+      const passportRegex = /^[A-Z][1-9][0-9][A-Z0-9]{5,6}$/;
+      const isPassportValid = passportRegex.test(passenger.passportNumber);
+
+      isInternationalDetailsFilled = !!(
+        isPassportValid &&
+        passenger.nationality &&
+        passenger.issueDate &&
+        passenger.expiryDate &&
+        passenger.dob
+      );
+    }
 
     const isDobRequired = passenger.passengerType === "INFANT";
     const isDobFilled = isDobRequired ? !!passenger.dob : true;
@@ -213,6 +217,37 @@ const AddDetails = ({
 
   const handleProceedToReview = useCallback(() => {
     const areAllPassengersValid = checkAllPassengersCompleted();
+    let isNameUnique;
+    let isPassportUnique;
+    passengers.map((passenger, index) => {
+      isNameUnique = !passengers.some(
+        (p, i) =>
+          i !== index &&
+          p.firstName.toLowerCase() === passenger.firstName.toLowerCase() &&
+          p.lastName.toLowerCase() === passenger.lastName.toLowerCase()
+      );
+    });
+    if (!isNameUnique) {
+      ReactToast("Passengers Cannot have Same Last Name and First Name");
+      return;
+    }
+    passengers.map((passenger, index) => {
+      isPassportUnique = isInternational
+        ? !passengers.some(
+            (p, i) =>
+              i !== index && // Exclude the current passenger
+              p.passportNumber &&
+              p.passportNumber.toLowerCase() ===
+                passenger.passportNumber.toLowerCase()
+          )
+        : true;
+    });
+
+    if (!isPassportUnique) {
+      ReactToast("Passenger's cannot have same passport number");
+      return;
+    }
+
     const gstErrors = gstDetails.gstNumber ? validateGSTDetails() : {};
     console.log(gstErrors);
     const isGstValid = gstDetails.gstNumber
