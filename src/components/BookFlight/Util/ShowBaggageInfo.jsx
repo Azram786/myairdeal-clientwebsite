@@ -21,13 +21,13 @@ const BaggageInformation = ({ item }) => {
           (type) =>
             type === "ADULT" && (
               <div className="flex">
-                <div className=" flex gap-2 text-base justify-center items-center p-2 ">
+                <div className=" flex gap-2 justify-center items-center p-2 ">
                   <p className="font-bold  ">{type}</p>
                   <PiBagSimpleBold className="text-lg" />{" "}
                 </div>
                 <div
                   key={type}
-                  className="w-max  rounded-md p-3 flex gap-4 items-start text-sm"
+                  className="w-max  rounded-md p-3 flex gap-4 items-start "
                 >
                   <div className=" flex justify-between w-max">
                     <p>Cabin:</p>
