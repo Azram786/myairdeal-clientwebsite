@@ -217,7 +217,7 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
     <div className="w-full h-full p-4 bg-gray-100">
       <div className="flex justify-between">
         <h2 className="text-2xl font-bold mb-4 text-indigo-700">
-          Edit Passenger Details
+          {editingId ? "Edit Passenger" : "Add New Passenger"}
         </h2>
         <h3
           onClick={() => setIsModalOpen(false)}
@@ -226,9 +226,7 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
           Go back
         </h3>
       </div>
-      <h3 className="text-xl font-bold mt-8 mb-4 text-indigo-700">
-        {editingId ? "Edit Passenger" : "Add New Passenger"}
-      </h3>
+
       <div className="bg-white rounded-lg shadow p-4 grid grid-cols-4 gap-4">
         {["ti", "fN", "lN", "dob", "pNum", "eD", "pid", "pNat"].map((field) => (
           <div key={field}>
@@ -314,9 +312,10 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
           )}
         </div>
       </div>
+
       <div className="bg-white rounded-lg shadow overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-indigo-600 text-white">
+          <thead className=" text-indigo-700">
             <tr>
               {[
                 "Title",

@@ -628,7 +628,7 @@ const UserProfile = () => {
                                   onClick={() => setIsModalOpen(true)}
                                   className=" bg-[#1B1D29] border text-[#D7B56D] flex items-center gap-2   px-4 py-2 rounded mt-4"
                                 >
-                                  Edit Passenger Details <FaUserPen />
+                                  View Passenger Details <FaUserPen />
                                 </button>
                                 <button
                                   onClick={handleEdit}
