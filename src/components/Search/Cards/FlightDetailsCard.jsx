@@ -54,7 +54,7 @@ const FlightDetailsCard = ({
   }
 
   if (!data || data.length === 0) {
-    return <div>No flight details available</div>;
+    return <div className="">No flight details available</div>;
   }
 
   const isConnectionFlight = data.length > 1;
@@ -79,9 +79,9 @@ const FlightDetailsCard = ({
   const convertToHoursMinutes = (durationInMinutes) => {
     const hours = Math.floor(durationInMinutes / 60);
     const minutes = durationInMinutes % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes
+    return `${hours.toString().padStart(2)}h ${minutes
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0")}m`;
   };
 
   const formatDateTime = (dateTimeString) => {
@@ -112,25 +112,6 @@ const FlightDetailsCard = ({
     onSelect(index);
   };
 
-  const getDayOfWeek = (dateTimeString) => {
-    const daysOfWeek = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const datePart = dateTimeString.split("T")[0];
-
-    const date = new Date(datePart);
-
-    const dayNumber = date.getDay();
-
-    return daysOfWeek[dayNumber];
-  };
-
   const calculateLayoverTime = (currentSegment, nextSegment) => {
     const currentArrival = new Date(currentSegment.at);
     const nextDeparture = new Date(nextSegment.dt);
@@ -139,12 +120,27 @@ const FlightDetailsCard = ({
     const minutes = Math.floor(layoverMinutes % 60);
     return `${hours}h ${minutes}m`;
   };
+  console.log(data, "fvadkhbsjn");
 
   const renderTabs = () => {
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className="w-full bg-[#f0e1c0] overflow-x-scroll ">
+          <div className="w-full bg-[#f0e1c0] ">
+            <div className="text-lg font-bold bg-[#1B1D29] text-[#D7B56D] mb-4 pl-4 py-2 ">
+              {data[0]?.da?.city} → {data[data.length - 1]?.aa?.city} {" "}
+              <span className="text-white text-sm">
+                On {" "}
+                {new Date(data[0].dt).toLocaleString("en-US", {
+                  month: "short",
+                 
+                  day: "numeric",
+                })},
+                {new Date(data[0].dt).toLocaleString("en-US", {
+                  weekday:"long",
+                })}
+              </span>
+            </div>
             {data.map((segment, index) => {
               return (
                 <>
@@ -163,57 +159,95 @@ const FlightDetailsCard = ({
                       />
                       <div>
                         <div className="font-bold text-sm">
+                          <div className="text-xs text-gray-500">
+                            {segment.da.city} → {segment.aa.city}{" "}
+                            {/* {formatDateTime(segment.dt).split(",")[0]}
+                          {getDayOfWeek(segment.dt)} */}
+                          </div>
                           <span className="text-[10px] text-gray-600">
                             {flightDetails.totalPriceList[0].fd.ADULT.cc}
                           </span>{" "}
                           <br />
                           {segment.fD.aI.name} {segment.fD.fN}
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {segment.da.city} → {segment.aa.city}{" "}
-                          {/* {formatDateTime(segment.dt).split(",")[0]}
-                          {getDayOfWeek(segment.dt)} */}
-                        </div>
                       </div>
                     </div>
 
                     <div className="flex gap-2 mt-2 items-center w-full  md:w-[70%] justify-around  md:gap-8">
-                      <div className=" p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%]">
+                      <div className=" p-2 min-w-[30%] md:w-[55%] ">
                         <div className="font-bold text-xs  md:text-sm">
-                          {formatDateTime(segment.dt)}
+                          <div className="font-bold text-xs md:text-sm">
+                            {new Date(segment.dt).toLocaleString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                            })}
+                            ,
+                            {new Date(segment.dt).toLocaleString("en-US", {
+                              weekday: "short",
+                            })}
+                            ,
+                            {new Date(segment.dt).toLocaleString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            })}
+                          </div>
                         </div>
                         <div className="text-xs  text-gray-500">
                           {segment.da.city}, {segment?.da?.country}
                         </div>
-                        <div className="text-xs text-gray-500 line-clamp-1">
-                          {segment.da.name}
+                        <div className="relative group text-[10px]  text-xs text-gray-500">
+                        <span className="text-xs">{segment.da.name}</span>
+
+                        {/* Tooltip */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {segment.da.name}
                         </div>
+                      </div>
                         <div className="text-xs text-gray-500">
                           {segment.da.terminal || "N/A"}
                         </div>
                       </div>
                       <div className="flex justify-center w-20  md:min-w-[25%] lg-custom:min-w-[35%] mr-0 md:mr-6 flex-col items-center ">
+                        <div className="text-xs text-gray-500">
+                          {/* {convertToHoursMinutes(segment.duration)} */}
+                          {convertToHoursMinutes(segment.duration)}
+                        </div>
+                        <FaPlane className="my-2 text-gray-400" />
                         <div className="text-[10px] md:text-xs text-end text-gray-500">
                           {segment.stops === 0
                             ? "Non-Stop"
                             : `${segment.stops} Stop(s)`}
                         </div>
-                        <FaPlane className="my-2 text-gray-400" />
-                        <div className="text-xs text-gray-500">
-                          {/* {convertToHoursMinutes(segment.duration)} */}
-                          {convertToHoursMinutes(segment.duration)}
-                        </div>
                       </div>
-                      <div className="text-left p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%] ml-0 lg-custom:ml-8 ">
+                      <div className="text-left p-2   min-w-[30%] md:w-[55%] ml-0 lg-custom:ml-8 ">
                         <div className="font-bold text-xs md:text-sm">
-                          {formatDateTime(segment.at)}
+                          {new Date(segment.at).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                          ,
+                          {new Date(segment.at).toLocaleString("en-US", {
+                            weekday: "short",
+                          })}
+                          ,
+                          {new Date(segment.at).toLocaleString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}
                         </div>
                         <div className="text-xs text-gray-500">
                           {segment.aa.city}, {segment.aa.country}
                         </div>
-                        <div className="text-xs text-gray-500 line-clamp-1">
-                          {segment.aa.name}
+                        <div className="relative group text-[10px]  text-xs text-gray-500">
+                        <span className="text-xs">{segment.aa.name}</span>
+
+                        {/* Tooltip */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {segment.aa.name}
                         </div>
+                      </div>
                         <div className="text-xs text-gray-500">
                           {segment.aa.terminal || "N/A"}
                         </div>
@@ -222,7 +256,7 @@ const FlightDetailsCard = ({
                   </div>
                   <div className="w-full flex justify-center">
                     {index < data.length - 1 && (
-                      <div className="px-4  flex justify-around  py-2 lg-custom:w-1/2 border border-gray-200 bg-gray-100 rounded-full text-xs  md:text-sm">
+                      <div className="px-4  flex flex-wrap justify-around  py-2 w-[80%] lg-custom:w-1/2 border border-gray-200 bg-gray-100 rounded-full text-xs  md:text-sm">
                         <span className=" font-bold">
                           Require to change Plane
                         </span>
@@ -253,7 +287,7 @@ const FlightDetailsCard = ({
                 if (details) {
                   return (
                     <div key={passengerType} className="mb-4">
-                      <div className="grid grid-cols-3  text-xs w-max text-gray-600 font-semibold mb-2">
+                      <div className="grid grid-cols-3 text-sm  text-xs w-max text-gray-600 font-semibold mb-2">
                         <div>
                           Fare Details for {passengerType} (CB: {details.cB})
                         </div>
@@ -262,21 +296,25 @@ const FlightDetailsCard = ({
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1 text-sm">
                         <div>Base Price</div>
-                        <div>
+                        <div className="text-xs md:text-sm">
                           ₹{details?.fC?.BF?.toFixed(2)} x {count}
                         </div>
-                        <div>₹{(details?.fC?.BF * count).toFixed(2)}</div>
+                        <div className="text-xs md:text-sm">
+                          ₹{(details?.fC?.BF * count).toFixed(2)}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-3 w-full mb-1">
+                      <div className="grid grid-cols-3 w-full mb-1 gap-2">
                         <div className="flex items-center text-sm">
                           Taxes and fees
                           <FareToolTip taxDetails={details?.afC?.TAF} />
                         </div>
 
-                        <div>
+                        <div className="text-xs md:text-sm">
                           ₹{details.fC.TAF.toFixed(2)} x {count}
                         </div>
-                        <div>₹{(details.fC.TAF * count).toFixed(2)}</div>
+                        <div className="text-xs md:text-sm">
+                          ₹{(details.fC.TAF * count).toFixed(2)}
+                        </div>
                       </div>
                     </div>
                   );
@@ -323,10 +361,10 @@ const FlightDetailsCard = ({
   };
 
   return (
-    <div className="border flex flex-col  rounded-lg m-4 shadow-md ">
-      <div className="flex flex-col md:flex-row flex-wrap justify-between items-stretch p-3  mb-2">
-        <div className="flex flex-col justify-around  border-none lg:border-r-2 pr-2 w-full lg:w-[80%]  ">
-          <div className="flex justify-around  gap-0 md:gap-3 md:w-max ">
+    <div className="border p-4 rounded-lg m-2 justify-between items-center  bg-white shadow-md  ">
+      <div className="flex   flex-col md:flex-row  justify-between  mb-2">
+        <div className="flex flex-col w-full ">
+          <div className="flex justify-around  gap-0 md:gap-3 w-full">
             {/* <div className="md:hidden">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
@@ -353,12 +391,12 @@ const FlightDetailsCard = ({
               </div>
             </div>
 
-            <div className="flex   items-center mb-4 md:mb-0">
-              <div className="border-t  hidden sm:flex border-dashed ml-0 md:ml-4 border-gray-400 w-6 md:w-16 lg:w-[200px]"></div>
-              <div className="flex flex-col gap-4 text-center items-center text-xs font-semibold w-16 sm:w-32 md:min-w-44 text-gray-500">
+            <div className="flex w-[40%]  items-center mb-4 mx-2 md:mb-0">
+              <div className="border-t   flex border-dashed ml-0 md:ml-4 border-gray-400 w-[40%]"></div>
+              <div className=" flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
                 {/* <span>{convertToHoursMinutes(totalDuration)}</span> */}
-                <span>{startSegment.duration}</span>
-                <FaPlane className="mx-2 text-[#D7B56D] text-3xl" />
+                <span>{convertToHoursMinutes(startSegment.duration)}</span>
+                <FaPlane className="mx-2  text-[#D7B56D] text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (
                     <span>
@@ -366,13 +404,14 @@ const FlightDetailsCard = ({
                       {data.length === 2 && ` via ${data[0].aa.city}`}
                     </span>
                   ) : (
-                    <span className="md:min-w-44">Non-stop flight</span>
+                    <span className="text-xs">Non-stop flight</span>
                   )}
                 </div>
               </div>
-              <div className="border-t hidden sm:flex border-dashed mr-8 border-gray-400 w-4 md:w-16 lg:w-[200px]"></div>
+              <div className="border-t flex border-dashed mr-8 border-gray-400 w-[40%]"></div>
             </div>
-            <div className="md:flex-row flex-col  flex justify-center items-center mb-4 md:mb-0">
+            {/* Arrival Information */}
+            <div className="md:flex-row  flex-col  flex justify-center items-center mb-4 md:mb-0">
               <div className="flex flex-col">
                 <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
                 <h1 className="text-xs w-[80px] sm:w-max">
@@ -380,9 +419,25 @@ const FlightDetailsCard = ({
                 </h1>
               </div>
             </div>
+            <div className="flex flex-col pr-4  justify-between items-center   ">
+              <div className="ml-8 border-l-2 pl-4 hidden lg-custom:flex flex-col text-center gap-2 mt-4 justify-center items-center">
+                {" "}
+                <p className="text-[50px]">
+                  <GiRollingSuitcase />
+                </p>
+                <p className="font-bold text-xs">
+                  Included:
+                  <br />
+                  Carry on bag
+                </p>
+                <div className="text-xs font-bold">
+                  {flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.cB}
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-col w-full   ">
+          <div className="flex flex-col w-full  ">
             <div className="flex flex-wrap mt-3 gap-2 overflow-x-auto no-scroll items-start">
               {displayedPrices?.map((price, index) => (
                 <div
@@ -416,10 +471,10 @@ const FlightDetailsCard = ({
               ))}
             </div>
             {/* View Details Button */}
-            <div>
+            <div className="flex justify-between items-center w-full ">
               <button
                 onClick={() => setShowDetails(!showDetails)}
-                className=" text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
+                className=" font-semibold text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
               >
                 {showDetails ? (
                   <span className="text-black">
@@ -431,37 +486,19 @@ const FlightDetailsCard = ({
                   </span>
                 )}
               </button>
-            </div>
-          </div>
-        </div>
 
-        <div className="w-max flex flex-col pr-4  justify-between items-center   ">
-          <div className="ml-8 pl-4 hidden lg-custom:flex flex-col text-center gap-2 mt-4 justify-center items-center">
-            {" "}
-            <p className="text-[50px]">
-              <GiRollingSuitcase />
-            </p>
-            <p className="font-bold text-xs">
-              Included:
-              <br />
-              Carry on bag
-            </p>
-            <div className="text-xs font-bold">
-              {flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.cB}
+              <button
+                className={`${
+                  isSelected
+                    ? "bg-[#D7B56D] text-[#1B1D29]"
+                    : "bg-[#1B1D29] text-[#D7B56D]"
+                }  font-semibold w-max text-center px-8 sm:px-16 py-2 rounded-md   `}
+                onClick={() => onSelect(localSelectedPriceIndex)}
+              >
+                {isSelected ? "Selected" : "Select"}
+              </button>
             </div>
           </div>
-        </div>
-        <div className="flex justify-end  w-full">
-          <button
-            className={`${
-              isSelected
-                ? "bg-[#D7B56D] text-[#1B1D29]"
-                : "bg-[#1B1D29] text-[#D7B56D]"
-            }  font-semibold md:w-48 text-center  px-16 py-2 rounded-md mt-4 md:mt-0`}
-            onClick={() => onSelect(localSelectedPriceIndex)}
-          >
-            {isSelected ? "Selected" : "Select"}
-          </button>
         </div>
       </div>
 

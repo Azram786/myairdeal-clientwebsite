@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { MdFlight } from "react-icons/md";
 import { FaRegClock, FaArrowRight } from "react-icons/fa";
+import ShowBaggageInfo from "./Util/ShowBaggageInfo";
 
 const Review = ({ setCurrentStep, data, passengersData }) => {
   const renderValue = (value) => value || "N/A";
@@ -100,56 +101,53 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
             <div className="mt-4">
               {item.sI.map((segment, segmentIndex) => (
                 <React.Fragment key={segmentIndex}>
-                  <div className="  w-full">
-                    <div className=" mb-2">
-                      <div className="font-semibold text-xs border rounded-md inline-flex items-center shadow-md p-1 space-x-2">
-                        <div className="w-8 h-8">
-                          <img
-                            src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
-                            onError={(e) =>
-                              (e.currentTarget.src = defaultAirline)
-                            }
-                            alt={segment?.fD?.aI?.code}
-                            className="w-full h-full object-contain"
-                          />
-                        </div>
-                        <div>
-                          <div>{segment.fD.aI.name}</div>
-                          <div className="flex items-center space-x-1">
-                            <span>
-                              {segment.fD.aI.code}-{segment.fD.fN}
-                            </span>
-                            <MdFlight className="w-3 h-3 rotate-45" />
-                            <span>{segment.fD.eT}</span>
-                          </div>
+                  <div className=" flex-wrap md:flex-nowrap w-full h-full flex items-center justify-between mb-4 ">
+                    <div className="font-semibold text-xs flex flex-col items-start justify-start min-w-36  p-1 space-x-2">
+                      <div className="w-16 h-16">
+                        <img
+                          src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                          onError={(e) =>
+                            (e.currentTarget.src = defaultAirline)
+                          }
+                          alt={segment?.fD?.aI?.code}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div>
+                        <div className="w-max">{segment.fD.aI.name}</div>
+                        <div className="flex items-center  space-x-1">
+                          <span>
+                            {segment.fD.aI.code}-{segment.fD.fN}
+                          </span>
+                          <MdFlight className="w-3 h-3 rotate-45" />
+                          <span>{segment.fD.eT}</span>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className=" flex-wrap md:flex-nowrap w-full overflow-x-auto flex items-center justify-between mb-4">
-                    <div className=" flex-col text-left items-center w-full  md:min-w-[250px]">
+                    <div className=" flex-col text-left items-center w-full  md:min-w-[20%]">
                       <div className=" text-lg font-bold">
                         {segment.da.code}
                       </div>
 
                       <div className="text-sm font-semibold">
-                        <div>
+                        <div className="mr-1">
+                          {" "}
                           {new Date(segment.dt).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
                           })}
                           ,
                           {new Date(segment.dt).toLocaleDateString("en-US", {
-                            year: "numeric",
+                            weekday: "short",
+                          })}{" "}
+                          {new Date(segment.dt).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
                           })}
                         </div>
-                        {new Date(segment.dt).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          hour12: false,
-                        })}
                       </div>
-                      <div className="text-sm">
+                      <div className="text-sm line-clamp-1">
                         {segment.da.city}, {segment.da.country}
                       </div>
                       <div className="text-sm">{segment.da.name}</div>
@@ -157,7 +155,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                         {segment.da.terminal || "N/A"}
                       </div>
                     </div>
-                    <div className="flex-col items-center   w-full md:min-w-[250px]">
+                    <div className="flex-col items-center   w-full md:min-w-[20%]">
                       <div className="text-center">
                         <span className="text-xs">
                           {(() => {
@@ -181,7 +179,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                         <p className="text-xs">Non Stop</p>
                       </div>
                     </div>
-                    <div className="flex-col  w-full md:min-w-[250px]  md:ml-24 items-center text-left  ">
+                    <div className="flex-col  w-full md:min-w-[20%]  md:ml-24 items-center text-left  ">
                       <div className="text-lg font-bold">{segment.aa.code}</div>
                       <div className="text-sm font-semibold">
                         <div className="mr-1">
@@ -190,28 +188,38 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                             month: "short",
                             day: "numeric",
                           })}
-                          
                           ,
                           {new Date(segment.dt).toLocaleDateString("en-US", {
                             weekday: "short",
                           })}{" "}
                           {new Date(segment.at).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          hour12: false,
-                        })}
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}
                         </div>
+                      </div>
+                      <div className="relative text-sm line-clamp-1">
+                        <span>
+                          {segment.aa.city}, {segment.aa.country}
+                        </span>
+                        <div className="absolute left-0 bottom-full mb-2 w-max p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                          {segment.aa.city}, {segment.aa.country}
+                        </div>
+                      </div>
 
-                        
+                      <div className="text-sm  line-clamp-1">
+                        {segment.aa.name}
                       </div>
-                      <div className="text-sm">
-                        {segment.aa.city}, {segment.aa.country}
-                      </div>
-                      <div className="text-sm">{segment.aa.name}</div>
                       <div className="text-sm">
                         {segment?.aa?.terminal || "N/A"}
                       </div>
                     </div>
+                  </div>
+                  <div className="flex w-full  justify-center items-center  ">
+                    {/* Bag Icon */}
+
+                    <ShowBaggageInfo item={item} />
                   </div>
                   <div className="text-sm text-gray-500 mt-4 justify-center items-center flex ">
                     {/* <span>
@@ -276,7 +284,13 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                       {`${passenger.title || ""} ${passenger.firstName || ""} ${
                         passenger.lastName || ""
                       }`}
+                      {passenger.passportNumber && (
+                        <div className="mt-1 text-xs text-gray-600">
+                          {`Passport Number: ${passenger.passportNumber}`}
+                        </div>
+                      )}
                     </td>
+
                     <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
                       {passenger.selectedSeat &&
                       passenger.selectedSeat.length > 0

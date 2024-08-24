@@ -280,7 +280,8 @@ import Spinner from "./Spinner";
 import { motion } from "framer-motion";
 import { setUser } from "../../store/slices/aut.slice";
 // Create a list of countries with their dial codes and country codes.
-
+import { FaUserPen } from "react-icons/fa6";
+import EditPassengerDetails from "./EditPassengerDetails";
 const spinnerVariants = {
   animate: {
     rotate: [0, 360],
@@ -298,7 +299,7 @@ const UserProfile = () => {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -448,7 +449,6 @@ const UserProfile = () => {
 
   return (
     <>
-
       {loading ? (
         <div className="h-[85vh] w-full flex justify-center items-center ">
           <Spinner />
@@ -478,157 +478,175 @@ const UserProfile = () => {
                   <h1 className="text-2xl font-bold text-[#D7B56D] uppercase">
                     {user?.firstName} {user?.lastName}
                   </h1>
-                  <p className="font-bold text-xl text-[#D7B56D]">{user?.phone}</p>
+                  <p className="font-bold text-xl text-[#D7B56D]">
+                    {user?.phone}
+                  </p>
                 </div>
-                <div className="flex  item-center justify-center px-10 ">
-                  <div className="md:p-6 pl-2 md:pl-0  flex flex-col w-full  justify-center items-center   py-2    lg:w-1/2">
-                    <div className="flex flex-col md:flex-row  w-full md:gap-4">
-                      <div className="flex w-full lg:w-1/2 lg:items-end flex-col  ">
-                        <div className="flex flex-col w-3/4">
-                          <div className=" flex flex-col gap-2 h-full ">
-                            <label className="text-gray-700 text-sm">
-                              First Name
-                            </label>
-                            {isEditing ? (
-                              <>
-                                <input
-                                  type="text"
-                                  value={userData.firstName}
-                                  onChange={(e) =>
-                                    handleChange("firstName", e.target.value)
-                                  }
-                                  className="md:w-3/4 w-full rounded-lg border border-gray-300 shadow-sm p-2 md:text-xl"
-                                />
-                                {errors.firstName && (
-                                  <p className="text-red-500 text-xs">
-                                    {errors.firstName}
-                                  </p>
-                                )}
-                              </>
-                            ) : (
-                              <p className="mt-1 p-2  w-3/4 md:text-xl font-semibold text-[#1B1D29] uppercase">
-                                {userData.firstName}
-                              </p>
-                            )}
+                <div className="flex justify-center">
+                  {isModalOpen ? (
+                    <EditPassengerDetails
+                      isModalOpen={isModalOpen}
+                      setIsModalOpen={setIsModalOpen}
+                    />
+                  ) : (
+                    <div className="flex flex-col   item-center justify-center px-10 w-[80%]">
+                      <div className="flex flex-col md:flex-row  w-full md:gap-4">
+                        <div className="flex w-full lg:w-1/2 lg:items-end flex-col  ">
+                          <div className="flex flex-col w-3/4">
+                            <div className=" flex flex-col gap-2 h-full ">
+                              <label className="text-gray-700 text-sm">
+                                First Name
+                              </label>
+                              {isEditing ? (
+                                <>
+                                  <input
+                                    type="text"
+                                    value={userData.firstName}
+                                    onChange={(e) =>
+                                      handleChange("firstName", e.target.value)
+                                    }
+                                    className="md:w-3/4 w-full rounded-lg border border-gray-300 shadow-sm p-2 md:text-xl"
+                                  />
+                                  {errors.firstName && (
+                                    <p className="text-red-500 text-xs">
+                                      {errors.firstName}
+                                    </p>
+                                  )}
+                                </>
+                              ) : (
+                                <p className="mt-1 p-2  w-3/4 md:text-xl font-semibold text-[#1B1D29] uppercase">
+                                  {userData.firstName}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex flex-col gap-2 h-full">
+                              <label className="text-gray-700 text-sm">
+                                Last Name
+                              </label>
+                              {isEditing ? (
+                                <>
+                                  <input
+                                    type="text"
+                                    value={userData.lastName}
+                                    onChange={(e) =>
+                                      handleChange("lastName", e.target.value)
+                                    }
+                                    className=" w-full md:w-3/4  rounded-lg border border-gray-300 shadow-sm p-2 md:text-xl"
+                                  />
+                                  {errors.lastName && (
+                                    <p className="text-red-500 text-xs">
+                                      {errors.lastName}
+                                    </p>
+                                  )}
+                                </>
+                              ) : (
+                                <p className="mt-1 p-2 w-3/4 md:text-xl font-semibold text-[#1B1D29] uppercase">
+                                  {userData.lastName}
+                                </p>
+                              )}
+                            </div>
                           </div>
-                          <div className="flex flex-col gap-2 h-full">
-                            <label className="text-gray-700 text-sm">
-                              Last Name
-                            </label>
-                            {isEditing ? (
-                              <>
-                                <input
-                                  type="text"
-                                  value={userData.lastName}
-                                  onChange={(e) =>
-                                    handleChange("lastName", e.target.value)
-                                  }
-                                  className=" w-full md:w-3/4  rounded-lg border border-gray-300 shadow-sm p-2 md:text-xl"
+                        </div>
+                        <div className="flex w-full  lg:w-1/2 lg:items-end  flex-col ">
+                          <div className="w-3/4  flex flex-col">
+                            <div className=" flex flex-col md:gap-2 h-full">
+                              <label className="text-gray-700 text-sm">
+                                Country
+                              </label>
+                              {isEditing ? (
+                                <ReactFlagsSelect
+                                  selected={userData.country.countryCode}
+                                  onSelect={handleCountryChange}
+                                  className="w-full md:w-3/4"
                                 />
-                                {errors.lastName && (
-                                  <p className="text-red-500 text-xs">
-                                    {errors.lastName}
-                                  </p>
-                                )}
-                              </>
-                            ) : (
-                              <p className="mt-1 p-2 w-3/4 md:text-xl font-semibold text-[#1B1D29] uppercase">
-                                {userData.lastName}
-                              </p>
-                            )}
+                              ) : (
+                                <p className="mt-1 p-2 w-3/4 md:text-xl font-semibold text-[#1B1D29] uppercase">
+                                  {userData.country.countryName} (+
+                                  {userData.country.dialCode})
+                                </p>
+                              )}
+                            </div>
+                            <div className=" flex flex-col gap-2 h-full ">
+                              <label className="text-gray-700 text-sm">
+                                Email
+                              </label>
+                              {isEditing ? (
+                                <>
+                                  <input
+                                    type="text"
+                                    value={userData.email}
+                                    onChange={(e) =>
+                                      handleChange("email", e.target.value)
+                                    }
+                                    className="w-full md:w-3/4 rounded-lg border border-gray-300 shadow-sm p-2 md:text-xl"
+                                  />
+                                  {errors.email && (
+                                    <p className="text-red-500 text-xs">
+                                      {errors.email}
+                                    </p>
+                                  )}
+                                </>
+                              ) : (
+                                <p className="mt-1 w-3/4 p-2  md:text-xl font-semibold text-[#1B1D29] uppercase">
+                                  {userData.email}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="flex w-full  lg:w-1/2 lg:items-end  flex-col ">
-                        <div className="w-3/4  flex flex-col">
-                          <div className=" flex flex-col md:gap-2 h-full">
-                            <label className="text-gray-700 text-sm">
-                              Country
-                            </label>
-                            {isEditing ? (
-                              <ReactFlagsSelect
-                                selected={userData.country.countryCode}
-                                onSelect={handleCountryChange}
-                                className="w-full md:w-3/4"
-                              />
-                            ) : (
-                              <p className="mt-1 p-2 w-3/4 md:text-xl font-semibold text-[#1B1D29] uppercase">
-                                {userData.country.countryName} (+
-                                {userData.country.dialCode})
-                              </p>
-                            )}
+                      <div className="md:p-6 pl-2 md:pl-0  flex flex-col w-full  justify-center items-center  py-2    ">
+                        {savingLoading ? (
+                          <div className="flex justify-center items-center h-full w-full p-4">
+                            <motion.div
+                              className="w-4 h-4 border-4 border-t-4 border-t-[#D7B56D] border-gray-200 rounded-full"
+                              variants={spinnerVariants}
+                              animate="animate"
+                            />
                           </div>
-                          <div className=" flex flex-col gap-2 h-full ">
-                            <label className="text-gray-700 text-sm">
-                              Email
-                            </label>
-                            {isEditing ? (
-                              <>
-                                <input
-                                  type="text"
-                                  value={userData.email}
-                                  onChange={(e) =>
-                                    handleChange("email", e.target.value)
-                                  }
-                                  className="w-full md:w-3/4 rounded-lg border border-gray-300 shadow-sm p-2 md:text-xl"
-                                />
-                                {errors.email && (
-                                  <p className="text-red-500 text-xs">
-                                    {errors.email}
-                                  </p>
-                                )}
-                              </>
-                            ) : (
-                              <p className="mt-1 w-3/4 p-2  md:text-xl font-semibold text-[#1B1D29] uppercase">
-                                {userData.email}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {savingLoading ? (
-                      <div className="flex justify-center items-center h-full w-full p-4">
-                        <motion.div
-                          className="w-4 h-4 border-4 border-t-4 border-t-[#D7B56D] border-gray-200 rounded-full"
-                          variants={spinnerVariants}
-                          animate="animate"
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex   md:flex-col lg:flex-row gap-1 ">
-                        {isEditing ? (
-                          <>
-                            <button
-                              onClick={handleSave}
-                              disabled={savingLoading}
-                              className=" border bg-[#1B1D29] text-[#D7B56D] px-4  py-2 rounded mt-4"
-                            >
-                              Save
-                            </button>
-                            <button
-                              onClick={handleCancel}
-                              className=" border bg-[#1B1D29] text-[#D7B56D] px-4 w-1/2 py-2 rounded mt-4"
-                            >
-                              Cancel
-                            </button>
-                          </>
                         ) : (
-                          <button
-                            onClick={handleEdit}
-                            className=" bg-[#1B1D29] border text-[#D7B56D]   px-4 py-2 rounded mt-4"
-                          >
-                            Edit Profile
-                          </button>
+                          <div className="flex   md:flex-col lg:flex-row gap-1 ">
+                            {isEditing ? (
+                              <>
+                                <button
+                                  onClick={handleSave}
+                                  disabled={savingLoading}
+                                  className=" border bg-[#1B1D29] text-[#D7B56D] px-4  py-2 rounded mt-4"
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  onClick={handleCancel}
+                                  className=" border bg-[#1B1D29] text-[#D7B56D] px-4 w-1/2 py-2 rounded mt-4"
+                                >
+                                  Cancel
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  onClick={() => setIsModalOpen(true)}
+                                  className=" bg-[#1B1D29] border text-[#D7B56D] flex items-center gap-2   px-4 py-2 rounded mt-4"
+                                >
+                                  View Passenger Details <FaUserPen />
+                                </button>
+                                <button
+                                  onClick={handleEdit}
+                                  className=" bg-[#1B1D29] border text-[#D7B56D]   px-4 py-2 rounded mt-4"
+                                >
+                                  Edit Profile
+                                </button>
+                              </>
+                            )}
+                          </div>
                         )}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </motion.div>
-
         </>
       )}
     </>

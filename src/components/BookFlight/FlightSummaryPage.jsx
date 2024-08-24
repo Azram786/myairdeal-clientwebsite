@@ -7,6 +7,7 @@ import {
   FaRegClock,
   FaArrowRight,
 } from "react-icons/fa";
+
 import { FaSpinner } from "react-icons/fa";
 import ProgressBar from "./ProgressBar";
 import Review from "./Review";
@@ -391,19 +392,18 @@ const FlightSummary = () => {
                                       <div className="flex items-center w-full">
                                         <div className="w-2 h-2 rounded-full bg-gray-400"></div>
                                         <div className="flex-grow h-px bg-gray-300"></div>
-                                        <div className="flex items-center mx-2">
-                                          <div className="w-16 h-px bg-gray-500"></div>
-                                          <img
-                                            className="w-8 h-8 mx-2 rotate-90 md:rotate-0"
-                                            src={FlightLanding}
-                                            alt="Airplane"
-                                          />
-                                          <div className="w-16 h-px bg-gray-500"></div>
+                                        <div className="flex justify-center items-center">
+                                          <hr className="w-1/3 border-t border-gray-300" />
+                                          <MdFlight className="w-10 h-5 mx-2 rotate-90" />
+                                          <hr className="w-1/3 border-t border-gray-300" />
                                         </div>
                                         <div className="flex-grow h-px bg-gray-300"></div>
                                         <div className="w-2 h-2 rounded-full bg-gray-400"></div>
                                       </div>
-
+                                      <div className="font-bold text-sm">
+                                        {data?.searchQuery?.cabinClass ||
+                                          "No-Class"}
+                                      </div>
                                       <div className="text-center text-semibold text-sm">
                                         {/* {item.sI.length === 1
                                           ? "Non Stop"
