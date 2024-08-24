@@ -69,7 +69,10 @@ const PassengerForm = forwardRef(
           headers: { authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          setHistoryData(response.data);
+          const filteredData = response.data.passengers.filter(
+            (p) => p.pt === passenger.passengerType
+          );
+          setHistoryData(filteredData);
           setLoading(false);
         })
         .catch((error) => {
@@ -97,7 +100,7 @@ const PassengerForm = forwardRef(
     };
 
     const handleSelectFromHistory = (index, selectedPassenger) => {
-      const { ti, fN, dob, lN } = selectedPassenger;
+      const { ti, fN, dob, lN, pNum, eD, pid, pNat, pt } = selectedPassenger;
 
       setPassengers((prevPassengers) => {
         const updatedPassengers = [...prevPassengers];
@@ -107,9 +110,26 @@ const PassengerForm = forwardRef(
           ...updatedPassengers[index],
           title: ti,
           firstName: fN,
-          dob: dob,
           lastName: lN,
         };
+
+        if (pt === "INFANT") {
+          updatedPassengers[index] = {
+            ...updatedPassengers[index],
+            dob: dob,
+          };
+        }
+
+        if (condition) {
+          updatedPassengers[index] = {
+            ...updatedPassengers[index],
+            passportNumber: pNum,
+            expiryDate: eD,
+            nationality: pNat || "IN",
+            issueDate: pid,
+            dob: dob,
+          };
+        }
 
         return updatedPassengers;
       });
@@ -124,7 +144,7 @@ const PassengerForm = forwardRef(
     };
 
     const getMaxDate = (passengerType) => {
-      if (passengerType === "ADULT") return calculateDate(18);
+      if (passengerType === "ADULT") return calculateDate(12);
       if (passengerType === "CHILD") return calculateDate(2);
       if (passengerType === "INFANT") return calculateDate(0);
     };
@@ -153,10 +173,14 @@ const PassengerForm = forwardRef(
             `${import.meta.env.VITE_SERVER_URL}user/add-passenger`,
             {
               ti: passenger.title,
-              fN: passenger.firstName,
-              lN: passenger.lastName,
-              pt: passenger.passengerType,
-              dob: "",
+              fN: passenger.firstName.trim(),
+              lN: passenger.lastName.trim(),
+              pt: passenger.passengerType.trim(),
+              dob: passenger?.dob || "",
+              pNum: passenger?.passportNumber || "",
+              eD: passenger?.expiryDate,
+              pNat: passenger?.nationality,
+              pid: passenger?.issueDate,
             },
             {
               headers: {
@@ -179,6 +203,7 @@ const PassengerForm = forwardRef(
           // You might want to show an error message to the user here
         }
       }
+      setSavePassengerInfo(false);
     };
     return (
       <div className="flex">
@@ -457,6 +482,7 @@ const PassengerForm = forwardRef(
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onSelect={handleSelectFromHistory}
+            passengerType={passenger.passengerType}
             historyData={historyData}
             DATAindex={index}
           />

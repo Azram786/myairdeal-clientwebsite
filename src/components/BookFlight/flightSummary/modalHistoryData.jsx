@@ -40,7 +40,7 @@ const ModalHistoryData = ({
             <div className="flex justify-center items-center w-96 h-96">
               <div className="w-8 h-8 border-t-2 border-blue-600 border-solid rounded-full animate-spin"></div>
             </div>
-          ) : historyData?.passengers?.length > 0 ? (
+          ) : historyData?.length > 0 ? (
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-gray-200">
@@ -56,7 +56,7 @@ const ModalHistoryData = ({
                 </tr>
               </thead>
               <tbody>
-                {historyData.passengers.map((item, index) => (
+                {historyData.map((item, index) => (
                   <tr
                     key={index}
                     className=" hover:bg-gray-400 hover:font-semibold hover:cursor-pointer"
