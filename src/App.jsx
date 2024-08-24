@@ -15,6 +15,8 @@ import Header from "./components/Home/Header";
 import Footer from "./components/Home/Footer";
 import EnquiryForm from "./components/Home/EnquiryForm";
 import NoFlights from "./components/Search/NoFlights";
+import TermsAndConditions from "./components/Home/TermsAndConditions";
+import PrivacyPolicy from "./components/Home/PrivacyPolicy";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -41,12 +43,17 @@ function App() {
             element={token ? <FlightSummaryPage /> : <Login />}
           />
           <Route path="/profile" element={token ? <Profile /> : <Login />} />
-          <Route path="/enquiry" element={token ? <EnquiryForm /> : <Login />} />
-
+          <Route
+            path="/enquiry"
+            element={token ? <EnquiryForm /> : <Login />}
+          />
 
           <Route path="/enter-detail" element={<Signup />} />
-          
-
+          <Route
+            path="/terms-and-conditions"
+            element={<TermsAndConditions />}
+          />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
         <Footer />
       </BrowserRouter>
