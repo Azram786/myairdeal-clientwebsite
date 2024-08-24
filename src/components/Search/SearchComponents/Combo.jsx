@@ -262,6 +262,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
           totalPrice={getTotalPrice()}
           onBook={handleBooking}
           calculateTotalPrice={calculateTotalPrice}
+          combo={true}
         />
       )}
     </div>
