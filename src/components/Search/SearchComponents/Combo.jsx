@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Tabs } from "antd";
-
+import { FaFilter, FaTimes } from "react-icons/fa";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import flightLogo from "../../../assets/home/logo/image 40.png";
-
+import { BsFillFilterSquareFill } from "react-icons/bs";
 import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -160,16 +160,66 @@ const Oneway = ({ flightProps, passenger, query }) => {
     }
     return 0;
   };
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
     <div className="flex md:flex-row flex-col">
-      <ComboSideBar
+      {/* <ComboSideBar
         flights={flightProps}
         filters={filters}
         setFilters={setFilters}
         passenger={passenger}
         calculateTotalPrice={calculateTotalPrice}
-      />
+      /> */}
+          <button
+        className="absolute top-24 right-1 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
+        onClick={toggleSidebar}
+      >
+        <BsFillFilterSquareFill className="w-6 h-6 white" />
+        <div className="text-xs white">Filters</div>
+      </button>
+      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
+        <div
+          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 lg-custom:z-0 rounded-xl bg-white transform ${
+            isSidebarOpen ? "translate-x-0" : "translate-x-full"
+          } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100%",
+            marginTop: "2%",
+            marginBottom: "2%",
+            height: "auto",
+            width: "auto",
+          }}
+        >
+          <button
+            className="absolute top-2 right-4 z-50 white  lg-custom:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          >
+            <FaTimes className="w-6 h-6" />
+          </button>
+
+          <div className="font-semibold p-2 text-left text-base">Filters</div>
+          <div className="rounded-xl flex flex-col items-center ">
+            <ComboSideBar
+              flights={flightProps}
+              filters={filters}
+              setFilters={setFilters}
+              passenger={passenger}
+              calculateTotalPrice={calculateTotalPrice}
+            />
+          </div>
+        </div>
+
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+      </div>
       <div className="flex-grow ">
         <Tabs defaultActiveKey="1">
           <TabPane

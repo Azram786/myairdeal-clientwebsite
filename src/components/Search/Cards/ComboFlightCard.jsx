@@ -146,7 +146,7 @@ const ComboFlightCard = ({
                 <div key={dateIndex} className="mb-8">
                   {/* Source to Destination Header */}
                   <div className="text-lg font-bold text-gray-700 mb-4 pl-4 pt-2">
-                    {sourceCity} to {finalDestinationCity}
+                    {sourceCity} to {finalDestinationCity},on {formatDateTime(date.dt)}
                   </div>
                   <div className="w-full bg-[#f0e1c0] overflow-x-scroll ">
                     {flightsForDate.map((segment, index) => (
@@ -166,7 +166,7 @@ const ComboFlightCard = ({
                               alt={segment?.fD?.aI?.code}
                               className="md:size-10 size-8 rounded-md mr-4"
                             />
-                            <div className="flex flex-col">
+                            <div className="flex flex-col w-32" >
                               <div className="text-xs font-bold text-[#1B1D29]">
                                 {segment.da.city} → {segment.aa.city}
                               </div>
@@ -199,7 +199,7 @@ const ComboFlightCard = ({
                               </div>
                             </div>
 
-                            <div className="flex justify-center w-20 md:min-w-[25%] lg-custom:min-w-[35%] mr-0 md:mr-6 flex-col items-center">
+                            <div className="flex justify-center w-20 md:min-w-[15%] lg-custom:min-w-[15%] mr-0 md:mr-6 flex-col items-center">
                               <div className="text-[10px] md:text-xs text-end text-gray-500">
                                 {segment.stops === 0
                                   ? "Non-Stop"
@@ -390,7 +390,7 @@ const ComboFlightCard = ({
                     className="flex justify-around bg-white p-4 rounded-md"
                   >
                     {/* Departure Information */}
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center ">
                       <img
                         src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                         onError={(e) => (e.currentTarget.src = defaultAirline)}
@@ -494,19 +494,17 @@ const ComboFlightCard = ({
               <div>
                 <button
                   onClick={() => setShowDetails(!showDetails)}
-                  className="text-[#D7B56D] text-sm mt-2"
+                 className=" text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
                 >
-                  {showDetails ? (
-                    <span className="text-black">
-                      {/* Fare Details :{" "} */}
-                      <span className="text-[#D7B56D]">Hide Details</span>
-                    </span>
-                  ) : (
-                    <span className="text-black">
-                      {/* Fare Details :{" "} */}
-                      <span className="text-[#D7B56D]">View Details</span>
-                    </span>
-                  )}
+                 {showDetails ? (
+                  <span className="text-black">
+                    <span className="text-[#1B1D29]">Hide Details</span>
+                  </span>
+                ) : (
+                  <span className="text-black">
+                    <span className="text-[#1B1D29]">View Details</span>
+                  </span>
+                )}
                 </button>
               </div>
             </div>
