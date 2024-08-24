@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -54,15 +53,12 @@ const FlightBookings = () => {
     }
   };
 
- 
-
   useEffect(() => {
     getBookingData();
   }, [bookingFilter]);
 
   return (
     <>
-  
       <div className="xl:mx-[5vw]  min-w-[350px] min-h-screen lg:mx-[3vw] my-5 bg-white xl:p-[2vw] lg:p-[1vw] rounded-md z-50">
         {/* <div className="flex justify-between items-center rounded-lg mb-5 px-3 py-4 border">
           <div className="flex h-12 space-x-[1px] justify-between bg-slate-300 w-full">
@@ -94,28 +90,31 @@ const FlightBookings = () => {
         <div className="hidden lg:flex justify-between h-10 items-center mb-3 p-2 rounded-lg border">
           <div className="flex h-full w-full  justify-between">
             <button
-              className={`py-2 w-1/3 px-6 text-black  font-semibold  border-b-2 ${bookingFilter === "UPCOMING"
-                ? "border-[#1B1D29]"
-                : "border-transparent"
-                }`}
+              className={`py-2 w-1/3 px-6 text-black  font-semibold  border-b-2 ${
+                bookingFilter === "UPCOMING"
+                  ? "border-[#1B1D29]"
+                  : "border-transparent"
+              }`}
               onClick={() => setBookingFilter("UPCOMING")}
             >
               Upcoming
             </button>
             <button
-              className={`py-2 w-1/3 px-6 text-black border-l-2 font-semibold border-l-slate-300 border-b-2 ${bookingFilter === "COMPLETED"
-                ? "border-[#1B1D29]"
-                : "border-transparent"
-                }`}
+              className={`py-2 w-1/3 px-6 text-black border-l-2 font-semibold border-l-slate-300 border-b-2 ${
+                bookingFilter === "COMPLETED"
+                  ? "border-[#1B1D29]"
+                  : "border-transparent"
+              }`}
               onClick={() => setBookingFilter("COMPLETED")}
             >
               Completed
             </button>
             <button
-              className={`py-2 w-1/3 px-6 border-l-2 border-l-slate-300 font-semibold text-black border-b-2 ${bookingFilter === "CANCELLED"
-                ? "border-[#1B1D29]"
-                : "border-transparent"
-                } `}
+              className={`py-2 w-1/3 px-6 border-l-2 border-l-slate-300 font-semibold text-black border-b-2 ${
+                bookingFilter === "CANCELLED"
+                  ? "border-[#1B1D29]"
+                  : "border-transparent"
+              } `}
               onClick={() => setBookingFilter("CANCELLED")}
             >
               Cancelled
@@ -158,8 +157,6 @@ const FlightBookings = () => {
           )}
         </div>
       </div>
-
-     
     </>
   );
 };

@@ -569,7 +569,7 @@ const FilterSection = ({
         {/* type of travel selecting section */}
 
         <div className="flex justify-between">
-          <div className="flex justify-center md:justify-stretch bg-red-500 text-white flight-type-buttons ">
+          <div className="flex justify-center md:justify-stretch  text-white flight-type-buttons ">
             <button
               className={`bg-[#1B1D29]  text-sm md:text-base  rounded-l-lg p-2 md:p-3 border-2 ${
                 typeOfTravel === "one-way" && "bg-[#D7B56D] text-black"
@@ -601,10 +601,9 @@ const FilterSection = ({
           {isModifySearch && (
             <button
               onClick={() => dispatch(setIsaModifySearch(false))}
-              className="flex text-white bg-red-500 px-2 rounded-lg  items-center"
+              className="flex text-white bg-red-500 px-4 rounded-xl  items-center"
             >
-              Clear
-              <MdCancel />
+              <MdCancel size={20} />
             </button>
           )}
         </div>
