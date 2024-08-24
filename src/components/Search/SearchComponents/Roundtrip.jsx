@@ -9,6 +9,7 @@ import { FaFilter, FaTimes } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { BsFillFilterSquareFill } from "react-icons/bs";
 import { setLastSearch } from "../../../store/slices/aut.slice";
+import ReactJoyride from "react-joyride";
 
 const RoundTrip = ({
   onwardProps = [],
@@ -412,7 +413,7 @@ const RoundTrip = ({
     }
 
     return (
-      <div className=" overflow-x-auto ">
+      <div className="h-screen overflow-y-auto no-scroll ">
         {flights.map((flight, index) => (
           <RoundTripCard
             key={index}
@@ -438,16 +439,58 @@ const RoundTrip = ({
     );
   };
 
+  const [runJoyride, setRunJoyride] = useState(false);
+
+  useEffect(() => {
+    const storedJoyride = localStorage.getItem("joyride-rT");
+    if (!storedJoyride) {
+      localStorage.setItem("joyride-rT", "notexecuted");
+    }
+
+    if (storedJoyride === "notexecuted") {
+      setRunJoyride(true);
+      localStorage.setItem("joyride-rT", "executed");
+    }
+  }, []);
+
+  const joyrideSteps = [
+  {
+    target: ".onward-section", 
+    content: "Select your first trip (outbound flight) for the round trip here.",
+  },
+  {
+    target: ".return-section", 
+    content: "Now, select your second trip (return flight) for the round trip here.",
+  },
+];
+
+
   return (
     <div className="relative  flex flex-wrap flex-col  md:flex-row mb-24  w-full ">
+      {runJoyride && (
+        <ReactJoyride
+          steps={joyrideSteps}
+          run={runJoyride}
+          continuous={true}
+          scrollToFirstStep={true}
+          showProgress={true}
+          showSkipButton={true}
+          callback={(data) => {
+            if (data.action === "reset") {
+              setRunJoyride(false);
+            }
+          }}
+        />
+      )}
+
       <button
         className="absolute top-3 right-0 z-50 flex flex-col items-center justify-center  lg-custom:hidden"
         onClick={toggleSidebar}
       >
         <BsFillFilterSquareFill className="w-6 h-6 white" />
-        <div className="text-xs text-blue-600">Filters</div>
+        <div className="text-xs text-[#1B1D29]">Filters</div>
       </button>
-      <div className="relative w-[20%] h-full flex flex-wrap flex-col lg-custom:flex-row ">
+      <div className=" w-[20%] h-full flex flex-wrap flex-col lg-custom:flex-row ">
         <div
           className={`fixed h-full overflow-y-auto lg-custom:static m-2 top-0 bottom-0 right-0 z-50 lg-custom:z-0 rounded-xl w-full bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
@@ -468,7 +511,7 @@ const RoundTrip = ({
             <FaTimes className="w-6 h-6" />
           </button>
           <div className="font-semibold p-2 text-left text-base">Filters</div>
-          <div className="rounded-xl p-2 flex flex-col items-center ">
+          <div className="min-w-[250px]  rounded-xl p-2 flex flex-col items-center ">
             <RoundSideBar
               passenger={passenger}
               filters={filters}
@@ -493,20 +536,24 @@ const RoundTrip = ({
       </div>
       <div className="flex flex-wrap h-max mx-0 flex-col w-full lg-custom:w-[80%]">
         <div className="flex  gap-6 ">
-          <div className="w-max lg-custom:w-1/2">
+          <div className="w-max lg-custom:w-1/2 relative onward-section">
             <h2
               className={`text-sm text-center p-2 lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
-                activeSection === "onward" ? "bg-blue-200" : "bg-white"
+                activeSection === "onward"
+                  ? "bg-[#1B1D29] text-[#D7B56D]"
+                  : "bg-white"
               } lg-custom:bg-white`}
               onClick={() => handleToggleSection("onward")}
             >
               {getRoute(filteredOnward)}
             </h2>
           </div>
-          <div className="w-max lg-custom:w-1/2">
+          <div className="w-max lg-custom:w-1/2 return-section">
             <h2
               className={`text-sm text-center lg-custom:text-xl p-2 font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
-                activeSection === "return" ? "bg-blue-200" : "bg-white"
+                activeSection === "return"
+                  ? "bg-[#1B1D29] text-[#D7B56D]"
+                  : "bg-white"
               } lg-custom:bg-white`}
               onClick={() => handleToggleSection("return")}
             >

@@ -25,7 +25,6 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-
   const getSingleTripDetailHandler = async () => {
     try {
       navigate(
@@ -65,7 +64,6 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
       ReactToast(error);
     }
   };
-  console.log({ booking }, "Flight Details");
 
   return (
     <div className="flex flex-col  gap-5 lg:flex-row justify-between items-end xl:p-6 p-2 shadow-md  rounded-lg">

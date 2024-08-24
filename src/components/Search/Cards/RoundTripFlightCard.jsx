@@ -160,30 +160,39 @@ const RoundTripCard = ({
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div>
+          <div className="w-full bg-[#f0e1c0] ">
+            <div className="text-lg font-bold bg-[#1B1D29] text-[#D7B56D] pl-4 py-2 ">
+              {data[0]?.da?.city} → {data[data.length - 1]?.aa?.city}{" "}
+              <span className="text-white text-sm">
+                On{" "}
+                {new Date(data[0]?.dt).toLocaleString("en-US", {
+                  month: "short",
+
+                  day: "numeric",
+                })}
+                ,
+                {new Date(data[0]?.dt).toLocaleString("en-US", {
+                  weekday: "long",
+                })}
+              </span>
+            </div>
             {data.map((segment, index) => (
               <div
                 key={index}
-                className="flex w-full overscroll-x-auto   flex-col  justify-start bg-[#f0e1c0]"
+                className="flex flex-col md:flex-row items-center justify-start px-2 lg:px-4 py-4"
               >
-                <div className="text-sm w-max ml-2  flex flex-col md:flex-row  text-black font-bold">
-                  {segment.da.city} → {segment.aa.city}
-                  <span className="text-[10px] ml-2 text-gray-500">
-                    {" "}
-                    {formatDateTime(segment.dt).split(",")[0]},
-                    {getDayOfWeek(segment.dt)}
-                  </span>
-                </div>
-                <div className="flex justify-center   mt-2   items-center md:items-start">
-                  <div className="  min-w-12 mx-2 md:items-start">
+                <div className="flex flex-wrap  idems-center  text-left pl-0 md:pl-6 lg-custom:pl-0 w-full  ">
+                  <div className="flex flex-nowrap lg-custom:flex-wrap ">
                     <img
-                      src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
+                      src={`${
+                        import.meta.env.VITE_SERVER_URL
+                      }uploads/AirlinesLogo/${segment?.fD?.aI.code}.png`}
                       alt={segment?.fD?.aI?.code}
                       className="md:size-10 size-8 rounded-md mr-0 md:mr-4"
                     />
 
-                    <div className="font-bold text-xs mb-4">
-                      <span className="text-[10px] text-gray-600 ">
+                    <div className="font-bold text-xs mb-4 ml-2 ">
+                      <span className="text-[10px] text-gray-600">
                         {flightDetails.totalPriceList[0].fd.ADULT.cc}
                       </span>{" "}
                       <br />
@@ -192,63 +201,76 @@ const RoundTripCard = ({
                     </div>
                   </div>
 
-                  <div className="   mx-2  flex gap-1  items-start  ">
+                  <div className="mx-0 md:mx-6  flex gap-1  items-start  ">
                     <div className="text-left w-max  sm:min-w-28 ">
-                      <div className="font-bold max-w-20 sm:w-max text-xs flex-wrap">
+                      <div className="font-bold max-w-20  text-xs flex-wrap">
                         {formatDateTime(segment.dt)}
                         {/* {getDayOfWeek(segment.dt)} */}
                       </div>
                       <div className="text-[10px] max-w-28 text-gray-500">
                         {segment.da.city}, {segment.da.country}
                       </div>
-                      <div className="text-[10px] max-w-28  text-gray-500 line-clamp-1">
+                      <div className="relative group text-[10px]  text-xs text-gray-500">
+                        <span className="text-[10px]">{segment.da.name}</span>
+
+                        {/* Tooltip */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         {segment.da.name}
+                        </div>
                       </div>
                       <div className="text-[10px] max-w-28 text-gray-500">
                         {segment.da.terminal || "N/A"}
                       </div>
                     </div>
 
-                    <div className="mx-4 w-max sm:min-w-24  flex flex-col items-center ">
+                    <div className="mx-4 sm:min-w-24  flex flex-col items-center ">
+                      <div className="text-[10px] text-gray-500">
+                        {convertToHoursMinutes(segment.duration)}
+                      </div>
+                      <FaPlane className="my-2  text-gray-400" />
+
                       <div className="text-[10px] text-gray-500">
                         {segment.stops === 0
                           ? "Non-Stop"
                           : `${segment.stops} Stops`}
                       </div>
-                      <FaPlane className="my-2  text-gray-400" />
-                      <div className="text-[10px] text-gray-500">
-                        {convertToHoursMinutes(segment.duration)}
-                      </div>
                     </div>
 
-                    <div className=" text-left ml-4 w-max sm:min-w-28 ">
+                    <div className=" text-left ml-4 sm:min-w-28 ">
                       <div className="text-xs font-bold max-w-20 sm:w-max">
                         {formatDateTime(segment.at)}
                       </div>
                       <div className="text-[10px] text-gray-500">
                         {segment.aa.city}, {segment.aa.country}
                       </div>
-                      <div className="text-[10px] line-clamp-1 text-gray-500">
+                      <div className="relative group text-[10px]  text-xs text-gray-500">
+                        <span className="text-[10px]">{segment.aa.name}</span>
+
+                        {/* Tooltip */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         {segment.aa.name}
+                        </div>
                       </div>
+
                       <div className="text-[10px] text-gray-500">
                         {segment.aa.terminal || "N/A"}
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="w-full flex justify-center">
-                  {index < data.length - 1 && (
-                    <div className="px-4  flex justify-around text-[10px]  py-1 mt-2 mb-4 md:w-1/ border border-gray-200 bg-gray-200 rounded-full ">
-                      <span className=" font-bold">
-                        Require to change Plane
-                      </span>
-                      <span>
-                        <span className="font-bold ml-4">Layover Time:</span>{" "}
-                        {calculateLayoverTime(segment, data[index + 1])}
-                      </span>
-                    </div>
-                  )}
+
+                  <div className="w-full flex justify-center">
+                    {index < data.length - 1 && (
+                      <div className="px-4  flex justify-around text-[10px]  py-1 mt-2 mb-4 md:w-1/ border border-gray-200 bg-gray-200 rounded-full ">
+                        <span className=" font-bold">
+                          Require to change Plane
+                        </span>
+                        <span>
+                          <span className="font-bold ml-4">Layover Time:</span>{" "}
+                          {calculateLayoverTime(segment, data[index + 1])}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -341,40 +363,53 @@ const RoundTripCard = ({
     : displayedPrices.slice(0, 2);
 
   return (
-    <div className="border bg-white  flex flex-col rounded-lg m-4 ">
-      <div className="flex flex-col md:flex-row  justify-between items-stretch p-3  mb-2">
-        <div className="flex flex-col  justify-center lg-custom:justify-normal w-full">
-          <div className="flex gap-4 items-center justify-center md:justify-normal ">
-            <div className="">
+    <div className="border p-4 rounded-lg m-2 justify-between items-center  bg-white shadow-md  ">
+      <div className="flex   flex-col md:flex-row  justify-between  mb-2">
+        <div className="flex flex-col  w-full">
+          <div className="flex justify-around  gap-0 md:gap-3 w-full ">
+            {/* <div className="md:hidden">
               <img
                 src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                 onError={(e) => (e.currentTarget.src = defaultAirline)}
                 alt={startSegment?.fD?.aI?.code}
                 className="size-12 hidden min-w-24"
               />
-            </div>
-            <div className="md:flex-row flex-col   flex justify-center items-center mb-4 md:mb-0">
+            </div> */}
+            <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
               <img
-                src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${
+                  startSegment?.fD?.aI?.code
+                }.png`}
                 alt={startSegment?.fD?.aI?.code}
                 className="md:size-16 lg-custom:size-12 rounded-md mr-8 lg-custom:mr-4 md:flex hidden"
               />
               <div className="">
-                <h1 className="text-base font-bold  min-w-20">
+                <h1 className="text-base font-bold  ">
                   {startSegment?.da.code}
                 </h1>
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
-                <h1 className="w-[50px] sm:w-max  text-xs">
-                  {formatDateTime(startSegment?.dt)}
+                <h1 className="text-xs">
+                  {new Date(startSegment?.dt).toLocaleString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </h1>
+                <h1 className="text-xs">
+                  {new Date(startSegment?.dt).toLocaleString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: "false",
+                  })}
                 </h1>
               </div>
             </div>
-            <div className="flex  max-w-32 items-center jus  mb-4 md:mb-0">
+            <div className="flex  items-center   mb-4 md:mb-0">
               <div className="border-t  hidden md:flex border-dashed border-gray-400 w-6 md:w-16"></div>
               <div className="flex flex-col gap-2 text-center items-center text-xs font-semibold text-gray-500">
-                <span className="">
+                <span className=" w-max">
                   {" "}
                   <span>{totalDuration}</span>
                 </span>
@@ -392,12 +427,23 @@ const RoundTripCard = ({
               </div>
               <div className="border-t hidden md:flex border-dashed border-gray-400 w-6 md:w-16"></div>
             </div>
-            <div className="flex  md:text-start text-end  items-center mb-4 md:mb-0">
+            <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
               <div>
                 <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
                 {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
-                <h1 className="w-[50px] sm:w-max   text-xs">
-                  {formatDateTime(endSegment?.at)}
+                <h1 className="text-xs">
+                  {new Date(endSegment?.at).toLocaleString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </h1>
+                <h1 className="text-xs">
+                  {new Date(endSegment?.at).toLocaleString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: "false",
+                  })}
                 </h1>
               </div>
             </div>
@@ -464,10 +510,10 @@ ${
                 </div>
               </div>
               <div className="flex md:flex-row flex-col  items-start md:items-center md:justify-between justify-start">
-                <div className="w-2/3 text-xs">
+                <div className="w-full flex justify-between">
                   <button
                     onClick={() => setShowDetails(!showDetails)}
-                    className=" text-sm mt-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
+                    className="text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
                   >
                     {showDetails ? (
                       <span className="text-black">
@@ -481,12 +527,12 @@ ${
                       </span>
                     )}
                   </button>
-                </div>
-                <div className=" flex items-end justify-end ">
                   <button
                     className={`${
-                      isSelected ? "bg-[#D7B56D] text-[#1B1D29]  font-bold" : "bg-[#1B1D29] text-[#D7B56D]"
-                    }  md:w-20 px-7 py-2 rounded-md `}
+                      isSelected
+                        ? "bg-[#D7B56D] text-[#1B1D29]  font-bold"
+                        : "bg-[#1B1D29] text-[#D7B56D]"
+                    }  font-semibold  text-sm my-2 px-8 md:px-16 py-2 rounded-md`}
                     onClick={() => onSelect(localSelectedPriceIndex)}
                   >
                     {isSelected ? "Selected" : "Select"}
@@ -504,7 +550,7 @@ ${
 
       {showDetails && (
         <div>
-          <div className="w-full text-xs mb-2 md:text-sm px-0 md:px-4 shrink-0 flex overflow-x-auto">
+          <div className="text-xs mb-2 md:text-sm px-0 md:px-4 shrink-0 flex overflow-x-auto  bg-white">
             {[
               "Flight Details",
               "Fare Details",

@@ -7,6 +7,7 @@ import FlightTicket from "../viewBooking/FlightTickets";
 import Footer from "../../Home/Footer";
 import Spinner from "../../Profile/Spinner";
 import { motion } from "framer-motion";
+import ReactToast from "../../util/ReactToast";
 
 const FlightBookings = () => {
   const [bookingFilter, setBookingFilter] = useState("UPCOMING");
@@ -141,7 +142,7 @@ const FlightBookings = () => {
                 {bookingData.length > 0 ? (
                   bookingData?.map((booking, index) => (
                     <FlightTicket
-                      key={booking.id}
+                      key={booking._id}
                       index={index}
                       bookingFilter={bookingFilter}
                       bookingID={booking.bookingId}

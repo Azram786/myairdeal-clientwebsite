@@ -165,7 +165,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
-    <div className="flex md:flex-row flex-col">
+    <div className="relative flex md:flex-row flex-col">
       {/* <ComboSideBar
         flights={flightProps}
         filters={filters}
@@ -174,7 +174,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         calculateTotalPrice={calculateTotalPrice}
       /> */}
           <button
-        className="absolute top-24 right-1 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
+        className="absolute top-24 md:top-[120px] right-1 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
         onClick={toggleSidebar}
       >
         <BsFillFilterSquareFill className="w-6 h-6 white" />
@@ -195,7 +195,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
           }}
         >
           <button
-            className="absolute top-2 right-4 z-50 white  lg-custom:hidden"
+            className="absolute top-2  right-4 z-50 white  lg-custom:hidden"
             onClick={() => setIsSidebarOpen(false)}
           >
             <FaTimes className="w-6 h-6" />
@@ -269,7 +269,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
             }
             key="1"
           >
-            <div className="h-[630px] overflow-y-auto no-scroll">
+            <div className="h-screen overflow-y-auto no-scroll">
               {filteredFlights.length > 0 ? (
                 filteredFlights.map((flight, index) => (
                   <ComboFlightCard

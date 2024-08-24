@@ -139,7 +139,7 @@ const RoundSideBar = ({
   };
 
   const renderStopsSection = () => (
-    <div className="mb-6 border-b  rounded-md border-gray-300 pb-4">
+    <div className="mb-6 border-b  rounded-md w-full border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">Stops</h3>
       <div className="grid w-full grid-cols-4 md:grid-cols-2 lg:grid-cols-4 ">
         {stops.map((stop, index) => (
@@ -157,7 +157,7 @@ const RoundSideBar = ({
               id={`stop-${stop}`}
               checked={filters[activeDirection].stops.includes(stop)}
               onChange={() => handleStopsChange(stop)}
-              className="mr-2 hidden"
+              className="mr-1 hidden"
             />
             {stop}
           </label>
@@ -311,8 +311,8 @@ const RoundSideBar = ({
   );
 
   return (
-    <div className="flex  flex-row w-[full]  lg-custom:w-full h-screen overflow-y-auto border shadow-md  min-h-screen">
-      <div className="p-4 grid gap-2 grid-cols-1 w-full md:grid-cols-1">
+    <div className="min-w-[250px] text-xs md:text-base border  shadow-md rounded-md md:min-h-screen">
+      <div className="p-4 grid gap-2 grid-cols-1  md:grid-cols-1">
         <div className="flex flex-col">
           <div className="mb-6 border-b border-gray-300 pb-4">
             <div className="flex flex-col text-xs sm:flex-row justify-center items-center mb-4">

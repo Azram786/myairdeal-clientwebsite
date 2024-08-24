@@ -135,27 +135,35 @@ const ComboFlightCard = ({
     switch (activeTab) {
       case "Flight Details":
         return (
-          <div className="w-full bg-[#f0e1c0] overflow-scroll">
+          <div className="w-full bg-[#f0e1c0] ">
             {Object.keys(groupedFlights).map((date, dateIndex) => {
               const flightsForDate = groupedFlights[date];
               const sourceCity = flightsForDate[0]?.da?.city;
               const finalDestinationCity =
                 flightsForDate[flightsForDate.length - 1]?.aa?.city;
 
+              console.log({ flightsForDate });
               return (
                 <div key={dateIndex} className="mb-8">
                   {/* Source to Destination Header */}
                   <div className="text-lg font-bold bg-[#1B1D29] text-[#D7B56D] mb-4 pl-4 py-2 ">
-                    {sourceCity} to {finalDestinationCity}
+                    {sourceCity} to {finalDestinationCity},{" "}
+                    <span className="text-white text-sm">
+                      On{" "}
+                      {new Date(flightsForDate[0].at).toLocaleString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
                   </div>
-                  <div className="w-full bg-[#f0e1c0] overflow-x-scroll ">
+                  <div className="w-full bg-[#f0e1c0]  ">
                     {flightsForDate.map((segment, index) => (
                       <div>
                         <div
                           key={index}
-                          className="flex flex-col md:flex-row items-center justify-between px-4 py-4 border-b"
+                          className="flex  w-full flex-col lg-custom:flex-row gap-2 items-center justify-between px-4 py-4 border-b"
                         >
-                          <div className="flex items-center w-full text-left pl-0 md:pl-6 lg-custom:pl-0 md:w-[26%] ">
+                          <div className="flex items-center  w-full text-left pl-0 md:pl-6 lg-custom:pl-0 lg-custom:w-[20%] ">
                             <img
                               src={`${
                                 import.meta.env.VITE_SERVER_URL
@@ -166,7 +174,7 @@ const ComboFlightCard = ({
                               alt={segment?.fD?.aI?.code}
                               className="md:size-10 size-8 rounded-md mr-4"
                             />
-                            <div className="flex flex-col w-32" >
+                            <div className="flex flex-col ">
                               <div className="text-xs font-bold text-[#1B1D29]">
                                 {segment.da.city} → {segment.aa.city}
                               </div>
@@ -183,15 +191,15 @@ const ComboFlightCard = ({
                             </div>
                           </div>
 
-                          <div className="flex gap-2 mt-2 items-center w-full md:w-[70%] justify-around md:gap-8 ">
-                            <div className="p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%]">
+                          <div className="flex gap-2 mt-2 items-center w-full lg-custom:w-[75%] justify-around  ">
+                            <div className="p-2 text-left  min-w-[30%]">
                               <div className="font-bold text-xs md:text-sm">
                                 {formatDateTime(segment.dt)}
                               </div>
-                              <div className="text-xs text-gray-500">
+                              <div className="text-xs text-gray-500 line-clamp-2">
                                 {segment.da.city}, {segment.da.country}
                               </div>
-                              <div className="text-xs text-gray-500">
+                              <div className="text-xs text-gray-500 line-clamp-2">
                                 {segment.da.name}
                               </div>
                               <div className="text-xs text-gray-500">
@@ -199,26 +207,27 @@ const ComboFlightCard = ({
                               </div>
                             </div>
 
-                            <div className="flex justify-center w-20 md:min-w-[15%] lg-custom:min-w-[15%] mr-0 md:mr-6 flex-col items-center">
+                            <div className="flex justify-center  min-w-[20%]  flex-col items-center">
+                              <div className="text-xs text-gray-500">
+                                {convertToHoursMinutes(segment.duration)}
+                              </div>
+
+                              <FaPlane className="my-2 text-gray-400" />
                               <div className="text-[10px] md:text-xs text-end text-gray-500">
                                 {segment.stops === 0
                                   ? "Non-Stop"
                                   : `${segment.stops} Stop(s)`}
                               </div>
-                              <FaPlane className="my-2 text-gray-400" />
-                              <div className="text-xs text-gray-500">
-                                {convertToHoursMinutes(segment.duration)}
-                              </div>
                             </div>
 
-                            <div className="text-left p-2 w-32 md:min-w-[25%] lg-custom:min-w-[30%] ml-0 lg-custom:ml-8">
+                            <div className="text-left p-2 min-w-[30%] ml-0 ">
                               <div className="font-bold text-xs md:text-sm">
                                 {formatDateTime(segment.at)}
                               </div>
-                              <div className="text-xs text-gray-500">
+                              <div className="text-xs text-gray-500 line-clamp-2">
                                 {segment.aa.city}, {segment.aa.country}
                               </div>
-                              <div className="text-xs text-gray-500">
+                              <div className="text-xs text-gray-500 line-clamp-2">
                                 {segment.aa.name}
                               </div>
                               <div className="text-xs text-gray-500">
@@ -256,7 +265,7 @@ const ComboFlightCard = ({
 
       case "Fare Details":
         return (
-          <div className="w-full">
+          <div className="w-full bg-[#f0e1c0] ">
             <div className="grid grid-cols-3 w-full border-b text-sm pb-2 mb-2">
               <div className="font-bold">TYPE</div>
               <div className="font-bold">Fare</div>
@@ -281,7 +290,7 @@ const ComboFlightCard = ({
                         <div>
                           ₹{details?.fC?.BF?.toFixed(2)} x {count}
                         </div>
-                        <div>₹{(details?.fC?.BF * count).toFixed(2)}</div>
+                        <div> ₹{(details?.fC?.BF * count).toFixed(2)}</div>
                       </div>
                       <div className="grid grid-cols-3 w-full mb-1">
                         <div className="flex items-center">
@@ -308,14 +317,14 @@ const ComboFlightCard = ({
         );
       case "Fare Rules":
         return (
-          <div className="text-xs">
+          <div className="text-xs bg-[#f0e1c0] ">
             <h2 className="font-bold mb-2">Fare Rules</h2>
             <p>Insert fare rules information here.</p>
           </div>
         );
       case "Baggage Information":
         return (
-          <div className="grid grid-cols-3 w-full text-sm gap-4">
+          <div className="bg-[#f0e1c0]  grid grid-cols-3 w-full text-sm gap-4">
             <div className="font-bold">SECTOR</div>
             <div className="font-bold">CHECKIN</div>
             <div className="font-bold">CABIN</div>
@@ -495,34 +504,32 @@ const ComboFlightCard = ({
               </button>
             )} */}
               </div>
-              <div>
+              <div className="flex justify-between h-14">
                 <button
                   onClick={() => setShowDetails(!showDetails)}
-                 className=" text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
+                  className=" text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
                 >
-                 {showDetails ? (
-                  <span className="text-black">
-                    <span className="text-[#1B1D29]">Hide Details</span>
-                  </span>
-                ) : (
-                  <span className="text-black">
-                    <span className="text-[#1B1D29]">View Details</span>
-                  </span>
-                )}
+                  {showDetails ? (
+                    <span className="text-black">
+                      <span className="text-[#1B1D29]">Hide Details</span>
+                    </span>
+                  ) : (
+                    <span className="text-black">
+                      <span className="text-[#1B1D29]">View Details</span>
+                    </span>
+                  )}
+                </button>
+                <button
+                  className={`${
+                    isSelected
+                      ? "bg-[#D7B56D] text-[#1B1D29]"
+                      : "bg-[#1B1D29] text-[#D7B56D]"
+                  }  font-semibold  text-sm my-2  px-16 py-2 rounded-md `}
+                  onClick={() => onSelect(localSelectedPriceIndex)}
+                >
+                  {isSelected ? "Selected" : "Select"}
                 </button>
               </div>
-            </div>
-            <div className="flex justify-end  w-full">
-              <button
-                className={`${
-                  isSelected
-                    ? "bg-[#D7B56D] text-[#1B1D29]"
-                    : "bg-[#1B1D29] text-[#D7B56D]"
-                }  font-semibold md:w-48 text-center  px-16 py-2 rounded-md mt-4 md:mt-0`}
-                onClick={() => onSelect(localSelectedPriceIndex)}
-              >
-                {isSelected ? "Selected" : "Select"}
-              </button>
             </div>
           </div>
         </div>

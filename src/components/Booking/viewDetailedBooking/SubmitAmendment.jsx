@@ -354,71 +354,70 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                                       ? "border border-[#1B1D29]"
                                       : "border"
                                   }`}
-                                >
-                                  <div className="flex flex-wrap ">
-                                    <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-[#1B1D29] text-white font-medium text-xl rounded-full mr-4">
-                                      {traveler.fN.charAt(0).toUpperCase()}
-                                    </div>
-                                    <div>
-                                      <div className="text-sm font-bold">
-                                        {traveler.fN} {traveler.lN}
-                                      </div>
-                                      <div className="text-sm font-bold">
-                                        {traveler.dob}
-                                      </div>
-                                      <div className="text-sm font-bold">
-                                        {traveler.pt}
-                                      </div>
-                                    </div>
+                              >
+                                <div className="flex flex-wrap ">
+                                  <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-[#1B1D29] text-white font-medium text-xl rounded-full mr-4">
+                                    {traveler.fN.charAt(0).toUpperCase()}
                                   </div>
-                                  <div className="ml-auto">
-                                    <input
-                                      type="checkbox"
-                                      className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
-                                      onChange={() =>
-                                        handleTravelerSelection(
-                                          tripIndex,
-                                          travelerIndex
-                                        )
-                                      }
-                                      checked={selectedTravelers.includes(
-                                        `${tripIndex}-${travelerIndex}`
-                                      )}
-                                      disabled={
-                                        cancelWholeTicket ||
-                                        selectedTrips.includes(tripIndex)
-                                      }
-                                    />
+                                  <div>
+                                    <div className="text-sm font-bold">
+                                      {traveler.fN} {traveler.lN}
+                                    </div>
+                                    <div className="text-sm font-bold">
+                                      {traveler.dob}
+                                    </div>
+                                    <div className="text-sm font-bold">
+                                      {traveler.pt}
+                                    </div>
                                   </div>
                                 </div>
-                              )
-                            )}
-                          </div>
-                        )}
-                      </div>
+                                <div className="ml-auto">
+                                  <input
+                                    type="checkbox"
+                                    className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                                    onChange={() =>
+                                      handleTravelerSelection(
+                                        tripIndex,
+                                        travelerIndex
+                                      )
+                                    }
+                                    checked={selectedTravelers.includes(
+                                      `${tripIndex}-${travelerIndex}`
+                                    )}
+                                    disabled={
+                                      cancelWholeTicket ||
+                                      selectedTrips.includes(tripIndex)
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}</div>
                     </div>
                   )
                 )}
-                {/* <div>
-                  <div className="w-full border-2 bg-blue-100 flex gap-2 overflow-x-scroll">
-                    {trips.map((trip) => (
-                      <div
-                        key={trip.id}
-                        className={`min-w-32 h-16 rounded-md cursor-pointer flex justify-center items-center p-2 ${
-                          activeTrip === trip.id ? "bg-red-600" : "bg-red-400"
-                        }`}
-                        onClick={() => handleClick(trip.id)}
-                      >
-                        <div>
-                          <h1>{trip.title}</h1>
-                          <h2>Trip Details</h2>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex justify-end text-semibold text-sm my-2 cursor-pointer">
-                    <h1>Show Passengers</h1>
-                  </div>
+               <div>
+      {/* <div className="w-full border-2 bg-blue-100 flex gap-2 overflow-x-scroll">
+        {trips.map((trip) => (
+          <div
+            key={trip.id}
+            className={`min-w-32 h-16 rounded-md cursor-pointer flex justify-center items-center p-2 ${
+              activeTrip === trip.id ? 'bg-red-600' : 'bg-red-400'
+            }`}
+            onClick={() => handleClick(trip.id)}
+          >
+            <div>
+              <h1>{trip.title}</h1>
+              <h2>Trip Details</h2>
+            </div>
+          </div>
+        ))}
+      </div> */}
+      <div className="flex justify-end text-semibold text-sm my-2 cursor-pointer">
+        <h1>Show Passengers</h1>
+      </div>
 
                   {showDetails && activeTrip && (
                     <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-100">
