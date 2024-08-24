@@ -145,7 +145,6 @@ import Footer from "../Home/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsaModifySearch } from "../../store/slices/aut.slice";
 
-
 const FlightList = () => {
   const location = useLocation();
   const { query } = location.state || {};
@@ -162,6 +161,8 @@ const FlightList = () => {
   const [hasUserPressedBack, setHasUserPressedBack] = useState(false);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const { resentSearch } = useSelector((state) => state.auth);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     console.log("ScrollToTop effect triggered");
@@ -195,10 +196,32 @@ const FlightList = () => {
       dispatch(setIsaModifySearch(false));
     }
   }, [hasUserPressedBack]);
+
+  function cleanRouteInfos(searchQueryParam) {
+    const searchQuery = searchQueryParam.searchQuery;
+    return {
+      ...searchQuery,
+      routeInfos: searchQuery.routeInfos.map((route) => ({
+        ...route,
+        fromCityOrAirport: {
+          ...route.fromCityOrAirport,
+          code: route.fromCityOrAirport.code.split("-")[0],
+        },
+        toCityOrAirport: {
+          ...route.toCityOrAirport,
+          code: route.toCityOrAirport.code.split("-")[0],
+        },
+      })),
+    };
+  }
+
   useEffect(() => {
-    setData(query);
+    if (query || data) {
+      setData(query);
+    }
     if (!query || !data) {
-      navigate("/");
+      const cleanedQuery = cleanRouteInfos(resentSearch);
+      setData({ searchQuery: cleanedQuery });
     }
   }, [location.state]);
 
@@ -221,9 +244,7 @@ const FlightList = () => {
       const tripInfos = res.data.searchResult.tripInfos;
       console.log(tripInfos, "tripInfos");
       if (!tripInfos) {
-        ReactToast("No flights found on this route");
-        navigate("/no-flights");
-
+        setError("No Flights Found on this route");
         return;
       }
 
@@ -242,16 +263,22 @@ const FlightList = () => {
         setMulticity(Object.values(tripInfos));
       }
     } catch (error) {
-      ReactToast(error.message);
-      // ReactToast('Some issue in your search')
-      navigate("/");
+      console.log(error.response.data.errors[0].message);
+      setLoading(false);
+      if (error?.response?.data?.errors[0]?.message) {
+        setError(error.response.data.errors[0].message);
+      } else {
+        setError("Server Error");
+      }
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    getData();
+    if (data) {
+      getData();
+    }
   }, [data]);
 
   if (loading) {
@@ -259,6 +286,24 @@ const FlightList = () => {
       <div className="w-full  h-screen flex justify-center items-center">
         <div className="flex-col flex gap-3">
           <Spinner /> <h1 className="italic">Loading available flights..</h1>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="flex-col flex gap-3 ">
+          <h1>{error}</h1>
+          <button
+            className="mt-2 text-sm px-2 py-5 text-[#D7B56D] bg-[#1B1D29] rounded"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Click Here to go back to Home Page
+          </button>
         </div>
       </div>
     );
