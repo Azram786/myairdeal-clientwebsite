@@ -6,7 +6,7 @@ import Flag from "react-world-flags";
 import Select from "react-select";
 import ReactToast from "../util/ReactToast";
 
-const EditPassengerDetails = () => {
+const EditPassengerDetails = ({ setIsModalOpen }) => {
   const [passengerDetails, setPassengerDetails] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [newPassenger, setNewPassenger] = useState({
@@ -55,7 +55,7 @@ const EditPassengerDetails = () => {
   const handleNationalityChange = (selectedOption) => {
     setNewPassenger((prev) => ({
       ...prev,
-      pNat: selectedOption ? selectedOption.value : null,
+      pNat: selectedOption,
     }));
     setErrors((prev) => ({ ...prev, pNat: "" }));
   };
@@ -90,9 +90,7 @@ const EditPassengerDetails = () => {
     setNewPassenger({
       ...passenger,
       pNat: passenger.pNat
-        ? options.find((option) => {
-            return option.value === passenger.pNat;
-          })
+        ? options.find((option) => option.value === passenger.pNat)
         : null,
     });
     setEditingId(passenger._id);
@@ -103,12 +101,13 @@ const EditPassengerDetails = () => {
       try {
         const updatedPassenger = {
           ...newPassenger,
-          pNat: newPassenger.pNat ? newPassenger.pNat : null,
+          pNat: newPassenger.pNat ? newPassenger.pNat.value : null,
         };
+        console.log({ updatedPassenger });
         const response = await axios.put(
           `${
             import.meta.env.VITE_SERVER_URL
-          }user/update-passenger/${editingId}`,
+          }user/edit-passenger?passengerId=${editingId}`,
           updatedPassenger,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -133,7 +132,6 @@ const EditPassengerDetails = () => {
   };
 
   const handleDelete = async (id) => {
-    console.log({ id });
     try {
       await axios.put(
         `${
@@ -142,9 +140,8 @@ const EditPassengerDetails = () => {
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       getPassengersHandler();
-      ReactToast("Passenger Deleted Succesfully");
+      ReactToast("Passenger Deleted Successfully");
     } catch (error) {
       console.log(error.message);
     }
@@ -153,9 +150,13 @@ const EditPassengerDetails = () => {
   const handleAdd = async () => {
     if (validateForm(newPassenger)) {
       try {
+        const passengerToAdd = {
+          ...newPassenger,
+          pNat: newPassenger.pNat ? newPassenger.pNat.value : null,
+        };
         const response = await axios.put(
           `${import.meta.env.VITE_SERVER_URL}user/add-passenger`,
-          newPassenger,
+          passengerToAdd,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (response.status === 200) ReactToast("Passenger added successfully");
@@ -192,7 +193,6 @@ const EditPassengerDetails = () => {
 
   const customFilterOption = (option, inputValue) => {
     const { label, value } = option;
-
     return (
       label.toLowerCase().includes(inputValue.toLowerCase()) ||
       value.toLowerCase().includes(inputValue.toLowerCase())
@@ -215,9 +215,17 @@ const EditPassengerDetails = () => {
 
   return (
     <div className="w-full h-full p-4 bg-gray-100">
-      <h2 className="text-2xl font-bold mb-4 text-indigo-700">
-        Edit Passenger Details
-      </h2>
+      <div className="flex justify-between">
+        <h2 className="text-2xl font-bold mb-4 text-indigo-700">
+          Edit Passenger Details
+        </h2>
+        <h3
+          onClick={() => setIsModalOpen(false)}
+          className="text-2xl font-bold mb-4 cursor-pointer text-indigo-700"
+        >
+          Go back
+        </h3>
+      </div>
       <div className="bg-white rounded-lg shadow overflow-x-auto">
         <table className="w-full">
           <thead className="bg-indigo-600 text-white">
@@ -324,14 +332,7 @@ const EditPassengerDetails = () => {
             ) : field === "pNat" ? (
               <Select
                 options={options}
-                value={
-                  newPassenger.pNat
-                    ? {
-                        value: newPassenger?.pNat,
-                        label: getName(newPassenger?.pNat),
-                      }
-                    : null
-                }
+                value={newPassenger.pNat}
                 onChange={handleNationalityChange}
                 filterOption={customFilterOption}
                 formatOptionLabel={formatOptionLabel}
