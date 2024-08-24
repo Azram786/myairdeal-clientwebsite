@@ -12,7 +12,7 @@ const initialState = {
     : null,
   lastSearch: null,
   resentSearchFilter: [[], []],
-  isModifySearch: false
+  isModifySearch: false,
 };
 
 const authSlice = createSlice({
@@ -50,13 +50,16 @@ const authSlice = createSlice({
       state.resentSearchFilter[1].push(action.payload);
     },
     clearResentSearchFilter: (state, action) => {
-      state.resentSearchFilter = [[], []]
+      state.resentSearchFilter = [[], []];
     },
     setIsaModifySearch: (state, action) => {
-
-      state.isModifySearch = action.payload
-    }
-  }
+      state.isModifySearch = action.payload;
+    },
+    clearUser: (state, action) => {
+      localStorage.removeItem("user_air_deal");
+      state.user = null;
+    },
+  },
 });
 
 export const {
@@ -69,7 +72,8 @@ export const {
   setResentSearchFromFilter,
   setResentSearchToFilter,
   clearResentSearchFilter,
-  setIsaModifySearch
+  setIsaModifySearch,
+  clearUser
 } = authSlice.actions;
 
 export default authSlice.reducer;

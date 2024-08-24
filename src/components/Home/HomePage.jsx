@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Banner from "./Banner";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import FilterSection from "./FilterSection";
 import OfferSection from "./OfferSection";
 import Contact from "./Contact";
@@ -15,16 +15,15 @@ import Testimonials from "./TestMonials";
 import DownloadApp from "./AppDownload";
 import Service from "../Service/service";
 import { FiTable } from "react-icons/fi";
-import { setUser } from "../../store/slices/aut.slice";
+import { clearResent, setUser } from "../../store/slices/aut.slice";
 
 const HomePage = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
- 
     window.scrollTo(0, 0);
   }, [pathname]);
-  
+
   const [loading, setLoading] = useState(false);
   const { token, resentSearch } = useSelector((state) => state.auth);
   const [ResentSearchData, setResentSearchData] = useState([]);
@@ -52,8 +51,6 @@ const HomePage = () => {
     },
   ]);
 
-
-
   async function getResentSearch() {
     try {
       const response = await axios.get(
@@ -65,7 +62,6 @@ const HomePage = () => {
         }
       );
       setResentSearchData(response.data.data);
-   
     } catch (error) {
       console.log(error.message);
     }
@@ -79,7 +75,6 @@ const HomePage = () => {
 
   useEffect(() => {
     if (resentSearch?.searchQuery) {
-   
       setFormData((prevFormData) => ({
         ...prevFormData,
         cabinClass:
@@ -95,7 +90,7 @@ const HomePage = () => {
           prevFormData.toCityOrAirport,
         travelDate:
           new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate) >=
-            new Date()
+          new Date()
             ? new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate)
             : new Date(),
         returnDate:
@@ -105,10 +100,10 @@ const HomePage = () => {
             ]?.travelDate
           ) > new Date()
             ? new Date(
-              resentSearch?.searchQuery?.routeInfos[
-                resentSearch.searchQuery.routeInfos.length - 1
-              ]?.travelDate
-            )
+                resentSearch?.searchQuery?.routeInfos[
+                  resentSearch.searchQuery.routeInfos.length - 1
+                ]?.travelDate
+              )
             : new Date(),
         isDirectFlight: true,
         isConnectingFlight:
@@ -128,7 +123,7 @@ const HomePage = () => {
       if (
         resentSearch.searchQuery.routeInfos.length === 2 &&
         resentSearch.searchQuery.routeInfos[0].toCityOrAirport.code ===
-        resentSearch.searchQuery.routeInfos[1].fromCityOrAirport.code
+          resentSearch.searchQuery.routeInfos[1].fromCityOrAirport.code
       ) {
         setTypeOfTravel("round-trip");
       } else if (resentSearch.searchQuery.routeInfos.length > 1) {
@@ -137,7 +132,6 @@ const HomePage = () => {
         const data = resentSearch.searchQuery.routeInfos
           .slice(1)
           .map((route, index) => {
-       
             return {
               fromCity:
                 index === 0
@@ -147,49 +141,27 @@ const HomePage = () => {
               travelDate: new Date(route.travelDate),
             };
           });
-     
+
         setDynamicFormData(() => data);
       }
     }
   }, [resentSearch]);
-  // useEffect(() => {
-  //   if (resentSearch?.searchQuery) {
-  //     console.log({ query: resentSearch?.searchQuery })
-  //     setFormData((prevFormData) => ({
-  //       ...prevFormData,
-  //       cabinClass: resentSearch.searchQuery.cabinClass || prevFormData.cabinClass,
-  //       ADULT: resentSearch.searchQuery.paxInfo.ADULT || prevFormData.ADULT,
-  //       CHILD: resentSearch.searchQuery.paxInfo.CHILD || prevFormData.CHILD,
-  //       INFANT: resentSearch.searchQuery.paxInfo.INFANT || prevFormData.INFANT,
-  //       fromCityOrAirport: resentSearch.searchQuery.routeInfos[0]?.fromCityOrAirport?.code || prevFormData.fromCityOrAirport,
-  //       toCityOrAirport: resentSearch.searchQuery.routeInfos[0]?.toCityOrAirport?.code || prevFormData.toCityOrAirport,
-  //       travelDate: new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate) >= new Date() ? new Date(resentSearch?.searchQuery?.routeInfos[0]?.travelDate) : new Date(),
-  //       returnDate: new Date(resentSearch?.searchQuery?.routeInfos[resentSearch.searchQuery.routeInfos.length - 1]?.travelDate) > new Date() ? new Date(resentSearch?.searchQuery?.routeInfos[resentSearch.searchQuery.routeInfos.length - 1]?.travelDate) : new Date(),
-  //       isDirectFlight: true,
-  //       isConnectingFlight: resentSearch.searchQuery.searchModifiers?.isConnectingFlight ?? prevFormData.isConnectingFlight,
-  //       pft: resentSearch.searchQuery.searchModifiers?.pft || prevFormData.pft,
-  //     }));
+  useEffect(() => {
+    // Function to be dispatched after 30 minutes
+    const timerFunction = () => {
+      dispatch(clearResent());
+    };
 
-  //     if (resentSearch?.searchQuery?.routeInfos?.length === 1) {
-  //       setTypeOfTravel("one-way");
-  //       setDynamicFormData([{
-  //         fromCity: "",
-  //         toCity: "",
-  //         travelDate: new Date(resentSearch.searchQuery.routeInfos[0].travelDate),
-  //       }]);
-  //     } else if (resentSearch.searchQuery.routeInfos.length === 2 &&
-  //                resentSearch.searchQuery.routeInfos[0].toCityOrAirport.code === resentSearch.searchQuery.routeInfos[1].fromCityOrAirport.code) {
-  //       setTypeOfTravel("round-trip");
-  //     } else if (resentSearch.searchQuery.routeInfos.length > 1) {
-  //       setTypeOfTravel("multi-city");
-  //       setDynamicFormData(resentSearch.searchQuery.routeInfos.slice(1).map((route, index) => ({
-  //         fromCity: route.fromCityOrAirport.code,
-  //         toCity: route.toCityOrAirport.code,
-  //         travelDate: new Date(route.travelDate),
-  //       })));
-  //     }
-  //   }
-  // }, [resentSearch]);
+    // Set up the timer
+    const timer = setTimeout(() => {
+      timerFunction();
+    }, 30 * 60 * 1000); // 30 minutes in milliseconds
+
+    // Clean up function
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <div>
@@ -208,7 +180,6 @@ const HomePage = () => {
         </div>
       ) : (
         <>
-
           <Banner />
           <FilterSection
             formData={formData}
@@ -230,7 +201,6 @@ const HomePage = () => {
           <Testimonials />
           <Contact />
           <DownloadApp />
-
         </>
       )}
     </div>
@@ -238,5 +208,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-
