@@ -31,7 +31,6 @@ const FlightSummary = () => {
   const [isSeatMapLoading, setIsSeatMapLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
-
   const location = useLocation();
   const [seatMapData, setSeatMapData] = useState(null);
   const { bookings } = location.state || {};
@@ -89,17 +88,21 @@ const FlightSummary = () => {
         setData(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data.errors[0].message);
         setLoading(false);
-        ReactToast("Some error occurred please try again");
-        navigate("/");
+        if (error?.response?.data?.errors[0]?.message) {
+          setError(error.response.data.errors[0].message);
+        } else {
+          setError("Server Error");
+        }
+        // navigate("/");
         // console.log(error);
       });
   };
 
-  useEffect(()=>{
-    window.scrollTo(0,0)
-  },[currentStep])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentStep]);
 
   useEffect(() => {
     getData();
@@ -164,7 +167,6 @@ const FlightSummary = () => {
     return `${hours}h ${minutes}m`;
   }
 
-
   function calculateTotalDuration(segments) {
     if (!segments || segments.length === 0) return "N/A";
 
@@ -217,6 +219,24 @@ const FlightSummary = () => {
       <div className="w-full h-screen flex justify-center items-center">
         <div className="flex-col flex gap-3">
           <Spinner /> <h1 className="italic">Loading Please wait...</h1>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="flex-col flex gap-3 ">
+          <h1>{error}</h1>
+          <button
+            className="mt-2 text-sm px-2 py-5 text-[#D7B56D] bg-[#1B1D29] rounded"
+            onClick={() => {
+              navigate("/search");
+            }}
+          >
+            Click Here to go back to Search Page
+          </button>
         </div>
       </div>
     );
@@ -330,33 +350,27 @@ const FlightSummary = () => {
                                       <div className="text-sm">
                                         {segment.da.terminal || "N/A"}
                                       </div>
-                                      <div className="  text-sm font-semibold "> 
-                                       
-                                          {new Date(
-                                            item.sI[0].dt
-                                          ).toLocaleDateString("en-US", {
-                                            month: "short",
-                                            day: "numeric",
-                                          })}
-                                      
+                                      <div className="  text-sm font-semibold ">
+                                        {new Date(
+                                          item.sI[0].dt
+                                        ).toLocaleDateString("en-US", {
+                                          month: "short",
+                                          day: "numeric",
+                                        })}
                                         ,
-                                      
-                                          {new Date(
-                                            item.sI[0].dt
-                                          ).toLocaleDateString("en-US", {
-                                            weekday: "short",
-                                          })}
-                                        
+                                        {new Date(
+                                          item.sI[0].dt
+                                        ).toLocaleDateString("en-US", {
+                                          weekday: "short",
+                                        })}
                                         ,
-                                       
-                                          {new Date(
-                                            segment.dt
-                                          ).toLocaleTimeString([], {
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            hour12: false,
-                                          })}
-                                      
+                                        {new Date(
+                                          segment.dt
+                                        ).toLocaleTimeString([], {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          hour12: false,
+                                        })}
                                       </div>
                                     </div>
                                     <div className="flex-col text-center my-2 md:my-0 w-full mr-32 md:w-[40%]">
@@ -411,32 +425,26 @@ const FlightSummary = () => {
                                         {segment.aa.terminal || "N/A"}
                                       </div>
                                       <div className="text-sm font-semibold ">
- 
-                                          {new Date(
-                                            item.sI[0].dt
-                                          ).toLocaleDateString("en-US", {
-                                            month: "short",
-                                            day: "numeric",
-                                          })}
-                                      
+                                        {new Date(
+                                          item.sI[0].dt
+                                        ).toLocaleDateString("en-US", {
+                                          month: "short",
+                                          day: "numeric",
+                                        })}
                                         ,
-                                       
-                                          {new Date(
-                                            item.sI[0].dt
-                                          ).toLocaleDateString("en-US", {
-                                            weekday: "short",
-                                          })}
-                                       
+                                        {new Date(
+                                          item.sI[0].dt
+                                        ).toLocaleDateString("en-US", {
+                                          weekday: "short",
+                                        })}
                                         ,
-                                       
-                                          {new Date(
-                                            segment.at
-                                          ).toLocaleTimeString([], {
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            hour12: false,
-                                          })}
-                                      
+                                        {new Date(
+                                          segment.at
+                                        ).toLocaleTimeString([], {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          hour12: false,
+                                        })}
                                       </div>
                                     </div>
                                   </div>
@@ -464,8 +472,9 @@ const FlightSummary = () => {
                                           <div className="text-center">
                                             <span className="text-sm">
                                               Total Layover Time:{" "}
-                                              <span className="font-bold">{calculateLayoverTime(item.sI)}</span>
-                                              
+                                              <span className="font-bold">
+                                                {calculateLayoverTime(item.sI)}
+                                              </span>
                                             </span>
                                           </div>
                                         )}

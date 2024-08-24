@@ -36,9 +36,9 @@ const AddonsCard = ({
           },
         }
       );
-
       if (response.status == 200) {
         // console.log({ response });
+
         setSeatMapData(response?.data);
         console.log("seatMapData", response?.data);
       } else if (response.status === 400) {
@@ -63,44 +63,44 @@ const AddonsCard = ({
 
   const [runJoyride, setRunJoyride] = useState(true);
 
-// // Check sessionStorage for Joyride execution on first load
-// useEffect(() => {
-//   // Check if Joyride has been executed before
-//   const storedJoyride = sessionStorage.getItem("joyride");
+  // // Check sessionStorage for Joyride execution on first load
+  // useEffect(() => {
+  //   // Check if Joyride has been executed before
+  //   const storedJoyride = sessionStorage.getItem("joyride");
 
-//   if (storedJoyride === "executed") {
-//     setRunJoyride(false); // Joyride has already run, don't run it again
-//   } else {
-//     setRunJoyride(true); // Joyride has not run, start it
-//     sessionStorage.setItem("joyride", "executed"); // Mark as executed
-//   }
-// }, []); // Empty dependency array to run this effect only once on component mount
+  //   if (storedJoyride === "executed") {
+  //     setRunJoyride(false); // Joyride has already run, don't run it again
+  //   } else {
+  //     setRunJoyride(true); // Joyride has not run, start it
+  //     sessionStorage.setItem("joyride", "executed"); // Mark as executed
+  //   }
+  // }, []); // Empty dependency array to run this effect only once on component mount
 
-// Joyride steps
-const [joyrideSteps] = useState([
-  {
-    target: ".addons-seat",
-    content: "Choose your travel type (One-way, Round-trip, or Multi-city)",
-  },
-  {
-    target: ".addons-meals-and-baggage",
-    content: "Select your departure city or airport.",
-  },
-]);
+  // Joyride steps
+  const [joyrideSteps] = useState([
+    {
+      target: ".addons-seat",
+      content: "Choose your travel type (One-way, Round-trip, or Multi-city)",
+    },
+    {
+      target: ".addons-meals-and-baggage",
+      content: "Select your departure city or airport.",
+    },
+  ]);
   return (
     <div className="">
       <ReactJoyride
-      steps={joyrideSteps}
-      run={runJoyride}
-      continuous
-      showSkipButton
-      showProgress
-      styles={{
-        options: {
-          zIndex: 10000, // Ensure Joyride modals are on top
-        },
-      }}
-    />
+        steps={joyrideSteps}
+        run={runJoyride}
+        continuous
+        showSkipButton
+        showProgress
+        styles={{
+          options: {
+            zIndex: 10000, // Ensure Joyride modals are on top
+          },
+        }}
+      />
       <div
         className="p-3 border-b border-gray-300 cursor-pointer flex justify-between items-center"
         onClick={toggleCard}
