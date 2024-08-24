@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { getCode, getName, getNames } from "country-list";
+import Flag from "react-world-flags";
+import Select from "react-select";
+import ReactToast from "../util/ReactToast";
 
 const EditPassengerDetails = () => {
   const [passengerDetails, setPassengerDetails] = useState([]);
@@ -13,13 +17,18 @@ const EditPassengerDetails = () => {
     pNum: "",
     eD: "",
     pid: "",
-    pNat: "",
+    pNat: null,
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [errors, setErrors] = useState({});
   const passengersPerPage = 5;
 
   const { token } = useSelector((state) => state.auth);
+  const countryNames = getNames();
+  const options = countryNames.map((country) => ({
+    label: country,
+    value: getCode(country),
+  }));
 
   useEffect(() => {
     getPassengersHandler();
@@ -37,18 +46,18 @@ const EditPassengerDetails = () => {
     }
   };
 
-  const handleInputChange = (e, id = null) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (id) {
-      setPassengerDetails((prevDetails) =>
-        prevDetails.map((passenger) =>
-          passenger._id === id ? { ...passenger, [name]: value } : passenger
-        )
-      );
-    } else {
-      setNewPassenger((prev) => ({ ...prev, [name]: value }));
-    }
+    setNewPassenger((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleNationalityChange = (selectedOption) => {
+    setNewPassenger((prev) => ({
+      ...prev,
+      pNat: selectedOption ? selectedOption.value : null,
+    }));
+    setErrors((prev) => ({ ...prev, pNat: "" }));
   };
 
   const validateForm = (passenger) => {
@@ -57,46 +66,145 @@ const EditPassengerDetails = () => {
     if (!passenger.fN) newErrors.fN = "First name is required";
     if (!passenger.lN) newErrors.lN = "Last name is required";
     if (!passenger.dob) newErrors.dob = "Date of birth is required";
+    if (!passenger.pNat) newErrors.pNat = "Nationality is required";
+
+    const passportFields = ["pNum", "eD", "pid"];
+    const filledPassportFields = passportFields.filter(
+      (field) => passenger[field]
+    );
+
+    if (filledPassportFields.length > 0 && filledPassportFields.length < 3) {
+      passportFields.forEach((field) => {
+        if (!passenger[field]) {
+          newErrors[field] = "All passport details are required";
+        }
+      });
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleEdit = (id) => setEditingId(id);
+  const handleEdit = (passenger) => {
+    console.log({ passenger });
+    setNewPassenger({
+      ...passenger,
+      pNat: passenger.pNat
+        ? options.find((option) => {
+            return option.value === passenger.pNat;
+          })
+        : null,
+    });
+    setEditingId(passenger._id);
+  };
 
-  const handleSave = async (id) => {
-    const passengerToUpdate = passengerDetails.find((p) => p._id === id);
-    if (validateForm(passengerToUpdate)) {
-      // Call API to save the updated passenger details
-      setEditingId(null);
+  const handleUpdate = async () => {
+    if (validateForm(newPassenger)) {
+      try {
+        const updatedPassenger = {
+          ...newPassenger,
+          pNat: newPassenger.pNat ? newPassenger.pNat : null,
+        };
+        const response = await axios.put(
+          `${
+            import.meta.env.VITE_SERVER_URL
+          }user/update-passenger/${editingId}`,
+          updatedPassenger,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (response.status === 200)
+          ReactToast("Passenger updated successfully");
+        getPassengersHandler();
+        setNewPassenger({
+          ti: "",
+          fN: "",
+          lN: "",
+          dob: "",
+          pNum: "",
+          eD: "",
+          pid: "",
+          pNat: null,
+        });
+        setEditingId(null);
+      } catch (error) {
+        console.log(error.message);
+      }
     }
   };
 
   const handleDelete = async (id) => {
-    // Call API to delete the passenger
-    setPassengerDetails((prev) =>
-      prev.filter((passenger) => passenger._id !== id)
-    );
+    console.log({ id });
+    try {
+      await axios.put(
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }user/remove-passenger?passengerId=${id}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      getPassengersHandler();
+      ReactToast("Passenger Deleted Succesfully");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const handleAdd = async () => {
     if (validateForm(newPassenger)) {
-      // Call API to add the new passenger
-      setPassengerDetails((prev) => [
-        ...prev,
-        { ...newPassenger, _id: Date.now().toString() },
-      ]);
-      setNewPassenger({
-        ti: "",
-        fN: "",
-        lN: "",
-        dob: "",
-        pNum: "",
-        eD: "",
-        pid: "",
-        pNat: "",
-      });
+      try {
+        const response = await axios.put(
+          `${import.meta.env.VITE_SERVER_URL}user/add-passenger`,
+          newPassenger,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (response.status === 200) ReactToast("Passenger added successfully");
+        getPassengersHandler();
+        setNewPassenger({
+          ti: "",
+          fN: "",
+          lN: "",
+          dob: "",
+          pNum: "",
+          eD: "",
+          pid: "",
+          pNat: null,
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
     }
   };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setNewPassenger({
+      ti: "",
+      fN: "",
+      lN: "",
+      dob: "",
+      pNum: "",
+      eD: "",
+      pid: "",
+      pNat: null,
+    });
+  };
+
+  const customFilterOption = (option, inputValue) => {
+    const { label, value } = option;
+
+    return (
+      label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      value.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+
+  const formatOptionLabel = ({ label, value }) => (
+    <div className="flex items-center">
+      <Flag code={value} style={{ width: "20px", marginRight: "8px" }} />
+      {label}
+    </div>
+  );
 
   const startIndex = (currentPage - 1) * passengersPerPage;
   const currentPassengers = passengerDetails.slice(
@@ -106,11 +214,11 @@ const EditPassengerDetails = () => {
   const totalPages = Math.ceil(passengerDetails.length / passengersPerPage);
 
   return (
-    <div className="w-full h-full p-4 bg-gray-100 overflow-x-auto">
+    <div className="w-full h-full p-4 bg-gray-100">
       <h2 className="text-2xl font-bold mb-4 text-indigo-700">
         Edit Passenger Details
       </h2>
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-lg shadow overflow-x-auto">
         <table className="w-full">
           <thead className="bg-indigo-600 text-white">
             <tr>
@@ -134,43 +242,21 @@ const EditPassengerDetails = () => {
           <tbody>
             {currentPassengers.map((passenger) => (
               <tr key={passenger._id} className="border-b hover:bg-gray-50">
-                {["ti", "fN", "lN", "dob", "pNum", "eD", "pid", "pNat"].map(
-                  (field) => (
-                    <td key={field} className="py-2 px-3">
-                      {editingId === passenger._id ? (
-                        <input
-                          type={
-                            field === "dob" || field === "eD" || field === "pid"
-                              ? "date"
-                              : "text"
-                          }
-                          name={field}
-                          value={passenger[field]}
-                          onChange={(e) => handleInputChange(e, passenger._id)}
-                          className="w-full border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        />
-                      ) : (
-                        passenger[field] || "N/A"
-                      )}
-                    </td>
-                  )
-                )}
+                {["ti", "fN", "lN", "dob", "pNum", "eD", "pid"].map((field) => (
+                  <td key={field} className="py-2 px-3">
+                    {passenger[field] || "N/A"}
+                  </td>
+                ))}
                 <td className="py-2 px-3">
-                  {editingId === passenger._id ? (
-                    <button
-                      onClick={() => handleSave(passenger._id)}
-                      className="bg-green-500 text-white px-3 py-1 rounded mr-2 hover:bg-green-600"
-                    >
-                      Save
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleEdit(passenger._id)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
-                    >
-                      Edit
-                    </button>
-                  )}
+                  {getName(passenger.pNat) || "N/A"}
+                </td>
+                <td className="py-2 px-3">
+                  <button
+                    onClick={() => handleEdit(passenger)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
+                  >
+                    Edit
+                  </button>
                   <button
                     onClick={() => handleDelete(passenger._id)}
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
@@ -199,7 +285,7 @@ const EditPassengerDetails = () => {
         ))}
       </div>
       <h3 className="text-xl font-bold mt-8 mb-4 text-indigo-700">
-        Add New Passenger
+        {editingId ? "Edit Passenger" : "Add New Passenger"}
       </h3>
       <div className="bg-white rounded-lg shadow p-4 grid grid-cols-4 gap-4">
         {["ti", "fN", "lN", "dob", "pNum", "eD", "pid", "pNat"].map((field) => (
@@ -235,6 +321,22 @@ const EditPassengerDetails = () => {
                 <option value="Ms">Ms</option>
                 <option value="Master">Master</option>
               </select>
+            ) : field === "pNat" ? (
+              <Select
+                options={options}
+                value={
+                  newPassenger.pNat
+                    ? {
+                        value: newPassenger?.pNat,
+                        label: getName(newPassenger?.pNat),
+                      }
+                    : null
+                }
+                onChange={handleNationalityChange}
+                filterOption={customFilterOption}
+                formatOptionLabel={formatOptionLabel}
+                styles={selectStyles}
+              />
             ) : (
               <input
                 type={
@@ -243,6 +345,11 @@ const EditPassengerDetails = () => {
                     : "text"
                 }
                 name={field}
+                max={
+                  field === "dob"
+                    ? new Date().toISOString().split("T")[0]
+                    : undefined
+                }
                 value={newPassenger[field]}
                 onChange={handleInputChange}
                 className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
@@ -257,15 +364,58 @@ const EditPassengerDetails = () => {
         ))}
         <div className="col-span-4 mt-4">
           <button
-            onClick={handleAdd}
+            onClick={editingId ? handleUpdate : handleAdd}
             className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
           >
-            Add Passenger
+            {editingId ? "Update Passenger" : "Add Passenger"}
           </button>
+          {editingId && (
+            <button
+              onClick={handleCancelEdit}
+              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2"
+            >
+              Cancel Edit
+            </button>
+          )}
         </div>
       </div>
     </div>
   );
+};
+
+const selectStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    boxShadow: "none",
+    borderColor: state.isFocused ? "#2684FF" : "#E5E7EB",
+    borderRadius: "4px",
+    borderWidth: "1px",
+    height: "44px",
+    width: "83%",
+    "&:hover": {
+      borderColor: state.isFocused ? "#2684FF" : "#E5E7EB",
+    },
+  }),
+  indicatorSeparator: () => ({
+    display: "none",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    padding: "4px",
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    padding: "0 6px",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isSelected
+      ? "#4F46E5"
+      : state.isFocused
+      ? "#E5E7EB"
+      : "white",
+    color: state.isSelected ? "white" : "black",
+  }),
 };
 
 export default EditPassengerDetails;

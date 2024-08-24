@@ -1,429 +1,327 @@
-import React, { useState } from "react";
-import { MdFlight, MdOutlineAirlineSeatReclineExtra } from "react-icons/md";
-import { BsDoorClosedFill } from "react-icons/bs";
-import { IoIosTime } from "react-icons/io";
-import { MdDateRange } from "react-icons/md";
-import FlighFromToo from "../../../assets/booking/viewDetailedBookings/flight.svg";
-import paymentFlight from "../../../assets/booking/viewDetailedBookings/paymentFlight.png";
-import timeFormatChanger from "../../util/timeFormatChanger";
-import dateDateFormatChanger from "../../util/dateDateFormatChanger";
-import calculateDuration from "../../util/calculateDuration";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
+import axios from "axios";
+import { getCode, getName, getNames } from "country-list";
+import Flag from "react-world-flags";
+import Select from "react-select";
+const EditPassengerDetails = () => {
+  const [passengerDetails, setPassengerDetails] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+  const [newPassenger, setNewPassenger] = useState({
+    ti: "",
+    fN: "",
+    lN: "",
+    dob: "",
+    pNum: "",
+    eD: "",
+    pid: "",
+    pNat: "",
+  });
+  console.log({ passengerDetails });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [errors, setErrors] = useState({});
+  const passengersPerPage = 5;
 
-const ViewDetailedBookingCard = ({
-  singleBookingData,
-  searchQuery,
-  amendment,
-}) => {
-  const { user } = useSelector((state) => state.auth);
   const { token } = useSelector((state) => state.auth);
-  const [openConnectionIndex, setOpenConnectionIndex] = useState(null);
-  let previousArrivalTime = null;
+  const countryNames = getNames();
+  const options = countryNames.map((country) => ({
+    label: country,
+    value: getCode(country),
+  }));
+  useEffect(() => {
+    getPassengersHandler();
+  }, []);
 
-  const toggleDropdown = (index) => {
-    setOpenConnectionIndex(openConnectionIndex === index ? null : index);
+  const getPassengersHandler = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}user/all-passengers`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setPassengerDetails(response.data.passengers);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
+  const handleInputChange = (e, id = null) => {
+    const { name, value } = e.target;
+    if (id) {
+      setPassengerDetails((prevDetails) =>
+        prevDetails.map((passenger) =>
+          passenger._id === id ? { ...passenger, [name]: value } : passenger
+        )
+      );
+    } else {
+      setNewPassenger((prev) => ({ ...prev, [name]: value }));
+    }
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const validateForm = (passenger) => {
+    const newErrors = {};
+    if (!passenger.ti) newErrors.ti = "Please select a title";
+    if (!passenger.fN) newErrors.fN = "First name is required";
+    if (!passenger.lN) newErrors.lN = "Last name is required";
+    if (!passenger.dob) newErrors.dob = "Date of birth is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleEdit = (id) => setEditingId(id);
+
+  const handleSave = async (id) => {
+    const passengerToUpdate = passengerDetails.find((p) => p._id === id);
+    if (validateForm(passengerToUpdate)) {
+      // Call API to save the updated passenger details
+      setEditingId(null);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    // Call API to delete the passenger
+    setPassengerDetails((prev) =>
+      prev.filter((passenger) => passenger._id !== id)
+    );
+  };
+  const customFilterOption = (option, inputValue) => {
+    const { label, value } = option;
+    return (
+      label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      value.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+
+  const formatOptionLabel = ({ label, value }) => (
+    <div className="flex items-center">
+      <Flag code={value} style={{ width: "20px", marginRight: "8px" }} />
+      {label}
+    </div>
+  );
+
+  const handleAdd = async () => {
+    if (validateForm(newPassenger)) {
+      // Call API to add the new passenger
+      setPassengerDetails((prev) => [
+        ...prev,
+        { ...newPassenger, _id: Date.now().toString() },
+      ]);
+      setNewPassenger({
+        ti: "",
+        fN: "",
+        lN: "",
+        dob: "",
+        pNum: "",
+        eD: "",
+        pid: "",
+        pNat: "",
+      });
+    }
+  };
+
+  const startIndex = (currentPage - 1) * passengersPerPage;
+  const currentPassengers = passengerDetails.slice(
+    startIndex,
+    startIndex + passengersPerPage
+  );
+  const totalPages = Math.ceil(passengerDetails.length / passengersPerPage);
+
   return (
-    <div className=" border-l-0 w-full lg:w-[72%]">
-      <div className="rounded-lg my-2">
-        <div className="flex justify-between items-center bg-[white] border-2 flex-wrap p-4 rounded-t-xl text-[black]">
-          <div className="flex w-full  flex-col md:flex-row justify-end ">
-            <div className="">
-              {" "}
-              <div className="h-16 w-16 flex items-center justify-center bg-[#1B1D29] border-2 border-white text-[#D7B56D] font-bold text-xl rounded-full ">
-                {singleBookingData?.gstInfo?.registeredName
-                  ?.charAt(0)
-                  .toUpperCase() || user?.firstName.charAt(0)}
-              </div>
-            </div>
+    <div className="w-full h-full p-4 bg-gray-100 overflow-x-auto">
+      <h2 className="text-2xl font-bold mb-4 text-indigo-700">
+        Edit Passenger Details
+      </h2>
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-indigo-600 text-white">
+            <tr>
+              {[
+                "Title",
+                "First Name",
+                "Last Name",
+                "DOB",
+                "Passport No.",
+                "Expiry Date",
+                "Issue Date",
 
-            <div className="w-full pl-4  ">
-              <div className="text-base md:text-lg font-semibold uppercase ">
-                {/* {user?.firstName} {user?.lastName} */}
-                {singleBookingData?.gstInfo?.registeredName || user?.firstName}
-              </div>
-              <div className="text-base  lg:text-lg  flex-col md:flex-row font-semibold flex w-full justify-between">
-                <div className=" flex ">
-                  <p className="text-black">ID:</p>
-                  <span className="text-slate-600 px-2">
-                    {singleBookingData?.order.bookingId}
-                  </span>
-                </div>
-                <div className="text-semibold flex ">
-                  <div className="text-lg lg:text-xl pr-2 ">Price: </div>
-                  <div className="text-lg lg:text-xl flex flex-wrap">
-                    ₹{" "}
-                    <span className="">
-                      {
-                        singleBookingData?.itemInfos?.AIR.totalPriceInfo
-                          .totalFareDetail.fC.TF
-                      }
-                      /-
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {singleBookingData?.itemInfos?.AIR.tripInfos.map((value, index) => {
-          console.log({ singleBookingData })
-          return (
-            <div key={index}>
-              <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
-                <div className="border-2 bg-[#dce3e9] flex gap-3 p-2 rounded-lg flex-col w-full lg-custom:w-1/2 ">
-                  <div className="  w-full">
-                    <div className="  text-left flex pl-2 items-center">
-                      <div>
-                        {/* <img className="h-[60px]" src={paymentFlight} alt="" /> */}
-                        <img
-                          src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`}
-                          onError={(e) =>
-                            (e.currentTarget.src = defaultAirline)
-                          }
-                          alt={value?.sI[0].fD?.aI?.code}
-                          className="w-12 h-12 rounded mr-4"
-                        />
-                      </div>
-                      <div className="py-2 flex flex-col justify-between">
-                        <div className="flex flex-col gap-1">
-                          <div className="text-slate-600 text-base ">
-                            {searchQuery?.cabinClass}
-                          </div>
-                          <div className="font-semibold text-base md:text-lg">
-                            {value?.sI[0].fD?.aI.name}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex w-full  h-full  justify-between items-center ">
-                    <div className="w-1/3 flex text-center flex-col gap-1 h-full">
-
-                      <div className="text-sm">
-                        <span>{value.sI[0].da.city}, {value.sI[0].da.country}</span>
-                      </div>
-                      <div className="font-bold text-md">
-                        <span>{value.sI[0].da.code}</span>
-                      </div>
-                      <div className="text-sm  w-full">
-                        <span className="w-full">{value.sI[0].da.name}</span>
-                      </div>
-
-                    </div>
-                    <div className="h-full flex flex-col w-1/3 justify-center">
-                      <div className="text-center text-sm font-semibold">
-                        {searchQuery.cabinClass}
-                      </div>
-                      <div className="flex justify-center w-full items-center">
-                        <hr className="w-1/3 border-t border-black" />
-                        <MdFlight className="w-7 h-5 mx-2 rotate-90" />
-                        <hr className="w-1/3 border-t border-black" />
-                      </div>
-                      {value.sI.length === 1 ? (
-                        <div className="text-center text-sm font-semibold">
-                          Non Stop
-                        </div>
-                      ) : (
-                        <div className="text-center text-sm font-bold text-[#1B1D29]">
-                          Stops :  <span>{value.sI.length - 1}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="w-1/3 flex flex-col gap-1 h-full text-center">
-
-                      <div className="text-sm ">
-                        <span>
-
-                          {value.sI.length === 1
-                            ? value.sI[0].aa.city
-                            : value.sI[value.sI.length - 1].aa.city}
-                          ,
-                          {value.sI.length === 1
-                            ? value.sI[0].aa.country
-                            : value.sI[value.sI.length - 1].aa.country}
-                        </span>
-                      </div>
-                      <div className="font-bold text-md">
-                        <span>
-                          {value.sI.length === 1
-                            ? value.sI[0].aa.code
-                            : value.sI[value.sI.length - 1].aa.code}
-                        </span>
-                      </div>
-                      <div className=" text-sm">
-                        <span>
-                          {value.sI.length === 1
-                            ? value.sI[0].aa.name
-                            : value.sI[value.sI.length - 1].aa.name}
-                        </span>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full  flex flex-col lg:items-center justify-center lg:justify-start">
-                  <div className="justify-center p-2  rounded-lg flex items-center gap-3">
-                    <h1 className="text-base md:text-xl  font-semibold text-gray-800 ">
-                      Total Duration :
-                    </h1>
-                    <h1 className="text-base md:text-xl  font-semibold text-gray-500 uppercase">
-                      {value.sI.length === 1
-                        ? calculateDuration(value.sI[0].dt, value.sI[0].at)
-                        : calculateDuration(
-                          value.sI[0].dt,
-                          value.sI[value.sI.length - 1].at
-                        )}
-                    </h1>
-                  </div>
-
-                  <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-[80%] lg:w-full mx-auto  ">
-                    <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <MdDateRange />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
-                          Departure Date
-                        </div>
-                        <div className="font-semibold text-sm ">
-                          {dateDateFormatChanger(value.sI[0].dt)}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <IoIosTime />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
-                          Departure Time
-                        </div>
-                        <div className="font-semibold text-sm ">
-                          {timeFormatChanger(value.sI[0].dt)}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <BsDoorClosedFill />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
-                          Departure Terminal
-                        </div>
-                        <div className="font-semibold text-sm w-max ">
-                          {value.sI[0].da.terminal
-                            ? value.sI[0].da.terminal
-                            : "N/A"}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <MdDateRange />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
-                          Arrival Date
-                        </div>
-                        {console.log({ value })}
-                        <div className="font-semibold text-sm ">
-                          {value.sI.length === 1
-                            ? dateDateFormatChanger(value.sI[0].at)
-                            : dateDateFormatChanger(
-                              value.sI[value.sI.length - 1].at
-                            )}
-
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3 ">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded  ">
-                        <IoIosTime />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
-                          Arrival time
-                        </div>
-                        <div className="font-semibold text-sm">
-                          {value.sI.length === 1
-                            ? timeFormatChanger(value.sI[0].at)
-                            : timeFormatChanger(
-                              value.sI[value.sI.length - 1].at
-                            )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <BsDoorClosedFill />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
-                          Arrival Terminal
-                        </div>
-                        <div className="font-semibold text-sm w-max ">
-                          {value.sI[value.sI.length - 1].aa.terminal
-                            ? value.sI[value.sI.length - 1].aa.terminal
-                            : "N/A"}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="w-full mt-1 flex flex-col gap-1">
-                {value.sI.length > 1 && (
-                  <>
-                    <button
-                      onClick={() => toggleDropdown(index)}
-                      className="bg-[#1B1D29] text-[#D7B56D] w-full py-2 rounded-lg"
-                    >
-                      {openConnectionIndex === index
-                        ? "Hide Connections"
-                        : "View Connections"}
-                    </button>
-                    {openConnectionIndex === index && (
-                      <div className="bg-[#f7eed8] text-[#1B1D29] p-2">
-                        {value.sI.map((singleValue, index) => {
-                          const layoverDuration = previousArrivalTime
-                            ? calculateDuration(
-                              previousArrivalTime,
-                              singleValue.dt
-                            )
-                            : null;
-                          previousArrivalTime = singleValue.at;
-
-                          return (
-                            <React.Fragment key={index}>
-                              {index !== 0 && (
-                                <div className="text-sm text-gray-500 mt-4">
-                                  <div className="flex justify-between bg-[#1B1D29] text-[#D7B56D] p-3 rounded-md mt-4 mb-4">
-                                    <div className="text-sm">
-                                      Require to change plane
-                                    </div>
-                                    <div className="text-base font-medium">
-                                      <span className="text-sm">
-                                        <div className="text-center">
-                                          <span className="text-sm">
-                                            Total Layover Time:{" "}
-                                            {layoverDuration}
-                                          </span>
-                                        </div>
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                              <div className="font-semibold text-xs border  rounded-md inline-flex items-center shadow-md p-1 space-x-2">
-                                <div className="w-5 h-5">
-                                  {/* <img
-                                            src="https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/AA.png"
-                                            alt="Airline Logo"
-                                            className="w-full h-full object-contain"
-                                          /> */}
-                                  <img
-                                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`}
-                                    onError={(e) =>
-                                      (e.currentTarget.src = defaultAirline)
-                                    }
-                                    alt={value?.sI[0].fD?.aI?.code}
-                                    className="w-full h-full object-contain"
-                                  />
-                                </div>
-                                <div>
-                                  <div>{singleValue.fD.aI.name}</div>
-                                  <div className="flex items-center space-x-1">
-                                    <span>{singleValue.fD.aI.code}</span>
-                                    <MdFlight className="w-3 h-3 rotate-45" />
-                                    <span>{searchQuery.cabinClass}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex items-center justify-center w-full">
-                                <div className="flex items-center justify-between mb-4 w-full">
-                                  <div className="flex-col  w-1/3">
-                                    <div className="w-full">
-                                      <div className="mb-2"></div>
-                                    </div>
-                                    <div className="text-lg font-bold">
-                                      {singleValue.da.code}
-                                    </div>
-                                    <div className="text-sm">
-                                      {singleValue.da.city},{" "}
-                                      {singleValue.da.country}
-                                    </div>
-                                    <div className="text-sm font-bold">
-                                      {singleValue.da.name}
-                                    </div>
-                                    <div className="text-sm">
-                                      {singleValue.da?.terminal || "N/A"}
-                                    </div>
-                                    <div className="text-sm font-semibold">
-                                      {timeFormatChanger(singleValue.dt)}
-                                    </div>
-                                  </div>
-                                  <div className="flex-col items-center w-1/3">
-                                    <div className="text-center">
-                                      <span className="text-sm">
-                                        {calculateDuration(
-                                          singleValue.dt,
-                                          singleValue.at
-                                        )}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-center items-center">
-                                      <hr className="w-1/3 border-t border-gray-300" />
-                                      <MdFlight className="w-7 h-5 mx-2 rotate-90" />
-                                      <hr className="w-1/3 border-t border-gray-300" />
-                                    </div>
-                                    <div className="text-center text-sm">
-                                      Non Stop
-                                    </div>
-                                  </div>
-
-                                  <div className="flex-col  w-1/3">
-                                    <div className="w-full">
-                                      <div className="mb-2"></div>
-                                    </div>
-                                    <div className="text-lg font-bold">
-                                      {singleValue.aa.code}
-                                    </div>
-                                    <div className="text-sm">
-                                      {singleValue.aa.city},{" "}
-                                      {singleValue.aa.country}
-                                    </div>
-                                    <div className="text-sm font-bold">
-                                      {singleValue.aa.name}
-                                    </div>
-                                    <div className="text-sm">
-                                      {singleValue.aa?.terminal || "N/A"}
-                                    </div>
-                                    <div className="text-sm font-semibold">
-                                      {timeFormatChanger(singleValue.at)}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </React.Fragment>
-                          );
-                        })}
-                      </div>
+                "Actions",
+              ].map((header) => (
+                <th key={header} className="py-2 px-3 text-left">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {currentPassengers.map((passenger) => (
+              <tr key={passenger._id} className="border-b hover:bg-gray-50">
+                {["ti", "fN", "lN", "dob", "pNum", "eD", "pid"].map((field) => (
+                  <td key={field} className="py-2 px-3">
+                    {editingId === passenger._id ? (
+                      <input
+                        type={
+                          field === "dob" || field === "eD" || field === "pid"
+                            ? "date"
+                            : "text"
+                        }
+                        name={field}
+                        value={passenger[field]}
+                        onChange={(e) => handleInputChange(e, passenger._id)}
+                        className="w-full border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      passenger[field] || "N/A"
                     )}
-                  </>
-                )}
-              </div>
-            </div>
-          );
-        })}
+                  </td>
+                ))}
+                <td className="py-2 px-3">
+                  {editingId === passenger._id ? (
+                    <button
+                      onClick={() => handleSave(passenger._id)}
+                      className="bg-green-500 text-white px-3 py-1 rounded mr-2 hover:bg-green-600"
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleEdit(passenger._id)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
+                    >
+                      Edit
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleDelete(passenger._id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`mx-1 px-3 py-1 rounded ${
+              currentPage === i + 1
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
+      <h3 className="text-xl font-bold mt-8 mb-4 text-indigo-700">
+        Add New Passenger
+      </h3>
+      <div className="bg-white rounded-lg shadow p-4 grid grid-cols-4 gap-4">
+        {["ti", "fN", "lN", "dob", "pNum", "eD", "pid", "pNat"].map((field) => (
+          <div key={field}>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {field === "ti"
+                ? "Title"
+                : field === "fN"
+                ? "First Name"
+                : field === "lN"
+                ? "Last Name"
+                : field === "dob"
+                ? "Date of Birth"
+                : field === "pNum"
+                ? "Passport Number"
+                : field === "eD"
+                ? "Expiry Date"
+                : field === "pid"
+                ? "Issue Date"
+                : "Nationality"}
+            </label>
+            {field === "ti" && (
+              <select
+                name={field}
+                value={newPassenger[field]}
+                onChange={handleInputChange}
+                className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                  errors[field] ? "border-red-500" : "border-gray-300"
+                }`}
+              >
+                <option value="">Select Title</option>
+                <option value="Mr">Mr</option>
+                <option value="Ms">Ms</option>
+                <option value="Master">Master</option>
+              </select>
+            )}{" "}
+            {field == "pNat" && (
+              <Select
+                options={options}
+                filterOption={customFilterOption}
+                formatOptionLabel={formatOptionLabel}
+                styles={{
+                  control: (provided, state) => ({
+                    ...provided,
+                    boxShadow: "none",
+                    borderColor: errors.nationality
+                      ? "red"
+                      : provided.borderColor,
+                    borderRadius: "4px",
+                    borderWidth: "1px",
+                    height: "100%",
+                    width: "87%",
+                    "&:hover": {
+                      borderColor: state.isFocused
+                        ? "#2684FF"
+                        : provided.borderColor,
+                    },
+                  }),
+                  indicatorSeparator: () => ({
+                    display: "none",
+                  }),
+                  dropdownIndicator: (provided) => ({
+                    ...provided,
+                    color: errors.nationality ? "red" : provided.color,
+                  }),
+                  valueContainer: (provided) => ({
+                    ...provided,
+                    padding: "0 8px",
+                  }),
+                }}
+              />
+            )}
+            {field !== "ti" && field !== "pNat" && (
+              <input
+                type={
+                  field === "dob" || field === "eD" || field === "pid"
+                    ? "date"
+                    : "text"
+                }
+                name={field}
+                value={newPassenger[field]}
+                onChange={handleInputChange}
+                className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                  errors[field] ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+            )}
+            {errors[field] && (
+              <p className="text-red-500 text-xs mt-1">{errors[field]}</p>
+            )}
+          </div>
+        ))}
+        <div className="col-span-4 mt-4">
+          <button
+            onClick={handleAdd}
+            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          >
+            Add Passenger
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ViewDetailedBookingCard;
+export default EditPassengerDetails;

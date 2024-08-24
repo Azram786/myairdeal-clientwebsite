@@ -193,6 +193,7 @@ const PassportDetails = forwardRef(
                   dropdownIndicator: (provided) => ({
                     ...provided,
                     color: errors.nationality ? "red" : provided.color,
+                    
                   }),
                   valueContainer: (provided) => ({
                     ...provided,
