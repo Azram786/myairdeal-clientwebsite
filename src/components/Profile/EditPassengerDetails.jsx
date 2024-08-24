@@ -226,72 +226,6 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
           Go back
         </h3>
       </div>
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-indigo-600 text-white">
-            <tr>
-              {[
-                "Title",
-                "First Name",
-                "Last Name",
-                "DOB",
-                "Passport No.",
-                "Expiry Date",
-                "Issue Date",
-                "Nationality",
-                "Actions",
-              ].map((header) => (
-                <th key={header} className="py-2 px-3 text-left">
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {currentPassengers.map((passenger) => (
-              <tr key={passenger._id} className="border-b hover:bg-gray-50">
-                {["ti", "fN", "lN", "dob", "pNum", "eD", "pid"].map((field) => (
-                  <td key={field} className="py-2 px-3">
-                    {passenger[field] || "N/A"}
-                  </td>
-                ))}
-                <td className="py-2 px-3">
-                  {getName(passenger.pNat) || "N/A"}
-                </td>
-                <td className="py-2 px-3">
-                  <button
-                    onClick={() => handleEdit(passenger)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(passenger._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex justify-center mt-4">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentPage(i + 1)}
-            className={`mx-1 px-3 py-1 rounded ${
-              currentPage === i + 1
-                ? "bg-indigo-600 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
       <h3 className="text-xl font-bold mt-8 mb-4 text-indigo-700">
         {editingId ? "Edit Passenger" : "Add New Passenger"}
       </h3>
@@ -379,6 +313,72 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
             </button>
           )}
         </div>
+      </div>
+      <div className="bg-white rounded-lg shadow overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-indigo-600 text-white">
+            <tr>
+              {[
+                "Title",
+                "First Name",
+                "Last Name",
+                "DOB",
+                "Passport No.",
+                "Expiry Date",
+                "Issue Date",
+                "Nationality",
+                "Actions",
+              ].map((header) => (
+                <th key={header} className="py-2 px-3 text-left">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {currentPassengers.map((passenger) => (
+              <tr key={passenger._id} className="border-b hover:bg-gray-50">
+                {["ti", "fN", "lN", "dob", "pNum", "eD", "pid"].map((field) => (
+                  <td key={field} className="py-2 px-3">
+                    {passenger[field] || "N/A"}
+                  </td>
+                ))}
+                <td className="py-2 px-3">
+                  {getName(passenger.pNat) || "N/A"}
+                </td>
+                <td className="py-2 px-3">
+                  <button
+                    onClick={() => handleEdit(passenger)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(passenger._id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`mx-1 px-3 py-1 rounded ${
+              currentPage === i + 1
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
     </div>
   );
