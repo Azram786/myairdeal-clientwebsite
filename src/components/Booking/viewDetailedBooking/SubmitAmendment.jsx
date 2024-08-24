@@ -298,9 +298,9 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                   </span>
                 </label>
 
-                {/* {fullBookingData?.itemInfos?.AIR?.tripInfos.map(
+                {fullBookingData?.itemInfos?.AIR?.tripInfos.map(
                   (trip, tripIndex) => (
-                    <div key={tripIndex} className="mt-4 bg-green-400 ">
+                    <div key={tripIndex} className="mt-4  ">
                       <div
                         className={`flex flex-col gap-1 p-2 mb-2 text-sm md:text-base font-bold border rounded-lg ${selectedTrips.includes(tripIndex) &&
                           "border-[#1B1D29] bg-blue-200"
@@ -362,7 +362,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                                   : "border"
                                   }`}
                               >
-                                <div className="flex flex-wrap bg-blue-800">
+                                <div className="flex flex-wrap ">
                                   <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-[#1B1D29] text-white font-medium text-xl rounded-full mr-4">
                                     {traveler.fN.charAt(0).toUpperCase()}
                                   </div>
@@ -405,9 +405,9 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
                     </div>
                     
                   )
-                )} */}
+                )}
                <div>
-      <div className="w-full border-2 bg-blue-100 flex gap-2 overflow-x-scroll">
+      {/* <div className="w-full border-2 bg-blue-100 flex gap-2 overflow-x-scroll">
         {trips.map((trip) => (
           <div
             key={trip.id}
@@ -422,7 +422,7 @@ const SubmitAmendment = ({ singleBookingData, setModalIsOpen }) => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
       <div className="flex justify-end text-semibold text-sm my-2 cursor-pointer">
         <h1>Show Passengers</h1>
       </div>
