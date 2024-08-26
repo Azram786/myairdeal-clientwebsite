@@ -336,8 +336,10 @@ const Oneway = ({ flightProps, passenger, query }) => {
             key="1"
           >
             <div className="h-[630px] overflow-y-auto no-scroll">
-              {filteredFlights.length > 0 ? (
-                filteredFlights.map((flight, index) => (
+              {filteredFlights.length === 0 ? (
+               <div>No</div>
+              ) : (
+                 filteredFlights.map((flight, index) => (
                   <FlightDetailsCard
                     key={index}
                     passenger={passenger}
@@ -357,8 +359,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
                     totalPrice={calculateTotalPrice(flight)}
                   />
                 ))
-              ) : (
-                <p>No flights match the current filters.</p>
               )}
             </div>
           </TabPane>
@@ -379,6 +379,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
           onBook={handleBooking}
           calculateTotalPrice={calculateTotalPrice}
         />
+        
       )}
     </div>
   );

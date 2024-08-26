@@ -202,20 +202,35 @@ const RoundTripCard = ({
                   </div>
 
                   <div className="mx-0 md:mx-6  flex gap-1  items-start  ">
-                    <div className="text-left w-max  sm:min-w-28 ">
-                      <div className="font-bold max-w-20  text-xs flex-wrap">
-                        {formatDateTime(segment.dt)}
+                    <div className="text-left w-max   sm:min-w-36 ">
+                      <div className="font-bold max-w-24 text-xs flex-wrap">
+                        <div className="font-bold text-xs ">
+                          {new Date(segment.dt).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                          ,
+                          {new Date(segment.dt).toLocaleString("en-US", {
+                            weekday: "short",
+                          })}
+                          ,
+                          {new Date(segment.dt).toLocaleString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}
+                        </div>
                         {/* {getDayOfWeek(segment.dt)} */}
                       </div>
-                      <div className="text-[10px] max-w-28 text-gray-500">
+                      <div className="text-[10px] max-w-28 text-gray-500 line-clamp-1">
                         {segment.da.city}, {segment.da.country}
                       </div>
-                      <div className="relative group text-[10px]  text-xs text-gray-500">
-                        <span className="text-[10px]">{segment.da.name}</span>
+                      <div className="relative group text-[10px]  text-xs text-gray-500 ">
+                        <span className="text-[10px] line-clamp-1 max-w-36">{segment.da.name}</span>
 
                         {/* Tooltip */}
                         <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {segment.da.name}
+                          {segment.da.name}
                         </div>
                       </div>
                       <div className="text-[10px] max-w-28 text-gray-500">
@@ -236,19 +251,32 @@ const RoundTripCard = ({
                       </div>
                     </div>
 
-                    <div className=" text-left ml-4 sm:min-w-28 ">
-                      <div className="text-xs font-bold max-w-20 sm:w-max">
-                        {formatDateTime(segment.at)}
+                    <div className=" text-left ml-4 sm:min-w-36 ">
+                      <div className="font-bold max-w-24 text-xs">
+                        {new Date(segment.at).toLocaleString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                        })}
+                        ,
+                        {new Date(segment.at).toLocaleString("en-US", {
+                          weekday: "short",
+                        })}
+                        ,
+                        {new Date(segment.at).toLocaleString("en-US", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: false,
+                        })}
                       </div>
                       <div className="text-[10px] text-gray-500">
                         {segment.aa.city}, {segment.aa.country}
                       </div>
                       <div className="relative group text-[10px]  text-xs text-gray-500">
-                        <span className="text-[10px]">{segment.aa.name}</span>
+                        <span className="text-[10px] max-w-36 line-clamp-1">{segment.aa.name}</span>
 
                         {/* Tooltip */}
                         <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {segment.aa.name}
+                          {segment.aa.name}
                         </div>
                       </div>
 
@@ -258,7 +286,7 @@ const RoundTripCard = ({
                     </div>
                   </div>
 
-                  <div className="w-full flex justify-center">
+                  <div className="w-full flex my-4 justify-center">
                     {index < data.length - 1 && (
                       <div className="px-4  flex justify-around text-[10px]  py-1 mt-2 mb-4 md:w-1/ border border-gray-200 bg-gray-200 rounded-full ">
                         <span className=" font-bold">
@@ -401,7 +429,7 @@ const RoundTripCard = ({
                   {new Date(startSegment?.dt).toLocaleString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
-                    hour12: "false",
+                    hour12: false,
                   })}
                 </h1>
               </div>
@@ -413,7 +441,7 @@ const RoundTripCard = ({
                   {" "}
                   <span>{totalDuration}</span>
                 </span>
-                <FaPlane className="mx-2 text-[#1B1D29] text-3xl" />
+                <FaPlane className="mx-2 text-[#D7B56D] text-3xl" />
                 <div className="flex items-center ">
                   {isConnectionFlight ? (
                     <span className="flex-wrap">
@@ -442,7 +470,7 @@ const RoundTripCard = ({
                   {new Date(endSegment?.at).toLocaleString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
-                    hour12: "false",
+                    hour12: false,
                   })}
                 </h1>
               </div>

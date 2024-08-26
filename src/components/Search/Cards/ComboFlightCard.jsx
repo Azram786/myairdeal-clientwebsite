@@ -192,9 +192,22 @@ const ComboFlightCard = ({
                           </div>
 
                           <div className="flex gap-2 mt-2 items-center w-full lg-custom:w-[75%] justify-around  ">
-                            <div className="p-2 text-left  min-w-[30%]">
+                            <div className="p-2 bg-slate-400 text-left  min-w-[30%]">
                               <div className="font-bold text-xs md:text-sm">
-                                {formatDateTime(segment.dt)}
+                              {new Date(segment.dt).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                          ,
+                          {new Date(segment.dt).toLocaleString("en-US", {
+                            weekday: "short",
+                          })}
+                          ,
+                          {new Date(segment.dt).toLocaleString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}
                               </div>
                               <div className="text-xs text-gray-500 line-clamp-2">
                                 {segment.da.city}, {segment.da.country}
@@ -222,7 +235,20 @@ const ComboFlightCard = ({
 
                             <div className="text-left p-2 min-w-[30%] ml-0 ">
                               <div className="font-bold text-xs md:text-sm">
-                                {formatDateTime(segment.at)}
+                              {new Date(segment.at).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                          ,
+                          {new Date(segment.at).toLocaleString("en-US", {
+                            weekday: "short",
+                          })}
+                          ,
+                          {new Date(segment.at).toLocaleString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}
                               </div>
                               <div className="text-xs text-gray-500 line-clamp-2">
                                 {segment.aa.city}, {segment.aa.country}
@@ -420,7 +446,7 @@ const ComboFlightCard = ({
 
                     {/* Flight Duration and Connection Information */}
                     <div className="flex items-center text-center">
-                      <div className="border-t border-dashed border-gray-400 w-20"></div>
+                      <div className="border-t border-dashed border-gray-400 hidden sm:flex w-20"></div>
                       <div className="flex flex-col items-center text-xs font-semibold text-gray-500 mx-4">
                         <span>{convertToHoursMinutes(totalDuration)}</span>
                         <FaPlane className="text-[#D7B56D] text-3xl" />
@@ -433,7 +459,7 @@ const ComboFlightCard = ({
                           <span>Non-stop flight</span>
                         )}
                       </div>
-                      <div className="border-t border-dashed border-gray-400 w-20"></div>
+                      <div className="border-t border-dashed border-gray-400 hidden sm:flex w-20"></div>
                     </div>
 
                     {/* Arrival Information */}
