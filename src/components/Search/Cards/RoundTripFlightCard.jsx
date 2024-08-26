@@ -226,7 +226,9 @@ const RoundTripCard = ({
                         {segment.da.city}, {segment.da.country}
                       </div>
                       <div className="relative group text-[10px]  text-xs text-gray-500 ">
-                        <span className="text-[10px] line-clamp-1 max-w-36">{segment.da.name}</span>
+                        <span className="text-[10px] line-clamp-1 max-w-36">
+                          {segment.da.name}
+                        </span>
 
                         {/* Tooltip */}
                         <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -272,7 +274,9 @@ const RoundTripCard = ({
                         {segment.aa.city}, {segment.aa.country}
                       </div>
                       <div className="relative group text-[10px]  text-xs text-gray-500">
-                        <span className="text-[10px] max-w-36 line-clamp-1">{segment.aa.name}</span>
+                        <span className="text-[10px] max-w-36 line-clamp-1">
+                          {segment.aa.name}
+                        </span>
 
                         {/* Tooltip */}
                         <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -412,9 +416,17 @@ const RoundTripCard = ({
                 className="md:size-16 lg-custom:size-12 rounded-md mr-8 lg-custom:mr-4 md:flex hidden"
               />
               <div className="">
-                <h1 className="text-base font-bold  ">
-                  {startSegment?.da.code}
-                </h1>
+                <div className="relative group text-base ">
+                  <div className="text-base font-bold line-clamp-2">
+                    {startSegment?.da.code}
+                  </div>
+
+                  {/* Tooltip */}
+                  <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                    {startSegment?.da.name}
+                  </div>
+                </div>
+
                 {/* <h1 className="text-sm text-gray-500">
                   {startSegment.da.city}
                 </h1> */}
@@ -457,7 +469,17 @@ const RoundTripCard = ({
             </div>
             <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
               <div>
-                <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
+                <div className="relative group text-base ">
+                  <div className="text-base font-bold line-clamp-2">
+                    {endSegment?.aa.code}
+                  </div>
+
+                  {/* Tooltip */}
+                  <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                    {endSegment?.aa.name}
+                  </div>
+                </div>
+                
                 {/* <h1 className="text-sm text-gray-500">{endSegment?.aa.city}</h1> */}
                 <h1 className="text-xs">
                   {new Date(endSegment?.at).toLocaleString("en-US", {
