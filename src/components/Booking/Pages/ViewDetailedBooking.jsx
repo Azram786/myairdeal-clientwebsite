@@ -33,10 +33,10 @@ const ViewDetailedBooking = () => {
 
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}booking/retrieve-booking`,
-        { bookingId }, // Body of the request
+        { bookingId },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Authorization header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -223,6 +223,7 @@ const ViewDetailedBooking = () => {
             <TicketLinks
               singleBookingData={singleBookingData}
               bookingFilter={bookingFilter}
+              searchQuery={searchQuery}
             />
             <TermsAndConditions />
           </div>
