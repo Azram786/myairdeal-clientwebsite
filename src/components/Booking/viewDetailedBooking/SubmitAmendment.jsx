@@ -14,7 +14,7 @@ const SubmitAmendment = ({
   setModalIsOpen,
   searchQuery,
 }) => {
-  console.log({ singleBookingData });
+
   const { token } = useSelector((state) => state.auth);
 
   const [bookingId] = useState(singleBookingData.order.bookingId);
@@ -238,18 +238,21 @@ const SubmitAmendment = ({
             { bookingId: data.bookingId, remarks, type: data.type },
             { headers }
           );
+          console.log({ response });
         } else {
+          console.log({ data });
           const response = await axios.post(
             `${import.meta.env.VITE_SERVER_URL}booking/submit-amendment`,
             data,
             { headers }
           );
+          console.log({ response });
         }
       }
       ReactToast("Amendment Submitted");
       setAmendmentLoadin(false);
       setModalIsOpen(false);
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       ReactToast(error.response.data.errors[0].message);
       setAmendmentLoadin(false);
@@ -279,7 +282,7 @@ const SubmitAmendment = ({
     setActiveTrip(tripId);
     setShowDetails(true);
   };
-  console.log({ searchQuery });
+
 
   return (
     <div className="px-4 py-4 flex justify-center items-center  h-[70vh] w-full">
@@ -363,14 +366,14 @@ const SubmitAmendment = ({
                           </div>
                           <div>
                             <div>
-                              <button
+                              {/* <button
                                 onClick={() => toggleDropdown(tripIndex)}
                                 className="text-[#1B1D29] text-sm font-bold"
                               >
                                 {openDropdowns.includes(tripIndex)
                                   ? "Hide Passenger(s)"
                                   : "Show Passenger(s)"}
-                              </button>
+                              </button> */}
                             </div>
                             {openDropdowns.includes(tripIndex) && (
                               <div className="ml-4">
