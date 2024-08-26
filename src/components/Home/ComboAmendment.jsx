@@ -129,8 +129,6 @@ const ComboAmendment = ({ singleBookingData }) => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md max-w-lg mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-center">Cancel Booking</h2>
-
       <div className="mb-6">
         <label className="flex items-center space-x-2 text-lg">
           <input
