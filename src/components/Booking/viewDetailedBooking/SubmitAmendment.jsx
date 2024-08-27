@@ -450,8 +450,8 @@ const SubmitAmendment = ({
     //     </div>
     //   </div>
     // </div>
-    <div className="px-2 sm:px-4 py-4 flex justify-center items-center max-h-[70vh] w-full ">
-      <div className="bg-white w-full rounded-lg shadow-lg overflow-y-scroll">
+    <div className="px-2 sm:px-4 py-4 flex justify-center items-center max-h-[90vh] w-full overflow-y-auto">
+      <div className="bg-white overflow-y-scroll w-full rounded-lg shadow-lg">
         <div className="p-4 sm:p-6">
           {Loading ? (
             <div className="flex justify-center items-center w-full h-40">
@@ -470,8 +470,8 @@ const SubmitAmendment = ({
                   setMainModalIsOpen={setModalIsOpen}
                 />
               ) : (
-                <div className="">
-                  <h3 className="text-lg sm:text-xl font-semibold mb-4 text-left text-[#1B1D29]   ">
+                <>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-4 text-left text-[#1B1D29]">
                     Select the Trips and Passengers to Cancel
                   </h3>
                   <label className="flex items-center mb-4">
@@ -493,18 +493,18 @@ const SubmitAmendment = ({
                           className="mr-4 flex-shrink-0 w-64 sm:w-72"
                         >
                           <div
-                            className={`flex flex-col gap-1 p-3 mb-2 text-sm border rounded-lg h-28 ${
+                            className={`flex flex-col gap-1 p-3 mb-2 text-sm border rounded-lg ${
                               selectedTrips.includes(tripIndex)
-                                ? "border-[5px] bg-[#D7B56D] border-[#9196b5] text-white"
+                                ? " text-[#D7B56D] bg-[#1B1D29] "//Select to cancel the ticket
                                 : activeTrip === tripIndex
-                                ? " bg-[#D7B56D] text-[#1B1D29] "
-                                : "text-[#D7B56D] bg-[#1B1D29]"
+                                ? "bg-[#D7B56D] text-[#1B1D29] "//Show passengers
+                                : "bg-gray-400 border-[#1B1D29]"//Normal-nothing is selected
                             }`}
                           >
                             <div className="flex justify-between items-center">
                               <span>
                                 Trip {tripIndex + 1}
-                                <p className="text-[#1B1D29] text-base font-bold">
+                                <p className=" text-base font-bold">
                                   {trip?.sI[0].da.code} -
                                   {trip.sI.length === 1
                                     ? trip?.sI[0].aa.code
@@ -527,7 +527,7 @@ const SubmitAmendment = ({
                             </label>
                             <button
                               onClick={() => togglePassengers(tripIndex)}
-                              className="text-[#D7B56D] bg-[#1B1D29] mt-1 py-1 rounded-lg w-full text-sm font-bold"
+                              className="text-[#D7B56D] bg-[#1B1D29] border border-[#D7B56D] mt-1 py-1 rounded-lg w-full text-sm font-bold"
                             >
                               {activeTrip === tripIndex
                                 ? "Hide Passengers"
@@ -539,7 +539,7 @@ const SubmitAmendment = ({
                     )}
                   </div>
                   {activeTrip !== null && (
-                    <div className="mt-4  max-h-[50vh] overflow-y-scroll">
+                    <div className="mt-4 max-h-36 overflow-y-scroll">
                       <h2 className="font-bold p-1 text-[#1B1D29]">
                         Passengers for Trip {activeTrip + 1}
                       </h2>
@@ -605,7 +605,7 @@ const SubmitAmendment = ({
                       onChange={(e) => setRemarks(e.target.value)}
                     ></textarea>
                   </div>
-                  <div className="mt-6">
+                  <div className="mt-6 flex justify-center items-center">
                     {amendmentLoading ? (
                       <div className="flex justify-center items-center h-10">
                         <motion.div
@@ -616,7 +616,7 @@ const SubmitAmendment = ({
                       </div>
                     ) : (
                       <button
-                        className="w-full px-4 py-2 bg-[#1B1D29] text-white font-semibold rounded-md transition-colors hover:bg-opacity-90"
+                        className="w-full px-4 py-2 max-w-[30%] bg-[#1B1D29] text-white font-semibold rounded-md transition-colors hover:bg-opacity-90"
                         onClick={openModal}
                       >
                         Submit Cancellation
@@ -630,7 +630,7 @@ const SubmitAmendment = ({
                       message="Are you sure you want to proceed?"
                     />
                   </div>
-                </div>
+                </>
               )}
             </div>
           )}
