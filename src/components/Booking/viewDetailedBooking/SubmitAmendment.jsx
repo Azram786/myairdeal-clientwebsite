@@ -14,7 +14,6 @@ const SubmitAmendment = ({
   setModalIsOpen,
   searchQuery,
 }) => {
-
   const { token } = useSelector((state) => state.auth);
 
   const [bookingId] = useState(singleBookingData.order.bookingId);
@@ -282,7 +281,6 @@ const SubmitAmendment = ({
     setActiveTrip(tripId);
     setShowDetails(true);
   };
-
 
   return (
     <div className="px-4 py-4 flex justify-center items-center  h-[70vh] w-full">
