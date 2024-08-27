@@ -22,6 +22,27 @@
   color: #D7B56D;
   /* Set the hover color for the arrow buttons */
 }
+
+/*AppDownload*/
+/* Custom CSS for controlling bottom overflow */
+.hide-bottom-overflow {
+  position: relative;
+  overflow: visible;
+}
+
+.hide-bottom-overflow::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px; /* Adjust height to hide bottom overflow */
+  background-color: #1B1D29; /* Background color to match the parent div */
+  z-index: 10;
+}
+
+
+
 @media(max-width:800px){
   .slick-prev {
     left: -25px;

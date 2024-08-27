@@ -228,8 +228,8 @@ const FlightList = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsSessionExpired(true);
-    }, 1800000);
-
+    }, 180);
+    // 1800000
     return () => clearTimeout(timer);
   }, [navigate]);
 
@@ -377,7 +377,7 @@ const SessionExpiredPopup = ({ isOpen, onClose }) => {
           </p>
           <button
             onClick={handleSearchAgain}
-            className="bg-blue-500 text-white py-2 px-4 rounded text-sm"
+            className="bg-[#1B1D29] text-[#D7B56D] py-2 px-4 rounded text-sm"
           >
             Search Again
           </button>

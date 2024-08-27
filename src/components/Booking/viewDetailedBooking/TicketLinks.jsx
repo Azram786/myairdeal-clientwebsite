@@ -46,13 +46,13 @@ const TicketLinks = ({ singleBookingData, bookingFilter,searchQuery }) => {
 
   return (
     <div className="mx-3 flex flex-col gap-4 my-4">
-      <div className="text-[#D7B56D] bg-[white] font-bold  text-lg md:text-xl p-4 rounded-md">
+      <div className="text-[#D7B56D] bg-[#1B1D29] font-bold  text-xl md:text-2xl p-4 rounded-md">
         Quick links
       </div>
       {links.map((link, index) => (
         <div
           key={index}
-          className="flex flex-col sm:flex-row md:items-center justify-none md:justify-between text-[#1B1D29] border-[#1B1D29] border  rounded-lg p-4"
+          className="flex flex-row md:items-center justify-none md:justify-between text-[#1B1D29] border-[#1B1D29] border  rounded-lg p-4"
         >
           <div className="flex-1">
             <h3 className="text-lg font-semibold">{link.title}</h3>

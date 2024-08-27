@@ -136,9 +136,10 @@ const EnquiryForm = () => {
 
   return (
     <div className="mx-auto p-6 rounded-lg shadow-md text-white">
-      <h2 className="text-xl font-bold mb-6 text-[#D7B56D]">Enquiry Form</h2>
+      
       <div className="w-1/2 mx-auto bg-[#1B1D29] rounded-2xl p-4">
         <form onSubmit={handleSubmit} className="w-3/4 mx-auto">
+        <h2 className="text-xl font-bold mb-6  text-[#D7B56D] p-2  text-center rounded-md" >Enquiry Form</h2>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Email</label>
             <input
