@@ -7,12 +7,18 @@ import Footer from "../../Home/Footer";
 import Spinner from "../../Profile/Spinner";
 import { motion } from "framer-motion";
 import ReactToast from "../../util/ReactToast";
+import { useLocation } from "react-router-dom";
 
 const FlightBookings = () => {
   const [bookingFilter, setBookingFilter] = useState("UPCOMING");
   const { token } = useSelector((state) => state.auth);
   const [bookingData, setBookingData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const getBookingData = async () => {
     try {

@@ -764,8 +764,8 @@ const FilterSection = ({
 
         {/* fare type with submit button section  */}
         <div className=" md:items-center  flex flex-col lg-custom:flex-row mt-3 mb-3   ">
-          <div className=" justify-around w-full  flex  flex-col md:flex-row gap-2 lg-custom::gap-0">
-            <div className="text-sm md:text-base w-full flex justify-center md:w-1/3 ">
+          <div className=" justify-around w-full flex  flex-col xs:flex-row gap-2 lg-custom::gap-0">
+            <div className="text-sm md:text-base w-full flex justify-center sm:w-1/3 ">
               <select
                 id="fare-type"
                 className=" outline-none border cursor-pointer rounded-md md:w-auto p-2 w-3/4 md:p-1  bg-white"
@@ -807,7 +807,7 @@ const FilterSection = ({
                 <option value="SENIOR_CITIZEN">Senior Citizen Fares</option>
               </select>
             </div>
-            <div className=" text-sm md:text-base lg:w-1/3 flex justify-center cursor-pointer">
+            <div className=" text-sm md:text-base sm:w-1/3 flex justify-center cursor-pointer">
               <select
                 name=""
                 className="border w-3/4  cursor-pointer  md:w-auto rounded-md l p-2 md:p-1    bg-white"
@@ -825,7 +825,7 @@ const FilterSection = ({
                 ))}
               </select>
             </div>
-            <div className=" text-sm md:text-base flex gap-2 p-1 w-full  cursor-pointer justify-center items-center md:w-1/3  ">
+            <div className=" text-sm md:text-base flex gap-2 p-1 w-full  cursor-pointer justify-center items-center sm:w-1/3  ">
               <label>Direct flights</label>
               <input
                 type="checkbox"

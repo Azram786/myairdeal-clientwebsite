@@ -121,11 +121,11 @@ const TravellersCard = ({
                   />
                 ))}
             </div>
-            <div className=" mt-4">
+            <div className="w-full mt-4">
               <h3 className="font-semibold text-sm md:text-base mb-2 mx-4">
                 Contact Details
               </h3>
-              <div className="grid grid-flow-row gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-4 pb-4">
+              <div className="grid grid-flow-row gap-4 grid-cols-1 sm:grid-cols-2  mx-4 pb-4">
                 <div className="w-full ">
                   <TextField
                     type="email"

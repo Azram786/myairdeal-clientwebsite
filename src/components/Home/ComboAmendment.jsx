@@ -148,7 +148,7 @@ const ComboAmendment = ({ singleBookingData, setMainModalIsOpen }) => {
 
       {!selectWholeTicket && (
         <>
-          <div className="mb-6">
+          <div className="mb-6 ">
             <h3 className="font-bold text-lg mb-4 text-gray-800">
               Select Trips to Cancel
             </h3>

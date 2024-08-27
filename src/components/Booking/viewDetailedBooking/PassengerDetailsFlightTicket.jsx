@@ -65,18 +65,18 @@ import React from "react";
 const PassengerDetailsTable = ({ passengerDetails }) => {
   return (
     <div className="p-4 bg-white shadow rounded-lg">
-      <h2 className="text-lg font-bold mb-4">
+      <h2 className="text-base md:text-lg font-bold mb-4">
         Passenger Details ({passengerDetails.length})
       </h2>
-      <table className="min-w-full border-collapse">
+      <table className="min-w-full text-sm border-collapse">
         <thead>
           <tr className="border-b">
-            <th className="text-left p-2">Sr.</th>
+            <th className="text-left p-2">Sl.no</th>
 
-            <th className="text-left p-2">Name, DOB & Passport & FF</th>
-            <th className="text-left p-2">PNR, Ticket No. & Status</th>
+            <th className="text-left p-2">Name,<br/> DOB  ,<br/>Passport & FF</th>
+            <th className="text-left p-2">PNR,<br/> Ticket No. <br/>& Status</th>
             <th className="text-left p-2">
-              Meal, Baggage, Seat & Other Preference
+              Meal,<br/> Baggage, <br/>Seat & Other Preference
             </th>
             {/* <th className="text-left p-2">Document Id</th> */}
           </tr>
@@ -86,7 +86,7 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
             <tr key={index} className="border-b w-full text-sm">
               <td className="p-2">{index + 1}</td>
 
-              <td className="p-2 w-1/3">
+              <td className="p-2  w-1/3">
                 {passenger?.ti} {passenger?.fN.toUpperCase()}{" "}
                 {passenger.lN.toUpperCase()} ({passenger?.pt[0]})
                 <br />

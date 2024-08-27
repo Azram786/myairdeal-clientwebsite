@@ -26,6 +26,11 @@ const ViewDetailedBooking = () => {
   const [loading, setLoading] = useState(true);
   const [amendment, setAmendment] = useState([]);
   const [data, setData] = useState(null);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const getSingleTicketDetailHandler = async () => {
     try {
@@ -135,13 +140,13 @@ const ViewDetailedBooking = () => {
               />
               {/* </motion.div> */}
               <div className="m-2 w-full lg:w-[20%] flex flex-col h-full  p-5 rounded-lg shadow-lg  border">
-                <div className=" py-4 text-[1rem]">
+                <div className=" py-4 text-sm md:text-base">
                   <h2 className="font-montserrat">
                     Your booking is protected by{" "}
                     <span className="font-semibold">MY AIR DEAL</span>{" "}
                   </h2>
                 </div>
-                <div className="flex   flex-col gap-3">
+                <div className="flex text-sm md:text-base flex-col gap-3">
                   <div className="font-bold">Price Details</div>
                   <div className="flex flex-col gap-2">
                     <div className="flex justify-between">

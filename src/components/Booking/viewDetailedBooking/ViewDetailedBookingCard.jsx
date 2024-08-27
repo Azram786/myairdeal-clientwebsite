@@ -50,7 +50,7 @@ const ViewDetailedBookingCard = ({
     <div className=" border-l-0 w-full lg:w-[72%]">
       <div className="rounded-lg my-2">
         <div className="flex justify-between items-center bg-[white] border-2 flex-wrap p-4 rounded-t-xl text-[black]">
-          <div className="flex w-full  flex-col md:flex-row justify-end ">
+          <div className="flex w-full  flex-col xs:flex-row justify-end ">
             <div className="">
               {" "}
               <div className="h-16 w-16 flex items-center justify-center bg-[#1B1D29] border-2 border-white text-[#D7B56D] font-bold text-xl rounded-full ">
@@ -88,7 +88,7 @@ const ViewDetailedBookingCard = ({
               <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
                 <div className="border-2 bg-[#dce3e9] flex gap-3 p-2 rounded-lg flex-col w-full lg-custom:w-1/2 ">
                   <div className="  w-full">
-                    <div className="  text-left flex pl-2 items-center">
+                    <div className="  text-left flex pl-2 items-center ">
                       <div>
                         {/* <img className="h-[60px]" src={paymentFlight} alt="" /> */}
                         <img
@@ -184,14 +184,14 @@ const ViewDetailedBookingCard = ({
                       {formatDuration(totalDurationHandler(value.sI))}
                     </h1>
                   </div>
-
+<div>
                   <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-[80%] lg:w-full mx-auto  ">
                     <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
                       <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
                         <MdDateRange />
                       </div>
                       <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                        <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
                           Departure Date
                         </div>
                         <div className="font-semibold text-sm ">
@@ -204,7 +204,7 @@ const ViewDetailedBookingCard = ({
                         <IoIosTime />
                       </div>
                       <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
+                        <div className="text-[#495049] w-max text-xs md:text-sm  font-semibold">
                           Departure Time
                         </div>
                         <div className="font-semibold text-sm ">
@@ -217,7 +217,7 @@ const ViewDetailedBookingCard = ({
                         <BsDoorClosedFill />
                       </div>
                       <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                        <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
                           Departure Terminal
                         </div>
                         <div className="font-semibold text-sm w-max ">
@@ -227,13 +227,14 @@ const ViewDetailedBookingCard = ({
                         </div>
                       </div>
                     </div>
-
+                  </div>
+                  <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-[80%] lg:w-full mx-auto  ">
                     <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
                       <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
                         <MdDateRange />
                       </div>
                       <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                        <div className="text-[#495049] w-max text-xs  md:text-sm font-semibold">
                           Arrival Date
                         </div>
 
@@ -251,7 +252,7 @@ const ViewDetailedBookingCard = ({
                         <IoIosTime />
                       </div>
                       <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm lg:text-base font-semibold">
+                        <div className="text-[#495049] w-max text-xs md:text-sm  font-semibold">
                           Arrival time
                         </div>
                         <div className="font-semibold text-sm">
@@ -268,7 +269,7 @@ const ViewDetailedBookingCard = ({
                         <BsDoorClosedFill />
                       </div>
                       <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm lg:text-base font-semibold">
+                        <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
                           Arrival Terminal
                         </div>
                         <div className="font-semibold text-sm w-max ">
@@ -278,6 +279,7 @@ const ViewDetailedBookingCard = ({
                         </div>
                       </div>
                     </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -417,12 +419,12 @@ const ViewDetailedBookingCard = ({
         <button
           // onClick={() => toggleDropdown(index)}
           onClick={() => setIsPassengersOpen((prev) => !prev)}
-          className="text-[#1B1D29] bg-[#D7B56D] w-full py-2 rounded-lg mt-4"
+          className="text-[#1B1D29] bg-[#D7B56D] w-full py-2 rounded-lg mt-4 text-sm"
         >
           {/* {openConnectionIndex === index
                   ? "Hide Passengers"
                   : "View Passengers"} */}
-          View Passengers
+          {isPassengersOpen ? "Hide Passengers" : "View Passengers"}
         </button>
         {isPassengersOpen && (
           <PassengerDetailsFlightTicket passengerDetails={passengerDetails} />

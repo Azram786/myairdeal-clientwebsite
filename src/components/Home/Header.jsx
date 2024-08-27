@@ -138,7 +138,7 @@ const Header = () => {
   );
 
   return (
-    <div className="bg-[#1B1D29] shadow-md">
+    <div className="bg-[#1B1D29] shadow-md fixed top-0 left-0 w-full z-50 ">
       <div className=" mx-auto px-8 py-2 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           {/* <img src={main_logo} alt="logo" className="h-10 mr-2" /> */}
@@ -215,10 +215,10 @@ const Header = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-t"
           >
-            <div className="flex text-center flex-wrap mx-auto px-4">
+            <div className="flex flex-col text-center flex-wrap mx-auto px-4 ">
               <NavLinks mobile />
               {token && user ? (
-                <div className="flex  w-max flex-wrap text-sm  gap-4">
+                <div className="flex  w-full flex-col justify-center items-center text-sm  gap-4">
                   <Link
                     to="/profile"
                     className="block py-2 text-[#1B1D29]"

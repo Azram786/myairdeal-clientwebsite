@@ -244,7 +244,7 @@ const FlightSummary = () => {
   }
 
   return (
-    <div className=" min-h-screen my-auto  ">
+    <div className=" min-h-screen my-auto   ">
       {/* <Header /> */}
       <div className="  sm:text-sm md:text-lg w-[90vw] flex-wrap mx-auto pt-4 ">
         <div
@@ -252,7 +252,7 @@ const FlightSummary = () => {
            "
         >
           {/* Left section */}
-          <div className="w-full lg-custom:w-[70%] rounded-lg     space-y-4">
+          <div className=" rounded-lg w-full lg-custom:w-[67%]    space-y-4">
             <div className=" w-full ">
               <ProgressBar
                 currentStep={currentStep}
@@ -283,11 +283,13 @@ const FlightSummary = () => {
                       <div key={index} className=" rounded-lg p-2   ">
                         <div className="flex justify-center py-3 px-4"></div>
                         <div className=" flex flex-wrap items-center justify-between bg-[#1B1D29] text-[#D7B56D]  p-2 rounded-t-lg">
-                          <div className="text-base  font-semibold flex items-center">
-                            <span>{item.sI[0].da.city}</span>
-                            <FaArrowRight className="mx-2 inline" />
-                            <span>{item.sI[item.sI.length - 1].aa.city}</span>
-                            <div className="text-white text-sm mt-1 sm:mt-0 sm:ml-2">
+                          <div className="md:text-base text-sm flex-wrap font-semibold flex items-center justify-between space-x-1">
+                            <div className="w-max">
+                              <span>{item.sI[0].da.city}</span>
+                              <FaArrowRight className="mx-2 inline" />
+                              <span>{item.sI[item.sI.length - 1].aa.city}</span>
+                            </div>
+                            <div className="text-white text-xs md:text-sm ">
                               On{" "}
                               {new Date(item.sI[0].dt).toLocaleDateString(
                                 "en-US",
@@ -301,8 +303,11 @@ const FlightSummary = () => {
                             </div>
                           </div>
                           <div className="flex justify-center items-center gap-2">
-                            <div className="text-sm md:text-base  font-semibold text-white flex items-center">
+                            <div className="text-sm md:text-base   font-semibold text-white flex items-center">
+                              <span className="flex sm:hidden mr-2"> Duration:</span>
+                           
                               <FaRegClock className="mr-2 " />
+                              
                               {calculateTotalDuration(item.sI)}
                             </div>
                           </div>
@@ -337,21 +342,29 @@ const FlightSummary = () => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="flex flex-col md:flex-row w-full   ">
-                                    <div className=" flex-col text-center md:text-left w-full md:w-[40%]">
-                                      <div className="text-lg font-bold ">
+                                  <div className="flex flex-row   w-full   ">
+                                    <div className=" flex-col text-left w-full md:min-w-[30%]  ">
+                                      <div className=" text-sm md:text-lg font-bold ">
                                         {segment.da.code}
                                       </div>
-                                      <div className="text-sm line-clamp-1">
+                                      <div className="text-xs md:text-sm line-clamp-1">
                                         {segment.da.city}, {segment.da.country}
                                       </div>
-                                      <div className="text-sm line-clamp-1">
-                                        {segment.da.name}
+                                      <div className="relative group text-xs md:text-sm ">
+                                        <span className=" line-clamp-1">
+                                          {" "}
+                                          {segment.da.name}
+                                        </span>
+
+                                        {/* Tooltip */}
+                                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                          {segment.da.name}
+                                        </div>
                                       </div>
-                                      <div className="text-sm">
+                                      <div className="text-sm md:text-sm">
                                         {segment.da.terminal || "N/A"}
                                       </div>
-                                      <div className="  text-sm font-semibold ">
+                                      <div className="  text-xs md:text-sm font-semibold ">
                                         {new Date(
                                           item.sI[0].dt
                                         ).toLocaleDateString("en-US", {
@@ -374,9 +387,9 @@ const FlightSummary = () => {
                                         })}
                                       </div>
                                     </div>
-                                    <div className="flex-col text-center my-2 md:my-0 w-full mr-32 md:w-[40%]">
+                                    <div className="flex-col text-center my-2 md:my-0 mr-0 xs:mr-4 sm:mr-24 md:mr-24 w-max md:min-w-[25%] ">
                                       <div className="w-full text-center text-semibold flex ">
-                                        <span className="text-center mx-auto text-sm">
+                                        <span className="text-center mx-auto text-xs md:text-sm">
                                           {(() => {
                                             const totalMinutes =
                                               segment.duration;
@@ -389,42 +402,51 @@ const FlightSummary = () => {
                                         </span>
                                       </div>
 
-                                      <div className="flex items-center w-full">
+                                      <div className="flex items-center ">
                                         <div className="w-2 h-2 rounded-full bg-gray-400"></div>
-                                        <div className="flex-grow h-px bg-gray-300"></div>
-                                        <div className="flex justify-center items-center">
-                                          <hr className="w-1/3 border-t border-gray-300" />
+                                        <div className="flex-grow h-px hidden md:flex bg-gray-300"></div>
+                                        <div className="flex justify-center items-center ">
+                                          <hr className=" w-1/3 border-t border-gray-300" />
                                           <MdFlight className="w-10 h-5 mx-2 rotate-90" />
-                                          <hr className="w-1/3 border-t border-gray-300" />
+                                          <hr className=" w-1/3 border-t border-gray-300" />
                                         </div>
-                                        <div className="flex-grow h-px bg-gray-300"></div>
+                                        <div className="flex-grow h-px hidden md:flex bg-gray-300"></div>
                                         <div className="w-2 h-2 rounded-full bg-gray-400"></div>
                                       </div>
-                                      <div className="font-bold text-sm">
+                                      <div className="font-bold text-xs md:text-sm">
                                         {data?.searchQuery?.cabinClass ||
                                           "No-Class"}
                                       </div>
-                                      <div className="text-center text-semibold text-sm">
+                                      <div className="text-center text-semibold text-xs md:text-sm">
                                         {/* {item.sI.length === 1
                                           ? "Non Stop"
                                           : item.sI.length + "Stops"} */}
                                         Non-Stop
                                       </div>
                                     </div>
-                                    <div className="flex-col text-center md:text-left w-full md:w-[40%] ">
-                                      <div className="text-lg font-bold">
+                                    <div className=" flex-col text-left w-full md:min-w-[30%]  ">
+                                      <div className="text-sm md:text-lg font-bold">
                                         {segment.aa.code}
                                       </div>
-                                      <div className="text-sm line-clamp-1">
+                                      <div className="text-xs md:text-sm line-clamp-1">
                                         {segment.aa.city}, {segment.aa.country}
                                       </div>
-                                      <div className="text-sm line-clamp-1">
-                                        {segment.aa.name}
+
+                                      <div className="relative group text-xs md:text-sm ">
+                                        <span className=" line-clamp-1">
+                                          {" "}
+                                          {segment.aa.name}
+                                        </span>
+
+                                        {/* Tooltip */}
+                                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                          {segment.aa.name}
+                                        </div>
                                       </div>
-                                      <div className="text-sm">
+                                      <div className="text-xs md:text-sm">
                                         {segment.aa.terminal || "N/A"}
                                       </div>
-                                      <div className="text-sm font-semibold ">
+                                      <div className="text-xs md:text-sm font-semibold ">
                                         {new Date(
                                           item.sI[0].dt
                                         ).toLocaleDateString("en-US", {
@@ -462,15 +484,15 @@ const FlightSummary = () => {
                                   the Airline
                                 </span> */}
                                 {index !== item.sI.length - 1 && (
-                                  <div className="flex justify-between bg-[#FFDE99] text-black p-3 rounded-xl mt-2 mb-4 w-[50%]">
-                                    <div className="text-sm">
+                                  <div className="flex justify-between bg-[#FFDE99] text-black p-3 rounded-xl mt-2 mb-4 w-[70%] md:w-[50%]">
+                                    <div className="text-xs md:text-sm">
                                       Require to change plane
                                     </div>
                                     <div className="text-base font-medium">
                                       <span className="text-sm">
                                         {item.sI.length > 1 && (
                                           <div className="text-center">
-                                            <span className="text-sm">
+                                            <span className=" text-xs md:text-sm">
                                               Total Layover Time:{" "}
                                               <span className="font-bold">
                                                 {calculateLayoverTime(item.sI)}
@@ -536,17 +558,17 @@ const FlightSummary = () => {
             ) : null}
           </div>
           {/* Right Section */}
-          <div className="w-full lg-custom:w-[25%] h-full mb-8  rounded-lg space-y-2 p-5 shadow-md bg-white">
-            <div className="w-full max-w-full rounded-lg  ">
+          <div className="w-full lg-custom:w-[25%] h-full mb-8  rounded-lg space-y-2 shadow-md bg-white">
+            <div className="w-full  rounded-lg  ">
               <div className="text-[#1B1D29] flex items-center justify-between border-b border-gray-300 pb-4">
                 <div>
-                  <span className="font-bold text-lg md:text-xl lg:text-2xl">
+                  <span className="p-2 font-bold text-base md:text-lg lg:text-2xl">
                     FARE SUMMARY
                   </span>
                 </div>
               </div>
-              <div className="text-[#1B1D29] mt-4 md:mt-6 space-y-4 md:space-y-6">
-                <div className="pt-3">
+              <div className="text-[#1B1D29] mt-4 md:mt-6  md:space-y-6">
+                <div className="pb-3 px-4">
                   <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                     <span className="text-sm md:text-base ">Base fare</span>
                     <span>
