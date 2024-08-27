@@ -9,13 +9,11 @@ const Banner = ({ setLoading }) => {
 
   const getBanners = async () => {
     try {
-   
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}banner/get-banners-user`
       );
-      // console.log({ banners: response },"Banners");
+  
       setBanners(response.data);
-      
     } catch (error) {
       ReactToast(error);
     }
@@ -41,9 +39,9 @@ const Banner = ({ setLoading }) => {
     setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
   };
 
-  if (banners.length === 0) {
-    return <div>Loading...</div>;
-  }
+  // if (banners.length === 0) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className="relative min-w-[250px] h-[60vh] max-w-[1900px] mx-auto md:h-[50vh] lg:h-[70vh]">
