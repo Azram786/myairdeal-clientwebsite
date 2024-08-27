@@ -818,13 +818,10 @@ const FilterSection = ({
                 <option className="" value="" disabled selected>
                   Select Prefered Airline
                 </option>
+               
                 <option value={null}>Select all</option>
-                {preferredAirlines.map((value) => (
-                  <option value={value.code}>{value.name}</option>
-                ))}
-                <option value={null}>Select all</option>
-                {preferredAirlines.map((value) => (
-                  <option value={value.code}>{value.name}</option>
+                {preferredAirlines.map((value,index) => (
+                  <option key={index} value={value.code}>{value.name}</option>
                 ))}
               </select>
             </div>

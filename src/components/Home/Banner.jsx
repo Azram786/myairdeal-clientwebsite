@@ -1,20 +1,21 @@
-
 import { useEffect, useState } from "react";
 import BannerImage from "../../assets/home/banner/Banner.png";
 import axios from "axios";
 import ReactToast from "../util/ReactToast";
 
-const Banner = () => {
+const Banner = ({ setLoading }) => {
   const [banners, setBanners] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const getBanners = async () => {
     try {
+   
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}banner/get-banners-user`
       );
       // console.log({ banners: response },"Banners");
       setBanners(response.data);
+      
     } catch (error) {
       ReactToast(error);
     }
@@ -27,9 +28,9 @@ const Banner = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 5000); 
+    }, 5000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [banners.length]);
 
   const nextSlide = () => {
@@ -50,7 +51,9 @@ const Banner = () => {
         {banners.map((banner, index) => (
           <img
             key={index}
-            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-10000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-10000 ease-in-out ${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
             src={banner?.image || BannerImage}
             alt={`Banner ${index + 1}`}
           />
@@ -75,7 +78,6 @@ const Banner = () => {
             className="bg-[#1B1D29] text-white rounded-md mt-4 py-2 px-6 md:px-8 text-xs md:text-base w-32"
           >
             {banners[currentSlide]?.buttonText}
-          
           </button>
         </div>
       </div>
