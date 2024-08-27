@@ -19,7 +19,7 @@ const RecentSearch = ({ ResentSearchData }) => {
   }, [resentSearch, dispatch]);
 
   const setResentStateHandler = (value) => {
-    console.log({ value })
+    console.log({ value });
 
     dispatch(setResentSearch(value));
   };
@@ -84,7 +84,7 @@ const RecentSearch = ({ ResentSearchData }) => {
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
                       {search?.searchQuery.searchModifiers.isDirectFlight ===
-                        true
+                      true
                         ? "Direct Flight"
                         : "Indirect flight "}
                     </div>
