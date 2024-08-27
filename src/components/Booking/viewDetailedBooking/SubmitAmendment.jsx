@@ -36,6 +36,8 @@ const SubmitAmendment = ({
 
   const [openDropdowns, setOpenDropdowns] = useState([]);
 
+  const [showPassengerIndex, setShowPassengerIndex] = useState(null);
+
   const toggleDropdown = (tripIndex) => {
     if (openDropdowns.includes(tripIndex)) {
       setOpenDropdowns(openDropdowns.filter((index) => index !== tripIndex));
@@ -248,10 +250,10 @@ const SubmitAmendment = ({
           console.log({ response });
         }
       }
-      ReactToast("Amendment Submitted");
       setAmendmentLoadin(false);
       setModalIsOpen(false);
-      // window.location.reload();
+      window.location.reload();
+      ReactToast("Amendment Submitted");
     } catch (error) {
       ReactToast(error.response.data.errors[0].message);
       setAmendmentLoadin(false);
@@ -320,116 +322,115 @@ const SubmitAmendment = ({
                         Select to cancel all the trip
                       </span>
                     </label>
-                    {fullBookingData?.itemInfos?.AIR?.tripInfos.map(
-                      (trip, tripIndex) => (
-                        <div key={tripIndex} className="mt-4  ">
-                          <div
-                            className={`flex flex-col gap-1 p-2 mb-2 text-sm md:text-base font-bold border rounded-lg ${
-                              selectedTrips.includes(tripIndex) &&
-                              "border-[#1B1D29] bg-blue-200"
-                            }`}
-                          >
-                            <div className="flex justify-between items-center">
-                              <span>
-                                Trip {tripIndex + 1}
-                                <p className="text-[#1B1D29] text-base md:text-lg font-bold">
-                                  {trip?.sI[0].da.code} -
-                                  {trip.sI.length === 1
-                                    ? trip?.sI[0].aa.code
-                                    : trip?.sI[trip.sI.length - 1].aa.code}
-                                </p>
-                              </span>
+                    <div className="flex overflow-x-scroll">
+                      {fullBookingData?.itemInfos?.AIR?.tripInfos.map(
+                        (trip, tripIndex) => (
+                          <div key={tripIndex} className="mt-4  ">
+                            <div
+                              className={`flex flex-col gap-1 p-2 mb-2 text-sm md:text-base font-bold  text-black bg-[#D7B56D] border rounded-lg ${
+                                selectedTrips.includes(tripIndex) &&
+                                "border-[#1B1D29] bg-blue-200"
+                              }`}
+                            >
+                              <div className="flex justify-between items-center">
+                                <span>
+                                  Trip {tripIndex + 1}
+                                  <p className="text-[#1B1D29] text-base md:text-lg font-bold">
+                                    {trip?.sI[0].da.code} -
+                                    {trip.sI.length === 1
+                                      ? trip?.sI[0].aa.code
+                                      : trip?.sI[trip.sI.length - 1].aa.code}
+                                  </p>
+                                </span>
+                              </div>
+
+                              <label className="flex items-center mt-2">
+                                <input
+                                  type="checkbox"
+                                  className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                                  onChange={() =>
+                                    handleTripSelection(tripIndex)
+                                  }
+                                  checked={selectedTrips.includes(tripIndex)}
+                                  disabled={cancelWholeTicket}
+                                />
+                                <span className="ml-3 text-sm font-semibold">
+                                  Cancel this trip
+                                </span>
+                              </label>
                               <button
-                                onClick={() => toggleDropdown(tripIndex)}
-                                className="text-[#1B1D29] text-sm font-bold"
+                                onClick={() => {
+                                  setShowPassengerIndex(tripIndex);
+                                  toggleDropdown(tripIndex);
+                                }}
+                                className="text-[#D7B56D] bg-black  mt-1 py-1 rounded-lg w-full  text-sm  font-bold"
                               >
                                 {openDropdowns.includes(tripIndex)
-                                  ? "Hide Passenger(s)"
-                                  : "Show Passenger(s)"}
+                                  ? "Hide Passengers"
+                                  : "Show Passengers"}
                               </button>
                             </div>
-
-                            <label className="flex items-center mt-2">
-                              <input
-                                type="checkbox"
-                                className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
-                                onChange={() => handleTripSelection(tripIndex)}
-                                checked={selectedTrips.includes(tripIndex)}
-                                disabled={cancelWholeTicket}
-                              />
-                              <span className="ml-3 text-sm font-semibold">
-                                Cancel this trip
-                              </span>
-                            </label>
-                          </div>
-                          <div>
                             <div>
-                              {/* <button
-                                onClick={() => toggleDropdown(tripIndex)}
-                                className="text-[#1B1D29] text-sm font-bold"
-                              >
-                                {openDropdowns.includes(tripIndex)
-                                  ? "Hide Passenger(s)"
-                                  : "Show Passenger(s)"}
-                              </button> */}
+                              <div></div>
                             </div>
-                            {openDropdowns.includes(tripIndex) && (
-                              <div className="ml-4">
-                                {fullBookingData?.itemInfos?.AIR?.travellerInfos.map(
-                                  (traveler, travelerIndex) => (
-                                    <div
-                                      key={travelerIndex}
-                                      className={`flex flex-wrap items-center p-4 rounded-lg mt-2 ${
-                                        selectedTravelers.includes(
-                                          `${tripIndex}-${travelerIndex}`
-                                        )
-                                          ? "border border-[#1B1D29]"
-                                          : "border"
-                                      }`}
-                                    >
-                                      <div className="flex flex-wrap ">
-                                        <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-[#1B1D29] text-white font-medium text-xl rounded-full mr-4">
-                                          {traveler.fN.charAt(0).toUpperCase()}
-                                        </div>
-                                        <div>
-                                          <div className="text-sm font-bold">
-                                            {traveler.fN} {traveler.lN}
-                                          </div>
-                                          <div className="text-sm font-bold">
-                                            {traveler.dob}
-                                          </div>
-                                          <div className="text-sm font-bold">
-                                            {traveler.pt}
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="ml-auto">
-                                        <input
-                                          type="checkbox"
-                                          className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
-                                          onChange={() =>
-                                            handleTravelerSelection(
-                                              tripIndex,
-                                              travelerIndex
-                                            )
-                                          }
-                                          checked={selectedTravelers.includes(
-                                            `${tripIndex}-${travelerIndex}`
-                                          )}
-                                          disabled={
-                                            cancelWholeTicket ||
-                                            selectedTrips.includes(tripIndex)
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                  )
-                                )}
-                              </div>
-                            )}
                           </div>
-                        </div>
-                      )
+                        )
+                      )}
+                    </div>
+                    {openDropdowns.includes(showPassengerIndex) && (
+                      <div className="ml-4">
+                        <h2 className="font-bold p-1">Passengers</h2>
+                        {fullBookingData?.itemInfos?.AIR?.travellerInfos.map(
+                          (traveler, travelerIndex) => (
+                            <div
+                              key={travelerIndex}
+                              className={`flex flex-wrap items-center p-4 rounded-lg  border-2 mt-2 ${
+                                selectedTravelers.includes(
+                                  `${showPassengerIndex}-${travelerIndex}`
+                                )
+                                  ? "border border-[#1B1D29]"
+                                  : "border"
+                              }`}
+                            >
+                              <div className="flex flex-wrap ">
+                                <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-[#1B1D29] text-[#D7B56D] font-medium text-xl rounded-full mr-4">
+                                  {traveler.fN.charAt(0).toUpperCase()}
+                                </div>
+                                <div>
+                                  <div className="text-sm font-bold">
+                                    {traveler.fN} {traveler.lN}
+                                  </div>
+                                  <div className="text-sm font-bold">
+                                    {traveler.dob}
+                                  </div>
+                                  <div className="text-sm font-bold">
+                                    {traveler.pt}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="ml-auto">
+                                <input
+                                  type="checkbox"
+                                  className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                                  onChange={() =>
+                                    handleTravelerSelection(
+                                      showPassengerIndex,
+                                      travelerIndex
+                                    )
+                                  }
+                                  checked={selectedTravelers.includes(
+                                    `${showPassengerIndex}-${travelerIndex}`
+                                  )}
+                                  disabled={
+                                    cancelWholeTicket ||
+                                    selectedTrips.includes(showPassengerIndex)
+                                  }
+                                />
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
                     )}
                     <div className="mt-4">
                       <label className="block text-[#1B1D29] font-semibold mb-2">

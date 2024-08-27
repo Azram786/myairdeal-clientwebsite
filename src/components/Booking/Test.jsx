@@ -1,383 +1,513 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { getCode, getName, getNames } from "country-list";
-import Flag from "react-world-flags";
-import Select from "react-select";
-import ReactToast from "../util/ReactToast";
+import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
+import { PiAirplaneInFlightDuotone } from "react-icons/pi";
+import CancelConfirmModal from "./CancelConfirmModal";
+import ReactToast from "../../util/ReactToast";
+import ComboAmendment from "../../Home/ComboAmendment";
 
-const EditPassengerDetails = () => {
-  const [passengerDetails, setPassengerDetails] = useState([]);
-  const [editingId, setEditingId] = useState(null);
-  console.log({ editingId });
-  const [newPassenger, setNewPassenger] = useState({
-    ti: "",
-    fN: "",
-    lN: "",
-    dob: "",
-    pNum: "",
-    eD: "",
-    pid: "",
-    pNat: null,
-  });
-  const [currentPage, setCurrentPage] = useState(1);
-  const [errors, setErrors] = useState({});
-  const passengersPerPage = 5;
-
+const SubmitAmendment = ({
+  singleBookingData,
+  setModalIsOpen,
+  searchQuery,
+}) => {
   const { token } = useSelector((state) => state.auth);
-  const countryNames = getNames();
-  const options = countryNames.map((country) => ({
-    label: country,
-    value: getCode(country),
-  }));
+
+  const [bookingId] = useState(singleBookingData.order.bookingId);
+
+  const [fullBookingData, setFullbookingData] = useState({});
+
+  const [Loading, setLoading] = useState(true);
+
+  const [selectedTrips, setSelectedTrips] = useState([]);
+
+  const [selectedTravelers, setSelectedTravelers] = useState([]);
+
+  const [cancelWholeTicket, setCancelWholeTicket] = useState(false);
+
+  const [remarks, setRemarks] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [amendmentLoading, setAmendmentLoadin] = useState(false);
+
+  const [openDropdowns, setOpenDropdowns] = useState([]);
+
+  const toggleDropdown = (tripIndex) => {
+    if (openDropdowns.includes(tripIndex)) {
+      setOpenDropdowns(openDropdowns.filter((index) => index !== tripIndex));
+    } else {
+      setOpenDropdowns([...openDropdowns, tripIndex]);
+    }
+  };
+
+  const openModal = () => {
+    if (!remarks) ReactToast("Please Enter Remarks");
+    else {
+      setIsModalOpen(true);
+    }
+  };
+
+  function convertDateFormat(inputDate) {
+    const formattedDate = inputDate.split("T")[0];
+
+    return formattedDate;
+  }
+
+  const closeModal = () => setIsModalOpen(false);
+
+  const getData = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}booking/retrieve-booking`,
+        { bookingId },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setFullbookingData(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      ReactToast(error.message);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    getPassengersHandler();
+    getData();
   }, []);
-  console.log({ newPassenger });
-  const getPassengersHandler = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}user/all-passengers`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setPassengerDetails(response.data.passengers);
-    } catch (error) {
-      console.log(error.message);
+
+  const spinnerVariants = {
+    animate: {
+      rotate: [0, 360],
+      transition: {
+        repeat: Infinity,
+        duration: 1,
+        ease: "linear",
+      },
+    },
+  };
+
+  const handleTripSelection = (tripIndex) => {
+    if (cancelWholeTicket) return;
+    setSelectedTrips((prevSelectedTrips) => {
+      if (prevSelectedTrips.includes(tripIndex)) {
+        setSelectedTravelers((prevSelectedTravelers) =>
+          prevSelectedTravelers.filter(
+            (traveler) => !traveler.startsWith(`${tripIndex}-`)
+          )
+        );
+        return prevSelectedTrips.filter((index) => index !== tripIndex);
+      } else {
+        setSelectedTravelers((prevSelectedTravelers) =>
+          prevSelectedTravelers.filter(
+            (traveler) => !traveler.startsWith(`${tripIndex}-`)
+          )
+        );
+        return [...prevSelectedTrips, tripIndex];
+      }
+    });
+  };
+
+  const handleTravelerSelection = (tripIndex, travelerIndex) => {
+    if (cancelWholeTicket || selectedTrips.includes(tripIndex)) return; // Prevent traveler selection when whole ticket or trip is selected
+    const travelerKey = `${tripIndex}-${travelerIndex}`;
+    setSelectedTravelers((prevSelectedTravelers) => {
+      if (prevSelectedTravelers.includes(travelerKey)) {
+        return prevSelectedTravelers.filter((key) => key !== travelerKey);
+      } else {
+        return [...prevSelectedTravelers, travelerKey];
+      }
+    });
+  };
+
+  const handleCancelWholeTicket = () => {
+    if (cancelWholeTicket) {
+      setCancelWholeTicket(false);
+      setSelectedTrips([]);
+      setSelectedTravelers([]);
+    } else {
+      setCancelWholeTicket(true);
+      setSelectedTrips([]);
+      setSelectedTravelers([]);
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewPassenger((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
-
-  const handleNationalityChange = (selectedOption) => {
-    setNewPassenger((prev) => ({
-      ...prev,
-      pNat: selectedOption ? selectedOption.value : null,
-    }));
-    setErrors((prev) => ({ ...prev, pNat: "" }));
-  };
-
-  const validateForm = (passenger) => {
-    const newErrors = {};
-    if (!passenger.ti) newErrors.ti = "Please select a title";
-    if (!passenger.fN) newErrors.fN = "First name is required";
-    if (!passenger.lN) newErrors.lN = "Last name is required";
-    if (!passenger.dob) newErrors.dob = "Date of birth is required";
-    if (!passenger.pNat) newErrors.pNat = "Nationality is required";
-
-    const passportFields = ["pNum", "eD", "pid"];
-    const filledPassportFields = passportFields.filter(
-      (field) => passenger[field]
-    );
-
-    if (filledPassportFields.length > 0 && filledPassportFields.length < 3) {
-      passportFields.forEach((field) => {
-        if (!passenger[field]) {
-          newErrors[field] = "All passport details are required";
-        }
-      });
+  const getFormattedData = () => {
+    if (cancelWholeTicket) {
+      return {
+        bookingId,
+        type: "CANCELLATION",
+        remarks,
+      };
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    const tripsData = selectedTrips.map((tripIndex) => {
+      const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
 
-  const handleEdit = (passenger) => {
-    console.log({ passenger });
-    setNewPassenger({
-      ...passenger,
-      pNat: passenger.pNat
-        ? options.find((option) => {
-            return option.value === passenger.pNat;
-          })
-        : null,
+      const tripData = {
+        src: trip?.sI[0].da.code,
+        dest:
+          trip.sI.length === 1
+            ? trip?.sI[0].aa.code
+            : trip?.sI[trip.sI.length - 1].aa.code,
+        departureDate: convertDateFormat(trip?.sI[0].dt),
+      };
+
+      const tripTravelers = selectedTravelers
+        .filter((traveler) => traveler.startsWith(`${tripIndex}-`))
+        .map((traveler) => {
+          const travelerIndex = parseInt(traveler.split("-")[1]);
+          const travelerData =
+            fullBookingData?.itemInfos?.AIR?.travellerInfos[travelerIndex];
+          return {
+            fn: travelerData.fN,
+            ln: travelerData.lN,
+          };
+        });
+
+      if (tripTravelers.length > 0) {
+        tripData.travellers = tripTravelers;
+      }
+
+      return tripData;
     });
 
-    setEditingId(passenger._id);
-  };
-
-  const handleUpdate = async () => {
-    if (validateForm(newPassenger)) {
-      try {
-        const updatedPassenger = {
-          ...newPassenger,
-          pNat: newPassenger.pNat ? newPassenger.pNat : null,
+    // Include trips for travelers that don't have their trips selected
+    selectedTravelers.forEach((travelerKey) => {
+      const [tripIndex] = travelerKey.split("-").map(Number);
+      if (!selectedTrips.includes(tripIndex)) {
+        const trip = fullBookingData?.itemInfos?.AIR?.tripInfos[tripIndex];
+        const tripData = {
+          src: trip?.sI[0].da.code,
+          dest:
+            trip.sI.length === 1
+              ? trip?.sI[0].aa.code
+              : trip?.sI[trip.sI.length - 1].aa.code,
+          departureDate: convertDateFormat(trip?.sI[0].dt),
         };
-        const response = await axios.put(
-          `${
-            import.meta.env.VITE_SERVER_URL
-          }user/update-passenger/${editingId}`,
-          updatedPassenger,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        if (response.status === 200)
-          ReactToast("Passenger updated successfully");
-        getPassengersHandler();
-        setNewPassenger({
-          ti: "",
-          fN: "",
-          lN: "",
-          dob: "",
-          pNum: "",
-          eD: "",
-          pid: "",
-          pNat: null,
-        });
-        setEditingId(null);
-      } catch (error) {
-        console.log(error.message);
+
+        const tripTravelers = selectedTravelers
+          .filter((traveler) => traveler.startsWith(`${tripIndex}-`))
+          .map((traveler) => {
+            const travelerIndex = parseInt(traveler.split("-")[1]);
+            const travelerData =
+              fullBookingData?.itemInfos?.AIR?.travellerInfos[travelerIndex];
+            return {
+              fn: travelerData.fN,
+              ln: travelerData.lN,
+            };
+          });
+
+        if (tripTravelers.length > 0) {
+          tripData.travellers = tripTravelers;
+        }
+
+        tripsData.push(tripData);
       }
-    }
-  };
-
-  const handleDelete = async (id) => {
-    console.log({ id });
-    try {
-      await axios.put(
-        `${
-          import.meta.env.VITE_SERVER_URL
-        }user/remove-passenger?passengerId=${id}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      getPassengersHandler();
-      ReactToast("Passenger Deleted Succesfully");
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const handleAdd = async () => {
-    if (validateForm(newPassenger)) {
-      try {
-        const response = await axios.put(
-          `${import.meta.env.VITE_SERVER_URL}user/add-passenger`,
-          newPassenger,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        if (response.status === 200) ReactToast("Passenger added successfully");
-        getPassengersHandler();
-        setNewPassenger({
-          ti: "",
-          fN: "",
-          lN: "",
-          dob: "",
-          pNum: "",
-          eD: "",
-          pid: "",
-          pNat: null,
-        });
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-  };
-
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setNewPassenger({
-      ti: "",
-      fN: "",
-      lN: "",
-      dob: "",
-      pNum: "",
-      eD: "",
-      pid: "",
-      pNat: null,
     });
+
+    return {
+      bookingId,
+      type: "CANCELLATION",
+      remarks,
+      trips: tripsData,
+    };
   };
 
-  const customFilterOption = (option, inputValue) => {
-    const { label, value } = option;
+  const submitAmendment = async () => {
+    setAmendmentLoadin(true);
+    const data = getFormattedData();
 
-    return (
-      label.toLowerCase().includes(inputValue.toLowerCase()) ||
-      value.toLowerCase().includes(inputValue.toLowerCase())
-    );
+    try {
+      if (!remarks) toast("enter remarks");
+      else {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        if (cancelWholeTicket) {
+          const response = await axios.post(
+            `${import.meta.env.VITE_SERVER_URL}booking/submit-amendment`,
+            { bookingId: data.bookingId, remarks, type: data.type },
+            { headers }
+          );
+          console.log({ response });
+        } else {
+          console.log({ data });
+          const response = await axios.post(
+            `${import.meta.env.VITE_SERVER_URL}booking/submit-amendment`,
+            data,
+            { headers }
+          );
+          console.log({ response });
+        }
+      }
+      setAmendmentLoadin(false);
+      setModalIsOpen(false);
+      window.location.reload();
+      ReactToast("Amendment Submitted");
+    } catch (error) {
+      ReactToast(error.response.data.errors[0].message);
+      setAmendmentLoadin(false);
+      setModalIsOpen(false);
+      toast(error.response.data.errors[0].message);
+    }
   };
 
-  const formatOptionLabel = ({ label, value }) => (
-    <div className="flex items-center">
-      <Flag code={value} style={{ width: "20px", marginRight: "8px" }} />
-      {label}
-    </div>
-  );
+  const handleConfirm = (selection) => {
+    if (selection == "no") {
+      ReactToast("press yes to confirm submit amendment");
+    } else {
+      submitAmendment();
+    }
+  };
+  const [activeTrip, setActiveTrip] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
 
-  const startIndex = (currentPage - 1) * passengersPerPage;
-  const currentPassengers = passengerDetails.slice(
-    startIndex,
-    startIndex + passengersPerPage
-  );
-  const totalPages = Math.ceil(passengerDetails.length / passengersPerPage);
+  const trips = [
+    { id: 1, title: "Trip 1", details: "Details of Trip 1" },
+    { id: 2, title: "Trip 2", details: "Details of Trip 2" },
+    { id: 3, title: "Trip 3", details: "Details of Trip 3" },
+    { id: 4, title: "Trip 4", details: "Details of Trip 4" },
+    { id: 5, title: "Trip 5", details: "Details of Trip 5" },
+  ];
+  const handleClick = (tripId) => {
+    setActiveTrip(tripId);
+    setShowDetails(true);
+  };
 
   return (
-    <div className="w-full h-full p-4 bg-gray-100">
-      <h2 className="text-2xl font-bold mb-4 text-indigo-700">
-        Edit Passenger Details
-      </h2>
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-indigo-600 text-white">
-            <tr>
-              {[
-                "Title",
-                "First Name",
-                "Last Name",
-                "DOB",
-                "Passport No.",
-                "Expiry Date",
-                "Issue Date",
-                "Nationality",
-                "Actions",
-              ].map((header) => (
-                <th key={header} className="py-2 px-3 text-left">
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {currentPassengers.map((passenger) => (
-              <tr key={passenger._id} className="border-b hover:bg-gray-50">
-                {["ti", "fN", "lN", "dob", "pNum", "eD", "pid"].map((field) => (
-                  <td key={field} className="py-2 px-3">
-                    {passenger[field] || "N/A"}
-                  </td>
-                ))}
-                <td className="py-2 px-3">
-                  {getName(passenger.pNat) || "N/A"}
-                </td>
-                <td className="py-2 px-3">
-                  <button
-                    onClick={() => handleEdit(passenger)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(passenger._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex justify-center mt-4">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentPage(i + 1)}
-            className={`mx-1 px-3 py-1 rounded ${
-              currentPage === i + 1
-                ? "bg-indigo-600 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+    <div className="px-4 py-4 flex justify-center items-center  h-[70vh] w-full">
+      <div className="px-4 py-4 h-[70vh] bg-white  w-full rounded-lg">
+        <div className="transition-padding duration-300 h-full w-full">
+          {Loading ? (
+            <div className="flex justify-center items-center w-full h-full">
+              <motion.div
+                className="w-12 h-12 border-4 border-t-4 border-t-[#D7B56D] border-gray-200 rounded-full"
+                variants={spinnerVariants}
+                animate="animate"
+              />
+            </div>
+          ) : (
+            <div>
+              <div>
+                {searchQuery?.isDomestic === false &&
+                searchQuery?.searchType !== "ONEWAY" ? (
+                  <ComboAmendment singleBookingData={singleBookingData} />
+                ) : (
+                  <>
+                    <h3 className="text-base md:text-lg  font-semibold mb-4 text-left">
+                      Select the Trips and Passengers to Cancel
+                    </h3>
+                    <label className="flex items-center mt-2">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox h-6 w-6 text-[#1B1D29] border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                        onChange={handleCancelWholeTicket}
+                        checked={cancelWholeTicket}
+                      />
+                      <span
+                        className={`ml-3 md:text-sm  font-semibold  p-1 rounded-md ${
+                          cancelWholeTicket ? "border-[#1B1D29]" : "bg-gray-100"
+                        }`}
+                      >
+                        Select to cancel all the trip
+                      </span>
+                    </label>
+                    <div className="flex">
+                      {fullBookingData?.itemInfos?.AIR?.tripInfos.map(
+                        (trip, tripIndex) => (
+                          <div key={tripIndex} className="mt-4  ">
+                            <div
+                              className={`flex flex-col gap-1 p-2 mb-2 text-sm md:text-base font-bold border rounded-lg ${
+                                selectedTrips.includes(tripIndex) &&
+                                "border-[#1B1D29] bg-blue-200"
+                              }`}
+                            >
+                              <div className="flex justify-between items-center">
+                                <span>
+                                  Trip {tripIndex + 1}
+                                  <p className="text-[#1B1D29] text-base md:text-lg font-bold">
+                                    {trip?.sI[0].da.code} -
+                                    {trip.sI.length === 1
+                                      ? trip?.sI[0].aa.code
+                                      : trip?.sI[trip.sI.length - 1].aa.code}
+                                  </p>
+                                </span>
+                              </div>
+
+                              <label className="flex items-center mt-2">
+                                <input
+                                  type="checkbox"
+                                  className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                                  onChange={() =>
+                                    handleTripSelection(tripIndex)
+                                  }
+                                  checked={selectedTrips.includes(tripIndex)}
+                                  disabled={cancelWholeTicket}
+                                />
+                                <span className="ml-3 text-sm font-semibold">
+                                  Cancel this trip
+                                </span>
+                              </label>
+                              <button
+                                onClick={() => toggleDropdown(tripIndex)}
+                                className="text-[#1B1D29] text-sm font-bold"
+                              >
+                                {openDropdowns.includes(tripIndex)
+                                  ? "Hide Passenger(s)"
+                                  : "Show Passenger(s)"}
+                              </button>
+                            </div>
+                            <div>
+                              <div>
+                                {/* <button
+                                onClick={() => toggleDropdown(tripIndex)}
+                                className="text-[#1B1D29] text-sm font-bold"
+                              >
+                                {openDropdowns.includes(tripIndex)
+                                  ? "Hide Passenger(s)"
+                                  : "Show Passenger(s)"}
+                              </button> */}
+                              </div>
+                              {openDropdowns.includes(tripIndex) && (
+                                <div className="ml-4">
+                                  {fullBookingData?.itemInfos?.AIR?.travellerInfos.map(
+                                    (traveler, travelerIndex) => (
+                                      <div
+                                        key={travelerIndex}
+                                        className={`flex flex-wrap items-center p-4 rounded-lg mt-2 ${
+                                          selectedTravelers.includes(
+                                            `${tripIndex}-${travelerIndex}`
+                                          )
+                                            ? "border border-[#1B1D29]"
+                                            : "border"
+                                        }`}
+                                      >
+                                        <div className="flex flex-wrap ">
+                                          <div className="h-8 md:h-16 w-8 md:w-16 flex items-center justify-center bg-[#1B1D29] text-white font-medium text-xl rounded-full mr-4">
+                                            {traveler.fN
+                                              .charAt(0)
+                                              .toUpperCase()}
+                                          </div>
+                                          <div>
+                                            <div className="text-sm font-bold">
+                                              {traveler.fN} {traveler.lN}
+                                            </div>
+                                            <div className="text-sm font-bold">
+                                              {traveler.dob}
+                                            </div>
+                                            <div className="text-sm font-bold">
+                                              {traveler.pt}
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className="ml-auto">
+                                          <input
+                                            type="checkbox"
+                                            className="form-checkbox h-6 w-6 text-yellow-500 border-gray-300 rounded focus:ring-yellow-500 focus:outline-none"
+                                            onChange={() =>
+                                              handleTravelerSelection(
+                                                tripIndex,
+                                                travelerIndex
+                                              )
+                                            }
+                                            checked={selectedTravelers.includes(
+                                              `${tripIndex}-${travelerIndex}`
+                                            )}
+                                            disabled={
+                                              cancelWholeTicket ||
+                                              selectedTrips.includes(tripIndex)
+                                            }
+                                          />
+                                        </div>
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                    <div className="mt-4">
+                      <label className="block text-[#1B1D29] font-semibold mb-2">
+                        Remarks
+                      </label>
+                      <textarea
+                        className="form-textarea mt-1 block w-[96%] rounded-md border border-gray-800 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-2"
+                        rows="3"
+                        value={remarks}
+                        onChange={(e) => setRemarks(e.target.value)}
+                      ></textarea>
+                    </div>
+                    <div className="mt-8">
+                      {amendmentLoading ? (
+                        <>
+                          <div className="flex justify-center items-center h-full">
+                            <motion.div
+                              className="w-12 h-12 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full"
+                              variants={spinnerVariants}
+                              animate="animate"
+                            />
+                          </div>
+                        </>
+                      ) : (
+                        <button
+                          className="px-4 py-2 bg-[#1B1D29] text-white font-semibold mb-4 rounded-md transition-colors"
+                          // onClick={submitAmendment}
+                          onClick={openModal}
+                        >
+                          Submit Cancellation
+                        </button>
+                      )}
+                      <CancelConfirmModal
+                        isOpen={isModalOpen}
+                        onClose={closeModal}
+                        onConfirm={handleConfirm}
+                        title="Confirmation"
+                        message="Are you sure you want to proceed?"
+                      />
+                    </div>
+                  </>
+                )}
+
+                <div>
+                  {/* <div className="w-full border-2 bg-blue-100 flex gap-2 overflow-x-scroll">
+        {trips.map((trip) => (
+          <div
+            key={trip.id}
+            className={`min-w-32 h-16 rounded-md cursor-pointer flex justify-center items-center p-2 ${
+              activeTrip === trip.id ? 'bg-red-600' : 'bg-red-400'
             }`}
+            onClick={() => handleClick(trip.id)}
           >
-            {i + 1}
-          </button>
-        ))}
-      </div>
-      <h3 className="text-xl font-bold mt-8 mb-4 text-indigo-700">
-        {editingId ? "Edit Passenger" : "Add New Passenger"}
-      </h3>
-      <div className="bg-white rounded-lg shadow p-4 grid grid-cols-4 gap-4">
-        {["ti", "fN", "lN", "dob", "pNum", "eD", "pid", "pNat"].map((field) => (
-          <div key={field}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {field === "ti"
-                ? "Title"
-                : field === "fN"
-                ? "First Name"
-                : field === "lN"
-                ? "Last Name"
-                : field === "dob"
-                ? "Date of Birth"
-                : field === "pNum"
-                ? "Passport Number"
-                : field === "eD"
-                ? "Expiry Date"
-                : field === "pid"
-                ? "Issue Date"
-                : "Nationality"}
-            </label>
-            {field === "ti" ? (
-              <select
-                name={field}
-                value={newPassenger[field]}
-                onChange={handleInputChange}
-                className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                  errors[field] ? "border-red-500" : "border-gray-300"
-                }`}
-              >
-                <option value="">Select Title</option>
-                <option value="Mr">Mr</option>
-                <option value="Ms">Ms</option>
-                <option value="Master">Master</option>
-              </select>
-            ) : field === "pNat" ? (
-              <Select
-                options={options}
-                value={
-                  newPassenger.pNat
-                    ? {
-                        value: newPassenger?.pNat,
-                        label: getName(newPassenger?.pNat),
-                      }
-                    : null
-                }
-                onChange={handleNationalityChange}
-                filterOption={customFilterOption}
-                formatOptionLabel={formatOptionLabel}
-                styles={selectStyles}
-              />
-            ) : (
-              <input
-                type={
-                  field === "dob" || field === "eD" || field === "pid"
-                    ? "date"
-                    : "text"
-                }
-                name={field}
-                max={
-                  field === "dob"
-                    ? new Date().toISOString().split("T")[0]
-                    : undefined
-                }
-                value={newPassenger[field]}
-                onChange={handleInputChange}
-                className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                  errors[field] ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-            )}
-            {errors[field] && (
-              <p className="text-red-500 text-xs mt-1">{errors[field]}</p>
-            )}
+            <div>
+              <h1>{trip.title}</h1>
+              <h2>Trip Details</h2>
+            </div>
           </div>
         ))}
-        <div className="col-span-4 mt-4">
-          <button
-            onClick={editingId ? handleUpdate : handleAdd}
-            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-          >
-            {editingId ? "Update Passenger" : "Add Passenger"}
-          </button>
-          {editingId && (
-            <button
-              onClick={handleCancelEdit}
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2"
-            >
-              Cancel Edit
-            </button>
+      </div> */}
+
+                  {showDetails && activeTrip && (
+                    <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-100">
+                      <h2 className="text-lg font-bold mb-2">Trip Details</h2>
+                      <p>
+                        {trips.find((trip) => trip.id === activeTrip)?.details}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -385,39 +515,4 @@ const EditPassengerDetails = () => {
   );
 };
 
-const selectStyles = {
-  control: (provided, state) => ({
-    ...provided,
-    boxShadow: "none",
-    borderColor: state.isFocused ? "#2684FF" : "#E5E7EB",
-    borderRadius: "4px",
-    borderWidth: "1px",
-    height: "44px",
-    width: "83%",
-    "&:hover": {
-      borderColor: state.isFocused ? "#2684FF" : "#E5E7EB",
-    },
-  }),
-  indicatorSeparator: () => ({
-    display: "none",
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    padding: "4px",
-  }),
-  valueContainer: (provided) => ({
-    ...provided,
-    padding: "0 6px",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isSelected
-      ? "#4F46E5"
-      : state.isFocused
-      ? "#E5E7EB"
-      : "white",
-    color: state.isSelected ? "white" : "black",
-  }),
-};
-
-export default EditPassengerDetails;
+export default SubmitAmendment;

@@ -115,6 +115,7 @@ const ComboAmendment = ({ singleBookingData }) => {
           { headers }
         );
         console.log({ response });
+        window.location.reload();
         ReactToast("Cancellation request submitted successfully");
       } else {
         ReactToast(
