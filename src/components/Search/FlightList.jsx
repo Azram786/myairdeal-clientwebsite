@@ -228,7 +228,7 @@ const FlightList = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsSessionExpired(true);
-    }, 180);
+    }, 1800000);
     // 1800000
     return () => clearTimeout(timer);
   }, [navigate]);
