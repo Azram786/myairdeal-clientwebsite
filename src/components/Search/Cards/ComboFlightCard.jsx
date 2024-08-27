@@ -209,19 +209,20 @@ const ComboFlightCard = ({
                                   hour12: false,
                                 })}
                               </div>
+                              <div className="text-xs text-gray-500 line-clamp-2">
+                                {segment.da.city}, {segment.da.country}
+                              </div>
                               <div className="relative group">
                                 <div className="text-xs text-gray-500 line-clamp-2">
-                                  {segment.da.city}, {segment.da.country}
+                                  {segment.da.name}
                                 </div>
 
                                 {/* Tooltip */}
                                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
-                                  {segment.da.city}, {segment.da.country}
+                                  {segment.da.name}
                                 </div>
                               </div>
-                              <div className="text-xs text-gray-500 line-clamp-2">
-                                {segment.da.name}
-                              </div>
+
                               <div className="text-xs text-gray-500">
                                 {segment.da.terminal || "N/A"}
                               </div>
@@ -257,19 +258,18 @@ const ComboFlightCard = ({
                                   hour12: false,
                                 })}
                               </div>
+                              <div className="text-xs text-gray-500 line-clamp-2">
+                                {segment.aa.city}, {segment.aa.country}
+                              </div>
                               <div className="relative group">
                                 <div className="text-xs text-gray-500 line-clamp-2">
-                                  {segment.aa.city}, {segment.aa.country}
+                                  {segment.aa.name}
                                 </div>
 
                                 {/* Tooltip */}
                                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
-                                  {segment.aa.city}, {segment.aa.country}
+                                  {segment.aa.name}
                                 </div>
-                              </div>
-
-                              <div className="text-xs text-gray-500 line-clamp-2">
-                                {segment.aa.name}
                               </div>
                               <div className="text-xs text-gray-500">
                                 {segment.aa.terminal || "N/A"}
