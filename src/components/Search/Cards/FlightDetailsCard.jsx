@@ -128,16 +128,17 @@ const FlightDetailsCard = ({
         return (
           <div className="w-full bg-[#f0e1c0] ">
             <div className="text-lg font-bold bg-[#1B1D29] text-[#D7B56D] mb-4 pl-4 py-2 ">
-              {data[0]?.da?.city} → {data[data.length - 1]?.aa?.city} {" "}
+              {data[0]?.da?.city} → {data[data.length - 1]?.aa?.city}{" "}
               <span className="text-white text-sm">
-                On {" "}
+                On{" "}
                 {new Date(data[0].dt).toLocaleString("en-US", {
                   month: "short",
-                 
+
                   day: "numeric",
-                })},
+                })}
+                ,
                 {new Date(data[0].dt).toLocaleString("en-US", {
-                  weekday:"long",
+                  weekday: "long",
                 })}
               </span>
             </div>
@@ -197,13 +198,13 @@ const FlightDetailsCard = ({
                           {segment.da.city}, {segment?.da?.country}
                         </div>
                         <div className="relative group text-[10px]  text-xs text-gray-500">
-                        <span className="text-xs">{segment.da.name}</span>
+                          <span className="text-xs">{segment.da.name}</span>
 
-                        {/* Tooltip */}
-                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {segment.da.name}
+                          {/* Tooltip */}
+                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            {segment.da.name}
+                          </div>
                         </div>
-                      </div>
                         <div className="text-xs text-gray-500">
                           {segment.da.terminal || "N/A"}
                         </div>
@@ -241,13 +242,13 @@ const FlightDetailsCard = ({
                           {segment.aa.city}, {segment.aa.country}
                         </div>
                         <div className="relative group text-[10px]  text-xs text-gray-500">
-                        <span className="text-xs">{segment.aa.name}</span>
+                          <span className="text-xs">{segment.aa.name}</span>
 
-                        {/* Tooltip */}
-                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {segment.aa.name}
+                          {/* Tooltip */}
+                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            {segment.aa.name}
+                          </div>
                         </div>
-                      </div>
                         <div className="text-xs text-gray-500">
                           {segment.aa.terminal || "N/A"}
                         </div>
@@ -383,7 +384,16 @@ const FlightDetailsCard = ({
                 className="md:size-12  rounded-md  mr-6 md:flex hidden"
               />
               <div className="flex flex-col">
-                <h1 className="text-base font-bold">{startSegment?.da.code}</h1>
+              <div className="relative group text-base ">
+                        <div className="text-base font-bold line-clamp-2">
+                          {startSegment.da.code}
+                        </div>
+
+                        {/* Tooltip */}
+                        <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                          {startSegment.da.name}
+                        </div>
+                      </div>
 
                 <h1 className="text-xs w-[80px] sm:w-max">
                   {formatDateTime(startSegment?.dt)}
@@ -413,7 +423,16 @@ const FlightDetailsCard = ({
             {/* Arrival Information */}
             <div className="md:flex-row  flex-col  flex justify-center items-center mb-4 md:mb-0">
               <div className="flex flex-col">
-                <h1 className="text-base font-bold">{endSegment?.aa.code}</h1>
+                <div className="relative group text-base ">
+                  <div className="text-base font-bold line-clamp-2">
+                    {endSegment.aa.code}
+                  </div>
+
+                  {/* Tooltip */}
+                  <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                    {endSegment.aa.name}
+                  </div>
+                </div>
                 <h1 className="text-xs w-[80px] sm:w-max">
                   {formatDateTime(endSegment.at)}
                 </h1>

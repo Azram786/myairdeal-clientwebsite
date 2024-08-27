@@ -174,7 +174,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         calculateTotalPrice={calculateTotalPrice}
       /> */}
           <button
-        className="absolute top-24 md:top-[120px] right-1 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
+        className="absolute top-0 right-1 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
         onClick={toggleSidebar}
       >
         <BsFillFilterSquareFill className="w-6 h-6 white" />

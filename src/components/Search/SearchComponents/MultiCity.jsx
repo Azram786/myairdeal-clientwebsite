@@ -165,7 +165,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
-    <div className=" relative flex flex-col md:flex-row mb-3 relative">
+    <div className=" relative flex flex-col md:flex-row mb-3 ">
       {/* <SideBar
         flights={flightProps}
         filters={filters}
@@ -174,49 +174,55 @@ const MultiCity = ({ flightProps, passenger, query }) => {
         passenger={passenger}
       /> */}
       <button
-        className="absolute top-3 right-0  flex flex-col items-center justify-center  lg-custom:hidden"
-        onClick={toggleSidebar}
-      >
-        <BsFillFilterSquareFill className="w-6 h-6 white" />
-        <div className="text-xs white">Filters</div>
-      </button>
-      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
-        <div
-          className={`fixed h-full rounded-xl overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 md:z-0 bg-white transform ${
-            isSidebarOpen ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            marginTop: "2%",
-            marginBottom: "2%",
-            height: "auto",
-            width: "auto",
-          }}
-        >
-          <button
-            className="absolute top-4  right-4 z-50 white lg-custom:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          >
-            <FaTimes className="w-6 h-6" />
-          </button>
-          <div className="font-semibold p-2 text-base">Filters</div>
-          <SideBar
-            flights={flightProps}
-            filters={filters}
-            setFilters={setFilters}
-            activeTabIndex={activeTabIndex}
-            passenger={passenger}
-          />
-        </div>
+  className="absolute top-4 right-0 z-50 flex justify-center items-center flex-col lg-custom:hidden"
+  onClick={toggleSidebar}
+>
+  <BsFillFilterSquareFill className="w-6 h-6 white" />
+  <div className="text-xs white">Filters</div>
+</button>
 
-        {isSidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
-      </div>
+<div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
+  <div
+    className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 lg-custom:z-0 bg-white transform ${
+      isSidebarOpen ? "translate-x-0" : "translate-x-full"
+    } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
+    style={{
+      maxWidth: "100%",
+      maxHeight: "100%",
+      marginTop: "2%",
+      marginBottom: "2%",
+      height: "auto",
+      width: "auto",
+    }}
+  >
+    <button
+      className="absolute top-2 right-4 z-50 white lg-custom:hidden"
+      onClick={() => setIsSidebarOpen(false)}
+    >
+      <FaTimes className="w-6 h-6" />
+    </button>
+
+    <div className="font-semibold p-2 text-left text-base">Filters</div>
+    <div className="rounded-xl flex flex-col items-center">
+      <SideBar
+        flights={flightProps}
+        filters={filters}
+        setFilters={setFilters}
+        activeTabIndex={activeTabIndex}
+        passenger={passenger}
+      />
+    </div>
+  </div>
+
+  {isSidebarOpen && (
+    <div
+      className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
+      onClick={() => setIsSidebarOpen(false)}
+    />
+  )}
+</div>
+
+
       <div className=" flex-grow pb-20 ">
         <Tabs className="m-0" defaultActiveKey="0" onChange={handleTabChange}>
           {flightProps.map((flights, tabIndex) => {

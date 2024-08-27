@@ -129,8 +129,8 @@ const Contact = () => {
           </div>
           <div className="w-full sm:w-[90%] mt-6">
             <form className="px-6">
-              <div className="grid  grid-cols-1 lg-custom:grid-cols-2 gap-4">
-                <div className="flex flex-col">
+              <div className="grid  grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className=" w-full  flex flex-col ">
                   <label htmlFor="name" className="text-white  text-sm">
                     Name
                   </label>
@@ -141,7 +141,7 @@ const Contact = () => {
                     className=" p-2 mt-1 text-xs rounded-md  border border-gray-500 text-black bg-white"
                   />
                 </div>
-                <div className="flex flex-col">
+                <div className="w-full flex flex-col">
                   <label htmlFor="email" className="text-white text-sm">
                     Email
                   </label>
@@ -152,7 +152,7 @@ const Contact = () => {
                     className=" p-2 mt-1 text-xs rounded-md bg-white border border-gray-500 text-black"
                   />
                 </div>
-                <div className="flex flex-col">
+                <div className="w-full flex flex-col">
                   <label htmlFor="number" className="text-white text-sm">
                     Phone Number
                   </label>
@@ -163,7 +163,7 @@ const Contact = () => {
                     className=" p-2 mt-1 text-xs rounded-md bg-white border border-gray-500 text-black"
                   />
                 </div>
-                <div className="flex flex-col">
+                <div className=" w-full flex flex-col">
                   <label htmlFor="enquiry" className="text-white text-sm">
                     Enquiry About
                   </label>
@@ -177,14 +177,14 @@ const Contact = () => {
                     {/* Add more options here */}
                   </select>
                 </div>
-                <div className="flex  flex-col">
+                <div className="flex  w-full flex-col">
                   <label htmlFor="message" className="text-white text-sm">
                     Your Message
                   </label>
                   <textarea
                     id="message"
                     placeholder="Your Message"
-                    className=" w-[95%] p-2 mt-1 text-sm rounded-md bg-white border border-gray-500 text-black h-20"
+                    className=" p-2 mt-1 text-sm rounded-md bg-white border border-gray-500 text-black h-20"
                   >
 
                   </textarea>
