@@ -495,10 +495,10 @@ const SubmitAmendment = ({
                           <div
                             className={`flex flex-col gap-1 p-3 mb-2 text-sm border rounded-lg ${
                               selectedTrips.includes(tripIndex)
-                                ? "bg-[#7da2c2] border-[#1B1D29] text-black"
+                                ? "border-[5px] bg-[#D7B56D] border-[#9196b5] text-white"
                                 : activeTrip === tripIndex
-                                ? "bg-[#D7B56D] border-[#1B1D29] text-black"
-                                : "bg-gray-400 text-white"
+                                ? "bg-[#D7B56D] border-[#1B1D29] text-white"
+                                : "bg-[#D7B56D] text-white"
                             }`}
                           >
                             <div className="flex justify-between items-center">
