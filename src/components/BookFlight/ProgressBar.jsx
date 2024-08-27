@@ -13,12 +13,12 @@ const ProgressBar = ({ currentStep, onStepClick }) => {
   ];
 
   return (
-    <div className="flex justify-center mb-8 shadow-lg rounded-sm  border border-slate-50 w-full  py-4">
-      <div className="flex  items-center justify-between w-full mx-auto max-w-4xl px-4  overflow-x-auto md:overflow-x-visible snap-x snap-mandatory">
+    <div className="flex justify-center mx-auto mb-8 shadow-lg rounded-sm  border border-slate-50 w-full  py-4">
+      <div className="flex  items-center justify-around w-full mx-auto max-w-4xl  overflow-x-auto md:overflow-x-visible snap-x snap-mandatory">
         {" "}
         {/* Added ml-8 sm:ml-16 md:ml-24 */}
         {steps.map((step, index) => (
-          <div key={index} className="flex  w-full relative">
+          <div key={index} className="flex  mx-auto w-full">
             <div className="flex flex-col items-center">
               <div
                 className={`relative flex items-center mx-2 sm:mx-4 justify-center w-8 h-8 md:w-12 md:h-12 rounded-full cursor-pointer ${
