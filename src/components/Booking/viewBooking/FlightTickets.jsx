@@ -88,7 +88,7 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                 /> */}
                   {/* {trip.sI[0].fD.ai.name} */}
                   <img
-                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${trip.sI[0].fD.aI.code}.png`}
+                    src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${trip.sI[0].fD.aI.code}.png`}
                     onError={(e) => (e.currentTarget.src = defaultAirline)}
                     alt={trip?.sI[0].fD?.aI?.code}
                     className="w-12 h-10 "

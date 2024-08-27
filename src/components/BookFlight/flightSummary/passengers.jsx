@@ -206,14 +206,15 @@ const PassengerForm = forwardRef(
       setSavePassengerInfo(false);
     };
     return (
-      <div className="flex">
+      <div className="flex w-full">
         <form>
-          <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-evenly gap-2 items-center mx-4">
-            <div className="  flex justify-center items-center font-semibold">
+          <div className="flex flex-wrap  flex-col md:flex-row gap-2">
+            <div className=" mx-auto md:mx-4 md:justify-start flex  items-center font-semibold">
               <h2>
                 {passenger.passengerType} {passenger.typeCount}
               </h2>
             </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mx-4">
             <div className="  ">
               <Controller
                 name="title"
@@ -377,6 +378,7 @@ const PassengerForm = forwardRef(
                   )}
                 />
               )}
+            </div>
             </div>
             {condition?.dobe ||
               (passenger.passengerType === "INFANT" && (

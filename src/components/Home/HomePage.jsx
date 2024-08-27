@@ -16,6 +16,7 @@ import DownloadApp from "./AppDownload";
 import Service from "../Service/service";
 import { FiTable } from "react-icons/fi";
 import { clearResent, setUser } from "../../store/slices/aut.slice";
+import SplashScreen from "./SplashScreen";
 
 const HomePage = () => {
   const { pathname } = useLocation();
@@ -24,7 +25,7 @@ const HomePage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { token, resentSearch } = useSelector((state) => state.auth);
   const [ResentSearchData, setResentSearchData] = useState([]);
   const [typeOfTravel, setTypeOfTravel] = useState("one-way");
@@ -53,6 +54,7 @@ const HomePage = () => {
 
   async function getResentSearch() {
     try {
+      setLoading(true);
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`,
         {
@@ -61,7 +63,9 @@ const HomePage = () => {
           },
         }
       );
+
       setResentSearchData(response.data.data);
+      setLoading(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -180,7 +184,7 @@ const HomePage = () => {
         </div>
       ) : (
         <>
-          <Banner />
+          <Banner setLoading={setLoading} />
           <FilterSection
             formData={formData}
             setFormData={setFormData}

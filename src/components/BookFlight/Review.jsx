@@ -57,27 +57,35 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
             className="border  shadow-sm border-gray-300 rounded-lg p-2 mb-4"
           >
             <div className=" flex flex-wrap items-center justify-between bg-[#1B1D29] text-[#D7B56D]  p-2 rounded-t-lg">
-              <div className="text-base  font-semibold flex items-center">
-                <span>{item.sI[0].da.city}</span>
-                <FaArrowRight className="mx-2 inline" />
-                <span>{item.sI[item.sI.length - 1].aa.city}</span>
-                <div className="text-white text-sm mt-1 sm:mt-0 sm:ml-2">
-                  On{" "}
-                  {new Date(item.sI[0].dt).toLocaleDateString("en-US", {
-                    weekday: "short",
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </div>
-              </div>
-              <div className="flex justify-center items-center gap-2">
-                <div className="text-sm md:text-base  font-semibold text-white flex items-center">
-                  <FaRegClock className="mr-2 " />
-                  {calculateTotalDuration(item.sI)}
-                </div>
-              </div>
-            </div>
+                          <div className="md:text-base text-sm flex-wrap font-semibold flex items-center justify-between space-x-1">
+                            <div className="w-max">
+                              <span>{item.sI[0].da.city}</span>
+                              <FaArrowRight className="mx-2 inline" />
+                              <span>{item.sI[item.sI.length - 1].aa.city}</span>
+                            </div>
+                            <div className="text-white text-xs md:text-sm ">
+                              On{" "}
+                              {new Date(item.sI[0].dt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  weekday: "short",
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                }
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center gap-2">
+                            <div className="text-sm md:text-base   font-semibold text-white flex items-center">
+                              <span className="flex sm:hidden mr-2"> Duration:</span>
+                           
+                              <FaRegClock className="mr-2 " />
+                              
+                              {calculateTotalDuration(item.sI)}
+                            </div>
+                          </div>
+                        </div>
             {/* <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-200 p-2 rounded-t-lg mb-2">
               <div className="text-base sm:text-lg font-bold flex items-center">
                 <span>{item.sI[0].da.city}</span>
@@ -101,7 +109,7 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
             <div className="mt-4">
               {item.sI.map((segment, segmentIndex) => (
                 <React.Fragment key={segmentIndex}>
-                  <div className=" flex-wrap md:flex-nowrap w-full h-full flex items-center justify-between mb-4 ">
+                  <div className=" flex-wrap sm:flex-nowrap w-full h-full flex items-center justify-between  mb-4 ">
                     <div className="font-semibold text-xs flex flex-col items-start justify-start min-w-36  p-1 space-x-2">
                       <div className="w-16 h-16">
                         <img
@@ -124,95 +132,104 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                         </div>
                       </div>
                     </div>
-                    <div className=" flex-col text-left items-center w-full  md:min-w-[20%]">
-                      <div className=" text-lg font-bold">
-                        {segment.da.code}
-                      </div>
+                    <div className=" flex w-full sm:min-w-[80%]">
+                      <div className=" flex-col text-left items-center w-full  sm:min-w-[20%]">
+                        <div className=" text-lg font-bold">
+                          {segment.da.code}
+                        </div>
 
-                      <div className="text-sm font-semibold">
-                        <div className="mr-1">
-                          {" "}
-                          {new Date(segment.dt).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                          })}
-                          ,
-                          {new Date(segment.dt).toLocaleDateString("en-US", {
-                            weekday: "short",
-                          })}{" "}
-                          {new Date(segment.dt).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: false,
-                          })}
+                        <div className="text-xs md:text-sm font-semibold">
+                          <div className="mr-1">
+                            {" "}
+                            {new Date(segment.dt).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                            })}
+                            ,
+                            {new Date(segment.dt).toLocaleDateString("en-US", {
+                              weekday: "short",
+                            })}{" "}
+                            {new Date(segment.dt).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            })}
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-sm line-clamp-1">
-                        {segment.da.city}, {segment.da.country}
-                      </div>
-                      <div className="text-sm">{segment.da.name}</div>
-                      <div className="text-sm">
-                        {segment.da.terminal || "N/A"}
-                      </div>
-                    </div>
-                    <div className="flex-col items-center   w-full md:min-w-[20%]">
-                      <div className="text-center">
-                        <span className="text-xs">
-                          {(() => {
-                            const totalMinutes = segment.duration;
-                            const hours = Math.floor(totalMinutes / 60);
-                            const minutes = totalMinutes % 60;
-                            return `${hours}h ${minutes}m`;
-                          })()}
-                        </span>
-                      </div>
-                      <div className="flex justify-center items-center">
-                        <hr className="w-1/3 border-t border-gray-300" />
-                        <MdFlight className="w-7 h-5 mx-2 rotate-90" />
-                        <hr className="w-1/3 border-t border-gray-300" />
-                      </div>
-                      <div className="text-center text-sm">
-                        {/* {item.sI.length === 1 ? "Non Stop" : "Connection"} */}
-                        <div className="font-bold text-sm">
-                          {data?.searchQuery?.cabinClass || "No-Class"}
+                        <div className="text-xs md:text-sm line-clamp-1">
+                          {segment.da.city}, {segment.da.country}
                         </div>
-                        <p className="text-xs">Non Stop</p>
-                      </div>
-                    </div>
-                    <div className="flex-col  w-full md:min-w-[20%]  md:ml-24 items-center text-left  ">
-                      <div className="text-lg font-bold">{segment.aa.code}</div>
-                      <div className="text-sm font-semibold">
-                        <div className="mr-1">
-                          {" "}
-                          {new Date(segment.dt).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                          })}
-                          ,
-                          {new Date(segment.dt).toLocaleDateString("en-US", {
-                            weekday: "short",
-                          })}{" "}
-                          {new Date(segment.at).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: false,
-                          })}
+                        <div className="relative text-xs md:text-sm group">
+                          <span>{segment.da.name}</span>
+                          <div className="absolute left-0 bottom-full mb-2 w-max p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                            {segment.da.name}
+                          </div>
                         </div>
-                      </div>
-                      <div className="relative text-sm line-clamp-1">
-                        <span>
-                          {segment.aa.city}, {segment.aa.country}
-                        </span>
-                        <div className="absolute left-0 bottom-full mb-2 w-max p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                          {segment.aa.city}, {segment.aa.country}
-                        </div>
-                      </div>
 
-                      <div className="text-sm  line-clamp-1">
-                        {segment.aa.name}
+                        <div className="text-xs md:text-sm">
+                          {segment.da.terminal || "N/A"}
+                        </div>
                       </div>
-                      <div className="text-sm">
-                        {segment?.aa?.terminal || "N/A"}
+                      <div className="flex-col items-center text-center  p-4 xs:pr-16 sm:pr-10 md:pr-0 min-w-[20%]">
+                        <div className="text-center">
+                          <span className="text-xs">
+                            {(() => {
+                              const totalMinutes = segment.duration;
+                              const hours = Math.floor(totalMinutes / 60);
+                              const minutes = totalMinutes % 60;
+                              return `${hours}h ${minutes}m`;
+                            })()}
+                          </span>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <hr className="w-1/3 border-t border-gray-300" />
+                          <MdFlight className="w-7 h-5 mx-2 rotate-90" />
+                          <hr className="w-1/3 border-t border-gray-300" />
+                        </div>
+                        <div className="text-center text-sm">
+                          {/* {item.sI.length === 1 ? "Non Stop" : "Connection"} */}
+                          <div className="font-bold text-xs md:text-sm">
+                            {data?.searchQuery?.cabinClass || "No-Class"}
+                          </div>
+                          <p className="text-xs">Non Stop</p>
+                        </div>
+                      </div>
+                      <div className="flex-col  w-full md:min-w-[20%]  md:ml-24 items-center text-left  ">
+                        <div className="text-base md:text-lg font-bold">
+                          {segment.aa.code}
+                        </div>
+                        <div className="text-xs md:text-sm font-semibold">
+                          <div className="mr-1">
+                            {" "}
+                            {new Date(segment.dt).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                            })}
+                            ,
+                            {new Date(segment.dt).toLocaleDateString("en-US", {
+                              weekday: "short",
+                            })}{" "}
+                            {new Date(segment.at).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            })}
+                          </div>
+                        </div>
+                        <div className="text-xs md:text-sm  line-clamp-1">
+                          {segment.aa.city}, {segment.aa.country}
+                        </div>
+
+                        <div className="relative text-xs md:text-sm group">
+                          <span>{segment.da.name}</span>
+                          <div className="absolute left-0 bottom-full mb-2 w-max p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                            {segment.da.name}
+                          </div>
+                        </div>
+
+                        <div className="text-xs md:text-sm">
+                          {segment?.aa?.terminal || "N/A"}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -226,13 +243,13 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                       There is a Special No Meal fare Provided by the Airline
                     </span> */}
                     {segmentIndex !== item.sI.length - 1 && (
-                      <div className="flex justify-between bg-[#FFDE99] text-black p-3 rounded-xl mt-2 mb-4 w-[50%]">
-                        <div className="text-sm">Require to change plane</div>
+                      <div className="flex justify-between bg-[#FFDE99] text-black p-3 rounded-xl mt-2 mb-4 w-full md:w-[70%]">
+                        <div className="text-xs md:text-sm">Require to change plane</div>
                         <div className="text-base font-medium">
                           <span className="text-sm">
                             {item.sI.length > 1 && (
-                              <div className="text-center">
-                                <span className="text-sm">
+                              <div className="text-center flex justify-center items-center">
+                                <span className="text-xs md:text-sm">
                                   Total Layover Time:{" "}
                                   <span className="font-bold">
                                     {calculateLayoverTime(item.sI)}

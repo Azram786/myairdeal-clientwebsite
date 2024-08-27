@@ -1,20 +1,18 @@
 .slick-prev:before,
 .slick-next:before {
   color: #D7B56D;
-
-  font-size: 40px;
+  font-size: 40px; /* Default font size */
   /* Set the hover color for the arrow buttons */
 }
 
 .slick-prev {
-  left: -35px;
+  left: -35px; /* Default position */
   /* Adjust position if needed */
 }
 
 .slick-next {
-  right: -15px;
+  right: -15px; /* Default position */
   /* Adjust position if needed */
-
 }
 
 .slick-prev:hover:before,
@@ -22,16 +20,53 @@
   color: #D7B56D;
   /* Set the hover color for the arrow buttons */
 }
-@media(max-width:800px){
+
+/*AppDownload*/
+/* Custom CSS for controlling bottom overflow */
+.hide-bottom-overflow {
+  position: relative;
+  overflow: visible;
+}
+
+.hide-bottom-overflow::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px; /* Adjust height to hide bottom overflow */
+  background-color: #1B1D29; /* Background color to match the parent div */
+  z-index: 10;
+}
+
+/* Media query for screens below 800px */
+@media (max-width: 800px) {
+  .slick-prev:before,
+  .slick-next:before {
+    font-size: 30px; /* Smaller font size for smaller screens */
+  }
+
   .slick-prev {
-    left: -25px;
-    /* Adjust position if needed */
+    left: -25px; /* Adjust position */
   }
-  
+
   .slick-next {
-    right: -5px;
-    /* Adjust position if needed */
-  
+    right: -5px; /* Adjust position */
   }
-  
+}
+
+/* Media query for screens below 500px */
+@media (max-width: 500px) {
+  .slick-prev:before,
+  .slick-next:before {
+    font-size: 20px; /* Even smaller font size for very small screens */
+  }
+
+  .slick-prev {
+    left: -15px; /* Adjust position */
+  }
+
+  .slick-next {
+    right: 5px; /* Adjust position */
+  }
 }
