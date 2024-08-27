@@ -19,7 +19,7 @@ const RecentSearch = ({ ResentSearchData }) => {
   }, [resentSearch, dispatch]);
 
   const setResentStateHandler = (value) => {
-    console.log({ value })
+    console.log({ value });
 
     dispatch(setResentSearch(value));
   };
@@ -74,7 +74,7 @@ const RecentSearch = ({ ResentSearchData }) => {
             >
               <div className="flex flex-col space-y-2">
                 <div className="flex flex-row justify-between items-center">
-                  <div className="text-left w-[40%]">
+                  <div className="text-left w-[50%] ">
                     <div className="text-xs font-bold">
                       {search?.searchQuery.routeInfos[0].fromCityOrAirport
                         ?.code || "N/A"}
@@ -84,7 +84,7 @@ const RecentSearch = ({ ResentSearchData }) => {
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
                       {search?.searchQuery.searchModifiers.isDirectFlight ===
-                        true
+                      true
                         ? "Direct Flight"
                         : "Indirect flight "}
                     </div>

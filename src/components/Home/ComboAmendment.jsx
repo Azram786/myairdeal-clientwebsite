@@ -4,11 +4,12 @@ import { useSelector } from "react-redux";
 import ReactToast from "../util/ReactToast";
 import axios from "axios";
 
-const ComboAmendment = ({ singleBookingData }) => {
+const ComboAmendment = ({ singleBookingData, setMainModalIsOpen }) => {
   const { token } = useSelector((state) => state.auth);
   const [selectedTrips, setSelectedTrips] = useState([]);
   const [selectedPassengers, setSelectedPassengers] = useState([]);
   const [showPassengers, setShowPassengers] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [trips, setTrips] = useState(
     singleBookingData?.itemInfos?.AIR.tripInfos || []
   );
@@ -115,6 +116,8 @@ const ComboAmendment = ({ singleBookingData }) => {
           { headers }
         );
         console.log({ response });
+        setMainModalIsOpen(false);
+        window.location.reload();
         ReactToast("Cancellation request submitted successfully");
       } else {
         ReactToast(
@@ -122,18 +125,20 @@ const ComboAmendment = ({ singleBookingData }) => {
         );
       }
     } catch (error) {
+      window.location.reload();
+      setMainModalIsOpen(false);
       console.error(error.message);
       ReactToast("An error occurred while processing your request");
     }
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md max-w-lg mx-auto">
+    <div className="p-4 sm:p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-lg max-h-[90vh]">
       <div className="mb-6">
-        <label className="flex items-center space-x-2 text-lg">
+        <label className="flex items-center space-x-3 text-base sm:text-lg font-medium text-gray-700 cursor-pointer">
           <input
             type="checkbox"
-            className="form-checkbox h-5 w-5 text-blue-600"
+            className="form-checkbox h-5 w-5 sm:h-6 sm:w-6 text-red-600 border-gray-300 rounded focus:ring-red-500"
             onChange={toggleWholeTicketSelection}
             checked={selectWholeTicket}
           />
@@ -143,57 +148,62 @@ const ComboAmendment = ({ singleBookingData }) => {
 
       {!selectWholeTicket && (
         <>
-          <div className="mb-6">
-            <h3 className="font-bold text-lg mb-2">Select Trips to Cancel</h3>
-            <div className="space-y-3">
+          <div className="mb-6 ">
+            <h3 className="font-bold text-lg mb-4 text-gray-800">
+              Select Trips to Cancel
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-y-auto ">
               {trips.map((trip, index) => (
                 <div
                   key={index}
-                  className={`p-3 rounded-lg border ${
+                  className={`p-4 rounded-lg border ${
                     selectedTrips.includes(trip)
-                      ? "bg-blue-100 border-blue-500"
-                      : "bg-gray-50 border-gray-200"
-                  }`}
+                      ? "bg-[#D7B56D] border-[3px] border-gray-500"
+                      : "bg-[#D7B56D] border-gray-300 hover:bg-[#f1d392] transition"
+                  } flex items-center justify-between`}
                 >
-                  <label className="flex items-center justify-between cursor-pointer">
-                    <div className="flex items-center space-x-3">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox h-5 w-5 text-blue-600"
-                        checked={selectedTrips.includes(trip)}
-                        onChange={() => toggleTripSelection(trip)}
-                      />
-                      <div>
-                        <div className="font-semibold">
-                          {`${trip.sI[0].da.code} to ${
-                            trip.sI[trip.sI.length - 1].aa.code
-                          }`}
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          {`Flight ${trip.sI[0].fD.fN} on ${new Date(
-                            trip.sI[0].dt
-                          ).toLocaleDateString()}`}
-                        </div>
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="checkbox"
+                      className="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      checked={selectedTrips.includes(trip)}
+                      onChange={() => toggleTripSelection(trip)}
+                    />
+                    <div className="flex flex-col">
+                      <div className="font-semibold text-gray-900">
+                        {`${trip.sI[0].da.code} to ${
+                          trip.sI[trip.sI.length - 1].aa.code
+                        }`}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {`Flight ${trip.sI[0].fD.fN}`}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {new Date(trip.sI[0].dt).toLocaleDateString()}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <FaClock className="text-gray-400" />
+                        <span className="text-sm font-semibold text-gray-700">
+                          {new Date(trip.sI[0].dt).toLocaleTimeString("en-US", {
+                            hour12: false,
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
                       </div>
                     </div>
-                    <div className="text-right flex items-center space-x-1">
-                      <FaClock className="text-gray-600" />
-                      <span className="text-sm font-semibold">
-                        {new Date(trip.sI[0].dt).toLocaleTimeString()}
-                      </span>
-                    </div>
-                  </label>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="mb-6">
-            <h3 className="font-bold text-lg mb-2">
+            <h3 className="font-bold text-lg mb-2 text-gray-800">
               Select Passengers to Cancel
             </h3>
             <button
-              className="text-blue-600 text-sm mb-2"
+              className="text-blue-600 text-sm mb-2 focus:outline-none hover:underline"
               onClick={() => setShowPassengers(!showPassengers)}
             >
               {showPassengers ? "Hide passengers" : "Show passengers"}
@@ -205,23 +215,23 @@ const ComboAmendment = ({ singleBookingData }) => {
                   return (
                     <div
                       key={index}
-                      className={`flex items-center justify-between p-3 border rounded-lg ${
+                      className={`flex items-center justify-between p-4 border rounded-lg ${
                         selectedPassengers.includes(passenger)
-                          ? "bg-blue-100 border-blue-500"
-                          : "bg-gray-50 border-gray-200"
+                          ? "bg-blue-50 border-blue-500"
+                          : "bg-white border-gray-300 hover:bg-gray-100 transition"
                       }`}
                     >
                       <label className="flex items-center space-x-3 cursor-pointer">
                         <input
                           type="checkbox"
-                          className="form-checkbox h-5 w-5 text-blue-600"
+                          className="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                           checked={selectedPassengers.includes(passenger)}
                           onChange={() => togglePassengerSelection(passenger)}
                           disabled={selectedTrips.length > 0}
                         />
                         <div>
-                          <div className="font-semibold">{`${passenger.ti} ${passenger.fN} ${passenger.lN}`}</div>
-                          <div className="text-sm text-gray-600">{`${passenger.pNum} (${passenger.pNat})`}</div>
+                          <div className="font-semibold text-gray-900">{`${passenger.ti} ${passenger.fN} ${passenger.lN}`}</div>
+                          <div className="text-sm text-gray-500">{`${passenger.pNum} (${passenger.pNat})`}</div>
                         </div>
                       </label>
                       <div className="flex items-center space-x-2">
@@ -240,7 +250,7 @@ const ComboAmendment = ({ singleBookingData }) => {
       <div className="mb-6">
         <textarea
           placeholder="Reason for Cancellation (required)"
-          className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-700 placeholder-gray-400 border-gray-300"
           rows="4"
           value={remarks}
           onChange={(e) => setRemarks(e.target.value)}
@@ -248,12 +258,58 @@ const ComboAmendment = ({ singleBookingData }) => {
       </div>
 
       <button
-        className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors text-lg font-semibold flex items-center justify-center space-x-2"
-        onClick={cancelTicketHandler}
+        className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors text-lg font-semibold flex items-center justify-center space-x-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+        onClick={() => setIsModalOpen(true)}
       >
         <FaPlane className="transform rotate-45" />
         <span>Cancel Booking</span>
       </button>
+
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-lg p-6 sm:p-8 max-w-sm sm:max-w-md w-full mx-4 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              onClick={() => setIsModalOpen(false)}
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">
+              Cancel Ticket
+            </h2>
+            <p className="text-gray-700 mb-6">
+              Are you sure you want to Cancel?
+            </p>
+
+            <div className="mt-6 text-center">
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-[#1B1D29] transition-colors"
+                onClick={cancelTicketHandler}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

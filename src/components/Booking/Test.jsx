@@ -5,11 +5,11 @@ import { getCode, getName, getNames } from "country-list";
 import Flag from "react-world-flags";
 import Select from "react-select";
 import ReactToast from "../util/ReactToast";
+import { BiArrowBack } from "react-icons/bi";
 
-const EditPassengerDetails = () => {
+const EditPassengerDetails = ({ setIsModalOpen }) => {
   const [passengerDetails, setPassengerDetails] = useState([]);
   const [editingId, setEditingId] = useState(null);
-  console.log({ editingId });
   const [newPassenger, setNewPassenger] = useState({
     ti: "",
     fN: "",
@@ -34,7 +34,7 @@ const EditPassengerDetails = () => {
   useEffect(() => {
     getPassengersHandler();
   }, []);
-  console.log({ newPassenger });
+
   const getPassengersHandler = async () => {
     try {
       const response = await axios.get(
@@ -56,7 +56,7 @@ const EditPassengerDetails = () => {
   const handleNationalityChange = (selectedOption) => {
     setNewPassenger((prev) => ({
       ...prev,
-      pNat: selectedOption ? selectedOption.value : null,
+      pNat: selectedOption,
     }));
     setErrors((prev) => ({ ...prev, pNat: "" }));
   };
@@ -91,12 +91,9 @@ const EditPassengerDetails = () => {
     setNewPassenger({
       ...passenger,
       pNat: passenger.pNat
-        ? options.find((option) => {
-            return option.value === passenger.pNat;
-          })
+        ? options.find((option) => option.value === passenger.pNat)
         : null,
     });
-
     setEditingId(passenger._id);
   };
 
@@ -105,12 +102,13 @@ const EditPassengerDetails = () => {
       try {
         const updatedPassenger = {
           ...newPassenger,
-          pNat: newPassenger.pNat ? newPassenger.pNat : null,
+          pNat: newPassenger.pNat ? newPassenger.pNat.value : null,
         };
+        console.log({ updatedPassenger });
         const response = await axios.put(
           `${
             import.meta.env.VITE_SERVER_URL
-          }user/update-passenger/${editingId}`,
+          }user/edit-passenger?passengerId=${editingId}`,
           updatedPassenger,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -135,7 +133,6 @@ const EditPassengerDetails = () => {
   };
 
   const handleDelete = async (id) => {
-    console.log({ id });
     try {
       await axios.put(
         `${
@@ -144,9 +141,8 @@ const EditPassengerDetails = () => {
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       getPassengersHandler();
-      ReactToast("Passenger Deleted Succesfully");
+      ReactToast("Passenger Deleted Successfully");
     } catch (error) {
       console.log(error.message);
     }
@@ -155,9 +151,13 @@ const EditPassengerDetails = () => {
   const handleAdd = async () => {
     if (validateForm(newPassenger)) {
       try {
+        const passengerToAdd = {
+          ...newPassenger,
+          pNat: newPassenger.pNat ? newPassenger.pNat.value : null,
+        };
         const response = await axios.put(
           `${import.meta.env.VITE_SERVER_URL}user/add-passenger`,
-          newPassenger,
+          passengerToAdd,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (response.status === 200) ReactToast("Passenger added successfully");
@@ -194,7 +194,6 @@ const EditPassengerDetails = () => {
 
   const customFilterOption = (option, inputValue) => {
     const { label, value } = option;
-
     return (
       label.toLowerCase().includes(inputValue.toLowerCase()) ||
       value.toLowerCase().includes(inputValue.toLowerCase())
@@ -216,13 +215,114 @@ const EditPassengerDetails = () => {
   const totalPages = Math.ceil(passengerDetails.length / passengersPerPage);
 
   return (
-    <div className="w-full h-full p-4 bg-gray-100">
-      <h2 className="text-2xl font-bold mb-4 text-indigo-700">
-        Edit Passenger Details
-      </h2>
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
+    <div className="w-full h-full p-2 sm:p-4 bg-gray-100">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+        <h2 className="text-xl sm:text-2xl font-bold text-[#D7B56D] mb-2 sm:mb-0">
+          {editingId ? "Edit Passenger" : "Add New Passenger"}
+        </h2>
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="flex items-center text-lg sm:text-xl font-bold text-[#1B1D29] hover:text-[#31354d]"
+        >
+          <BiArrowBack className="mr-1" />
+          Go back
+        </button>
+      </div>
+
+      <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0  md:gap-2 lg:gap-4">
+          {["ti", "fN", "lN", "dob", "pNum", "eD", "pid", "pNat"].map(
+            (field) => (
+              <div key={field} className="mb-4 ">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {field === "ti"
+                    ? "Title"
+                    : field === "fN"
+                    ? "First Name"
+                    : field === "lN"
+                    ? "Last Name"
+                    : field === "dob"
+                    ? "Date of Birth"
+                    : field === "pNum"
+                    ? "Passport Number"
+                    : field === "eD"
+                    ? "Expiry Date"
+                    : field === "pid"
+                    ? "Issue Date"
+                    : "Nationality"}
+                </label>
+                {field === "ti" ? (
+                  <select
+                    name={field}
+                    value={newPassenger[field]}
+                    onChange={handleInputChange}
+                    className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#D7B56D] ${
+                      errors[field] ? "border-red-500" : "border-gray-300"
+                    }`}
+                  >
+                    <option value="">Select Title</option>
+                    <option value="Mr">Mr</option>
+                    <option value="Ms">Ms</option>
+                    <option value="Master">Master</option>
+                  </select>
+                ) : field === "pNat" ? (
+                  <Select
+                    options={options}
+                    value={newPassenger.pNat}
+                    onChange={handleNationalityChange}
+                    filterOption={customFilterOption}
+                    formatOptionLabel={formatOptionLabel}
+                    styles={selectStyles}
+                    // className="w-3/4"
+                  />
+                ) : (
+                  <input
+                    type={
+                      field === "dob" || field === "eD" || field === "pid"
+                        ? "date"
+                        : "text"
+                    }
+                    name={field}
+                    max={
+                      field === "dob"
+                        ? new Date().toISOString().split("T")[0]
+                        : undefined
+                    }
+                    value={newPassenger[field]}
+                    onChange={handleInputChange}
+                    className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#D7B56D] ${
+                      errors[field] ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+                )}
+                {errors[field] && (
+                  <p className="text-red-500 text-xs mt-1">{errors[field]}</p>
+                )}
+              </div>
+            )
+          )}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            onClick={editingId ? handleUpdate : handleAdd}
+            className="bg-[#1B1D29] text-[#D7B56D] px-4 py-2 rounded hover:bg-[#31354d] w-full sm:w-auto"
+          >
+            {editingId ? "Update Passenger" : "Add Passenger"}
+          </button>
+          {editingId && (
+            <button
+              onClick={handleCancelEdit}
+              className="text-[#1B1D29] bg-[#D7B56D] px-4 py-2 rounded hover:bg-[#eace92] w-full sm:w-auto"
+            >
+              Cancel Edit
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow mt-4 overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-indigo-600 text-white">
+          <thead className="text-[#D7B56D]">
             <tr>
               {[
                 "Title",
@@ -243,7 +343,10 @@ const EditPassengerDetails = () => {
           </thead>
           <tbody>
             {currentPassengers.map((passenger) => (
-              <tr key={passenger._id} className="border-b hover:bg-gray-50">
+              <tr
+                key={passenger._id}
+                className="text-[#1B1D29] border-b hover:bg-gray-50"
+              >
                 {["ti", "fN", "lN", "dob", "pNum", "eD", "pid"].map((field) => (
                   <td key={field} className="py-2 px-3">
                     {passenger[field] || "N/A"}
@@ -253,133 +356,40 @@ const EditPassengerDetails = () => {
                   {getName(passenger.pNat) || "N/A"}
                 </td>
                 <td className="py-2 px-3">
-                  <button
-                    onClick={() => handleEdit(passenger)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(passenger._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => handleEdit(passenger)}
+                      className="text-[#1B1D29] bg-[#D7B56D] px-3 py-1 rounded hover:bg-[#e2c88f]"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(passenger._id)}
+                      className="bg-[#1B1D29] text-[#D7B56D] px-3 py-1 rounded hover:bg-[#494f6c]"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-4 flex-wrap">
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i}
             onClick={() => setCurrentPage(i + 1)}
-            className={`mx-1 px-3 py-1 rounded ${
+            className={`m-1 px-3 py-1 rounded ${
               currentPage === i + 1
-                ? "bg-indigo-600 text-white"
+                ? "bg-[#D7B56D] text-white"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
           >
             {i + 1}
           </button>
         ))}
-      </div>
-      <h3 className="text-xl font-bold mt-8 mb-4 text-indigo-700">
-        {editingId ? "Edit Passenger" : "Add New Passenger"}
-      </h3>
-      <div className="bg-white rounded-lg shadow p-4 grid grid-cols-4 gap-4">
-        {["ti", "fN", "lN", "dob", "pNum", "eD", "pid", "pNat"].map((field) => (
-          <div key={field}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {field === "ti"
-                ? "Title"
-                : field === "fN"
-                ? "First Name"
-                : field === "lN"
-                ? "Last Name"
-                : field === "dob"
-                ? "Date of Birth"
-                : field === "pNum"
-                ? "Passport Number"
-                : field === "eD"
-                ? "Expiry Date"
-                : field === "pid"
-                ? "Issue Date"
-                : "Nationality"}
-            </label>
-            {field === "ti" ? (
-              <select
-                name={field}
-                value={newPassenger[field]}
-                onChange={handleInputChange}
-                className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                  errors[field] ? "border-red-500" : "border-gray-300"
-                }`}
-              >
-                <option value="">Select Title</option>
-                <option value="Mr">Mr</option>
-                <option value="Ms">Ms</option>
-                <option value="Master">Master</option>
-              </select>
-            ) : field === "pNat" ? (
-              <Select
-                options={options}
-                value={
-                  newPassenger.pNat
-                    ? {
-                        value: newPassenger?.pNat,
-                        label: getName(newPassenger?.pNat),
-                      }
-                    : null
-                }
-                onChange={handleNationalityChange}
-                filterOption={customFilterOption}
-                formatOptionLabel={formatOptionLabel}
-                styles={selectStyles}
-              />
-            ) : (
-              <input
-                type={
-                  field === "dob" || field === "eD" || field === "pid"
-                    ? "date"
-                    : "text"
-                }
-                name={field}
-                max={
-                  field === "dob"
-                    ? new Date().toISOString().split("T")[0]
-                    : undefined
-                }
-                value={newPassenger[field]}
-                onChange={handleInputChange}
-                className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                  errors[field] ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-            )}
-            {errors[field] && (
-              <p className="text-red-500 text-xs mt-1">{errors[field]}</p>
-            )}
-          </div>
-        ))}
-        <div className="col-span-4 mt-4">
-          <button
-            onClick={editingId ? handleUpdate : handleAdd}
-            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-          >
-            {editingId ? "Update Passenger" : "Add Passenger"}
-          </button>
-          {editingId && (
-            <button
-              onClick={handleCancelEdit}
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2"
-            >
-              Cancel Edit
-            </button>
-          )}
-        </div>
       </div>
     </div>
   );

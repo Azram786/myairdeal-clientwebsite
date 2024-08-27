@@ -4,7 +4,7 @@ const BaggageInformation = ({ item }) => {
   const passengerTypes = ["ADULT", "INFANT", "CHILDREN"];
 
   return (
-    <div className=" rounded-lg w-full gap-2 mx-auto justify-start  flex   ">
+    <div className=" rounded-lg w-full gap-2 mx-auto justify-start  flex flex-wrap ">
       <div className=" ">
         {/* <svg
           className="w-12 h-12 mb-2"
@@ -16,18 +16,18 @@ const BaggageInformation = ({ item }) => {
         </svg> */}
       </div>
       {/* <h3 className="text-lg font-semibold mb-4 text-center">Baggage Information</h3> */}
-      <div className=" flex flex-wrap justify-start  text-xs w-max gap-1 text-gray-600 rounded-md">
+      <div className=" flex flex-wrap justify-start  text-xs  gap-1 text-gray-600 rounded-md">
         {passengerTypes.map(
           (type) =>
             type === "ADULT" && (
-              <div className="flex">
+              <div className="flex flex-wrap">
                 <div className=" flex gap-2 justify-center items-center p-2 ">
                   <p className="font-bold  ">{type}</p>
                   <PiBagSimpleBold className="text-lg" />{" "}
                 </div>
                 <div
                   key={type}
-                  className="w-max  rounded-md p-3 flex gap-4 items-start "
+                  className="flex flex-wrap rounded-md p-3  gap-4 items-start "
                 >
                   <div className=" flex justify-between w-max">
                     <p>Cabin:</p>

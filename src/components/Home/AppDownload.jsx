@@ -1,15 +1,15 @@
 
-
+import "./ResentSearch.css"
 import React from "react";
 import mobile from "../../assets/home/mobile/Phonebg.png";
 
 const DownloadApp = () => {
   return (
-    <div className="px-3 md:px-16 mx-auto p-6 font-poppins overflow-hidden relative m-5">
+    <div className="px-3 md:px-16 mx-auto p-6 font-poppins overflow-hidden relative m-5  ">
       {/* <h2 className="text-base font-sans text-gray-500 font-bold">Download</h2> */}
       <h1 className="text-xl md:text-3xl font-bold mb-8">Download our app</h1>
       <div className="  flex flex-col md:flex-row items-center  bg-[#1B1D29] justify-between p-8 rounded-lg md:h-56">
-        <div className="relative w-full  flex  rounded-lg ">
+        <div className="relative w-full  flex   rounded-lg ">
           <section className=" text-white md:w-3/4">
             <h2 className="text-base md:text-2xl font-bold mb-4">
               We Are Available On PlayStore & AppStore!
@@ -26,7 +26,7 @@ const DownloadApp = () => {
               </button>
             </div>
           </section>
-          <div className="absolute md:flex hidden right-1 lg-custom:right-16  lg:right-20  -top-32 z-50 ">
+          <div className="absolute md:flex hidden right-1 lg-custom:right-16  lg:right-20  -top-32  ">
             <img
               src={mobile}
               alt="Mobile app preview"

@@ -136,9 +136,10 @@ const EnquiryForm = () => {
 
   return (
     <div className="mx-auto p-6 rounded-lg shadow-md text-white">
-      <h2 className="text-xl font-bold mb-6 text-[#D7B56D]">Enquiry Form</h2>
-      <div className="w-1/2 mx-auto bg-[#1B1D29] rounded-2xl p-4">
+      
+      <div className="lg-custom:w-1/2 mx-auto bg-[#1B1D29] rounded-2xl p-4">
         <form onSubmit={handleSubmit} className="w-3/4 mx-auto">
+        <h2 className="text-xl font-bold mb-6  text-[#D7B56D] p-2  text-center rounded-md" >Enquiry Form</h2>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Email</label>
             <input
@@ -148,7 +149,7 @@ const EnquiryForm = () => {
               onChange={handleInputChange}
               className={`w-full p-2 border ${
                 errors.email ? "border-red-500" : "border-gray-300"
-              } rounded-md bg-white text-black focus:outline-none`}
+              } rounded-md bg-white text-sm text-black focus:outline-none`}
               placeholder="Enter your email"
             />
             {errors.email && (
@@ -164,20 +165,21 @@ const EnquiryForm = () => {
               onChange={handlePhoneChange}
               inputStyle={{
                 width: "103%",
+           paddingLeft:"40px",
                 padding: "10px",
                 borderRadius: "6px",
-                backgroundColor: "#282C35",
+                backgroundColor: "white",
                 border: errors.phone
                   ? "1px solid #E53E3E"
                   : "1px solid #4A5568",
-                color: "white",
+                color: "black",
               }}
               buttonStyle={{
-                backgroundColor: "#282C35",
+                backgroundColor: "white",
                 border: "none",
               }}
               dropdownStyle={{
-                backgroundColor: "#282C35",
+                backgroundColor: "white",
                 borderColor: "#4A5568",
                 color: "red",
               }}
@@ -197,7 +199,7 @@ const EnquiryForm = () => {
               onChange={handleInputChange}
               className={`w-full p-2 border ${
                 errors.type ? "border-red-500" : "border-gray-300"
-              } rounded-md bg-white text-black focus:outline-none`}
+              } rounded-md bg-white text-black focus:outline-none text-sm`}
             >
               <option value="">Select a type</option>
               <option value="Private Jet">Private Jet</option>

@@ -25,36 +25,41 @@ function App() {
     <>
       <BrowserRouter>
         <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/sign-in" element={!token ? <Login /> : <HomePage />} />
-          <Route
-            path="/view-booking"
-            element={token ? <ViewBooking /> : <Login />}
-          />
-          <Route
-            path="/view-detailed-booking"
-            element={token ? <ViewDetailedBooking /> : <Login />}
-          />
-          <Route path="/search" element={<FlightList />} />
-          <Route path="/no-flights" element={<NoFlights />} />
-          <Route
-            path="/book-flight"
-            element={token ? <FlightSummaryPage /> : <Login />}
-          />
-          <Route path="/profile" element={token ? <Profile /> : <Login />} />
-          <Route
-            path="/enquiry"
-            element={token ? <EnquiryForm /> : <Login />}
-          />
+        <div className="pt-14">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/sign-in"
+              element={!token ? <Login /> : <HomePage />}
+            />
+            <Route
+              path="/view-booking"
+              element={token ? <ViewBooking /> : <Login />}
+            />
+            <Route
+              path="/view-detailed-booking"
+              element={token ? <ViewDetailedBooking /> : <Login />}
+            />
+            <Route path="/search" element={<FlightList />} />
 
-          <Route path="/enter-detail" element={<Signup />} />
-          <Route
-            path="/terms-and-conditions"
-            element={<TermsAndConditions />}
-          />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        </Routes>
+            <Route
+              path="/book-flight"
+              element={token ? <FlightSummaryPage /> : <Login />}
+            />
+            <Route path="/profile" element={token ? <Profile /> : <Login />} />
+            <Route
+              path="/enquiry"
+              element={token ? <EnquiryForm /> : <Login />}
+            />
+
+            <Route path="/enter-detail" element={<Signup />} />
+            <Route
+              path="/terms-and-conditions"
+              element={<TermsAndConditions />}
+            />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          </Routes>
+        </div>
         <Footer />
       </BrowserRouter>
     </>
