@@ -281,7 +281,7 @@ const OfferSection = ({ setFormData }) => {
               </div>
             </div>
           </div>
-          <div className="h-full px-6 py-6 text-white grid gap-6 grid-cols-2 sm:grid-cols-2 lg-custom:grid-cols-4">
+          <div className="h-full w-full justify-around py-6 text-white grid gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  lg-custom:grid-cols-4  ">
             {offers.map((offer, index) => (
               <div
                 key={index}
@@ -298,7 +298,7 @@ const OfferSection = ({ setFormData }) => {
                     toCityOrAirport: offer.src,
                   }));
                 }}
-                className="h-[25vh] md:h-[55vh]  w-full md:w-[260px] flex flex-wrap items-end rounded-[3%] transition-transform transform hover:scale-105 duration-300 ease-in-out"
+                className="h-[30vh] sm:h-[50vh]  w-full md:w-[270px] lg:w-[270px] gap-2 flex flex-wrap items-end rounded-[3%] transition-transform transform hover:scale-105 duration-300 ease-in-out"
               >
                 <div className="mb-5 w-full  px-5">
                   <div className="`flex w-full items-end justify-between">

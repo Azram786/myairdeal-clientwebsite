@@ -56,14 +56,14 @@ const Testimonials = () => {
   };
 
   return (
-    <div className="max-w-7xl my-2 mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-[#1B1D29]">
+    <div className="max-w-7xl my-2 mx-auto px-4 mb-16 sm:px-6 lg:px-8 py-12 bg-[#1B1D29]">
       <h2 className="text-center font-bold text-white text-base">Testimonials</h2>
       <h1 className="text-[#D7B56D] text-center text-xl sm:text-3xl font-bold mb-8">What Our Clients Say About Us</h1>
       <div className='px-2'>
       <Slider {...settings}>
       {testimonials.map((testimonial, index) => (
         <div key={index} className="p-4 mt-3">
-          <div className="bg-white rounded-lg shadow-lg p-4 relative transition-transform transform hover:scale-105 duration-300 ease-in-out">
+          <div className="bg-white min-h-80 rounded-lg shadow-lg p-4 relative transition-transform transform hover:scale-105 duration-300 ease-in-out">
             <img 
               src={testimonial.image || Avatar} 
               alt={testimonial.name} 

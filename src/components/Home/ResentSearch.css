@@ -7,12 +7,12 @@
 }
 
 .slick-prev {
-  left: -25px;
+  left: -35px;
   /* Adjust position if needed */
 }
 
 .slick-next {
-  right: -14px;
+  right: -15px;
   /* Adjust position if needed */
 
 }
@@ -21,4 +21,17 @@
 .slick-next:hover:before {
   color: #D7B56D;
   /* Set the hover color for the arrow buttons */
+}
+@media(max-width:800px){
+  .slick-prev {
+    left: -25px;
+    /* Adjust position if needed */
+  }
+  
+  .slick-next {
+    right: -5px;
+    /* Adjust position if needed */
+  
+  }
+  
 }
