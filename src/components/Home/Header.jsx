@@ -75,7 +75,7 @@ const Header = () => {
 
   useEffect(() => {
     getProfileData();
-  }, []);
+  }, [token]);
 
   // Add event listener to detect clicks outside of the dropdown
   useEffect(() => {
