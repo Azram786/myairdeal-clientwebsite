@@ -74,7 +74,7 @@ const RecentSearch = ({ ResentSearchData }) => {
             >
               <div className="flex flex-col space-y-2">
                 <div className="flex flex-row justify-between items-center">
-                  <div className="text-left w-[40%]">
+                  <div className="text-left w-[50%] ">
                     <div className="text-xs font-bold">
                       {search?.searchQuery.routeInfos[0].fromCityOrAirport
                         ?.code || "N/A"}
