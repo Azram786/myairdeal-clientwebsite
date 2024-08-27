@@ -1,0 +1,21 @@
+.privacy-content-container > h1{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.privacy-content-container > h2{
+    font-size: 25px;
+    font-weight: bold;
+}
+.privacy-content-container > h3{
+    font-size: 20px;
+    font-weight: bold;
+}
+.privacy-content-container > h4{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.privacy-content-container li{
+    list-style: disc;
+}
