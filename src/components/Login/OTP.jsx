@@ -158,7 +158,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
                   />
                 </div>
               ) : (
-                `Resend OTP ${lastSearch}`
+                `Resend OTP`
               )}
             </motion.button>
           )}

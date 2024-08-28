@@ -93,7 +93,7 @@ const ViewDetailedBookingCard = ({
                       <div>
                         {/* <img className="h-[60px]" src={paymentFlight} alt="" /> */}
                         <img
-                          src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`}
+                          src={`https://api.myairdeal.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`}
                           onError={(e) =>
                             (e.currentTarget.src = defaultAirline)
                           }
@@ -239,7 +239,7 @@ const ViewDetailedBookingCard = ({
                       </div>
                     </div>
                     <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-full lg:w-full mx-auto  ">
-                    <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
+                      <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
                         <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
                           <MdDateRange />
                         </div>

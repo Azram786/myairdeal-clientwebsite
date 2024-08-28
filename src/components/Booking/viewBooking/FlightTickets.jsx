@@ -71,12 +71,16 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
       <div className="w-full  xl:w-[75%] justify-between  flex  flex-col gap-2">
         {booking?.data?.itemInfos?.AIR?.tripInfos?.map((trip, index) => (
           <div>
-             <div className="font-medium text-sm md:text-base"><span className="font-bold">Booking ID:  </span>{bookingID}</div>
+            {index === 0 && (
+              <div className="font-medium text-sm md:text-base">
+                <span className="font-bold">Booking ID: </span>
+                {bookingID}
+              </div>
+            )}
             <div
               key={index}
               className="flex  lg:flex-row  items-center justify-between flex-col sm:flex-row    p-5 gap-2 "
             >
-             
               <div
                 key={index}
                 className="flex  w-full items-center justify-center md:justify-between  flex-col gap-4  xs:flex-row xs:item-start  md:flex-row lg:flex-row xl:flex-row sm:w-[60%]  "
