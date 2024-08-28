@@ -201,14 +201,15 @@ const FlightTicket = ({ booking, index, bookingID, bookingFilter }) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 ">
                   <div className="text-[1.5rem]  bg-[#1B1D29]  text-[#D7B56D] mr-2  p-1 rounded-md">
                     <MdAirlineStops />
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Stops</div>
                     <div className="font-medium text-sm md:text-[15px]">
-                      {trip.sI.length}
+                      {trip.sI.length === 1 ?"Non-Stop" : trip.sI.length-1}
+
                     </div>
                   </div>
                 </div>

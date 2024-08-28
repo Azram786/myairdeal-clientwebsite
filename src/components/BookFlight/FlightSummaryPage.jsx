@@ -45,7 +45,7 @@ const FlightSummary = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    console.log("ScrollToTop effect triggered");
+
     window.scrollTo(0, 0);
   }, [pathname]);
 

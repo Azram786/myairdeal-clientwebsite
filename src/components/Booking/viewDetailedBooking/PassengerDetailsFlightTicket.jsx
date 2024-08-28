@@ -105,13 +105,13 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
                   <div key={segment}>
                     {segment}:{" "}
                     <span className="text-green-500">
-                      {passenger.pnrDetails[segment]}
+                      {passenger?.pnrDetails[segment]}
                     </span>{" "}
-                    ({passenger.ticketNumberDetails[segment]})
+                    ({passenger?.ticketNumberDetails[segment]})
                   </div>
                 ))}
               </td>
-              {console.log({ passenger })}
+              {console.log({ passenger },"khdghaskdjskm")}
               {(passenger?.ssrMealInfos && (
                 <td className="p-2  flex ">
                   {Object?.keys(passenger.ssrMealInfos)?.map((segment) => (

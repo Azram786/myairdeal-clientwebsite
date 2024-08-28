@@ -13,6 +13,7 @@ import Footer from "../../Home/Footer";
 import Spinner from "../../Profile/Spinner";
 import { motion } from "framer-motion";
 import ViewAmendmentDetails from "../viewDetailedBooking/ViewAmendmentDetails";
+import ViewTickets from "../viewDetailedBooking/ViewTickets";
 
 const ViewDetailedBooking = () => {
   const location = useLocation();
@@ -27,6 +28,7 @@ const ViewDetailedBooking = () => {
   const [amendment, setAmendment] = useState([]);
   const [data, setData] = useState(null);
   const { pathname } = useLocation();
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -224,7 +226,7 @@ const ViewDetailedBooking = () => {
             </div>
 
             <ViewAmendmentDetails amendment={amendment} />
-
+            <ViewTickets bookingId={bookingId} />
             <TicketLinks
               singleBookingData={singleBookingData}
               bookingFilter={bookingFilter}
