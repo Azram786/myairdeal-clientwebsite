@@ -1,8 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import ReactToast from "../util/ReactToast";
+import { useLocation} from "react-router-dom";
 
 const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const targetPosition = 400;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    const duration = 1000; // duration in milliseconds
+    let startTime = null;
+  
+    function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const run = ease(timeElapsed, startPosition, distance, duration);
+      window.scrollTo(0, run);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+  
+    function ease(t, b, c, d) {
+      t /= d / 2;
+      if (t < 1) return (c / 2) * t * t + b;
+      t--;
+      return (-c / 2) * (t * (t - 2) - 1) + b;
+    }
+  
+    requestAnimationFrame(animation);
+  }, [pathname]);
+  
+  
   const selectorRef = useRef(null);
 
   const handleCountChange = (type, count) => {
@@ -11,7 +39,10 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
 
     //   ReactToast("you have selected special fares")
     // }
-    if (formData.pft !== "REGULAR" && (type === "children" || type === "infant")) {
+    if (
+      formData.pft !== "REGULAR" &&
+      (type === "children" || type === "infant")
+    ) {
       console.log({ ticket: formData.pft, type });
 
       ReactToast("you have selected special fares");
@@ -37,7 +68,6 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
       else ReactToast(" You can only book 9 seats");
     }
     if (type === "infant" && formData.pft === "REGULAR") {
-
       if (count <= formData.ADULT)
         setFormData((prev) => ({
           ...prev,
@@ -62,10 +92,11 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
           <button
             key={index + start}
             onClick={() => handleCountChange(type, index + start)}
-            className={`${count == index + start
-              ? "bg-[#D7B56D] text-white"
-              : "bg-gray-200 text-black"
-              } rounded p-1 w-8`}
+            className={`${
+              count == index + start
+                ? "bg-[#D7B56D] text-white"
+                : "bg-gray-200 text-black"
+            } rounded p-1 w-8`}
           >
             {index + start}
           </button>
@@ -74,7 +105,6 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
     );
   };
 
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (selectorRef.current && !selectorRef.current.contains(event.target)) {
@@ -82,19 +112,24 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setModelIsOpen]);
 
-
   return (
-    <div ref={selectorRef} className="pb-4 md:p-5 flex  flex-col   
-      rounded-lg bg-white  px-8 mx-4">
+    <div
+      ref={selectorRef}
+      className="pb-4 md:p-5 flex  flex-col   
+      rounded-lg bg-white  px-8 mx-4"
+    >
       <div className="flex justify-between items-center mt-4 mb-4">
         <h3 className="font-semibold text-sm lg:text-lg">SELECT PASSENGER</h3>
-        <FaTimes className="cursor-pointer" onClick={() => setModelIsOpen(false)} />
+        <FaTimes
+          className="cursor-pointer"
+          onClick={() => setModelIsOpen(false)}
+        />
       </div>
       <div className="flex flex-col md:flex-row gap-4">
         <div className="md:w-2/3">
@@ -129,10 +164,11 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
                 >
                   <span className="text-[.8rem]">{classType}</span>
                   <span
-                    className={`${formData.cabinClass === classType
-                      ? "bg-[#D7B56D] border-black border"
-                      : "border-black border"
-                      } w-5 h-5 rounded-full flex items-center justify-center`}
+                    className={`${
+                      formData.cabinClass === classType
+                        ? "bg-[#D7B56D] border-black border"
+                        : "border-black border"
+                    } w-5 h-5 rounded-full flex items-center justify-center`}
                   >
                     {formData.cabinClass === classType && (
                       <div className="w-3 h-3 rounded-full"></div>

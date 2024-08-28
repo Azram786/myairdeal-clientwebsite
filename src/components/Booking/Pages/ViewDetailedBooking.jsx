@@ -13,6 +13,7 @@ import Footer from "../../Home/Footer";
 import Spinner from "../../Profile/Spinner";
 import { motion } from "framer-motion";
 import ViewAmendmentDetails from "../viewDetailedBooking/ViewAmendmentDetails";
+import ViewTickets from "../viewDetailedBooking/ViewTickets";
 
 const ViewDetailedBooking = () => {
   const location = useLocation();
@@ -95,7 +96,27 @@ const ViewDetailedBooking = () => {
     getSingleTicketDetailHandler();
   }, []);
 
+  console.log({ singleBookingData });
+
   // Calculate total only if singleBookingData and data are available
+
+  const traveller = singleBookingData?.itemInfos?.AIR?.travellerInfos[0];
+
+  const combinedInfo = {};
+
+  for (const [segment, baggage] of Object.entries(
+    traveller?.ssrBaggageInfos || {}
+  )) {
+    combinedInfo[segment] = { ...combinedInfo[segment], baggage };
+  }
+
+  for (const [segment, meal] of Object.entries(traveller?.ssrMealInfos || {})) {
+    combinedInfo[segment] = { ...combinedInfo[segment], meal };
+  }
+
+  for (const [segment, seat] of Object.entries(traveller?.ssrSeatInfos || {})) {
+    combinedInfo[segment] = { ...combinedInfo[segment], seat };
+  }
 
   return (
     <div className="">
@@ -161,6 +182,61 @@ const ViewDetailedBooking = () => {
                           )}{" "}
                       </div>
                     </div>
+                    <div>
+                      <h2>Baggage,Meals and Seats <span>{singleBookingData?.itemInfos?.AIR?.travellerInfos[0]}</span></h2>
+                      {Object.entries(combinedInfo).map(([segment, info]) => (
+                        <div key={segment} className="segment-info">
+                          <h4 className="text-base font-bold">
+                            Trip: {segment}
+                          </h4>
+                          {info.baggage && (
+                            <div className="baggage-info  w-full">
+                              <h4 className="text-sm font-semibold">
+                                Baggage Details
+                              </h4>
+                              <p className="text-sm w-full  flex justify-between ">
+                                Baggage Code:<span>{info.baggage.code}</span>
+                              </p>
+                              <p className="text-sm w-full  flex justify-between ">
+                                Amount: <span>₹{info.baggage.amount}</span>
+                              </p>
+                              <p className="text-sm w-full  flex justify-between ">
+                                Description:<span> {info.baggage.desc}</span>
+                              </p>
+                            </div>
+                          )}
+                          {info.meal && (
+                            <div className="meal-info">
+                              <h4 className="text-sm font-semibold">
+                                Meal Details
+                              </h4>
+                              <p className="text-sm w-full  flex justify-between">
+                                Meal Code: <span>{info.meal.code}</span>
+                              </p>
+                              <p className="text-sm w-full  flex justify-between">
+                                Amount: <span>₹{info.meal.amount}</span>
+                              </p>
+                              <p className="text-sm w-full  flex justify-between">
+                                Description: <span>{info.meal.desc}</span>
+                              </p>
+                            </div>
+                          )}
+                          {info.seat && (
+                            <div className="seat-info ">
+                              <h4 className="text-sm font-semibold">
+                                Seat Details
+                              </h4>
+                              <p className="text-sm w-full  flex justify-between">
+                                Seat Code:<span> {info.seat.code}</span>
+                              </p>
+                              <p className="text-sm w-full  flex justify-between">
+                                Amount: <span> ₹{info.seat.amount}</span>
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                     <div className=" flex flex-col">
                       <div
                         className="flex justify-between  cursor-pointer"
@@ -201,6 +277,7 @@ const ViewDetailedBooking = () => {
                                 .totalFareDetail.afC.TAF?.YR || "N/A"}
                             </div>
                           </div>
+
                           {/* Add other details as needed */}
                         </div>
                       )}
@@ -224,7 +301,7 @@ const ViewDetailedBooking = () => {
             </div>
 
             <ViewAmendmentDetails amendment={amendment} />
-
+            <ViewTickets bookingId={bookingId} />
             <TicketLinks
               singleBookingData={singleBookingData}
               bookingFilter={bookingFilter}

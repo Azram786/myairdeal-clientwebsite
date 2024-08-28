@@ -63,6 +63,7 @@
 import React from "react";
 
 const PassengerDetailsTable = ({ passengerDetails }) => {
+ 
   return (
     <div className="p-4 bg-white shadow rounded-lg">
       <h2 className="text-base md:text-lg font-bold mb-4">
@@ -73,10 +74,19 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
           <tr className="border-b">
             <th className="text-left p-2">Sl.no</th>
 
-            <th className="text-left p-2">Name,<br/> DOB  ,<br/>Passport & FF</th>
-            <th className="text-left p-2">PNR,<br/> Ticket No. <br/>& Status</th>
             <th className="text-left p-2">
-              Meal,<br/> Baggage, <br/>Seat & Other Preference
+              Name,
+              <br /> DOB ,<br />
+              Passport & FF
+            </th>
+            <th className="text-left p-2">
+              PNR,
+              <br /> Ticket No. <br />& Status
+            </th>
+            <th className="text-left p-2">
+              Meal,
+              <br /> Baggage, <br />
+              Seat & Other Preference
             </th>
             {/* <th className="text-left p-2">Document Id</th> */}
           </tr>
@@ -91,13 +101,15 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
                 {passenger.lN.toUpperCase()} ({passenger?.pt[0]})
                 <br />
                 <span className="text-gray-600 text-[.8rem]">
-                  {" "}
-                  DOB:{passenger?.dob} | PM: {passenger?.pNum}|
+                  {passenger?.dob && `DOB: ${passenger.dob}`}
+                  {passenger?.dob && passenger?.pNum && " | "}
+                  {passenger?.pNum && `PM: ${passenger.pNum}`}
                 </span>
                 <span className="block text-gray-600 text-[.8rem]">
                   {" "}
-                  N: {passenger?.pNat} | ID:{passenger?.pid} | ED :
-                  {passenger?.eD}
+                  {passenger?.pNat && `N:${passenger.pNat}`} {" "}
+                  {passenger?.pid && `| Id: ${passenger.pid}`} 
+                  {passenger?.eD && ` | ED : ${passenger.eD}`}
                 </span>
               </td>
               <td className="p-2">
@@ -105,13 +117,13 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
                   <div key={segment}>
                     {segment}:{" "}
                     <span className="text-green-500">
-                      {passenger.pnrDetails[segment]}
+                      {passenger?.pnrDetails[segment]}
                     </span>{" "}
-                    ({passenger.ticketNumberDetails[segment]})
+                    ({passenger?.ticketNumberDetails[segment]})
                   </div>
                 ))}
               </td>
-              {console.log({ passenger })}
+              {console.log({ passenger }, "khdghaskdjskm")}
               {(passenger?.ssrMealInfos && (
                 <td className="p-2  flex ">
                   {Object?.keys(passenger.ssrMealInfos)?.map((segment) => (

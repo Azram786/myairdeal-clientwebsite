@@ -17,10 +17,11 @@ const TicketRaising = ({ bookingId, closeModal }) => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       const response = await axios.post(
-        "https://myairdeal-backend.onrender.com/ticket/create-ticket",
-        { bookingId, ...data },
+        `${import.meta.env.VITE_SERVER_URL}ticket/create-ticket`,
+        { bookingId, ...data, product: "Flight" },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -28,7 +29,7 @@ const TicketRaising = ({ bookingId, closeModal }) => {
         }
       );
       if (response.status === 200) {
-        ReactToast("Your request is successfully sent. ");
+        ReactToast("Ticket Raised Successfully");
         closeModal();
       }
     } catch (error) {

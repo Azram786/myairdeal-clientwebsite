@@ -156,7 +156,7 @@ const Login = () => {
             <h2 className="font-medium text-[2.3rem]">Login</h2>
             <div className="mb-3">
               <h3 className="font-semibold text-[#1B1D29] text-[1.2rem]">
-                Login to access your Golobe account.
+                Login in to your account.
               </h3>
             </div>
 
