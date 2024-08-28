@@ -25,7 +25,7 @@ const HomePage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { token, resentSearch } = useSelector((state) => state.auth);
   const [ResentSearchData, setResentSearchData] = useState([]);
   const [typeOfTravel, setTypeOfTravel] = useState("one-way");
@@ -67,12 +67,13 @@ const HomePage = () => {
       setResentSearchData(response.data.data);
       setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error.message);
     }
   }
 
   useEffect(() => {
-    getResentSearch();
+    if (token) getResentSearch();
   }, []);
 
   const { isModifySearch } = useSelector((state) => state.auth);

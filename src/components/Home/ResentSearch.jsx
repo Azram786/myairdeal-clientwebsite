@@ -10,13 +10,13 @@ import { MdFlight } from "react-icons/md";
 
 const RecentSearch = ({ ResentSearchData }) => {
   const dispatch = useDispatch();
-  const { resentSearch } = useSelector((state) => state.auth);
+  const { resentSearch, token } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (resentSearch) {
-      // dispatch(clearResent())
-    }
-  }, [resentSearch, dispatch]);
+  // useEffect(() => {
+  //   if (resentSearch) {
+  //     // dispatch(clearResent())
+  //   }
+  // }, [resentSearch, dispatch]);
 
   const setResentStateHandler = (value) => {
     console.log({ value });
@@ -56,9 +56,9 @@ const RecentSearch = ({ ResentSearchData }) => {
       },
     ],
   };
-  // useEffect(() => {
 
-  // }, [resentSearch, dispatch]);
+  if (!token) return <></>;
+  
   return (
     <div className=" w-[90%]  text-center rounded-xl my-4 mb-10 justify-center mx-auto flex flex-col gap-5">
       <h1 className="font-semibold px-4 text-start text-2xl">Recent Search</h1>
