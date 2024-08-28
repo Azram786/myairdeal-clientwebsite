@@ -198,7 +198,7 @@ const FlightList = () => {
   }, [hasUserPressedBack]);
 
   function cleanRouteInfos(searchQueryParam) {
-    const searchQuery = searchQueryParam.searchQuery;
+    const searchQuery = searchQueryParam?.searchQuery;
     return {
       ...searchQuery,
       routeInfos: searchQuery.routeInfos.map((route) => ({
@@ -220,6 +220,9 @@ const FlightList = () => {
       setData(query);
     }
     if (!query || !data) {
+      if (!resentSearch) {
+        navigate("/");
+      }
       const cleanedQuery = cleanRouteInfos(resentSearch);
       setData({ searchQuery: cleanedQuery });
     }

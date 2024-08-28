@@ -227,10 +227,10 @@ const AddDetails = ({
           p.lastName.toLowerCase() === passenger.lastName.toLowerCase()
       );
     });
-    if (!isNameUnique) {
-      ReactToast("Passengers Cannot have Same Last Name and First Name");
-      return;
-    }
+    // if (!isNameUnique) {
+    //   ReactToast("Passengers Cannot have Same Last Name and First Name");
+    //   return;
+    // }
     passengers.map((passenger, index) => {
       isPassportUnique = isInternational
         ? !passengers.some(

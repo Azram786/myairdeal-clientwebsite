@@ -13,8 +13,9 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const [convenienceFee, setConvenienceFee] = useState(0);
-  const [errors, setErrors] = useState({});
+  const [Errors, setErrors] = useState(null);
   const [markUp, setMarkUp] = useState(null);
+  const [bookingHoldStatus, setBookingHoldStatus] = useState(false);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
 
@@ -188,6 +189,30 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
     return apiData;
   };
 
+  const callBookingHoldApi = async () => {
+    const { searchQuery, booking } = prepareApiData();
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}booking/complete-hold`,
+        {
+          searchQuery,
+          booking,
+        },
+        { headers: { authorization: `Bearer ${token}` } }
+      );
+      setBookingHoldStatus(true);
+      return true;
+    } catch (error) {
+      if (error?.response?.data?.errors[0]?.message) {
+        setErrors(error.response.data.errors[0].message);
+      } else {
+        setErrors("Server Error");
+      }
+      console.error(error);
+      return false;
+    }
+  };
+
   const callBookingApi = async (paymentResponse) => {
     const { searchQuery, booking } = prepareApiData(paymentResponse);
     setIsLoading(true);
@@ -197,9 +222,12 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
       baseFare: data?.totalPriceInfo?.totalFareDetail.fC?.BF || 0,
       markUp,
     };
+
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}booking/complete`,
+        `${import.meta.env.VITE_SERVER_URL}booking/hold-to-success/${
+          booking.bookingId
+        }`,
         {
           searchQuery,
           booking,
@@ -216,7 +244,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         ReactToast("Booking successful!");
         dispatch(clearResent());
         navigate(
-          `/view-detailed-booking?bookingId=${response?.data?.bookingId}&bookingFilter=UPCOMING`
+          `/view-detailed-booking?bookingId=${booking?.bookingId}&bookingFilter=UPCOMING`
         );
       }
     } catch (error) {
@@ -244,6 +272,12 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
     setIsProcessing(true);
 
     try {
+      if (!bookingHoldStatus) {
+        const bookingHoldSuccess = await callBookingHoldApi();
+        if (!bookingHoldSuccess) {
+          throw new Error("Failed to hold the booking. Please try again.");
+        }
+      }
       const res = await new Promise((resolve) => {
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -266,8 +300,6 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
         handler: handlePaymentSuccess,
         prefill: {
           name: `${passengersData.passengers[0]?.firstName} ${passengersData.passengers[0]?.lastName}`,
-          email: passengersData.passengers[0].email || "",
-          contact: passengersData.passengers[0]?.phone || "",
         },
         theme: { color: "#3399cc" },
         modal: { ondismiss: () => setIsProcessing(false) },
@@ -319,6 +351,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
             "Proceed to Payment"
           )}
         </button>
+        {Errors && <div>Error : {Errors}</div>}
       </div>
     </div>
   );
