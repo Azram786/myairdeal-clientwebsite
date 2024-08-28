@@ -226,29 +226,29 @@ const ViewAmendmentDetails = ({ amendment }) => {
   if (amendment.length < 1) return;
 
   return (
-    <div className="mx-3 flex flex-col gap-4 my-4">
-      <div className="bg-[#D7B56D] text-white font-bold p-4 rounded-md">
+    <div className="mx-3 flex flex-col gap-4 my-4  bg-[#f0e1c0] rounded-md">
+      <div className="text-[#D7B56D] bg-[#1B1D29] text-2xl font-bold p-4 rounded-t-md">
         Amendment List
       </div>
       {amendment.map((value) => {
         return (
           <div
-            className="flex flex-col md:flex-row items-center justify-between bg-blue-100 border-t border-blue-200 rounded-lg p-4"
+            className="flex flex-col md:flex-row items-center justify-between rounded-lg p-4"
             key={value.id}
           >
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-gray-700">
-                <span className="font-bold text-black ">Amendment ID</span> {value.id}
+                <span className="font-bold text-black ">Amendment ID :</span> {value.id}
               </h3>
               <p className="text-sm text-gray-700">
-                <span className="font-bold">Time</span> {timeFormatChanger(value.time)}
+                <span className="font-bold">Time :</span> {timeFormatChanger(value.time)}
               </p>
               <p className="text-sm text-gray-700">
-                <span className="font-bold">Date</span> {dateDateFormatChanger(value.time)}
+                <span className="font-bold">Date :</span> {dateDateFormatChanger(value.time)}
               </p>
             </div>
             <button
-              className="bg-[#D7B56D] h-full px-4 py-2 mt-4 md:mt-0 md:px-8 text-white rounded-md md:rounded-r-lg flex items-center"
+              className="text-[#D7B56D] bg-[#1B1D29] h-full px-4 py-2 mt-4 md:mt-0 md:px-8  rounded-md md:rounded-r-lg flex items-center"
               onClick={() => {
                 getAmendmentDetails(value.id);
                 handleButtonClick();

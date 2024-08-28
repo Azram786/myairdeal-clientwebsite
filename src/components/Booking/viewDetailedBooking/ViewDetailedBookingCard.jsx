@@ -46,6 +46,7 @@ const ViewDetailedBookingCard = ({
     });
     return totalDuration;
   };
+  console.log({ singleBookingData });
   return (
     <div className=" border-l-0 w-full lg:w-[72%] ">
       <div className="rounded-lg my-2">
@@ -88,7 +89,7 @@ const ViewDetailedBookingCard = ({
               <div className="flex flex-wrap gap-2 w-full py-2  lg:flex-row lg-custom:flex-nowrap">
                 <div className="border-2 bg-[#dce3e9] flex gap-3 p-2 rounded-lg flex-col w-full lg-custom:w-1/2 ">
                   <div className="  w-full">
-                    <div className="  text-left flex pl-2 items-center ">
+                    <div className="text-left flex pl-2 items-center ">
                       <div>
                         {/* <img className="h-[60px]" src={paymentFlight} alt="" /> */}
                         <img
@@ -108,6 +109,15 @@ const ViewDetailedBookingCard = ({
                           <div className="font-semibold text-base md:text-lg">
                             {value?.sI[0].fD?.aI.name}
                           </div>
+
+                          {value?.sI.length === 1 && (
+                            <div className="flex">
+                              <MdFlight className="w-3 h-3 rotate-45" />
+                              <div className="font-semibold text-xs">
+                                {value?.sI[0].fD?.fN}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -175,7 +185,7 @@ const ViewDetailedBookingCard = ({
                     </div>
                   </div>
                 </div>
-                <div className="w-full  flex flex-col lg:items-center justify-center lg:justify-start">
+                <div className="w-full flex flex-col lg:items-center justify-center lg:justify-start">
                   <div className="justify-center p-2  rounded-lg flex items-center gap-3">
                     <h1 className="text-base md:text-xl  font-semibold text-gray-800 ">
                       Total Duration :
@@ -184,102 +194,97 @@ const ViewDetailedBookingCard = ({
                       {formatDuration(totalDurationHandler(value.sI))}
                     </h1>
                   </div>
-<div>
-                  <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-[80%] lg:w-full mx-auto  ">
+                  <div className="w-full">
+                    <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-full   ">
+                      <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
+                          <MdDateRange />
+                        </div>
+                        <div>
+                          <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
+                            Departure Date
+                          </div>
+                          <div className="font-semibold text-sm ">
+                            {dateDateFormatChanger(value.sI[0].dt)}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
+                          <IoIosTime />
+                        </div>
+                        <div>
+                          <div className="text-[#495049] w-max text-xs md:text-sm  font-semibold">
+                            Departure Time
+                          </div>
+                          <div className="font-semibold text-sm ">
+                            {timeFormatChanger(value.sI[0].dt)}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
+                          <BsDoorClosedFill />
+                        </div>
+                        <div>
+                          <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
+                            Departure Terminal
+                          </div>
+                          <div className="font-semibold text-sm w-max ">
+                            {value.sI[0].da.terminal
+                              ? value.sI[0].da.terminal
+                              : "N/A"}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-full lg:w-full mx-auto  ">
                     <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <MdDateRange />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
-                          Departure Date
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
+                          <MdDateRange />
                         </div>
-                        <div className="font-semibold text-sm ">
-                          {dateDateFormatChanger(value.sI[0].dt)}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <IoIosTime />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm  font-semibold">
-                          Departure Time
-                        </div>
-                        <div className="font-semibold text-sm ">
-                          {timeFormatChanger(value.sI[0].dt)}
+                        <div>
+                          <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
+                            Arrival Date
+                          </div>
+                          <div className="font-semibold text-sm w-max ">
+                            {dateDateFormatChanger(value.sI[0].at)}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <BsDoorClosedFill />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
-                          Departure Terminal
+                      <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3 ">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded  ">
+                          <IoIosTime />
                         </div>
-                        <div className="font-semibold text-sm w-max ">
-                          {value.sI[0].da.terminal
-                            ? value.sI[0].da.terminal
-                            : "N/A"}
+                        <div>
+                          <div className="text-[#495049] w-max text-xs md:text-sm  font-semibold">
+                            Arrival time
+                          </div>
+                          <div className="font-semibold text-sm">
+                            {value.sI.length === 1
+                              ? timeFormatChanger(value.sI[0].at)
+                              : timeFormatChanger(
+                                  value.sI[value.sI.length - 1].at
+                                )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="grid  grid-cols-2 md:grid-cols-3 items-center justify-center w-[80%] lg:w-full mx-auto  ">
-                    <div className="flex  gap-1 items-center sm:w-1/2  my-3 md:w-1/3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <MdDateRange />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm font-semibold">
-                          Arrival Date
+                      <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
+                        <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
+                          <BsDoorClosedFill />
                         </div>
-
-                        <div className="font-semibold text-sm ">
-                          {value.sI.length === 1
-                            ? dateDateFormatChanger(value.sI[0].at)
-                            : dateDateFormatChanger(
-                                value.sI[value.sI.length - 1].at
-                              )}
+                        <div>
+                          <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
+                            Arrival Terminal
+                          </div>
+                          <div className="font-semibold text-sm w-max ">
+                            {value.sI[value.sI.length - 1].aa.terminal
+                              ? value.sI[value.sI.length - 1].aa.terminal
+                              : "N/A"}
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex  gap-1 items-center sm:w-1/2 my-3  md:w-1/3 ">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded  ">
-                        <IoIosTime />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs md:text-sm  font-semibold">
-                          Arrival time
-                        </div>
-                        <div className="font-semibold text-sm">
-                          {value.sI.length === 1
-                            ? timeFormatChanger(value.sI[0].at)
-                            : timeFormatChanger(
-                                value.sI[value.sI.length - 1].at
-                              )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex  gap-1 items-center sm:w-1/2 md:w-1/3 my-3">
-                      <div className="text-[1.2rem] md:text-[1.5rem] text-[#D7B56D] bg-[#1B1D29] p-2 rounded ">
-                        <BsDoorClosedFill />
-                      </div>
-                      <div>
-                        <div className="text-[#495049] w-max text-xs  md:text-sm  font-semibold">
-                          Arrival Terminal
-                        </div>
-                        <div className="font-semibold text-sm w-max ">
-                          {value.sI[value.sI.length - 1].aa.terminal
-                            ? value.sI[value.sI.length - 1].aa.terminal
-                            : "N/A"}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   </div>
                 </div>
               </div>
@@ -318,7 +323,8 @@ const ViewDetailedBookingCard = ({
                                 <div>
                                   <div>{singleValue.fD.aI.name}</div>
                                   <div className="flex items-center space-x-1">
-                                    <span>{singleValue.fD.aI.code}</span>
+                                    <span>{singleValue?.fD?.aI?.code}</span>
+                                    <span>{singleValue?.fD?.fN}</span>
                                     <MdFlight className="w-3 h-3 rotate-45" />
                                     <span>{searchQuery.cabinClass}</span>
                                   </div>
