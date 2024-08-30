@@ -96,27 +96,25 @@ const ViewDetailedBooking = () => {
     getSingleTicketDetailHandler();
   }, []);
 
-  console.log({ singleBookingData });
-
   // Calculate total only if singleBookingData and data are available
 
-  const traveller = singleBookingData?.itemInfos?.AIR?.travellerInfos[0];
+  // const traveller = singleBookingData?.itemInfos?.AIR?.travellerInfos[0];
 
-  const combinedInfo = {};
+  // const combinedInfo = {};
 
-  for (const [segment, baggage] of Object.entries(
-    traveller?.ssrBaggageInfos || {}
-  )) {
-    combinedInfo[segment] = { ...combinedInfo[segment], baggage };
-  }
+  // for (const [segment, baggage] of Object.entries(
+  //   traveller?.ssrBaggageInfos || {}
+  // )) {
+  //   combinedInfo[segment] = { ...combinedInfo[segment], baggage };
+  // }
 
-  for (const [segment, meal] of Object.entries(traveller?.ssrMealInfos || {})) {
-    combinedInfo[segment] = { ...combinedInfo[segment], meal };
-  }
+  // for (const [segment, meal] of Object.entries(traveller?.ssrMealInfos || {})) {
+  //   combinedInfo[segment] = { ...combinedInfo[segment], meal };
+  // }
 
-  for (const [segment, seat] of Object.entries(traveller?.ssrSeatInfos || {})) {
-    combinedInfo[segment] = { ...combinedInfo[segment], seat };
-  }
+  // for (const [segment, seat] of Object.entries(traveller?.ssrSeatInfos || {})) {
+  //   combinedInfo[segment] = { ...combinedInfo[segment], seat };
+  // }
 
   return (
     <div className="">
@@ -174,16 +172,30 @@ const ViewDetailedBooking = () => {
                       <div>Base Fare</div>
                       <div className="flex ">
                         ₹{" "}
-                        {singleBookingData?.itemInfos.AIR.totalPriceInfo
-                          .totalFareDetail.fC.BF +
-                          Math.abs(
-                            singleBookingData?.itemInfos.AIR.totalPriceInfo
-                              .totalFareDetail.fC.TF - data?.payment?.amount
-                          )}{" "}
+                        {
+                          singleBookingData?.itemInfos.AIR.totalPriceInfo
+                            .totalFareDetail.fC.BF
+                        }
                       </div>
                     </div>
-                    <div>
-                      <h2>Baggage,Meals and Seats <span>{singleBookingData?.itemInfos?.AIR?.travellerInfos[0]}</span></h2>
+                    <div className="flex justify-between">
+                      <div>Convenience Fees</div>
+                      <div className="flex ">
+                        ₹
+                        {Math.abs(
+                          singleBookingData?.itemInfos.AIR.totalPriceInfo
+                            .totalFareDetail.fC.TF -
+                            (data?.payment?.amount + data?.promo?.value || 0)
+                        )}
+                      </div>
+                    </div>
+                    {/* <div>
+                      <h2>
+                        Baggage,Meals and Seats{" "}
+                        <span>
+                          {singleBookingData?.itemInfos?.AIR?.travellerInfos[0]}
+                        </span>
+                      </h2>
                       {Object.entries(combinedInfo).map(([segment, info]) => (
                         <div key={segment} className="segment-info">
                           <h4 className="text-base font-bold">
@@ -236,7 +248,7 @@ const ViewDetailedBooking = () => {
                           )}
                         </div>
                       ))}
-                    </div>
+                    </div> */}
                     <div className=" flex flex-col">
                       <div
                         className="flex justify-between  cursor-pointer"
@@ -282,15 +294,19 @@ const ViewDetailedBooking = () => {
                         </div>
                       )}
                     </div>
-                    {/* Uncomment if needed
-        <div className="flex justify-between">
-          <div>Taxes</div>
-          <div>1400</div>
-        </div>
-        <div className="flex justify-between">
-          <div>Service Fee</div>
-          <div>400</div>
-        </div> */}
+                    {data?.promo?.code && (
+                      <div className=" flex flex-col">
+                        <div className="flex justify-between  cursor-pointer">
+                          <div className="flex justify-center items-end gap-1">
+                            <div>PROMO CODE: {data?.promo?.code}</div>{" "}
+                          </div>
+
+                          <div className="flex items-end">
+                            -&nbsp;{`₹${data?.promo?.value}`}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="flex justify-between pt-3 border-t">
                     <div>Total</div>
