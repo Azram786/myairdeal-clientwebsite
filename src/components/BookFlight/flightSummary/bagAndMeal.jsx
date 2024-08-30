@@ -9,8 +9,8 @@ const BagAndMeal = ({ flightData, setPassengers, passengers }) => {
       trip.sI.map((segment) => ({
         id: segment.id,
         route: `${segment.da.code} → ${segment.aa.code}`,
-        baggageOptions: segment.ssrInfo.BAGGAGE || [],
-        mealOptions: segment.ssrInfo.MEAL || [],
+        baggageOptions: segment?.ssrInfo?.BAGGAGE || [],
+        mealOptions: segment?.ssrInfo?.MEAL || [],
       }))
     );
     setFlightOptions(options);
