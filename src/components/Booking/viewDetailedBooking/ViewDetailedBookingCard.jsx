@@ -93,7 +93,11 @@ const ViewDetailedBookingCard = ({
                       <div>
                         {/* <img className="h-[60px]" src={paymentFlight} alt="" /> */}
                         <img
-                          src={`https://api.myairdeal.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`}
+                          src={`${
+                            import.meta.env.VITE_SERVER_URL
+                          }uploads/AirlinesLogo/${
+                            value?.sI[0].fD?.aI.code
+                          }.png`}
                           onError={(e) =>
                             (e.currentTarget.src = defaultAirline)
                           }
@@ -306,13 +310,12 @@ const ViewDetailedBookingCard = ({
                             <React.Fragment key={index}>
                               <div className="font-semibold text-xs border  rounded-md inline-flex items-center shadow-md p-1 space-x-2">
                                 <div className="w-5 h-5">
-                                  {/* <img
-                                            src="https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/AA.png"
-                                            alt="Airline Logo"
-                                            className="w-full h-full object-contain"
-                                          /> */}
                                   <img
-                                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${value?.sI[0].fD?.aI.code}.png`}
+                                    src={`${
+                                      import.meta.env.VITE_SERVER_URL
+                                    }uploads/AirlinesLogo/${
+                                      value?.sI[0].fD?.aI.code
+                                    }.png`}
                                     onError={(e) =>
                                       (e.currentTarget.src = defaultAirline)
                                     }

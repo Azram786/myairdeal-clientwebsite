@@ -42,13 +42,9 @@ function FlightSummaryCard({ data, currentStep }) {
                               <div className="mb-2">
                                 <div className="font-semibold text-xs border rounded-md inline-flex items-center shadow-md p-1 space-x-2">
                                   <div className="w-8 h-8">
-                                    {/* <img
-                                            src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
-                                            alt="Airline Logo"
-                                            className="w-full h-full object-contain"
-                                          /> */}
+                                
                                     <img
-                                      src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                                      src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
                                       onError={(e) =>
                                         (e.currentTarget.src = defaultAirline)
                                       }

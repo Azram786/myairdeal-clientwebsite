@@ -193,7 +193,9 @@ const SeatMap = ({
               <div className="border-b flex flex-wrap py-2 justify-between">
                 <div className="rounded-md size-12 bg-slate-500">
                   <img
-                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${flightDetails?.flightCode}.png`}
+                    src={`${
+                      import.meta.env.VITE_SERVER_URL
+                    }uploads/AirlinesLogo/${flightDetails?.flightCode}.png`}
                     onError={(e) => (e.currentTarget.src = defaultAirline)}
                     alt={flightDetails?.flightCode}
                     className="w-12 h-12 mr-6"
