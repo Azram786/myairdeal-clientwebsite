@@ -427,9 +427,6 @@ const ViewDetailedBookingCard = ({
           onClick={() => setIsPassengersOpen((prev) => !prev)}
           className="text-[#1B1D29] bg-[#D7B56D] w-full py-2 rounded-lg mt-4 text-sm"
         >
-          {/* {openConnectionIndex === index
-                  ? "Hide Passengers"
-                  : "View Passengers"} */}
           {isPassengersOpen ? "Hide Passengers" : "View Passengers"}
         </button>
         {isPassengersOpen && (

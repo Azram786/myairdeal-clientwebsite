@@ -1,0 +1,53 @@
+.promo-code-container{
+    margin-top: 50px;
+}
+
+.promo-code-container label{
+    font-size: 16px;
+    font-weight: bold;
+   
+}
+
+.promo-code-container input{
+    width: 90%;
+    font-size: 16px;
+    background: transparent;
+}
+
+
+
+.strike-through{
+    text-decoration: line-through;
+}
+
+.promo-input-container{
+    display: flex;
+    gap:10px;
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    height: 50px;
+    padding-left: 10px;
+}
+
+.promo-input-container input:focus-within {
+    border: none;
+    outline: none;
+  }
+
+.promo-input-container button{
+    background-color: #1B1D29;
+    color:#D7B56D;
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.promo-desc{
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 10px;
+}
