@@ -121,7 +121,9 @@ const BookingCard = ({
                   className="w-8 h-8 rounded-full"
                 /> */}
                   <img
-                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${airlineCode}.png`}
+                    src={`${
+                      import.meta.env.VITE_SERVER_URL
+                    }uploads/AirlinesLogo/${airlineCode}.png`}
                     alt={airlineCode}
                     className=" size-8 rounded-md mr-4"
                   />
@@ -170,7 +172,9 @@ const BookingCard = ({
                   className="w-8 h-8 rounded-full"
                 /> */}
                   <img
-                    src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${airlineCode}.png`}
+                    src={`${
+                      import.meta.env.VITE_SERVER_URL
+                    }uploads/AirlinesLogo/${airlineCode}.png`}
                     alt={airlineCode}
                     className=" size-8 rounded-md mr-4"
                   />

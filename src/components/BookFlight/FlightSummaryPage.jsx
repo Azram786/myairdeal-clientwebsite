@@ -80,7 +80,7 @@ const FlightSummary = () => {
     setLoading(true);
     await axios
       .post(
-        `https://api.myairdeal.com/booking/review-price`,
+        `${import.meta.env.VITE_SERVER_URL}booking/review-price`,
         {
           priceIds: bookingArray,
         },
@@ -361,7 +361,11 @@ const FlightSummary = () => {
                                     <div className="font-semibold  text-xs  rounded-md inline-flex md:flex md:h-full lg-custom:justify-center lg-custom:items-center md:flex-col items-start justify-start  s p-1 space-x-2">
                                       <div className="w-8 h-8 md:h-14 md:w-14 ">
                                         <img
-                                          src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                                          src={`${
+                                            import.meta.env.VITE_SERVER_URL
+                                          }uploads/AirlinesLogo/${
+                                            segment.fD.aI.code
+                                          }.png`}
                                           onError={(e) =>
                                             (e.currentTarget.src =
                                               defaultAirline)

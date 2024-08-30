@@ -57,35 +57,32 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
             className="border  shadow-sm border-gray-300 rounded-lg p-2 mb-4"
           >
             <div className=" flex flex-wrap items-center justify-between bg-[#1B1D29] text-[#D7B56D]  p-2 rounded-t-lg">
-                          <div className="md:text-base text-sm flex-wrap font-semibold flex items-center justify-between space-x-1">
-                            <div className="w-max">
-                              <span>{item.sI[0].da.city}</span>
-                              <FaArrowRight className="mx-2 inline" />
-                              <span>{item.sI[item.sI.length - 1].aa.city}</span>
-                            </div>
-                            <div className="text-white text-xs md:text-sm ">
-                              On{" "}
-                              {new Date(item.sI[0].dt).toLocaleDateString(
-                                "en-US",
-                                {
-                                  weekday: "short",
-                                  year: "numeric",
-                                  month: "short",
-                                  day: "numeric",
-                                }
-                              )}
-                            </div>
-                          </div>
-                          <div className="flex justify-center items-center gap-2">
-                            <div className="text-sm md:text-base   font-semibold text-white flex items-center">
-                              <span className="flex sm:hidden mr-2"> Duration:</span>
-                           
-                              <FaRegClock className="mr-2 " />
-                              
-                              {calculateTotalDuration(item.sI)}
-                            </div>
-                          </div>
-                        </div>
+              <div className="md:text-base text-sm flex-wrap font-semibold flex items-center justify-between space-x-1">
+                <div className="w-max">
+                  <span>{item.sI[0].da.city}</span>
+                  <FaArrowRight className="mx-2 inline" />
+                  <span>{item.sI[item.sI.length - 1].aa.city}</span>
+                </div>
+                <div className="text-white text-xs md:text-sm ">
+                  On{" "}
+                  {new Date(item.sI[0].dt).toLocaleDateString("en-US", {
+                    weekday: "short",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </div>
+              </div>
+              <div className="flex justify-center items-center gap-2">
+                <div className="text-sm md:text-base   font-semibold text-white flex items-center">
+                  <span className="flex sm:hidden mr-2"> Duration:</span>
+
+                  <FaRegClock className="mr-2 " />
+
+                  {calculateTotalDuration(item.sI)}
+                </div>
+              </div>
+            </div>
             {/* <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-200 p-2 rounded-t-lg mb-2">
               <div className="text-base sm:text-lg font-bold flex items-center">
                 <span>{item.sI[0].da.city}</span>
@@ -113,7 +110,9 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                     <div className="font-semibold text-xs flex flex-col items-start justify-start min-w-36  p-1 space-x-2">
                       <div className="w-16 h-16">
                         <img
-                          src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                          src={`${
+                            import.meta.env.VITE_SERVER_URL
+                          }uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
                           onError={(e) =>
                             (e.currentTarget.src = defaultAirline)
                           }
@@ -244,7 +243,9 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
                     </span> */}
                     {segmentIndex !== item.sI.length - 1 && (
                       <div className="flex justify-between bg-[#FFDE99] text-black p-3 rounded-xl mt-2 mb-4 w-full md:w-[70%]">
-                        <div className="text-xs md:text-sm">Require to change plane</div>
+                        <div className="text-xs md:text-sm">
+                          Require to change plane
+                        </div>
                         <div className="text-base font-medium">
                           <span className="text-sm">
                             {item.sI.length > 1 && (

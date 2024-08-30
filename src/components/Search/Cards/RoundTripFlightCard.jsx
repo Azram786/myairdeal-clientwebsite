@@ -399,14 +399,6 @@ const RoundTripCard = ({
       <div className="flex   flex-col md:flex-row  justify-between  mb-2">
         <div className="flex flex-col  w-full">
           <div className="flex justify-around  gap-0 md:gap-3 w-full ">
-            {/* <div className="md:hidden">
-              <img
-                src={`https://myairdeal-backend.onrender.com/uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
-                onError={(e) => (e.currentTarget.src = defaultAirline)}
-                alt={startSegment?.fD?.aI?.code}
-                className="size-12 hidden min-w-24"
-              />
-            </div> */}
             <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
               <img
                 src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${
