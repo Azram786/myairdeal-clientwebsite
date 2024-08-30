@@ -63,7 +63,6 @@
 import React from "react";
 
 const PassengerDetailsTable = ({ passengerDetails }) => {
- 
   return (
     <div className="p-4 bg-white shadow rounded-lg">
       <h2 className="text-base md:text-lg font-bold mb-4">
@@ -107,8 +106,8 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
                 </span>
                 <span className="block text-gray-600 text-[.8rem]">
                   {" "}
-                  {passenger?.pNat && `N:${passenger.pNat}`} {" "}
-                  {passenger?.pid && `| Id: ${passenger.pid}`} 
+                  {passenger?.pNat && `N:${passenger.pNat}`}{" "}
+                  {passenger?.pid && `| Id: ${passenger.pid}`}
                   {passenger?.eD && ` | ED : ${passenger.eD}`}
                 </span>
               </td>
@@ -123,7 +122,6 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
                   </div>
                 ))}
               </td>
-              {console.log({ passenger }, "khdghaskdjskm")}
               {(passenger?.ssrMealInfos && (
                 <td className="p-2  flex ">
                   {Object?.keys(passenger.ssrMealInfos)?.map((segment) => (

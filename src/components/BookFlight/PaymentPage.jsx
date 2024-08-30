@@ -7,7 +7,15 @@ import ReactToast from "./Util/ReactToast";
 import Spinner from "../Profile/Spinner";
 import { clearResent } from "../../store/slices/aut.slice";
 
-const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
+const PaymentPage = ({
+  passengersData,
+  data,
+  totalFare,
+  saveCommission,
+  promoValue,
+  promoCode,
+  promoApplied,
+}) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const token = useSelector((state) => state.auth.token);
@@ -223,6 +231,8 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
       markUp,
     };
 
+    const enteredPromocode = promoApplied ? promoCode : "";
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}booking/hold-to-success/${
@@ -232,6 +242,7 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
           searchQuery,
           booking,
           payment,
+          promo: enteredPromocode,
         },
         { headers: { authorization: `Bearer ${token}` } }
       );
@@ -289,7 +300,9 @@ const PaymentPage = ({ passengersData, data, totalFare, saveCommission }) => {
       if (!res) {
         throw new Error("Razorpay SDK failed to load. Are you online?");
       }
-      const amountToPay = Math.round(totalAmount + convenienceFee);
+      const amountToPay = Math.round(
+        totalAmount + convenienceFee - parseInt(promoValue)
+      );
       const options = {
         key: import.meta.env.VITE_RZP_KEY_ID,
         amount: amountToPay * 100,

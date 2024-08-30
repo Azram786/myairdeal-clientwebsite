@@ -1,0 +1,12 @@
+.advertise-promo-container{
+    padding: 3px;
+    text-align: center;
+}
+
+@media(max-width:500px){
+    .advertise-promo-container{
+        padding: 3px;
+        text-align: center;
+        font-size: 12px;
+    }
+}

@@ -144,6 +144,8 @@ import Header from "../Home/Header";
 import Footer from "../Home/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsaModifySearch } from "../../store/slices/aut.slice";
+import "./FlightList.css";
+import AdvertisePromo from "../util/AdvertisePromo";
 
 const FlightList = () => {
   const location = useLocation();
@@ -314,6 +316,7 @@ const FlightList = () => {
 
   return (
     <div className="min-h-screen ">
+      <AdvertisePromo />
       {data && (
         <div className="w-full pt-1">
           <FlightSearchSummary data={data} tripType={tripType} />

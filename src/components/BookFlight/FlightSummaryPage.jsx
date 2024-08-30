@@ -6,7 +6,9 @@ import {
   FaChevronUp,
   FaRegClock,
   FaArrowRight,
+  FaTimes,
 } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 
 import { FaSpinner } from "react-icons/fa";
 import ProgressBar from "./ProgressBar";
@@ -23,6 +25,8 @@ import Spinner from "../Profile/Spinner";
 import FlightLanding from "../../assets/booking/viewDetailedBookings/flightLanding.svg";
 import ShowBaggageInfo from "./Util/ShowBaggageInfo";
 import { setIsaModifySearch } from "../../store/slices/aut.slice";
+import "./promo.css";
+import AdvertisePromo from "../util/AdvertisePromo";
 
 const FlightSummary = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -37,6 +41,10 @@ const FlightSummary = () => {
   const { bookings } = location.state || {};
   const navigate = useNavigate();
   const [commision, setComission] = useState(0);
+  const [promoApplied, setPromoApplied] = useState(null);
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [promoValue, setPromoValue] = useState(0);
   const bookingArray = useMemo(() => {
     return bookings ? bookings.map((item) => item.priceId) : [];
   }, [bookings]);
@@ -45,7 +53,6 @@ const FlightSummary = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-
     window.scrollTo(0, 0);
   }, [pathname]);
 
@@ -243,6 +250,36 @@ const FlightSummary = () => {
     );
   }
 
+  const verifyPromo = async () => {
+    if (promoCode === "") {
+      ReactToast("Please Enter Promo Code");
+      return;
+    }
+    setPromoLoading(true);
+    await axios
+      .post(
+        `${import.meta.env.VITE_SERVER_URL}promo/check`,
+        {
+          enteredCode: promoCode,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        setPromoApplied(true);
+        setPromoLoading(false);
+        ReactToast(res.data.message);
+        setPromoValue(res.data.value);
+      })
+      .catch((error) => {
+        setPromoLoading(false);
+        ReactToast(error.response.data.error);
+      });
+  };
+
   return (
     <div className=" min-h-screen my-auto   ">
       {/* <Header /> */}
@@ -304,10 +341,13 @@ const FlightSummary = () => {
                           </div>
                           <div className="flex justify-center items-center gap-2">
                             <div className="text-sm md:text-base   font-semibold text-white flex items-center">
-                              <span className="flex sm:hidden mr-2"> Duration:</span>
-                           
+                              <span className="flex sm:hidden mr-2">
+                                {" "}
+                                Duration:
+                              </span>
+
                               <FaRegClock className="mr-2 " />
-                              
+
                               {calculateTotalDuration(item.sI)}
                             </div>
                           </div>
@@ -552,6 +592,9 @@ const FlightSummary = () => {
                   passengersData={passengersData}
                   totalFare={amountToPay}
                   saveCommission={saveCommission}
+                  promoApplied={promoApplied}
+                  promoCode={promoCode}
+                  promoValue={promoValue}
                   // updatePssenger={updatePssenger}
                 />
               </>
@@ -572,9 +615,7 @@ const FlightSummary = () => {
                   <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                     <span className="text-sm md:text-base ">Base fare</span>
                     <span>
-                      ₹{" "}
-                      {data?.totalPriceInfo?.totalFareDetail?.fC?.BF +
-                        commision}
+                      ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
                     </span>
                   </div>
                   <div className="mt-2">
@@ -753,7 +794,15 @@ const FlightSummary = () => {
                         )}
                       </span>
                       <div className="flex items-center">
-                        <span>₹ {amountToPay + commision} </span>
+                        {promoValue > 0 && (
+                          <span
+                            className={`${promoValue ? "strike-through" : ""}`}
+                          >
+                            ₹ {amountToPay + commision}
+                          </span>
+                        )}
+                        &nbsp; &nbsp;
+                        <span>₹ {amountToPay + commision - promoValue}</span>
                       </div>
                     </div>
                     <div
@@ -763,23 +812,82 @@ const FlightSummary = () => {
                     >
                       {amountExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
-                          {/* <div className="flex justify-between">
-                            <span>Commission</span>
+                          <div className="flex justify-between">
+                            <span>Convenience Fees</span>
                             <span>₹ {commision}</span>
-                          </div> */}
-                          {/* <div className="flex justify-between">
-                            <span>TDS</span>
-                            <span>N/A</span>
-                          </div> */}
-                          <div className="flex justify-between font-medium">
+                          </div>
+
+                          <div className="flex justify-between">
                             <span>Net Price</span>
                             <span>
                               ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.NF}
                             </span>
                           </div>
+                          {promoApplied && (
+                            <div className="flex justify-between ">
+                              <span>Promo Code</span>
+                              <span>₹ {promoValue} (Deducted)</span>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
+                  </div>
+                  <div className="promo-code-container">
+                    {!promoApplied && (
+                      <p className="promo-desc">
+                        Have a promo code ? Please enter below to avail your
+                        discount .
+                      </p>
+                    )}
+                    {promoApplied && (
+                      <p className="text-sm mb-2">
+                        Promo Code Applied! You saved{" "}
+                        <strong>₹ {promoValue}</strong> off your total.
+                      </p>
+                    )}
+
+                    <div className="promo-input-container">
+                      {" "}
+                      <input
+                        placeholder="Enter Promo Code"
+                        type="text"
+                        value={promoCode}
+                        onChange={(e) => {
+                          setPromoCode(e.target.value);
+                        }}
+                        disabled={promoApplied}
+                      />
+                      {!promoApplied && (
+                        <button onClick={verifyPromo} disabled={promoLoading}>
+                          {promoLoading ? "Verifying..." : "Apply"}
+                        </button>
+                      )}
+                      {promoApplied && (
+                        <button
+                          onClick={() => {
+                            setPromoApplied(null);
+                            setPromoCode("");
+                            setPromoValue(0);
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </div>
+
+                    {/* {promoApplied && (
+                      <button
+                        className="bg-[#1B1D29] rounded-md mb-4 text-[#D7B56D] font-semibold  md:text-base px-2 py-2 mt-4 disabled:opacity-50 flex items-center justify-center text-xs"
+                        onClick={() => {
+                          setPromoApplied(null);
+                          setPromoCode("");
+                          setPromoValue(0);
+                        }}
+                      >
+                        Cancel Applied Promo Code
+                      </button>
+                    )} */}
                   </div>
                 </div>
               </div>
