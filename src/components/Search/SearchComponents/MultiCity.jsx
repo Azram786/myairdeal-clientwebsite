@@ -50,6 +50,14 @@ const MultiCity = ({ flightProps, passenger, query }) => {
     return flight.sI.length - 1;
   };
 
+  const sortFlightsByLowestPrice = (flights) => {
+    return flights.sort((a, b) => {
+      const priceA = calculateTotalPrice(a);
+      const priceB = calculateTotalPrice(b);
+      return priceA - priceB;
+    });
+  };
+
   useEffect(() => {
     const newFilteredFlights = flightProps.map((flights, index) =>
       flights.filter((flight) => {
@@ -89,6 +97,8 @@ const MultiCity = ({ flightProps, passenger, query }) => {
         );
       })
     );
+
+    
 
     setFilteredFlights(newFilteredFlights);
 

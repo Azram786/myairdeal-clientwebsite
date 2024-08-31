@@ -75,6 +75,14 @@ const RoundTrip = ({
     specialReturnAirlines: [],
   });
 
+  const sortFlightsByLowestPrice = (flights) => {
+    return flights.sort((a, b) => {
+      const priceA = calculateTotalPrice(a);
+      const priceB = calculateTotalPrice(b);
+      return priceA - priceB;
+    });
+  };
+
   const applyFilters = (flights, direction) => {
     return flights.filter((flight) => {
       if (!flight.sI || flight.sI.length === 0) {
@@ -140,8 +148,14 @@ const RoundTrip = ({
         let filteredOnwardFlights = applyFilters(onwardProps, "onward");
         let filteredReturnFlights = applyFilters(returnProps, "return");
 
-        setFilteredOnward(filteredOnwardFlights);
-        setFilteredReturn(filteredReturnFlights);
+        const sortedOnwardFlights = sortFlightsByLowestPrice(
+          filteredOnwardFlights
+        );
+        const sortedReturnFlights = sortFlightsByLowestPrice(
+          filteredReturnFlights
+        );
+        setFilteredOnward(sortedOnwardFlights);
+        setFilteredReturn(sortedReturnFlights);
 
         // Store special return flights for onward journey
         const specialOnward = onwardProps.filter((flight) =>
@@ -454,16 +468,17 @@ const RoundTrip = ({
   }, []);
 
   const joyrideSteps = [
-  {
-    target: ".onward-section", 
-    content: "Select your first trip (outbound flight) for the round trip here.",
-  },
-  {
-    target: ".return-section", 
-    content: "Now, select your second trip (return flight) for the round trip here.",
-  },
-];
-
+    {
+      target: ".onward-section",
+      content:
+        "Select your first trip (outbound flight) for the round trip here.",
+    },
+    {
+      target: ".return-section",
+      content:
+        "Now, select your second trip (return flight) for the round trip here.",
+    },
+  ];
 
   return (
     <div className="relative  flex flex-wrap flex-col  md:flex-row mb-24  w-full ">
