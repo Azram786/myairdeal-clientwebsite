@@ -40,7 +40,6 @@ const FlightList = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("ScrollToTop effect triggered");
     window.scrollTo(0, 0);
   }, [pathname]);
   useEffect(() => {
@@ -118,7 +117,7 @@ const FlightList = () => {
         `${import.meta.env.VITE_SERVER_URL}search/flight`,
         data
       );
-
+      console.log({ res });
       const tripInfos = res.data.searchResult.tripInfos;
       console.log(tripInfos, "tripInfos");
       if (!tripInfos) {
@@ -141,7 +140,7 @@ const FlightList = () => {
         setMulticity(Object.values(tripInfos));
       }
     } catch (error) {
-      console.log(error.response.data.errors[0].message);
+      console.log(error);
       setLoading(false);
       if (error?.response?.data?.errors[0]?.message) {
         setError(error.response.data.errors[0].message);

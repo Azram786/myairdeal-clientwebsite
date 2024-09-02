@@ -42,6 +42,28 @@ const FlightDetailsCard = ({
 
   const totalPrice = calculateTotalPrice(localSelectedPriceIndex);
 
+  function calculateTotalDuration(segments) {
+    if (!segments || segments.length === 0) return "N/A";
+
+    let totalDuration = 0;
+
+    for (let i = 0; i < segments.length; i++) {
+      // Add flight duration
+      totalDuration += segments[i].duration;
+
+      // Add layover time if there's a next segment
+      if (i < segments.length - 1) {
+        const arrivalTime = new Date(segments[i].at);
+        const departureTime = new Date(segments[i + 1].dt);
+        const layoverTime = (departureTime - arrivalTime) / (1000 * 60); // in minutes
+        totalDuration += layoverTime;
+      }
+    }
+
+    const hours = Math.floor(totalDuration / 60);
+    const minutes = Math.round(totalDuration % 60);
+    return `${hours}h ${minutes}m`;
+  }
   if (!flightDetails) {
     return <div>Loading flights...</div>;
   }
@@ -100,10 +122,10 @@ const FlightDetailsCard = ({
     return date.toLocaleString("en-US", options);
   };
 
-  const departureTime = startSegment.dt;
-  const arrivalTime = endSegment.at;
+  // const departureTime = startSegment.dt;
+  // const arrivalTime = endSegment.at;
 
-  const totalDuration = calculateDuration(departureTime, arrivalTime);
+  // const totalDuration = calculateDuration(departureTime, arrivalTime);
 
   const displayedPrices = showAllPrices ? priceList : priceList;
 
@@ -122,6 +144,7 @@ const FlightDetailsCard = ({
   };
   console.log(data, "fvadkhbsjn");
 
+   const totalDuration=data[0].duration
   const renderTabs = () => {
     switch (activeTab) {
       case "Flight Details":
@@ -361,6 +384,7 @@ const FlightDetailsCard = ({
     }
   };
 
+
   return (
     <div className="border p-4 rounded-lg m-2 justify-between items-center  bg-white shadow-md  ">
       <div className="flex   flex-col md:flex-row  justify-between  mb-2">
@@ -396,7 +420,7 @@ const FlightDetailsCard = ({
               <div className="border-t   flex border-dashed ml-0 md:ml-4 border-gray-400 w-[40%]"></div>
               <div className=" flex flex-col gap-4 text-center items-center text-xs font-semibold text-gray-500">
                 {/* <span>{convertToHoursMinutes(totalDuration)}</span> */}
-                <span>{convertToHoursMinutes(startSegment.duration)}</span>
+                {calculateTotalDuration(data)}
                 <FaPlane className="mx-2  text-[#D7B56D] text-3xl" />
                 <div className="flex items-center">
                   {isConnectionFlight ? (

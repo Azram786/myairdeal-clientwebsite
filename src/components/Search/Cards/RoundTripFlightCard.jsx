@@ -41,19 +41,20 @@ const RoundTripCard = ({
   const [activeTab, setActiveTab] = useState("Flight Details");
   // const [showAllPrices, setShowAllPrices] = useState(false);
   const [localSelectedPriceIndex, setLocalSelectedPriceIndex] = useState(
-    selectedPriceIndex || 0
+    selectedPriceIndex 
   );
 
   useEffect(() => {
-    setLocalSelectedPriceIndex(selectedPriceIndex || 0);
+    setLocalSelectedPriceIndex(selectedPriceIndex);
   }, [selectedPriceIndex]);
 
   useEffect(() => {
     if (isSelected && selectedPriceIndex === null) {
-      onSelect(0);
+      onSelect(isSe);
     }
   }, [isSelected, selectedPriceIndex, onSelect]);
 
+  
   let data;
   let priceList = [];
 
@@ -140,21 +141,7 @@ const RoundTripCard = ({
     const minutes = Math.floor(layoverMinutes % 60);
     return `${hours}h ${minutes}m`;
   };
-  const getDayOfWeek = (dateTimeString) => {
-    const daysOfWeek = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const datePart = dateTimeString.split("T")[0];
-    const date = new Date(datePart);
-    const dayNumber = date.getDay();
-    return daysOfWeek[dayNumber];
-  };
+ 
 
   const renderTabs = () => {
     switch (activeTab) {

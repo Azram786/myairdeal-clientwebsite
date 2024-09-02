@@ -96,7 +96,7 @@ const Contact = () => {
           <div className="w-full sm:w-[90%] mt-6">
             <form
               onSubmit={handleSubmit}
-              className="w-full sm:w-[90%] mt-6 px-6"
+              className="w-[80%] mt-6 px-6"
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="w-full flex flex-col">
