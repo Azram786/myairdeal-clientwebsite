@@ -181,7 +181,7 @@ const ComboFlightCard = ({
                       </span>
                     </div>
                     <div className="pr-4 text-white text-sm font-medium">
-                    Total Duration : {calculateTotalDuration(flightsForDate)}
+                      Total Duration : {calculateTotalDuration(flightsForDate)}
                     </div>
                   </div>
                   <div className="w-full bg-[#f0e1c0]  ">
@@ -213,9 +213,9 @@ const ComboFlightCard = ({
                                 <br />
                                 {segment.fD.aI.name} {segment.fD.fN}
                               </div>
-                              <div className="text-xs text-gray-500">
+                              {/* <div className="text-xs text-gray-500 bg-red-400">
                                 {formatDateTime(segment.dt)}
-                              </div>
+                              </div> */}
                             </div>
                           </div>
 
@@ -246,7 +246,7 @@ const ComboFlightCard = ({
                                 </div>
 
                                 {/* Tooltip */}
-                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                                <div className="absolute bottom-full left-1/4 transform -translate-x-1/2 mb-0.5 z-50 w-max hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
                                   {segment.da.name}
                                 </div>
                               </div>
@@ -257,7 +257,7 @@ const ComboFlightCard = ({
                             </div>
 
                             <div className="flex justify-center  min-w-[20%]  flex-col items-center">
-                              <div className="text-xs text-gray-500">
+                              <div className="text-xs text-gray-500 ">
                                 {convertToHoursMinutes(segment.duration)}
                               </div>
 
@@ -270,7 +270,7 @@ const ComboFlightCard = ({
                             </div>
 
                             <div className="text-left p-2 min-w-[30%] ml-0 ">
-                              <div className="font-bold text-xs md:text-sm">
+                              <div className="font-bold text-xs md:text-sm ">
                                 {new Date(segment.at).toLocaleString("en-US", {
                                   month: "short",
                                   day: "numeric",
@@ -295,7 +295,7 @@ const ComboFlightCard = ({
                                 </div>
 
                                 {/* Tooltip */}
-                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                                <div className="absolute bottom-full left-1/4 transform -translate-x-1/2 mb-0.5 w-max z-50 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
                                   {segment.aa.name}
                                 </div>
                               </div>
@@ -419,7 +419,7 @@ const ComboFlightCard = ({
   const displayedPrices = showAllPrices ? priceList : priceList;
 
   const isConnectionFlight = data.length > 1;
-  const totalDuration = data.reduce(
+  const totalDurations = data.reduce(
     (sum, segment) => sum + segment.duration,
     0
   );
@@ -486,7 +486,7 @@ const ComboFlightCard = ({
                         </div>
 
                         {/* Tooltip */}
-                        <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                        <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
                           {startSegment.da.name}
                         </div>
                       </div>
@@ -499,7 +499,7 @@ const ComboFlightCard = ({
                     {/* Flight Duration and Connection Information */}
                     <div className="flex items-center text-center">
                       <div className="border-t border-dashed border-gray-400 hidden sm:flex w-20"></div>
-                      <div className="flex flex-col items-center text-xs font-semibold text-gray-500 mx-4">
+                      <div className="flex flex-col items-center text-xs font-semibold text-gray-500 mx-4 ">
                         <span>{convertToHoursMinutes(totalDuration)}</span>
                         <FaPlane className="text-[#D7B56D] text-3xl" />
                         {isConnectionFlight ? (
@@ -530,7 +530,7 @@ const ComboFlightCard = ({
                         </div>
 
                         {/* Tooltip */}
-                        <div className="w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                        <div className="w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
                           {endSegment.aa.name}
                         </div>
                       </div>
