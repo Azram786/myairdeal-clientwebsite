@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Tabs } from "antd";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { ArrowRightOutlined } from "@ant-design/icons";
@@ -11,9 +11,6 @@ import ReactToast from "../../util/ReactToast";
 import { setLastSearch } from "../../../store/slices/aut.slice";
 import ComboSideBar from "./ComboSidebar";
 import ComboFlightCard from "../Cards/ComboFlightCard";
-import { VariableSizeList as List } from "react-window";
-import { useCallback } from "react";
-import { Virtuoso } from "react-virtuoso";
 
 const { TabPane } = Tabs;
 
@@ -133,8 +130,8 @@ const Oneway = ({ flightProps, passenger, query }) => {
         airlineMatch
       );
     });
-    const sortedFilteredFlight = sortFlightsByLowestPrice(newFilteredFlights);
-    setFilteredFlights(sortedFilteredFlight);
+    const sortedFilteredFlights = sortFlightsByLowestPrice(newFilteredFlights);
+    setFilteredFlights(sortedFilteredFlights);
   }, [filters, flightProps, calculateTotalPrice]);
 
   const handleFlightSelection = (flightIndex, priceIndex) => {
@@ -174,8 +171,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
-
-  const itemCount = filteredFlights.length;
 
   return (
     <div className="relative flex md:flex-row flex-col">
@@ -283,33 +278,27 @@ const Oneway = ({ flightProps, passenger, query }) => {
             key="1"
           >
             <div className="h-screen overflow-y-auto no-scroll">
-              {itemCount > 0 ? (
-                <Virtuoso
-                  totalCount={itemCount}
-                  itemContent={(index) => {
-                    const flight = filteredFlights[index];
-                    return (
-                      <ComboFlightCard
-                        key={index}
-                        passenger={passenger}
-                        logo={flightLogo}
-                        flightDetails={flight}
-                        isSelected={selectedFlight.some(
-                          (selected) => selected.flightIndex === index
-                        )}
-                        selectedPriceIndex={
-                          selectedFlight.find(
-                            (selected) => selected.flightIndex === index
-                          )?.priceIndex
-                        }
-                        onSelect={(priceIndex) =>
-                          handleFlightSelection(index, priceIndex)
-                        }
-                        totalPrice={calculateTotalPrice(flight)}
-                      />
-                    );
-                  }}
-                />
+              {filteredFlights.length > 0 ? (
+                filteredFlights.map((flight, index) => (
+                  <ComboFlightCard
+                    key={index}
+                    passenger={passenger}
+                    logo={flightLogo}
+                    flightDetails={flight}
+                    isSelected={selectedFlight.some(
+                      (selected) => selected.flightIndex === index
+                    )}
+                    selectedPriceIndex={
+                      selectedFlight.find(
+                        (selected) => selected.flightIndex === index
+                      )?.priceIndex
+                    }
+                    onSelect={(priceIndex) =>
+                      handleFlightSelection(index, priceIndex)
+                    }
+                    totalPrice={calculateTotalPrice(flight)}
+                  />
+                ))
               ) : (
                 <p>No flights match the current filters.</p>
               )}

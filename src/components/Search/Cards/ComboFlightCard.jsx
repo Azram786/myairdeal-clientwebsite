@@ -9,7 +9,7 @@ import {
 import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
 import FareToolTip from "./FareTooltip";
 import calculateDuration from "../../util/calculateDuration";
-
+import { useRef } from "react";
 const ComboFlightCard = ({
   flightDetails,
   isSelected,
