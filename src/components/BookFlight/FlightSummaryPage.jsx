@@ -586,6 +586,7 @@ const FlightSummary = () => {
                   setCurrentStep={setCurrentStep}
                   data={data}
                   passengersData={passengersData}
+                  saveCommission={saveCommission}
                   // updatePssenger={updatePssenger}
                 />
               </>

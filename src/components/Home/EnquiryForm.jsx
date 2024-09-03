@@ -56,19 +56,43 @@ const EnquiryForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (token) {
+      if (validateForm()) {
+        try {
+          const response = await axios.post(
+            `${import.meta.env.VITE_SERVER_URL}enquiry/create-registeredUser`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.status === 201) {
+            getEnquiryDetails(1, true);
+            ReactToast("Form submitted successfully!");
+            setFormData({
+              email: "",
+              phone: "",
+              dialCode: "",
+              type: "",
+              description: "",
+            });
+          } else {
+            ReactToast("Failed to submit the form. Please try again.");
+          }
+        } catch (error) {
+          ReactToast("An error occurred while submitting the form.");
+          console.log(error.message);
+        }
+      }
+    } else {
       try {
         const response = await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}enquiry/create-registeredUser`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          `${import.meta.env.VITE_SERVER_URL}enquiry/create-unregisteredUser`,
+          formData
         );
         if (response.status === 201) {
-          getEnquiryDetails(1, true);
           ReactToast("Form submitted successfully!");
           setFormData({
             email: "",
@@ -131,7 +155,9 @@ const EnquiryForm = () => {
   };
 
   useEffect(() => {
-    getEnquiryDetails(1, true);
+    if (token) {
+      getEnquiryDetails(1, true);
+    }
   }, []);
 
   return (
@@ -241,60 +267,63 @@ const EnquiryForm = () => {
           </div>
         </form>
       </div>
-
-      <h3 className="text-lg font-bold mt-8 text-[#D7B56D]">
-        Previous Enquiries
-      </h3>
-      <div className="mt-4">
-        {previousEnquiries.map((enquiry) => (
-          <div key={enquiry._id} className="mb-2">
-            <div
-              className="p-3 bg-[#282C35] rounded-md flex justify-between items-center cursor-pointer"
-              onClick={() => toggleEnquiryDetails(enquiry._id)}
-            >
-              <div className="text-sm">
-                {enquiry.type} - {enquiry.email}
-              </div>
-              <div>
-                {expandedEnquiry === enquiry._id ? (
-                  <FaChevronUp />
-                ) : (
-                  <FaChevronDown />
+      {token && (
+        <div>
+          <h3 className="text-lg font-bold mt-8 text-[#D7B56D]">
+            Previous Enquiries
+          </h3>
+          <div className="mt-4">
+            {previousEnquiries.map((enquiry) => (
+              <div key={enquiry._id} className="mb-2">
+                <div
+                  className="p-3 bg-[#282C35] rounded-md flex justify-between items-center cursor-pointer"
+                  onClick={() => toggleEnquiryDetails(enquiry._id)}
+                >
+                  <div className="text-sm">
+                    {enquiry.type} - {enquiry.email}
+                  </div>
+                  <div>
+                    {expandedEnquiry === enquiry._id ? (
+                      <FaChevronUp />
+                    ) : (
+                      <FaChevronDown />
+                    )}
+                  </div>
+                </div>
+                {expandedEnquiry === enquiry._id && (
+                  <div className="p-3 bg-[#D7B56D] text-black rounded-md mt-2 text-sm">
+                    <p>
+                      <strong>Phone:</strong> {enquiry.phone}
+                    </p>
+                    <p>
+                      <strong>Description:</strong> {enquiry.description}
+                    </p>
+                  </div>
                 )}
               </div>
-            </div>
-            {expandedEnquiry === enquiry._id && (
-              <div className="p-3 bg-[#D7B56D] text-black rounded-md mt-2 text-sm">
-                <p>
-                  <strong>Phone:</strong> {enquiry.phone}
-                </p>
-                <p>
-                  <strong>Description:</strong> {enquiry.description}
-                </p>
+            ))}
+
+            {isLoading && (
+              <div className="text-center mt-4">
+                <button className="bg-[#D7B56D] text-[#1B1D29] py-2 px-4 rounded-md font-semibold hover:bg-[#c9a757] transition-colors">
+                  Loading....
+                </button>
+              </div>
+            )}
+
+            {!isLoading && hasMore && (
+              <div className="text-center mt-4">
+                <button
+                  onClick={loadMoreEnquiries}
+                  className="bg-[#D7B56D] text-[#1B1D29] py-2 px-4 rounded-md font-semibold hover:bg-[#c9a757] transition-colors"
+                >
+                  Load More
+                </button>
               </div>
             )}
           </div>
-        ))}
-
-        {isLoading && (
-          <div className="text-center mt-4">
-            <button className="bg-[#D7B56D] text-[#1B1D29] py-2 px-4 rounded-md font-semibold hover:bg-[#c9a757] transition-colors">
-              Loading....
-            </button>
-          </div>
-        )}
-
-        {!isLoading && hasMore && (
-          <div className="text-center mt-4">
-            <button
-              onClick={loadMoreEnquiries}
-              className="bg-[#D7B56D] text-[#1B1D29] py-2 px-4 rounded-md font-semibold hover:bg-[#c9a757] transition-colors"
-            >
-              Load More
-            </button>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

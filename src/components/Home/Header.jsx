@@ -106,6 +106,19 @@ const Header = () => {
       >
         Home
       </Link>
+      <Link
+        to="/enquiry"
+        className={`font-medium py-2 text-center border-r border-[#D7B56D] mx- px-3 ${
+          location.pathname === "/enquiry"
+            ? "bg-[#D7B56D] text-[#1B1D29]"
+            : "text-[#D7B56D]"
+        } ${mobile ? "block py-2" : ""}`}
+        onClick={() => mobile && setMobileMenuOpen(false)}
+      >
+        {/* Notifications */}
+        Enquiry
+        {/* <IoNotificationsCircle className="text-3xl " /> */}
+      </Link>
       {token && user && (
         <>
           <Link
@@ -118,19 +131,6 @@ const Header = () => {
             onClick={() => mobile && setMobileMenuOpen(false)}
           >
             My Bookings
-          </Link>
-          <Link
-            to="/enquiry"
-            className={`font-medium py-2 text-center border-r border-[#D7B56D] mx- px-3 ${
-              location.pathname === "/enquiry"
-                ? "bg-[#D7B56D] text-[#1B1D29]"
-                : "text-[#D7B56D]"
-            } ${mobile ? "block py-2" : ""}`}
-            onClick={() => mobile && setMobileMenuOpen(false)}
-          >
-            {/* Notifications */}
-            Enquiry
-            {/* <IoNotificationsCircle className="text-3xl " /> */}
           </Link>
         </>
       )}

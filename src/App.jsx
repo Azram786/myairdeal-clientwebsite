@@ -47,10 +47,7 @@ function App() {
               element={token ? <FlightSummaryPage /> : <Login />}
             />
             <Route path="/profile" element={token ? <Profile /> : <Login />} />
-            <Route
-              path="/enquiry"
-              element={token ? <EnquiryForm /> : <Login />}
-            />
+            <Route path="/enquiry" element={<EnquiryForm />} />
 
             <Route path="/enter-detail" element={<Signup />} />
             <Route
