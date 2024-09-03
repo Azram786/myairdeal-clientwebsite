@@ -48,8 +48,28 @@ const ComboFlightCard = ({
     return <div>No flight details available</div>;
   }
 
-  console.log(flightDetails, "combooooooo");
+  function calculateTotalDuration(segments) {
+    if (!segments || segments.length === 0) return "N/A";
 
+    let totalDuration = 0;
+
+    for (let i = 0; i < segments.length; i++) {
+      // Add flight duration
+      totalDuration += segments[i].duration;
+
+      // Add layover time if there's a next segment
+      if (i < segments.length - 1) {
+        const arrivalTime = new Date(segments[i].at);
+        const departureTime = new Date(segments[i + 1].dt);
+        const layoverTime = (departureTime - arrivalTime) / (1000 * 60); // in minutes
+        totalDuration += layoverTime;
+      }
+    }
+
+    const hours = Math.floor(totalDuration / 60);
+    const minutes = Math.round(totalDuration % 60);
+    return `${hours}h ${minutes}m`;
+  }
   function groupFlightsBySN(flightOffer) {
     const groupedFlights = [];
     let currentGroup = [];
@@ -142,19 +162,27 @@ const ComboFlightCard = ({
               const finalDestinationCity =
                 flightsForDate[flightsForDate.length - 1]?.aa?.city;
 
-              console.log({ flightsForDate });
+              console.log({ flightsForDate }, "fligyts");
               return (
                 <div key={dateIndex} className="mb-8">
                   {/* Source to Destination Header */}
-                  <div className="text-lg font-bold bg-[#1B1D29] text-[#D7B56D] mb-4 pl-4 py-2 ">
-                    {sourceCity} to {finalDestinationCity},{" "}
-                    <span className="text-white text-sm">
-                      On{" "}
-                      {new Date(flightsForDate[0].at).toLocaleString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </span>
+                  <div className="text-sm md:text-lg font-bold bg-[#1B1D29] text-[#D7B56D] mb-4 pl-4 py-2  justify-between flex items-center">
+                    <div>
+                      {sourceCity} to {finalDestinationCity},{" "}
+                      <span className="text-white text-sm">
+                        On{" "}
+                        {new Date(flightsForDate[0].at).toLocaleString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )}
+                      </span>
+                    </div>
+                    <div className="pr-4 text-white text-sm font-medium">
+                    Total Duration : {calculateTotalDuration(flightsForDate)}
+                    </div>
                   </div>
                   <div className="w-full bg-[#f0e1c0]  ">
                     {flightsForDate.map((segment, index) => (
@@ -386,7 +414,7 @@ const ComboFlightCard = ({
   };
 
   const startSegment = data[0];
-  console.log({ startSegment }, "hdsjgfahdklxjfmclwas");
+
   const endSegment = data[data.length - 1];
   const displayedPrices = showAllPrices ? priceList : priceList;
 

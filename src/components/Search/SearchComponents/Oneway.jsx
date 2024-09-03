@@ -317,7 +317,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
           >
             <div className="h-[630px] overflow-y-auto no-scroll">
               {filteredFlights.length === 0 ? (
-                <div>No</div>
+                <div>No flights available.</div>
               ) : (
                 filteredFlights.map((flight, index) => (
                   <FlightDetailsCard
