@@ -32,8 +32,8 @@ const RoundSideBar = ({
 
   useEffect(() => {
     const calculateMaxPrices = () => {
-      const onwardMax = Math.max(...onwardData.map(calculateTotalPrice));
-      const returnMax = Math.max(...returnData.map(calculateTotalPrice));
+      const onwardMax = Math.floor(Math.max(...onwardData.map(calculateTotalPrice)));
+      const returnMax = Math.floor(Math.max(...returnData.map(calculateTotalPrice)));
       setMaxPrices({ onward: onwardMax, return: returnMax });
 
       setFilters((prev) => ({
@@ -93,7 +93,7 @@ const RoundSideBar = ({
     }));
   };
 
-  // Function to count the number of flights per stop category
+ 
   const countStops = (data) => {
     const stopCounts = { "0": 0, "1": 0, "2": 0, "3+": 0 };
 
@@ -109,7 +109,7 @@ const RoundSideBar = ({
     return stopCounts;
   };
 
-  // Store counts for onward and return directions
+  
   const [onwardStopCounts, setOnwardStopCounts] = useState({});
   const [returnStopCounts, setReturnStopCounts] = useState({});
 
@@ -309,8 +309,8 @@ const RoundSideBar = ({
           <input
             type="range"
             min="100"
-            max={maxPrices[activeDirection]}
-            value={filters[activeDirection].maxPrice}
+            max={Math.round(maxPrices[activeDirection])}
+            value={Math.round(filters[activeDirection].maxPrice)}
             onChange={handlePriceChange}
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
