@@ -5,13 +5,28 @@ import { useLocation} from "react-router-dom";
 
 const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
   const { pathname } = useLocation();
-  useEffect(() => {
-    const targetPosition = 400;
-    const startPosition = window.pageYOffset;
-    const distance = targetPosition - startPosition;
-    const duration = 1000; // duration in milliseconds
-    let startTime = null;
   
+  useEffect(() => {
+    // Define scroll behavior for different paths
+    let targetPosition;
+    let duration;
+
+    if (pathname === "/search") {
+      targetPosition = 50;
+      duration = 1000; // 1 second for page1
+    } else if (pathname === "/") {
+      targetPosition = 400; 
+      duration = 1500; // 1.5 seconds for page2
+    } else {
+      // Default or other pages if needed
+      targetPosition = 0;
+      duration = 800;
+    }
+
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+    let startTime = null;
+
     function animation(currentTime) {
       if (startTime === null) startTime = currentTime;
       const timeElapsed = currentTime - startTime;
@@ -19,18 +34,16 @@ const PassengerSelector = ({ setModelIsOpen, formData, setFormData }) => {
       window.scrollTo(0, run);
       if (timeElapsed < duration) requestAnimationFrame(animation);
     }
-  
+
     function ease(t, b, c, d) {
       t /= d / 2;
       if (t < 1) return (c / 2) * t * t + b;
       t--;
       return (-c / 2) * (t * (t - 2) - 1) + b;
     }
-  
+
     requestAnimationFrame(animation);
   }, [pathname]);
-  
-  
   const selectorRef = useRef(null);
 
   const handleCountChange = (type, count) => {
