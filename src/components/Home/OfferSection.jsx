@@ -281,47 +281,49 @@ const OfferSection = ({ setFormData }) => {
               </div>
             </div>
           </div>
-          <div className="h-full w-full justify-around py-6 text-white grid gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  lg-custom:grid-cols-4  ">
-            {offers.map((offer, index) => (
-              <div
-                key={index}
-                style={{
-                  backgroundImage: `url(${offer.img})`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                }}
-                onClick={() => {
-                  dispatch(clearResent());
-                  window.scrollTo(0, 500);
-                  setFormData((prev) => ({
-                    ...prev,
-                    toCityOrAirport: offer.src,
-                  }));
-                }}
-                className="h-[30vh] sm:h-[50vh]  w-full md:w-[270px] lg:w-[270px] gap-2 flex flex-wrap items-end rounded-[3%] transition-transform transform hover:scale-105 duration-300 ease-in-out"
-              >
-                <div className="mb-5 w-full  px-5">
-                  <div className="`flex w-full items-end justify-between">
-                    <div>
-                      <div className="font-bold text-xs md:text-[1.3rem]">
-                        {offer.cntryName}
+          <div className="flex justify-center items-center pl-6 ">
+            <div className="h-full w-full justify-around py-6 text-white grid gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  lg-custom:grid-cols-4  ">
+              {offers.map((offer, index) => (
+                <div
+                  key={index}
+                  style={{
+                    backgroundImage: `url(${offer.img})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                  }}
+                  onClick={() => {
+                    dispatch(clearResent());
+                    window.scrollTo(0, 500);
+                    setFormData((prev) => ({
+                      ...prev,
+                      toCityOrAirport: offer.src,
+                    }));
+                  }}
+                  className="h-[30vh] sm:h-[50vh]  w-full md:w-[270px] lg:w-[270px] gap-2 flex flex-wrap items-end rounded-[3%] transition-transform transform hover:scale-105 duration-300 ease-in-out"
+                >
+                  <div className="mb-5 w-full  px-5">
+                    <div className="`flex w-full items-end justify-between">
+                      <div>
+                        <div className="font-bold text-xs md:text-[1.3rem]">
+                          {offer.cntryName}
+                        </div>
+                        <div className="font-semibold text-xs md:text-[.9rem]">
+                          {offer.description}
+                        </div>
                       </div>
-                      <div className="font-semibold text-xs md:text-[.9rem]">
-                        {offer.description}
-                      </div>
+                      <h3 className="font-bold text-xs md:text-[1.5rem]">
+                        {offer.amount}
+                      </h3>
                     </div>
-                    <h3 className="font-bold text-xs md:text-[1.5rem]">
-                      {offer.amount}
-                    </h3>
-                  </div>
-                  <div className="flex justify-center mt-3">
-                    <button className="text-black p-2 w-full bg-white rounded-lg font-semibold text-xs md:text-sm">
-                      Book Flight
-                    </button>
+                    <div className="flex justify-center mt-3">
+                      <button className="text-black p-2 w-full bg-white rounded-lg font-semibold text-xs md:text-sm">
+                        Book Flight
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ import {
 import defaultAirline from "../../../assets/home/logo/defaultAirline.png";
 import FareToolTip from "./FareTooltip";
 import calculateDuration from "../../util/calculateDuration";
-
+import { useRef } from "react";
 const ComboFlightCard = ({
   flightDetails,
   isSelected,
@@ -451,7 +451,9 @@ const ComboFlightCard = ({
         <div className="flex   flex-col md:flex-row  justify-between items-stretch  mb-2">
           <div className="flex flex-col w-full ">
             <div className="flex flex-col gap-4 ">
-              {groupedSegments.map((group, index) => {
+              {/* {console.log({groupedSegments})} */}
+              {groupedFlights.map((group, index) => {
+            
                 const startSegment = group[0];
                 const endSegment = group[group.length - 1];
                 const totalDuration = group.reduce(
@@ -465,7 +467,7 @@ const ComboFlightCard = ({
                 return (
                   <div
                     key={index}
-                    className="flex justify-around bg-white p-4 rounded-md"
+                    className="flex justify-around  p-4 rounded-md"
                   >
                     {/* Departure Information */}
                     <div className="flex flex-col items-center ">
@@ -482,25 +484,27 @@ const ComboFlightCard = ({
 
                       <div className="relative group text-base ">
                         <div className="text-base font-bold line-clamp-2">
-                          {startSegment.da.code}
+                          {startSegment?.da?.code}
                         </div>
 
                         {/* Tooltip */}
                         <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
-                          {startSegment.da.name}
+                          {startSegment?.da?.name}
                         </div>
                       </div>
 
                       <h1 className="text-xs">
-                        {formatDateTime(startSegment.dt)}
+                        {formatDateTime(startSegment?.dt)}
                       </h1>
                     </div>
 
                     {/* Flight Duration and Connection Information */}
                     <div className="flex items-center text-center">
                       <div className="border-t border-dashed border-gray-400 hidden sm:flex w-20"></div>
-                      <div className="flex flex-col items-center text-xs font-semibold text-gray-500 mx-4 ">
-                        <span>{convertToHoursMinutes(totalDuration)}</span>
+                      <div className="flex flex-col items-center text-xs font-semibold text-gray-500 mx-4  ">
+                        <span className="">
+                          {convertToHoursMinutes(totalDuration)}
+                        </span>
                         <FaPlane className="text-[#D7B56D] text-3xl" />
                         {isConnectionFlight ? (
                           <span>
@@ -526,17 +530,17 @@ const ComboFlightCard = ({
                       />
                       <div className="relative group text-base ">
                         <div className="text-base font-bold line-clamp-2">
-                          {endSegment.aa.code}
+                          {endSegment?.aa?.code}
                         </div>
 
                         {/* Tooltip */}
                         <div className="w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
-                          {endSegment.aa.name}
+                          {endSegment?.aa?.name}
                         </div>
                       </div>
 
                       <h1 className="text-xs">
-                        {formatDateTime(endSegment.at)}
+                        {formatDateTime(endSegment?.at)}
                       </h1>
                     </div>
                   </div>

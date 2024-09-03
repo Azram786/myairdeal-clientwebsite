@@ -413,7 +413,7 @@ const FlightSearchSummary = ({ data, tripType }) => {
       )}
     </>
   );
-  console.log("route",{routeInfos})
+
 
   const renderMultiCity = () => (
     <>

@@ -119,7 +119,7 @@ const FlightList = () => {
       );
       console.log({ res });
       const tripInfos = res.data.searchResult.tripInfos;
-      console.log(tripInfos, "tripInfos");
+      console.log(res.data, "test");
       if (!tripInfos) {
         setError("No Flights Found on this route");
         return;

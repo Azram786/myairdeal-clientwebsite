@@ -427,7 +427,7 @@ const RoundTrip = ({
     }
 
     return (
-      <div className="h-screen overflow-y-auto no-scroll ">
+      <div className="h-[900px]]overflow-y-auto no-scroll ">
         {flights.map((flight, index) => (
           <RoundTripCard
             key={index}
@@ -549,15 +549,15 @@ const RoundTrip = ({
           />
         )}
       </div>
-      <div className="flex flex-wrap h-max mx-0 flex-col w-full lg-custom:w-[80%]">
-        <div className="flex  gap-6 ">
+      <div className="flex flex-wrap h-full  mx-0 flex-col w-full lg-custom:w-[80%]">
+        <div className="flex gap-6">
           <div className="w-max lg-custom:w-1/2 relative onward-section">
             <h2
               className={`text-sm text-center p-2 lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
                 activeSection === "onward"
                   ? "bg-[#1B1D29] text-[#D7B56D]"
-                  : "bg-white"
-              } lg-custom:bg-white`}
+                  : "bg-white text-[#1B1D29]"
+              } lg-custom:bg-white lg-custom:text-[#1B1D29]`} 
               onClick={() => handleToggleSection("onward")}
             >
               {getRoute(filteredOnward)}
@@ -568,15 +568,16 @@ const RoundTrip = ({
               className={`text-sm text-center lg-custom:text-xl p-2 font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
                 activeSection === "return"
                   ? "bg-[#1B1D29] text-[#D7B56D]"
-                  : "bg-white"
-              } lg-custom:bg-white`}
+                  : "bg-white text-[#1B1D29]"
+              } lg-custom:bg-white lg-custom:text-[#1B1D29]`} 
               onClick={() => handleToggleSection("return")}
             >
               {getRoute(filteredReturn)}
             </h2>
           </div>
         </div>
-        <div className="  flex h-[850px] flex-col lg-custom:flex-row">
+
+        <div className="  flex h-[950px] flex-col lg-custom:flex-row">
           <div
             className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
               activeSection === "onward" ? "block" : "hidden"
