@@ -88,6 +88,14 @@ const Oneway = ({ flightProps, passenger, query }) => {
     }
   };
 
+  const sortFlightsByLowestPrice = (flights) => {
+    return flights.sort((a, b) => {
+      const priceA = calculateTotalPrice(a);
+      const priceB = calculateTotalPrice(b);
+      return priceA - priceB;
+    });
+  };
+
   useEffect(() => {
     const newFilteredFlights = flightProps.filter((flight) => {
       const price = calculateTotalPrice(flight);
@@ -122,8 +130,8 @@ const Oneway = ({ flightProps, passenger, query }) => {
         airlineMatch
       );
     });
-
-    setFilteredFlights(newFilteredFlights);
+    const sortedFilteredFlights = sortFlightsByLowestPrice(newFilteredFlights);
+    setFilteredFlights(sortedFilteredFlights);
   }, [filters, flightProps, calculateTotalPrice]);
 
   const handleFlightSelection = (flightIndex, priceIndex) => {
@@ -173,7 +181,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         passenger={passenger}
         calculateTotalPrice={calculateTotalPrice}
       /> */}
-          <button
+      <button
         className="absolute top-0 right-1 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
         onClick={toggleSidebar}
       >

@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { MdFlight } from "react-icons/md";
 import { FaRegClock, FaArrowRight } from "react-icons/fa";
 import ShowBaggageInfo from "./Util/ShowBaggageInfo";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
-const Review = ({ setCurrentStep, data, passengersData }) => {
+const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
+  const token = useSelector((state) => state.auth.token);
   const renderValue = (value) => value || "N/A";
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
@@ -43,6 +46,35 @@ const Review = ({ setCurrentStep, data, passengersData }) => {
     const minutes = Math.round(totalDuration % 60);
     return `${hours}h ${minutes}m`;
   };
+
+  const getMarkUp = async () => {
+    await axios
+      .get(`${import.meta.env.VITE_SERVER_URL}markup/get-user-mark-up`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        if (res.data.flatPrice) {
+          saveCommission(res.data.value);
+        } else if (res.data.percentage) {
+          if (res.data.totalFare) {
+            const markUpAmount = parseFloat((totalFare / 100) * res.data.value);
+            saveCommission(markUpAmount);
+          } else if (res.data.baseFare) {
+            const bF = data?.totalPriceInfo?.totalFareDetail.fC?.BF;
+            const markUpAmount = parseFloat((bF / 100) * res.data.value);
+            saveCommission(markUpAmount);
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getMarkUp();
+  }, []);
 
   return (
     // <div className="bg-gray-100 sm:text-sm md:text-lg p-2">
