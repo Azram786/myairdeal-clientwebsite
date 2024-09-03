@@ -15,6 +15,7 @@ const RoundSideBar = ({
   setIspecialReturn,
 }) => {
   const [stops] = useState(["0", "1", "2", "3+"]);
+  
   const [maxPrices, setMaxPrices] = useState({ onward: 0, return: 0 });
   const [specialReturnAirlines, setSpecialReturnAirlines] = useState([]);
 
@@ -92,6 +93,31 @@ const RoundSideBar = ({
     }));
   };
 
+  // Function to count the number of flights per stop category
+  const countStops = (data) => {
+    const stopCounts = { "0": 0, "1": 0, "2": 0, "3+": 0 };
+
+    data.forEach((flight) => {
+      const stopCount = flight.sI.length - 1;
+      if (stopCount >= 3) {
+        stopCounts["3+"]++;
+      } else {
+        stopCounts[stopCount]++;
+      }
+    });
+
+    return stopCounts;
+  };
+
+  // Store counts for onward and return directions
+  const [onwardStopCounts, setOnwardStopCounts] = useState({});
+  const [returnStopCounts, setReturnStopCounts] = useState({});
+
+  useEffect(() => {
+    setOnwardStopCounts(countStops(onwardData));
+    setReturnStopCounts(countStops(returnData));
+  }, [onwardData, returnData]);
+
   const handleStopsChange = (stop) => {
     setFilters((prev) => ({
       ...prev,
@@ -138,11 +164,33 @@ const RoundSideBar = ({
     }));
   };
 
-  const renderStopsSection = () => (
+  const renderStopsSection = () => {  const stopCounts =
+    activeDirection === "onward" ? onwardStopCounts : returnStopCounts;return(
+    
     <div className="mb-6 border-b  rounded-md w-full border-gray-300 pb-4">
       <h3 className="text-sm font-semibold mb-2">Stops</h3>
       <div className="grid w-full grid-cols-4 md:grid-cols-2 lg:grid-cols-4 ">
-        {stops.map((stop, index) => (
+      {stops.map((stop, index) => (
+            <label
+              key={stop}
+              htmlFor={`stop-${stop}`}
+              className={`mb-1 border text-xs  hover:bg-[#D7B56D] flex justify-center py-2 flex-col   items-center ${
+                index === 0 ? "rounded-l-md" : ""
+              } ${index === stops.length - 1 ? "rounded-r-md" : ""} ${
+                filters[activeDirection].stops.includes(stop) ? "bg-[#D7B56D]" : ""
+              }`}
+            >
+              <input
+                type="checkbox"
+                id={`stop-${stop}`}
+                checked={filters[activeDirection].stops.includes(stop)}
+                onChange={() => handleStopsChange(stop)}
+                className="mr-1 hidden"
+              />
+              {stop} <span className=" text-gray-500 text-[10px] ">({stopCounts[stop] || 0})</span>
+            </label>
+          ))}
+        {/* {stops.map((stop, index) => (
           <label
             key={stop}
             htmlFor={`stop-${stop}`}
@@ -161,7 +209,7 @@ const RoundSideBar = ({
             />
             {stop}
           </label>
-        ))}
+        ))} */}
         {/* {["0", "1", "2", "3+"].map((stop, index) => (
               <label
                 key={stop}
@@ -195,6 +243,7 @@ const RoundSideBar = ({
       </div>
     </div>
   );
+};
 
   const renderTimeSection = (type, title) => (
     <div className="mb-6 border-b border-gray-300 pb-4">

@@ -144,7 +144,7 @@ const FlightDetailsCard = ({
   };
   console.log(data, "fvadkhbsjn");
 
-   const totalDuration=data[0].duration
+  const totalDuration = data[0].duration;
   const renderTabs = () => {
     switch (activeTab) {
       case "Flight Details":
@@ -384,7 +384,6 @@ const FlightDetailsCard = ({
     }
   };
 
-
   return (
     <div className="border p-4 rounded-lg m-2 justify-between items-center  bg-white shadow-md  ">
       <div className="flex   flex-col md:flex-row  justify-between  mb-2">
@@ -399,16 +398,16 @@ const FlightDetailsCard = ({
                 className="md:size-12  rounded-md  mr-6 md:flex hidden"
               />
               <div className="flex flex-col">
-              <div className="relative group text-base ">
-                        <div className="text-base font-bold line-clamp-2">
-                          {startSegment.da.code}
-                        </div>
+                <div className="relative group text-base ">
+                  <div className="text-base font-bold line-clamp-2">
+                    {startSegment.da.code}
+                  </div>
 
-                        {/* Tooltip */}
-                        <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
-                          {startSegment.da.name}
-                        </div>
-                      </div>
+                  {/* Tooltip */}
+                  <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                    {startSegment.da.name}
+                  </div>
+                </div>
 
                 <h1 className="text-xs w-[80px] sm:w-max">
                   {formatDateTime(startSegment?.dt)}
@@ -462,10 +461,14 @@ const FlightDetailsCard = ({
                 <p className="font-bold text-xs">
                   Included:
                   <br />
-                  Carry on bag
                 </p>
                 <div className="text-xs font-bold">
+                  Carry on bag : 
                   {flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.cB}
+                </div>
+                <div className="text-xs font-bold">
+                  Check-In bag : <br/>
+                  {flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.iB}
                 </div>
               </div>
             </div>

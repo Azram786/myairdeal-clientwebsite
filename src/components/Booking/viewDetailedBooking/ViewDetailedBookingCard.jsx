@@ -129,20 +129,35 @@ const ViewDetailedBookingCard = ({
 
                   <div className="flex w-full  h-full  justify-between items-center ">
                     <div className="w-1/3 flex text-center flex-col gap-1 h-full">
-                      <div className="text-sm">
-                        <span>
+                      <div className="relative group text-sm ">
+                        <span className=" line-clamp-1">
                           {value.sI[0].da.city}, {value.sI[0].da.country}
                         </span>
+
+                        {/* Tooltip */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-0.5 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                          {value.sI[0].da.city}, {value.sI[0].da.country}
+                        </div>
                       </div>
+
                       <div className="font-bold text-md">
                         <span>{value.sI[0].da.code}</span>
                       </div>
-                      <div className="text-sm  w-full">
-                        <span className="w-full">{value.sI[0].da.name}</span>
+                      <div className="text-xs md:text-sm  w-full">
+                        <div className="relative group ">
+                          <span className=" line-clamp-1">
+                            {value.sI[0].da.name}
+                          </span>
+
+                          {/* Tooltip */}
+                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-0.5 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                            {value.sI[0].da.name}
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className="h-full flex flex-col w-1/3 justify-center">
-                      <div className="text-center text-sm font-semibold">
+                      <div className="text-center text-xs font-semibold">
                         {searchQuery.cabinClass}
                       </div>
                       <div className="flex justify-center w-full items-center">
@@ -161,8 +176,8 @@ const ViewDetailedBookingCard = ({
                       )}
                     </div>
                     <div className="w-1/3 flex flex-col gap-1 h-full text-center">
-                      <div className="text-sm ">
-                        <span>
+                      <div className="relative group text-sm ">
+                        <span className=" line-clamp-1">
                           {value.sI.length === 1
                             ? value.sI[0].aa.city
                             : value.sI[value.sI.length - 1].aa.city}
@@ -171,7 +186,19 @@ const ViewDetailedBookingCard = ({
                             ? value.sI[0].aa.country
                             : value.sI[value.sI.length - 1].aa.country}
                         </span>
+
+                        {/* Tooltip */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-0.5 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                          {value.sI.length === 1
+                            ? value.sI[0].aa.city
+                            : value.sI[value.sI.length - 1].aa.city}
+                          ,
+                          {value.sI.length === 1
+                            ? value.sI[0].aa.country
+                            : value.sI[value.sI.length - 1].aa.country}
+                        </div>
                       </div>
+
                       <div className="font-bold text-md">
                         <span>
                           {value.sI.length === 1
@@ -179,12 +206,21 @@ const ViewDetailedBookingCard = ({
                             : value.sI[value.sI.length - 1].aa.code}
                         </span>
                       </div>
-                      <div className=" text-sm">
-                        <span>
-                          {value.sI.length === 1
-                            ? value.sI[0].aa.name
-                            : value.sI[value.sI.length - 1].aa.name}
-                        </span>
+                      <div className="text-xs md:text-sm  w-full">
+                        <div className="relative group ">
+                          <span className=" line-clamp-1">
+                            {value.sI.length === 1
+                              ? value.sI[0].aa.name
+                              : value.sI[value.sI.length - 1].aa.name}
+                          </span>
+
+                          {/* Tooltip */}
+                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-0.5 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                            {value.sI.length === 1
+                              ? value.sI[0].aa.name
+                              : value.sI[value.sI.length - 1].aa.name}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -194,7 +230,7 @@ const ViewDetailedBookingCard = ({
                     <h1 className="text-base md:text-xl  font-semibold text-gray-800 ">
                       Total Duration :
                     </h1>
-                    <h1 className="text-base md:text-xl  font-semibold text-gray-500 uppercase">
+                    <h1 className="text-base md:text-xl  font-semibold text-gray-500 ">
                       {formatDuration(totalDurationHandler(value.sI))}
                     </h1>
                   </div>
@@ -342,13 +378,27 @@ const ViewDetailedBookingCard = ({
                                     <div className="text-lg font-bold">
                                       {singleValue.da.code}
                                     </div>
-                                    <div className="text-sm">
-                                      {singleValue.da.city},{" "}
-                                      {singleValue.da.country}
+                                    <div className="relative group text-sm ">
+                                      <span className=" line-clamp-1">
+                                        {singleValue.da.city},{" "}
+                                        {singleValue.da.country}
+                                      </span>
+                                      {/* Tooltip */}
+                                      <div className="absolute left-1/4 transform -translate-x-1/2 bottom-full mb-0.5 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                                        {singleValue.da.city},{" "}
+                                        {singleValue.da.country}
+                                      </div>
                                     </div>
-                                    <div className="text-sm font-bold">
-                                      {singleValue.da.name}
+                                    <div className="relative group text-sm font-bold ">
+                                      <span className=" line-clamp-1">
+                                        {singleValue.da.name}
+                                      </span>
+                                      {/* Tooltip */}
+                                      <div className="absolute left-1/4 transform -translate-x-1/2 bottom-full mb-0.5 w-max text-xs p-2 bg-gray-800 text-white  font-normal rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                                        {singleValue.da.name}
+                                      </div>
                                     </div>
+
                                     <div className="text-sm">
                                       {singleValue.da?.terminal || "N/A"}
                                     </div>
@@ -358,7 +408,7 @@ const ViewDetailedBookingCard = ({
                                   </div>
                                   <div className="flex-col items-center w-1/3">
                                     <div className="text-center">
-                                      <span className="text-sm">
+                                      <span className="text-xs">
                                         {formatDuration(singleValue.duration)}
                                       </span>
                                     </div>
@@ -379,13 +429,27 @@ const ViewDetailedBookingCard = ({
                                     <div className="text-lg font-bold">
                                       {singleValue.aa.code}
                                     </div>
-                                    <div className="text-sm">
-                                      {singleValue.aa.city},{" "}
-                                      {singleValue.aa.country}
+                                    <div className="relative group text-sm ">
+                                      <span className=" line-clamp-1">
+                                        {singleValue.aa.city},{" "}
+                                        {singleValue.aa.country}
+                                      </span>
+                                      {/* Tooltip */}
+                                      <div className="absolute left-1/4 transform -translate-x-1/2 bottom-full mb-0.5 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                                        {singleValue.aa.city},{" "}
+                                        {singleValue.aa.country}
+                                      </div>
                                     </div>
-                                    <div className="text-sm font-bold">
-                                      {singleValue.aa.name}
+                                    <div className="relative group text-sm font-bold ">
+                                      <span className=" line-clamp-1">
+                                        {singleValue.aa.name}
+                                      </span>
+                                      {/* Tooltip */}
+                                      <div className="absolute left-1/4 transform -translate-x-1/2 bottom-full mb-0.5 w-max text-xs p-2 bg-gray-800 text-white  font-normal rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                                        {singleValue.aa.name}
+                                      </div>
                                     </div>
+
                                     <div className="text-sm">
                                       {singleValue.aa?.terminal || "N/A"}
                                     </div>
@@ -396,8 +460,8 @@ const ViewDetailedBookingCard = ({
                                 </div>
                               </div>
                               {singleValue.cT && (
-                                <div className="text-sm text-gray-500 mt-4">
-                                  <div className="flex justify-between bg-[#1B1D29] text-[#D7B56D] p-3 rounded-md mt-4 mb-4">
+                                <div className="text-sm text-gray-500 mt-4 flex justify-center items-center">
+                                  <div className="flex justify-between bg-[#1B1D29] text-[#D7B56D] w-1/2 p-3 rounded-md mt-4 mb-4">
                                     <div className="text-sm">
                                       Require to change plane
                                     </div>
