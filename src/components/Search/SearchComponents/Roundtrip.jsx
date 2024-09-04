@@ -10,7 +10,8 @@ import { GiSettingsKnobs } from "react-icons/gi";
 import { BsFillFilterSquareFill } from "react-icons/bs";
 import { setLastSearch } from "../../../store/slices/aut.slice";
 import ReactJoyride from "react-joyride";
-
+import { FallOutlined, StopOutlined, RiseOutlined } from "@ant-design/icons";
+import { Virtuoso } from "react-virtuoso";
 const RoundTrip = ({
   onwardProps = [],
   returnProps = [],
@@ -18,19 +19,16 @@ const RoundTrip = ({
   query,
 }) => {
   const dispatch = useDispatch();
+  const [cheapest, setCheaptest] = useState(false);
+  const [highest, setHighest] = useState(false);
+  const [nonStop, setNonStop] = useState(false);
   const [filteredOnward, setFilteredOnward] = useState([]);
   const [filteredReturn, setFilteredReturn] = useState([]);
   const [activeDirection, setActiveDirection] = useState("onward");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedOnwardFlight, setSelectedOnwardFlight] = useState({
-    ...onwardProps[0],
-    selectedPriceIndex: 0,
-  });
-  const [selectedReturnFlight, setSelectedReturnFlight] = useState({
-    ...returnProps[0],
-    selectedPriceIndex: 0,
-  });
+  const [selectedOnwardFlight, setSelectedOnwardFlight] = useState(null);
+  const [selectedReturnFlight, setSelectedReturnFlight] = useState(null);
   const [specialReturnOnward, setSpecialReturnOnward] = useState([]);
   const [specialReturnReturn, setSpecialReturnReturn] = useState([]);
   const [isSpecialReturnActive, setIsSpecialReturnActive] = useState(false);
@@ -80,6 +78,14 @@ const RoundTrip = ({
       const priceA = calculateTotalPrice(a);
       const priceB = calculateTotalPrice(b);
       return priceA - priceB;
+    });
+  };
+
+  const sortFlightsByHighestPrice = (flights) => {
+    return flights.sort((a, b) => {
+      const priceA = calculateTotalPrice(a);
+      const priceB = calculateTotalPrice(b);
+      return priceB - priceA;
     });
   };
 
@@ -141,21 +147,36 @@ const RoundTrip = ({
   };
 
   useEffect(() => {
+    setSelectedOnwardFlight(null);
+    setSelectedReturnFlight(null);
     const fetchAndFilterFlights = async () => {
       setIsLoading(true);
       setError(null);
       try {
         let filteredOnwardFlights = applyFilters(onwardProps, "onward");
         let filteredReturnFlights = applyFilters(returnProps, "return");
-
-        const sortedOnwardFlights = sortFlightsByLowestPrice(
-          filteredOnwardFlights
-        );
-        const sortedReturnFlights = sortFlightsByLowestPrice(
-          filteredReturnFlights
-        );
-        setFilteredOnward(sortedOnwardFlights);
-        setFilteredReturn(sortedReturnFlights);
+        if (cheapest) {
+          const sortedOnwardFlights = sortFlightsByLowestPrice(
+            filteredOnwardFlights
+          );
+          const sortedReturnFlights = sortFlightsByLowestPrice(
+            filteredReturnFlights
+          );
+          setFilteredOnward(sortedOnwardFlights);
+          setFilteredReturn(sortedReturnFlights);
+        } else if (highest) {
+          const sortedOnwardFlights = sortFlightsByHighestPrice(
+            filteredOnwardFlights
+          );
+          const sortedReturnFlights = sortFlightsByHighestPrice(
+            filteredReturnFlights
+          );
+          setFilteredOnward(sortedOnwardFlights);
+          setFilteredReturn(sortedReturnFlights);
+        } else {
+          setFilteredOnward(filteredOnwardFlights);
+          setFilteredReturn(filteredReturnFlights);
+        }
 
         // Store special return flights for onward journey
         const specialOnward = onwardProps.filter((flight) =>
@@ -185,7 +206,7 @@ const RoundTrip = ({
     };
 
     fetchAndFilterFlights();
-  }, [filters, onwardProps, returnProps]);
+  }, [filters, onwardProps, returnProps, cheapest, highest]);
 
   const getRoute = (flights) => {
     if (flights.length > 0 && flights[0].sI && flights[0].sI.length > 0) {
@@ -427,28 +448,38 @@ const RoundTrip = ({
     }
 
     return (
-      <div className="h-[900px]]overflow-y-auto no-scroll ">
-        {flights.map((flight, index) => (
-          <RoundTripCard
-            key={index}
-            flightDetails={flight}
-            isSelected={
-              direction === "onward"
-                ? selectedOnwardFlight?.sI[0].id === flight.sI[0].id
-                : selectedReturnFlight?.sI[0].id === flight.sI[0].id
-            }
-            selectedPriceIndex={
-              direction === "onward"
-                ? selectedOnwardFlight?.selectedPriceIndex
-                : selectedReturnFlight?.selectedPriceIndex
-            }
-            onSelect={(priceIndex) =>
-              handleSelectFlight(flight, priceIndex, direction)
-            }
-            passenger={passenger}
-            specialReturnMode={filters.specialReturnAirlines.length > 0}
+      <div className="h-[900px] overflow-y-auto no-scroll">
+        {flights.length > 0 ? (
+          <Virtuoso
+            totalCount={flights.length}
+            itemContent={(index) => {
+              const flight = flights[index];
+              return (
+                <RoundTripCard
+                  key={flight.sI[0].id} // Use a unique ID if available
+                  flightDetails={flight}
+                  isSelected={
+                    direction === "onward"
+                      ? selectedOnwardFlight?.sI[0].id === flight.sI[0].id
+                      : selectedReturnFlight?.sI[0].id === flight.sI[0].id
+                  }
+                  selectedPriceIndex={
+                    direction === "onward"
+                      ? selectedOnwardFlight?.selectedPriceIndex
+                      : selectedReturnFlight?.selectedPriceIndex
+                  }
+                  onSelect={(priceIndex) =>
+                    handleSelectFlight(flight, priceIndex, direction)
+                  }
+                  passenger={passenger}
+                  specialReturnMode={filters.specialReturnAirlines.length > 0}
+                />
+              );
+            }}
           />
-        ))}
+        ) : (
+          <p>No flights available.</p>
+        )}
       </div>
     );
   };
@@ -481,130 +512,190 @@ const RoundTrip = ({
   ];
 
   return (
-    <div className="relative  flex flex-wrap flex-col  md:flex-row mb-24  w-full ">
-      {runJoyride && (
-        <ReactJoyride
-          steps={joyrideSteps}
-          run={runJoyride}
-          continuous={true}
-          scrollToFirstStep={true}
-          showProgress={true}
-          showSkipButton={true}
-          callback={(data) => {
-            if (data.action === "reset") {
-              setRunJoyride(false);
-            }
-          }}
-        />
-      )}
-
-      <button
-        className="absolute top-3 right-0 z-50 flex flex-col items-center justify-center  lg-custom:hidden"
-        onClick={toggleSidebar}
-      >
-        <BsFillFilterSquareFill className="w-6 h-6 white" />
-        <div className="text-xs text-[#1B1D29]">Filters</div>
-      </button>
-      <div className=" w-[20%] h-full flex flex-wrap flex-col lg-custom:flex-row ">
+    <div>
+      <div className="filter-container">
         <div
-          className={`fixed h-full overflow-y-auto lg-custom:static m-2 top-0 bottom-0 right-0 z-50 lg-custom:z-0 rounded-xl w-full bg-white transform ${
-            isSidebarOpen ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            marginTop: "2%",
-            marginBottom: "2%",
-            height: "auto",
-            width: "auto",
+          className={`filter-container-button ${
+            cheapest ? "filter-container-button-active" : ""
+          }`}
+          onClick={() => {
+            setHighest(false);
+            setCheaptest(!cheapest);
           }}
         >
-          <button
-            className="absolute top-2 right-4 z-50 white lg-custom:hidden"
-            onClick={() => setIsSidebarOpen(false)}
+          {" "}
+          <FallOutlined />
+          <b>Lowest Prices</b>
+        </div>
+        <div
+          className={`filter-container-button ${
+            filters.onward.stops.includes("0") &&
+            filters.return.stops.includes("0")
+              ? "filter-container-button-active"
+              : ""
+          }`}
+          onClick={() => {
+            setNonStop(!nonStop);
+            setFilters((prevFilters) => ({
+              ...prevFilters,
+              onward: {
+                ...prevFilters.onward,
+                stops: prevFilters.onward.stops.includes("0")
+                  ? [] // If "0" is already present, clear the array
+                  : ["0"], // If "0" is not present, set the array to ["0"]
+              },
+              return: {
+                ...prevFilters.return,
+                stops: prevFilters.return.stops.includes("0")
+                  ? [] // If "0" is already present, clear the array
+                  : ["0"], // If "0" is not present, set the array to ["0"]
+              },
+            }));
+          }}
+        >
+          {" "}
+          <StopOutlined />
+          <b>No Stops</b>
+        </div>
+        <div
+          className={`filter-container-button ${
+            highest ? "filter-container-button-active" : ""
+          }`}
+          onClick={() => {
+            setCheaptest(false);
+            setHighest(!highest);
+          }}
+        >
+          <RiseOutlined />
+          <b>Highest Prices</b>
+        </div>
+      </div>
+      <div className="relative  flex flex-wrap flex-col  md:flex-row mb-24  w-full ">
+        {runJoyride && (
+          <ReactJoyride
+            steps={joyrideSteps}
+            run={runJoyride}
+            continuous={true}
+            scrollToFirstStep={true}
+            showProgress={true}
+            showSkipButton={true}
+            callback={(data) => {
+              if (data.action === "reset") {
+                setRunJoyride(false);
+              }
+            }}
+          />
+        )}
+
+        <button
+          className="absolute top-3 right-0 z-50 flex flex-col items-center justify-center  lg-custom:hidden"
+          onClick={toggleSidebar}
+        >
+          <BsFillFilterSquareFill className="w-6 h-6 white" />
+          <div className="text-xs text-[#1B1D29]">Filters</div>
+        </button>
+        <div className=" w-[20%] h-full flex flex-wrap flex-col lg-custom:flex-row ">
+          <div
+            className={`fixed h-full overflow-y-auto lg-custom:static m-2 top-0 bottom-0 right-0 z-50 lg-custom:z-0 rounded-xl w-full bg-white transform ${
+              isSidebarOpen ? "translate-x-0" : "translate-x-full"
+            } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              marginTop: "2%",
+              marginBottom: "2%",
+              height: "auto",
+              width: "auto",
+            }}
           >
-            <FaTimes className="w-6 h-6" />
-          </button>
-          <div className="font-semibold p-2 text-left text-base">Filters</div>
-          <div className="min-w-[250px]  rounded-xl p-2 flex flex-col items-center ">
-            <RoundSideBar
-              passenger={passenger}
-              filters={filters}
-              setFilters={setFilters}
-              onwardData={onwardProps}
-              returnData={returnProps}
-              activeDirection={activeDirection}
-              setActiveDirection={setActiveDirection}
-              calculateTotalPrice={calculateTotalPrice}
-              isSpecialReturn={isSpecialReturnActive}
-              setIspecialReturn={setIsSpecialReturnActive}
+            <button
+              className="absolute top-2 right-4 z-50 white lg-custom:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <FaTimes className="w-6 h-6" />
+            </button>
+            <div className="font-semibold p-2 text-left text-base">Filters</div>
+            <div className="min-w-[250px]  rounded-xl p-2 flex flex-col items-center ">
+              <RoundSideBar
+                passenger={passenger}
+                filters={filters}
+                setFilters={setFilters}
+                onwardData={onwardProps}
+                returnData={returnProps}
+                activeDirection={activeDirection}
+                setActiveDirection={setActiveDirection}
+                calculateTotalPrice={calculateTotalPrice}
+                isSpecialReturn={isSpecialReturnActive}
+                setIspecialReturn={setIsSpecialReturnActive}
+              />
+            </div>
+          </div>
+
+          {isSidebarOpen && (
+            <div
+              className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
+              onClick={() => setIsSidebarOpen(false)}
             />
+          )}
+        </div>
+        <div className="flex flex-wrap h-full  mx-0 flex-col w-full lg-custom:w-[80%]">
+          <div className="flex gap-6">
+            <div className="w-max lg-custom:w-1/2 relative onward-section">
+              <h2
+                className={`text-sm text-center p-2 lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
+                  activeSection === "onward"
+                    ? "bg-[#1B1D29] text-[#D7B56D]"
+                    : "bg-white text-[#1B1D29]"
+                } lg-custom:bg-white lg-custom:text-[#1B1D29]`}
+                onClick={() => handleToggleSection("onward")}
+              >
+                {getRoute(filteredOnward)}
+              </h2>
+            </div>
+            <div className="w-max lg-custom:w-1/2 return-section">
+              <h2
+                className={`text-sm text-center lg-custom:text-xl p-2 font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
+                  activeSection === "return"
+                    ? "bg-[#1B1D29] text-[#D7B56D]"
+                    : "bg-white text-[#1B1D29]"
+                } lg-custom:bg-white lg-custom:text-[#1B1D29]`}
+                onClick={() => handleToggleSection("return")}
+              >
+                {getRoute(filteredReturn)}
+              </h2>
+            </div>
+          </div>
+
+          <div className="  flex h-[950px] flex-col lg-custom:flex-row">
+            <div
+              className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
+                activeSection === "onward" ? "block" : "hidden"
+              } lg-custom:block`}
+            >
+              {renderFlightSection(filteredOnward, "onward")}
+            </div>
+            <div
+              className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
+                activeSection === "return" ? "block" : "hidden"
+              } lg-custom:block`}
+            >
+              {renderFlightSection(filteredReturn, "return")}
+            </div>
           </div>
         </div>
 
-        {isSidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
-            onClick={() => setIsSidebarOpen(false)}
+        {(selectedOnwardFlight || selectedReturnFlight) && (
+          <BookingCard
+            selectedFlights={[
+              selectedOnwardFlight,
+              selectedReturnFlight,
+            ].filter(Boolean)}
+            totalPrice={calculateTotalBookingPrice()}
+            onBook={() => handleBooking()}
+            passenger={passenger}
           />
         )}
       </div>
-      <div className="flex flex-wrap h-full  mx-0 flex-col w-full lg-custom:w-[80%]">
-        <div className="flex gap-6">
-          <div className="w-max lg-custom:w-1/2 relative onward-section">
-            <h2
-              className={`text-sm text-center p-2 lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
-                activeSection === "onward"
-                  ? "bg-[#1B1D29] text-[#D7B56D]"
-                  : "bg-white text-[#1B1D29]"
-              } lg-custom:bg-white lg-custom:text-[#1B1D29]`} 
-              onClick={() => handleToggleSection("onward")}
-            >
-              {getRoute(filteredOnward)}
-            </h2>
-          </div>
-          <div className="w-max lg-custom:w-1/2 return-section">
-            <h2
-              className={`text-sm text-center lg-custom:text-xl p-2 font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
-                activeSection === "return"
-                  ? "bg-[#1B1D29] text-[#D7B56D]"
-                  : "bg-white text-[#1B1D29]"
-              } lg-custom:bg-white lg-custom:text-[#1B1D29]`} 
-              onClick={() => handleToggleSection("return")}
-            >
-              {getRoute(filteredReturn)}
-            </h2>
-          </div>
-        </div>
-
-        <div className="  flex h-[950px] flex-col lg-custom:flex-row">
-          <div
-            className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
-              activeSection === "onward" ? "block" : "hidden"
-            } lg-custom:block`}
-          >
-            {renderFlightSection(filteredOnward, "onward")}
-          </div>
-          <div
-            className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
-              activeSection === "return" ? "block" : "hidden"
-            } lg-custom:block`}
-          >
-            {renderFlightSection(filteredReturn, "return")}
-          </div>
-        </div>
-      </div>
-
-      {(selectedOnwardFlight || selectedReturnFlight) && (
-        <BookingCard
-          selectedFlights={[selectedOnwardFlight, selectedReturnFlight].filter(
-            Boolean
-          )}
-          totalPrice={calculateTotalBookingPrice()}
-          onBook={() => handleBooking()}
-          passenger={passenger}
-        />
-      )}
     </div>
   );
 };

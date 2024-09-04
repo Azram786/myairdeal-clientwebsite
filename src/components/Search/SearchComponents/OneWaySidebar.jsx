@@ -51,18 +51,14 @@ const OneWaySideBar = ({
   const handleStopsChange = (stop) => {
     setFilters((prev) => ({
       ...prev,
-      stops: prev.stops.includes(stop)
-        ? prev.stops.filter((s) => s !== stop)
-        : [...prev.stops, stop],
+      stops: prev.stops.includes(stop) ? [] : [stop],
     }));
   };
 
   const handleTimeChange = (type, time) => {
     setFilters((prev) => ({
       ...prev,
-      [type]: prev[type].includes(time)
-        ? prev[type].filter((t) => t !== time)
-        : [...prev[type], time],
+      [type]: prev[type].includes(time) ? [] : [time],
     }));
   };
 
@@ -130,7 +126,7 @@ const OneWaySideBar = ({
               <label
                 key={stop}
                 htmlFor={`stop-${stop}`}
-                className={`mb-1 border hover:bg-[#D7B56D] flex text-xs flex-col items-center justify-center py-2 ${
+                className={`mb-1 border  flex text-xs flex-col items-center justify-center py-2 ${
                   index === 0 ? "rounded-l-md" : ""
                 } ${index === 3 ? "rounded-r-md" : ""} ${
                   filters.stops.includes(stop) ? "bg-[#D7B56D]" : ""
@@ -171,7 +167,7 @@ const OneWaySideBar = ({
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 hover:bg-[#D7B56D] border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500  border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters.departureTime.includes(time) ? "bg-[#D7B56D]" : ""
                 }`}
                 onClick={() => handleTimeChange("departureTime", time)}
@@ -195,7 +191,7 @@ const OneWaySideBar = ({
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 hover:bg-[#D7B56D] text-xs border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500  text-xs border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters.arrivalTime.includes(time) ? "bg-[#D7B56D]" : ""
                 }`}
                 onClick={() => handleTimeChange("arrivalTime", time)}

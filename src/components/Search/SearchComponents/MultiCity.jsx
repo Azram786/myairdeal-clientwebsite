@@ -11,14 +11,16 @@ import ReactToast from "../../util/ReactToast";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { BsFillFilterSquareFill } from "react-icons/bs";
 import { setLastSearch } from "../../../store/slices/aut.slice";
-
+import { FallOutlined, StopOutlined, RiseOutlined } from "@ant-design/icons";
+import { Virtuoso } from "react-virtuoso";
 const { TabPane } = Tabs;
 
 const MultiCity = ({ flightProps, passenger, query }) => {
   const dispatch = useDispatch();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const token = useSelector((state) => state.auth.token);
-
+  const [cheapest, setCheaptest] = useState(false);
+  const [highest, setHighest] = useState(false);
   const [filters, setFilters] = useState(
     flightProps.map(() => ({
       maxPrice: 100000,
@@ -55,6 +57,14 @@ const MultiCity = ({ flightProps, passenger, query }) => {
       const priceA = calculateTotalPrice(a);
       const priceB = calculateTotalPrice(b);
       return priceA - priceB;
+    });
+  };
+
+  const sortFlightsByHighestPrice = (flights) => {
+    return flights.sort((a, b) => {
+      const priceA = calculateTotalPrice(a);
+      const priceB = calculateTotalPrice(b);
+      return priceB - priceA;
     });
   };
 
@@ -96,12 +106,21 @@ const MultiCity = ({ flightProps, passenger, query }) => {
             filters[index].airlines.includes(airline))
         );
       });
-      // Sort the filtered flights by lowest price
-      return filteredFlights.sort((a, b) => {
-        const priceA = calculateTotalPrice(a);
-        const priceB = calculateTotalPrice(b);
-        return priceA - priceB;
-      });
+      if (cheapest) {
+        return filteredFlights.sort((a, b) => {
+          const priceA = calculateTotalPrice(a);
+          const priceB = calculateTotalPrice(b);
+          return priceA - priceB;
+        });
+      } else if (highest) {
+        return filteredFlights.sort((a, b) => {
+          const priceA = calculateTotalPrice(a);
+          const priceB = calculateTotalPrice(b);
+          return priceB - priceA;
+        });
+      } else {
+        return filteredFlights;
+      }
     });
 
     setFilteredFlights(newFilteredFlights);
@@ -119,7 +138,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
         return selected;
       })
     );
-  }, [filters, flightProps, passenger]);
+  }, [filters, flightProps, passenger, cheapest, highest]);
 
   const handleTabChange = (activeKey) => {
     setActiveTabIndex(Number(activeKey));
@@ -178,159 +197,214 @@ const MultiCity = ({ flightProps, passenger, query }) => {
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
-  return (
-    <div className=" relative flex flex-col md:flex-row mb-3 ">
-      {/* <SideBar
-        flights={flightProps}
-        filters={filters}
-        setFilters={setFilters}
-        activeTabIndex={activeTabIndex}
-        passenger={passenger}
-      /> */}
-      <button
-        className="absolute top-4 right-0 z-50 flex justify-center items-center flex-col lg-custom:hidden"
-        onClick={toggleSidebar}
-      >
-        <BsFillFilterSquareFill className="w-6 h-6 white" />
-        <div className="text-xs white">Filters</div>
-      </button>
+  const allFiltersHaveZero = filters.every((filter) =>
+    filter.stops.includes("0")
+  );
 
-      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
+  return (
+    <div>
+      <div className="filter-container">
         <div
-          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 lg-custom:z-0 bg-white transform ${
-            isSidebarOpen ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            marginTop: "2%",
-            marginBottom: "2%",
-            height: "auto",
-            width: "auto",
+          className={`filter-container-button ${
+            cheapest ? "filter-container-button-active" : ""
+          }`}
+          onClick={() => {
+            setHighest(false);
+            setCheaptest(!cheapest);
           }}
         >
-          <button
-            className="absolute top-2 right-4 z-50 white lg-custom:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          >
-            <FaTimes className="w-6 h-6" />
-          </button>
+          {" "}
+          <FallOutlined />
+          <b>Lowest Prices</b>
+        </div>
+        <div
+          className={`filter-container-button ${
+            allFiltersHaveZero ? "filter-container-button-active" : ""
+          }`}
+          onClick={() => {
+            const newFilters = [...filters];
 
-          <div className="font-semibold p-2 text-left text-base">Filters</div>
-          <div className="rounded-xl flex flex-col items-center">
-            <SideBar
-              flights={flightProps}
-              filters={filters}
-              setFilters={setFilters}
-              activeTabIndex={activeTabIndex}
-              passenger={passenger}
-            />
+            // Check if all filters have 0 in their stops array
+            const allHaveZero = newFilters.every((filter) =>
+              filter.stops.includes("0")
+            );
+
+            // Update each filter based on the condition
+            newFilters.forEach((filter, index) => {
+              newFilters[index] = {
+                ...filter,
+                stops: allHaveZero ? [] : ["0"], // If all have 0, clear stops; otherwise, set to [0]
+              };
+            });
+
+            setFilters(newFilters);
+          }}
+        >
+          {" "}
+          <StopOutlined />
+          <b>No Stops</b>
+        </div>
+        <div
+          className={`filter-container-button ${
+            highest ? "filter-container-button-active" : ""
+          }`}
+          onClick={() => {
+            setCheaptest(false);
+            setHighest(!highest);
+          }}
+        >
+          <RiseOutlined />
+          <b>Highest Prices</b>
+        </div>
+      </div>
+      <div className=" relative flex flex-col md:flex-row mb-3 ">
+        <button
+          className="absolute top-4 right-0 z-50 flex justify-center items-center flex-col lg-custom:hidden"
+          onClick={toggleSidebar}
+        >
+          <BsFillFilterSquareFill className="w-6 h-6 white" />
+          <div className="text-xs white">Filters</div>
+        </button>
+
+        <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
+          <div
+            className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 lg-custom:z-0 bg-white transform ${
+              isSidebarOpen ? "translate-x-0" : "translate-x-full"
+            } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              marginTop: "2%",
+              marginBottom: "2%",
+              height: "auto",
+              width: "auto",
+            }}
+          >
+            <button
+              className="absolute top-2 right-4 z-50 white lg-custom:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <FaTimes className="w-6 h-6" />
+            </button>
+
+            <div className="font-semibold p-2 text-left text-base">Filters</div>
+            <div className="rounded-xl flex flex-col items-center">
+              <SideBar
+                flights={flightProps}
+                filters={filters}
+                setFilters={setFilters}
+                activeTabIndex={activeTabIndex}
+                passenger={passenger}
+              />
+            </div>
           </div>
+
+          {isSidebarOpen && (
+            <div
+              className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
         </div>
 
-        {isSidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
-            onClick={() => setIsSidebarOpen(false)}
+        <div className=" flex-grow pb-20 ">
+          <Tabs className="m-0" defaultActiveKey="0" onChange={handleTabChange}>
+            {flightProps.map((flights, tabIndex) => {
+              const startCode =
+                flights.length > 0 ? flights[0].sI[0].da.city : "Unknown";
+              const endCode =
+                flights.length > 0
+                  ? flights[0].sI[flights[0].sI.length - 1].aa.city
+                  : "Unknown";
+              const dt =
+                flights.length > 0
+                  ? new Intl.DateTimeFormat("en-GB", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })
+                      .format(
+                        new Date(flights[0].sI[flights[0].sI.length - 1].dt)
+                      )
+                      .split("/")
+                      .join("-")
+                  : "N/A";
+
+              return (
+                <TabPane
+                  className=""
+                  tab={
+                    <span className="flex  flex-col justify-start items-center ">
+                      <p className="space-x-1">
+                        {" "}
+                        <span>{startCode}</span>{" "}
+                        <span>
+                          <ArrowRightOutlined className="" />
+                        </span>{" "}
+                        <span>{endCode}</span>{" "}
+                      </p>
+                      <p>{dt}</p>{" "}
+                    </span>
+                  }
+                  key={tabIndex}
+                >
+                  <div className="h-[700px] overflow-y-auto no-scroll">
+                    {filteredFlights[tabIndex].length === 0 ? (
+                      <div>No flights available for this route</div>
+                    ) : (
+                      filteredFlights[tabIndex].map((flight, flightIndex) => (
+                        <FlightDetailsCard
+                          key={flightIndex}
+                          logo={flightLogo}
+                          flightDetails={flight}
+                          passenger={passenger}
+                          isSelected={
+                            selectedFlights[tabIndex].flightIndex ===
+                            flightIndex
+                          }
+                          selectedPriceIndex={
+                            selectedFlights[tabIndex].flightIndex ===
+                            flightIndex
+                              ? selectedFlights[tabIndex].priceIndex
+                              : 0
+                          }
+                          onSelect={(priceIndex) =>
+                            handleFlightSelection(
+                              tabIndex,
+                              flightIndex,
+                              priceIndex
+                            )
+                          }
+                          totalPrice={calculateTotalPrice(flight)}
+                        />
+                      ))
+                    )}
+                  </div>
+                </TabPane>
+              );
+            })}
+          </Tabs>
+        </div>
+
+        {(selectedFlights[0]?.priceIndex != null ||
+          selectedFlights[1]?.priceIndex != null) && (
+          <BookingCard
+            selectedFlights={selectedFlights
+              .map((selected, index) =>
+                selected.flightIndex !== null
+                  ? {
+                      ...filteredFlights[index][selected.flightIndex],
+                      selectedPriceIndex: selected.priceIndex,
+                    }
+                  : null
+              )
+              .filter((flight) => flight !== null)}
+            onBook={handleBooking}
+            passenger={passenger}
+            selectedPriceIndex={selectedFlights}
           />
         )}
       </div>
-
-      <div className=" flex-grow pb-20 ">
-        <Tabs className="m-0" defaultActiveKey="0" onChange={handleTabChange}>
-          {flightProps.map((flights, tabIndex) => {
-            const startCode =
-              flights.length > 0 ? flights[0].sI[0].da.city : "Unknown";
-            const endCode =
-              flights.length > 0
-                ? flights[0].sI[flights[0].sI.length - 1].aa.city
-                : "Unknown";
-            const dt =
-              flights.length > 0
-                ? new Intl.DateTimeFormat("en-GB", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  })
-                    .format(
-                      new Date(flights[0].sI[flights[0].sI.length - 1].dt)
-                    )
-                    .split("/")
-                    .join("-")
-                : "N/A";
-
-            return (
-              <TabPane
-                className=""
-                tab={
-                  <span className="flex  flex-col justify-start items-center ">
-                    <p className="space-x-1">
-                      {" "}
-                      <span>{startCode}</span>{" "}
-                      <span>
-                        <ArrowRightOutlined className="" />
-                      </span>{" "}
-                      <span>{endCode}</span>{" "}
-                    </p>
-                    <p>{dt}</p>{" "}
-                  </span>
-                }
-                key={tabIndex}
-              >
-                <div className="h-[700px] overflow-y-auto no-scroll">
-                  {filteredFlights[tabIndex].length === 0 ? (
-                    <div>No flights available for this route</div>
-                  ) : (
-                    filteredFlights[tabIndex].map((flight, flightIndex) => (
-                      <FlightDetailsCard
-                        key={flightIndex}
-                        logo={flightLogo}
-                        flightDetails={flight}
-                        passenger={passenger}
-                        isSelected={
-                          selectedFlights[tabIndex].flightIndex === flightIndex
-                        }
-                        selectedPriceIndex={
-                          selectedFlights[tabIndex].flightIndex === flightIndex
-                            ? selectedFlights[tabIndex].priceIndex
-                            : 0
-                        }
-                        onSelect={(priceIndex) =>
-                          handleFlightSelection(
-                            tabIndex,
-                            flightIndex,
-                            priceIndex
-                          )
-                        }
-                        totalPrice={calculateTotalPrice(flight)}
-                      />
-                    ))
-                  )}
-                </div>
-              </TabPane>
-            );
-          })}
-        </Tabs>
-      </div>
-
-      {(selectedFlights[0]?.priceIndex != null ||
-        selectedFlights[1]?.priceIndex != null) && (
-        <BookingCard
-          selectedFlights={selectedFlights
-            .map((selected, index) =>
-              selected.flightIndex !== null
-                ? {
-                    ...filteredFlights[index][selected.flightIndex],
-                    selectedPriceIndex: selected.priceIndex,
-                  }
-                : null
-            )
-            .filter((flight) => flight !== null)}
-          onBook={handleBooking}
-          passenger={passenger}
-          selectedPriceIndex={selectedFlights}
-        />
-      )}
     </div>
   );
 };
