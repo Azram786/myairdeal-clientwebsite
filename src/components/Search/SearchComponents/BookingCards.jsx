@@ -23,7 +23,7 @@ const BookingCard = ({
       let total = 0;
 
       const priceIndex = flight?.selectedPriceIndex || 0;
-      const priceList = flight.totalPriceList[priceIndex].fd;
+      const priceList = flight?.totalPriceList[priceIndex]?.fd;
 
       for (const passengerType in passenger) {
         if (priceList[passengerType]) {

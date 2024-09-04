@@ -182,7 +182,7 @@ const FlightDetailsCard = ({
                     month: "short",
 
                     day: "numeric",
-                    weekday:"short",
+                    weekday: "short",
                   })}
                 </span>
               </div>
@@ -223,7 +223,7 @@ const FlightDetailsCard = ({
                     </div>
 
                     <div className="flex gap-2 mt-2 items-center w-full  md:w-[70%] justify-around  md:gap-8">
-                      <div className=" p-2 min-w-[30%] md:w-[55%] ">
+                      <div className=" p-2 min-w-[30%] md:w-[55%]  ">
                         <div className="font-bold text-xs  md:text-sm">
                           <div className="font-bold text-xs md:text-sm">
                             {new Date(segment.dt).toLocaleString("en-US", {
@@ -267,7 +267,7 @@ const FlightDetailsCard = ({
                           {segment?.da?.terminal || "N/A"}
                         </div>
                       </div>
-                      <div className="flex justify-center w-20  md:min-w-[25%] lg-custom:min-w-[35%] mr-0 md:mr-6 flex-col items-center ">
+                      <div className="flex justify-center w-32  md:min-w-[25%]  mr-0 md:mr-6 flex-col items-center ">
                         <div className="text-xs text-gray-500">
                           {/* {convertToHoursMinutes(segment.duration)} */}
                           {convertToHoursMinutes(segment?.duration)}
@@ -357,7 +357,7 @@ const FlightDetailsCard = ({
                 if (details) {
                   return (
                     <div key={passengerType} className="mb-4">
-                      <div className="grid grid-cols-3 text-sm  text-xs w-max text-gray-600 font-semibold mb-2">
+                      <div className="grid grid-cols-3 md:text-sm  text-xs w-max text-gray-600 font-semibold mb-2">
                         <div>
                           Fare Details for {passengerType} (CB: {details.cB})
                         </div>
@@ -520,14 +520,15 @@ const FlightDetailsCard = ({
             </div>
           </div>
 
-          <div className="flex flex-col w-full  ">
-            <div className="flex mt-3 gap-2 overflow-x-auto no-scroll items-start">
-              {displayedPrices?.map((price, index) => (
-                <div
-                  key={index}
-                  onClick={() => handlePriceSelection(index)}
-                  className={`
-                text-xs text-start space-y-2 flex shrink-0 items-center min-w-24 md:w-fit
+          <div className="flex flex-col w-full ">
+            <div className="w-full lg-custom:w-[80%]">
+              <div className="flex mt-3 gap-2 flex-wrap w-full overflow-x-auto  items-start">
+                {displayedPrices?.map((price, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handlePriceSelection(index)}
+                    className={`
+                text-xs text-start space-y-2 flex shrink-0 items-center min-w-24 
                 p-1 mb-2 cursor-pointer 
                 ${
                   localSelectedPriceIndex === index
@@ -535,23 +536,24 @@ const FlightDetailsCard = ({
                     : "border border-gray-200 hover:border-blue-300 rounded-md"
                 }
               `}
-                >
-                  <div className="flex  flex-col text-xs ">
-                    <p className="font-semibold">
-                      ₹ {calculateTotalPrice(index).toFixed(2)}
-                    </p>
-                    <p className="my-2 text-[10px]">
-                      <span className="bg-gray-400 p-0.5 bg-opacity-50 rounded-md text-black px-2 py-1">
-                        {price?.fareIdentifier}
-                      </span>{" "}
-                      {price?.fd?.ADULT?.cc}
-                    </p>
-                    <p className="text-red-600 text-[10px]">
-                      Seats left: {price?.fd?.ADULT?.sR}
-                    </p>
+                  >
+                    <div className="flex  flex-col text-xs ">
+                      <p className="font-semibold">
+                        ₹ {calculateTotalPrice(index).toFixed(2)}
+                      </p>
+                      <p className="my-2 text-[10px]">
+                        <span className="bg-gray-400 p-0.5 bg-opacity-50 rounded-md text-black px-2 py-1">
+                          {price?.fareIdentifier}
+                        </span>{" "}
+                        {price?.fd?.ADULT?.cc}
+                      </p>
+                      <p className="text-red-600 text-[10px]">
+                        Seats left: {price?.fd?.ADULT?.sR}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
             {/* View Details Button */}
             <div className="flex justify-between items-center w-full ">

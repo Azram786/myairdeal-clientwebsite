@@ -194,8 +194,8 @@ const RoundTripCard = ({
                 key={index}
                 className="flex flex-col items-start justify-start pt-4  "
               >
-                <div className="flex flex-wrap sm:flex-nowrap  items-start  text-left pl-0 md:pl-6 lg-custom:pl-0   ">
-                  <div className="flex flex-nowrap lg-custom:flex-wrap  ">
+                <div className="flex flex-wrap md:flex-nowrap  items-start  text-left pl-0 md:pl-6 lg-custom:pl-0 w-full  ">
+                  <div className="flex flex-nowrap lg-custom:flex-wrap w-full  md:w-[30%] lg-custom:w-[20%] ">
                     <img
                       src={`${
                         import.meta.env.VITE_SERVER_URL
@@ -214,9 +214,9 @@ const RoundTripCard = ({
                     </div>
                   </div>
 
-                  <div className="mx-0 md:mx-6  flex gap-x-1  items-start  ">
-                    <div className="text-left w-max   sm:min-w-36 ">
-                      <div className="font-bold max-w-24 text-xs flex-wrap">
+                  <div className="mx-0 md:mx-6  flex gap-x-1 w-full lg-custom:w-[70%] px-2 items-start  ">
+                    <div className="text-left     w-[40%] ">
+                      <div className="font-bold text-xs flex-wrap">
                         <div className="font-bold text-xs ">
                           {new Date(segment?.dt).toLocaleString("en-US", {
                             month: "short",
@@ -235,7 +235,7 @@ const RoundTripCard = ({
                         </div>
                         {/* {getDayOfWeek(segment.dt)} */}
                       </div>
-                      <div className="text-[10px] max-w-28 text-gray-500 line-clamp-1">
+                      <div className="text-[10px]  text-gray-500 line-clamp-1">
                         {segment?.da?.city}, {segment?.da?.country}
                       </div>
                       <div className="relative group text-[10px]  text-xs text-gray-500 ">
@@ -248,12 +248,12 @@ const RoundTripCard = ({
                           {segment?.da?.name}
                         </div>
                       </div>
-                      <div className="text-[10px] max-w-28 text-gray-500">
+                      <div className="text-[10px]  text-gray-500">
                         {segment?.da?.terminal || "N/A"}
                       </div>
                     </div>
 
-                    <div className="mx-4 sm:min-w-24  flex flex-col items-center ">
+                    <div className="mx-4 w-[20%]  flex flex-col items-center ">
                       <div className="text-[10px] text-gray-500">
                         {convertToHoursMinutes(segment?.duration)}
                       </div>
@@ -266,8 +266,8 @@ const RoundTripCard = ({
                       </div>
                     </div>
 
-                    <div className=" text-left ml-4 sm:min-w-36 ">
-                      <div className="font-bold max-w-24 text-xs">
+                    <div className=" text-left ml-4 w-[40%] ">
+                      <div className="font-bold text-xs">
                         {new Date(segment?.at).toLocaleString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -287,7 +287,7 @@ const RoundTripCard = ({
                         {segment?.aa?.city}, {segment?.aa?.country}
                       </div>
                       <div className="relative group text-[10px]  text-xs text-gray-500">
-                        <span className="text-[10px] max-w-36 line-clamp-1">
+                        <span className="text-[10px]  line-clamp-1">
                           {segment?.aa?.name}
                         </span>
 

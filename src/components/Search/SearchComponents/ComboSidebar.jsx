@@ -21,7 +21,7 @@ const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
   );
 
   useEffect(() => {
-    const highestPrice = Math.max(...flights.map(calculateTotalPrice));
+    const highestPrice =Math.floor( Math.max(...flights.map(calculateTotalPrice)));
     setMaxPrice(highestPrice);
     setFilters((prev) => ({ ...prev, maxPrice: highestPrice }));
   }, [flights, calculateTotalPrice, setFilters]);

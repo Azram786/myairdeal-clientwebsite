@@ -15,7 +15,7 @@ const RoundSideBar = ({
   setIspecialReturn,
 }) => {
   const [stops] = useState(["0", "1", "2", "3+"]);
-  
+
   const [maxPrices, setMaxPrices] = useState({ onward: 0, return: 0 });
   const [specialReturnAirlines, setSpecialReturnAirlines] = useState([]);
 
@@ -32,8 +32,12 @@ const RoundSideBar = ({
 
   useEffect(() => {
     const calculateMaxPrices = () => {
-      const onwardMax = Math.floor(Math.max(...onwardData.map(calculateTotalPrice)));
-      const returnMax = Math.floor(Math.max(...returnData.map(calculateTotalPrice)));
+      const onwardMax = Math.floor(
+        Math.max(...onwardData.map(calculateTotalPrice))
+      );
+      const returnMax = Math.floor(
+        Math.max(...returnData.map(calculateTotalPrice))
+      );
       setMaxPrices({ onward: onwardMax, return: returnMax });
 
       setFilters((prev) => ({
@@ -93,9 +97,8 @@ const RoundSideBar = ({
     }));
   };
 
- 
   const countStops = (data) => {
-    const stopCounts = { "0": 0, "1": 0, "2": 0, "3+": 0 };
+    const stopCounts = { 0: 0, 1: 0, 2: 0, "3+": 0 };
 
     data.forEach((flight) => {
       const stopCount = flight.sI.length - 1;
@@ -109,7 +112,6 @@ const RoundSideBar = ({
     return stopCounts;
   };
 
-  
   const [onwardStopCounts, setOnwardStopCounts] = useState({});
   const [returnStopCounts, setReturnStopCounts] = useState({});
 
@@ -124,8 +126,8 @@ const RoundSideBar = ({
       [activeDirection]: {
         ...prev[activeDirection],
         stops: prev[activeDirection].stops.includes(stop)
-          ? prev[activeDirection].stops.filter((s) => s !== stop)
-          : [...prev[activeDirection].stops, stop],
+          ? [] // If the stop is already present, clear the array
+          : [stop], // Otherwise, set the array to contain only the new stop
       },
     }));
   };
@@ -136,8 +138,8 @@ const RoundSideBar = ({
       [activeDirection]: {
         ...prev[activeDirection],
         [type]: prev[activeDirection][type].includes(time)
-          ? prev[activeDirection][type].filter((t) => t !== time)
-          : [...prev[activeDirection][type], time],
+          ? [] // If the time is already present, clear the array
+          : [time], // Otherwise, set the array to contain only the new time
       },
     }));
   };
@@ -164,20 +166,23 @@ const RoundSideBar = ({
     }));
   };
 
-  const renderStopsSection = () => {  const stopCounts =
-    activeDirection === "onward" ? onwardStopCounts : returnStopCounts;return(
-    
-    <div className="mb-6 border-b  rounded-md w-full border-gray-300 pb-4">
-      <h3 className="text-sm font-semibold mb-2">Stops</h3>
-      <div className="grid w-full grid-cols-4 md:grid-cols-2 lg:grid-cols-4 ">
-      {stops.map((stop, index) => (
+  const renderStopsSection = () => {
+    const stopCounts =
+      activeDirection === "onward" ? onwardStopCounts : returnStopCounts;
+    return (
+      <div className="mb-6 border-b  rounded-md w-full border-gray-300 pb-4">
+        <h3 className="text-sm font-semibold mb-2">Stops</h3>
+        <div className="grid w-full grid-cols-4 md:grid-cols-2 lg:grid-cols-4 ">
+          {stops.map((stop, index) => (
             <label
               key={stop}
               htmlFor={`stop-${stop}`}
-              className={`mb-1 border text-xs  hover:bg-[#D7B56D] flex justify-center py-2 flex-col   items-center ${
+              className={`cursor-pointer mb-1 border text-xs  flex justify-center py-2 flex-col   items-center ${
                 index === 0 ? "rounded-l-md" : ""
               } ${index === stops.length - 1 ? "rounded-r-md" : ""} ${
-                filters[activeDirection].stops.includes(stop) ? "bg-[#D7B56D]" : ""
+                filters[activeDirection].stops.includes(stop)
+                  ? "bg-[#D7B56D]"
+                  : ""
               }`}
             >
               <input
@@ -187,10 +192,13 @@ const RoundSideBar = ({
                 onChange={() => handleStopsChange(stop)}
                 className="mr-1 hidden"
               />
-              {stop} <span className=" text-gray-500 text-[10px] ">({stopCounts[stop] || 0})</span>
+              {stop}{" "}
+              <span className=" text-gray-500 text-[10px] ">
+                ({stopCounts[stop] || 0})
+              </span>
             </label>
           ))}
-        {/* {stops.map((stop, index) => (
+          {/* {stops.map((stop, index) => (
           <label
             key={stop}
             htmlFor={`stop-${stop}`}
@@ -210,7 +218,7 @@ const RoundSideBar = ({
             {stop}
           </label>
         ))} */}
-        {/* {["0", "1", "2", "3+"].map((stop, index) => (
+          {/* {["0", "1", "2", "3+"].map((stop, index) => (
               <label
                 key={stop}
                 htmlFor={`stop-${stop}`}
@@ -240,10 +248,10 @@ const RoundSideBar = ({
                 </span>
               </label>
             ))} */}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
   const renderTimeSection = (type, title) => (
     <div className="mb-6 border-b border-gray-300 pb-4">
@@ -257,8 +265,10 @@ const RoundSideBar = ({
         ].map(({ icon, time }) => (
           <span
             key={time}
-            className={`border-gray-500 border  hover:bg-[#D7B56D] text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
-              filters[activeDirection][type].includes(time) ? "bg-[#D7B56D]" : ""
+            className={`border-gray-500 border text-xs flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+              filters[activeDirection][type].includes(time)
+                ? "bg-[#D7B56D]"
+                : ""
             }`}
             onClick={() => handleTimeChange(type, time)}
           >

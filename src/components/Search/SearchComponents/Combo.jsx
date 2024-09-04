@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect, useMemo } from "react";
 import { Tabs } from "antd";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { FallOutlined, StopOutlined, RiseOutlined } from "@ant-design/icons";
+
 import flightLogo from "../../../assets/home/logo/image 40.png";
 import { BsFillFilterSquareFill } from "react-icons/bs";
 import BookingCard from "./BookingCards";
@@ -14,11 +16,15 @@ import ComboFlightCard from "../Cards/ComboFlightCard";
 import { VariableSizeList as List } from "react-window";
 import { useCallback } from "react";
 import { Virtuoso } from "react-virtuoso";
+import "./Combo.css";
 
 const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
   const dispatch = useDispatch();
+  const [cheapest, setCheaptest] = useState(false);
+  const [highest, setHighest] = useState(false);
+  const [nonStop, setNonStop] = useState(false);
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
     maxPrice: 100000,
@@ -52,35 +58,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
     return flight.sI.length - 1;
   };
 
-  // useEffect(() => {
-  //   console.log("Filters changed:", filters);
-  //   const newFilteredFlights = flightProps.filter(flight => {
-  //     console.log("Processing flight:", flight);
-  //     const price = calculateTotalPrice(flight);
-  //     const stops = getStopsCount(flight);
-  //     const departureHour = new Date(flight.sI[0].dt).getHours();
-  //     const arrivalHour = new Date(flight.sI[flight.sI.length - 1].at).getHours();
-  //     const airline = flight.sI[0].fD.aI.name;
-
-  //     const priceMatch = price <= filters.maxPrice;
-  //     const stopsMatch = filters.stops.length === 0 || filters.stops.includes(stops.toString()) || (stops >= 3 && filters.stops.includes("3+"));
-  //     const departureMatch = filters.departureTime.length === 0 || filters.departureTime.some(range => {
-  //       const [start, end] = range.split('-').map(Number);
-  //       return departureHour >= start && departureHour < end;
-  //     });
-  //     const arrivalMatch = filters.arrivalTime.length === 0 || filters.arrivalTime.some(range => {
-  //       const [start, end] = range.split('-').map(Number);
-  //       return arrivalHour >= start && arrivalHour < end;
-  //     });
-  //     const airlineMatch = filters.airlines.length === 0 || filters.airlines.includes(airline);
-
-  //     return priceMatch && stopsMatch && departureMatch && arrivalMatch && airlineMatch;
-  //   });
-
-  //   console.log("New filtered flights:", newFilteredFlights);
-  //   setFilteredFlights(newFilteredFlights);
-  // }, [filters, flightProps, calculateTotalPrice]);
-
   const isHourInRange = (hour, range) => {
     const [start, end] = range.split("-").map(Number);
     if (start < end) {
@@ -98,7 +75,16 @@ const Oneway = ({ flightProps, passenger, query }) => {
     });
   };
 
+  const sortFlightsByHighestPrice = (flights) => {
+    return flights.sort((a, b) => {
+      const priceA = calculateTotalPrice(a);
+      const priceB = calculateTotalPrice(b);
+      return priceB - priceA;
+    });
+  };
+
   useEffect(() => {
+    setSelectedFlight([]);
     const newFilteredFlights = flightProps.filter((flight) => {
       const price = calculateTotalPrice(flight);
       const stops = getStopsCount(flight);
@@ -132,9 +118,17 @@ const Oneway = ({ flightProps, passenger, query }) => {
         airlineMatch
       );
     });
-    const sortedFilteredFlight = sortFlightsByLowestPrice(newFilteredFlights);
-    setFilteredFlights(sortedFilteredFlight);
-  }, [filters, flightProps, calculateTotalPrice]);
+    if (cheapest) {
+      const sortedFilteredFlight = sortFlightsByLowestPrice(newFilteredFlights);
+      setFilteredFlights(sortedFilteredFlight);
+    } else if (highest) {
+      const sortedFilteredFlight =
+        sortFlightsByHighestPrice(newFilteredFlights);
+      setFilteredFlights(sortedFilteredFlight);
+    } else {
+      setFilteredFlights(newFilteredFlights);
+    }
+  }, [filters, flightProps, calculateTotalPrice, cheapest, highest]);
 
   const handleFlightSelection = (flightIndex, priceIndex) => {
     setSelectedFlight([{ flightIndex, priceIndex }]);
@@ -177,53 +171,92 @@ const Oneway = ({ flightProps, passenger, query }) => {
   const itemCount = filteredFlights.length;
 
   return (
-    <div className="relative flex md:flex-row flex-col ">
-      {/* <ComboSideBar
-        flights={flightProps}
-        filters={filters}
-        setFilters={setFilters}
-        passenger={passenger}
-        calculateTotalPrice={calculateTotalPrice}
-      /> */}
-      <button
-        className="absolute top-0 right-1 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
-        onClick={toggleSidebar}
-      >
-        <BsFillFilterSquareFill className="w-6 h-6 white" />
-        <div className="text-xs white">Filters</div>
-      </button>
-      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
+    <div>
+      <div className="filter-container">
         <div
-          className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 lg-custom:z-0 rounded-xl bg-white transform ${
-            isSidebarOpen ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            marginTop: "2%",
-            marginBottom: "2%",
-            height: "auto",
-            width: "auto",
+          className={`filter-container-button ${
+            cheapest ? "filter-container-button-active" : ""
+          }`}
+          onClick={() => {
+            setHighest(false);
+            setCheaptest(!cheapest);
           }}
         >
-          <button
-            className="absolute top-2  right-4 z-50 white  lg-custom:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          >
-            <FaTimes className="w-6 h-6" />
-          </button>
-
-          <div className="font-semibold p-2 text-left text-base">Filters</div>
-          <div className="rounded-xl flex flex-col items-center ">
-            <ComboSideBar
-              flights={flightProps}
-              filters={filters}
-              setFilters={setFilters}
-              passenger={passenger}
-              calculateTotalPrice={calculateTotalPrice}
-            />
-          </div>
+          {" "}
+          <FallOutlined />
+          <b>Lowest Prices</b>
         </div>
+        <div
+          className={`filter-container-button ${
+            nonStop ? "filter-container-button-active" : ""
+          }`}
+          onClick={() => {
+            setNonStop(!nonStop);
+            setFilters((prevFilters) => ({
+              ...prevFilters,
+              stops: prevFilters.stops.includes("0")
+                ? prevFilters.stops.filter((stop) => stop !== "0") // Remove "0" if it's already in the array
+                : ["0"], // Add "0" and remove all other stops
+            }));
+          }}
+        >
+          {" "}
+          <StopOutlined />
+          <b>No Stops</b>
+        </div>
+        <div
+          className={`filter-container-button ${
+            highest ? "filter-container-button-active" : ""
+          }`}
+          onClick={() => {
+            setCheaptest(false);
+            setHighest(!highest);
+          }}
+        >
+          <RiseOutlined />
+          <b>Highest Prices</b>
+        </div>
+      </div>
+      <div className="relative flex md:flex-row flex-col">
+        <button
+          className="absolute top-0 right-1 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
+          onClick={toggleSidebar}
+        >
+          <BsFillFilterSquareFill className="w-6 h-6 white" />
+          <div className="text-xs white">Filters</div>
+        </button>
+        <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
+          <div
+            className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 lg-custom:z-0 rounded-xl bg-white transform ${
+              isSidebarOpen ? "translate-x-0" : "translate-x-full"
+            } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              marginTop: "2%",
+              marginBottom: "2%",
+              height: "auto",
+              width: "auto",
+            }}
+          >
+            <button
+              className="absolute top-2  right-4 z-50 white  lg-custom:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <FaTimes className="w-6 h-6" />
+            </button>
+
+            <div className="font-semibold p-2 text-left text-base">Filters</div>
+            <div className="rounded-xl flex flex-col items-center ">
+              <ComboSideBar
+                flights={flightProps}
+                filters={filters}
+                setFilters={setFilters}
+                passenger={passenger}
+                calculateTotalPrice={calculateTotalPrice}
+              />
+            </div>
+          </div>
 
         {isSidebarOpen && (
           <div
@@ -333,6 +366,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
           combo={true}
         />
       )}
+    </div>
     </div>
   );
 };

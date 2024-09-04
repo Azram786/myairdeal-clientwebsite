@@ -219,7 +219,7 @@ const ComboFlightCard = ({
                           </div>
 
                           <div className="flex gap-2 mt-2 items-center w-full lg-custom:w-[75%] justify-around  ">
-                            <div className="p-2  text-left  min-w-[30%]">
+                            <div className="p-2  text-left w-[30%] md:w-[20%]">
                               <div className="font-bold text-xs md:text-sm">
                                 {new Date(segment.dt).toLocaleString("en-US", {
                                   month: "short",
@@ -263,7 +263,7 @@ const ComboFlightCard = ({
                               </div>
                             </div>
 
-                            <div className="flex justify-center  min-w-[20%]  flex-col items-center">
+                            <div className="flex justify-center  min-w-[10%]  flex-col items-center">
                               <div className="text-xs text-gray-500 ">
                                 {convertToHoursMinutes(segment?.duration)}
                               </div>
@@ -276,7 +276,7 @@ const ComboFlightCard = ({
                               </div>
                             </div>
 
-                            <div className="text-left p-2 min-w-[30%] ml-0 ">
+                            <div className="text-left p-2 w-[30%] ml-0 ">
                               <div className="font-bold text-xs md:text-sm ">
                                 {new Date(segment.at).toLocaleString("en-US", {
                                   month: "short",
