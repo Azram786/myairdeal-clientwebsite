@@ -43,7 +43,7 @@ const SeatMap = ({
         });
 
         const tripSeat = booking?.tripSeatMap?.tripSeat[flightId];
-      
+
         if (tripSeat) {
           setSData(tripSeat?.sData);
           setSInfo(tripSeat?.sInfo);
@@ -118,18 +118,18 @@ const SeatMap = ({
 
     if (seat.isBooked) {
       className += "bg-gray-400 cursor-not-allowed";
-    } else if (isSeatSelected(seat.seatNo)) {
+    } else if (isSeatSelected(seat?.seatNo)) {
       className += "bg-[#D7B56D] text-white";
     } else {
       className += "bg-white hover:bg-gray-200";
     }
 
-    if (seat.isLegroom) {
+    if (seat?.isLegroom) {
       className += " border-t-8 border-green-500";
     }
 
-    if (seat.isAisle) {
-      className += " mr-14";
+    if (seat?.isAfterAisle && seat?.isAisle === true) {
+      className += " ml-10 ";
     }
 
     return (
@@ -158,6 +158,14 @@ const SeatMap = ({
     const rows = [];
     for (let i = 1; i <= sData.row; i++) {
       const rowSeats = sInfo.filter((seat) => seat.seatPosition.row === i);
+
+      rowSeats.forEach((seat, index) => {
+        // Check if the previous seat is an aisle
+        if (index > 0 && rowSeats[index - 1].isAisle) {
+          seat.isAfterAisle = true; // Mark this seat to indicate it follows an aisle
+        }
+      });
+
       rows.push(
         <div key={i} className="flex justify-center">
           {rowSeats.map(renderSeat)}
@@ -179,15 +187,14 @@ const SeatMap = ({
 
   return (
     <div className="container ">
-     
       <div className="flex flex-col gap-6 md:flex-row w-full justify-around ">
         {/* First portion for displaying the data - make it sticky */}
-        
+
         <div className="md:sticky md:top-0 md:self-start bg-white md:w-[40%] border-r-2 flex flex-col">
           <div className="w-full  flex-grow ">
-          <p className="text-base font-semibold ">
-        Your booking is protected by MyAirDeal {flightId}
-      </p>
+            <p className="text-base font-semibold ">
+              Your booking is protected by MyAirDeal {flightId}
+            </p>
             <div className=" px-3 py-2">
               <p className="text-sm md:text-base font-semibold">
                 Seat Selection
