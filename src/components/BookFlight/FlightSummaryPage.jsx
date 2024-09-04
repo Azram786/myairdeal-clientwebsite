@@ -799,6 +799,10 @@ const FlightSummary = () => {
                         )}
                       </span>
                       <div className="flex items-center">
+                        &nbsp;
+                        <span>
+                          ₹ {(amountToPay + commision - promoValue).toFixed(2)}
+                        </span>
                         {promoValue > 0 && (
                           <span
                             className={`${promoValue ? "strike-through" : ""}`}
@@ -807,7 +811,6 @@ const FlightSummary = () => {
                           </span>
                         )}
                         &nbsp; &nbsp;
-                        <span>₹ {amountToPay + commision - promoValue}</span>
                       </div>
                     </div>
                     <div
