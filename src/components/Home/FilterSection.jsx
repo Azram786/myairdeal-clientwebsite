@@ -533,21 +533,6 @@ const FilterSection = ({
           steps={joyrideSteps}
           run={runJoyride}
           continuous={true}
-          scrollToFirstStep={false}
-          showProgress={true}
-          showSkipButton={true}
-          callback={(data) => {
-            if (data.action === "reset") {
-              setRunJoyride(false);
-            }
-          }}
-        />
-      )}
-      {runJoyride && (
-        <ReactJoyride
-          steps={joyrideSteps}
-          run={runJoyride}
-          continuous={true}
           scrollToFirstStep={true}
           showProgress={true}
           showSkipButton={true}
@@ -818,10 +803,12 @@ const FilterSection = ({
                 <option className="" value="" disabled selected>
                   Select Prefered Airline
                 </option>
-               
+
                 <option value={null}>Select all</option>
-                {preferredAirlines.map((value,index) => (
-                  <option key={index} value={value.code}>{value.name}</option>
+                {preferredAirlines.map((value, index) => (
+                  <option key={index} value={value.code}>
+                    {value.name}
+                  </option>
                 ))}
               </select>
             </div>

@@ -179,16 +179,16 @@ const PaymentPage = ({
         travellerInfo: travellerInfo,
         ...(passengersData.gstDetails.gstNumber?.trim() && {
           gstInfo: {
-            gstNumber: passengersData.gstDetails.gstNumber,
-            email: passengersData.gstDetails.email,
-            registeredName: passengersData.gstDetails.companyName,
-            mobile: passengersData.gstDetails.phone,
-            address: passengersData.gstDetails.address,
+            gstNumber: passengersData?.gstDetails?.gstNumber,
+            email: passengersData?.gstDetails.email,
+            registeredName: passengersData?.gstDetails?.companyName,
+            mobile: passengersData?.gstDetails?.phone,
+            address: passengersData?.gstDetails?.address,
           },
         }),
         deliveryInfo: {
-          emails: [`${passengersData.contactDetails.email}`],
-          contacts: [`${passengersData.contactDetails.phoneNumber}`],
+          emails: [`${passengersData?.contactDetails?.email}`],
+          contacts: [`${passengersData?.contactDetails?.phoneNumber}`],
         },
       },
       searchQuery: data?.searchQuery,
