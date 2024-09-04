@@ -22,3 +22,22 @@
 .filter-container-button-active{
     border-bottom: 5px solid #1B1D29;
 }
+
+@media(max-width:750px){
+    .filter-container-button{
+        display: flex;
+        padding: 5px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        gap:10px;
+        background-color: #F0E1C0;
+        border-bottom: 5px solid #F0E1C0;
+        width: 50%;
+        user-select: none;
+        font-size: 12px;
+    }
+    .filter-container-button-active{
+        border-bottom: 5px solid #1B1D29;
+    }
+}
