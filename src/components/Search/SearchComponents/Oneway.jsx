@@ -74,6 +74,7 @@ import { setLastSearch } from "../../../store/slices/aut.slice";
 const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
+
   const dispatch = useDispatch();
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
@@ -205,7 +206,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
-    <div className="flex  relative md:flex-row flex-col">
+    <div className="flex  relative md:flex-row flex-col ">
       {/* <OneWaySideBar
         flights={flightProps}
         filters={filters}
@@ -221,7 +222,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         <BsFillFilterSquareFill className="w-6 h-6 white" />
         <div className="text-xs white">Filters</div>
       </button>
-      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
+      <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row ">
         <div
           className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 lg-custom:z-0 rounded-xl bg-white transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
@@ -262,7 +263,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         )}
       </div>
 
-      <div className="flex-grow">
+      <div className="flex-grow ">
         <h1 className="text-sm font-bold">
           {" "}
           {filteredFlights.length} flights Found{" "}
@@ -315,9 +316,10 @@ const Oneway = ({ flightProps, passenger, query }) => {
             }
             key="1"
           >
-            <div className="h-[630px] overflow-y-auto no-scroll">
+            <div className="h-[630px] overflow-y-auto no-scroll ">
+            {console.log(filteredFlights,"flitered flights")}
               {filteredFlights.length === 0 ? (
-                <div>No flights available.</div>
+                <div>No flights available for the selected criteria.</div>
               ) : (
                 filteredFlights.map((flight, index) => (
                   <FlightDetailsCard

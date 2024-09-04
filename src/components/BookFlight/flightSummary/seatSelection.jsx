@@ -67,7 +67,7 @@ const SeatSelection = ({
   };
 
   return (
-    <div className="grid grid-cols-1 ">
+    <div className="grid grid-cols-1  ">
       <div>
         <div className="flex flex-col space-y-4 box-border ">
           {flightReviewData.tripInfos.map((trip, tripIndex) => (

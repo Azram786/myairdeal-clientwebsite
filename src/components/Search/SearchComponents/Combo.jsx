@@ -18,7 +18,6 @@ import { Virtuoso } from "react-virtuoso";
 const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
-  console.log("combo request", flightProps);
   const dispatch = useDispatch();
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
   const [filters, setFilters] = useState({
@@ -178,7 +177,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
   const itemCount = filteredFlights.length;
 
   return (
-    <div className="relative flex md:flex-row flex-col">
+    <div className="relative flex md:flex-row flex-col ">
       {/* <ComboSideBar
         flights={flightProps}
         filters={filters}
@@ -233,7 +232,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
           />
         )}
       </div>
-      <div className="flex-grow ">
+      <div className="flex-grow  ">
         <Tabs defaultActiveKey="1">
           <TabPane
             tab={
@@ -253,7 +252,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
                   </p>
                 </span>
                 <ArrowRightOutlined />
-                <span className="flex flex-col justify-center ">
+                <span className="flex flex-col justify-center">
                   <p>
                     {
                       filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]
@@ -282,7 +281,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
             }
             key="1"
           >
-            <div className="h-screen overflow-y-auto no-scroll">
+            <div className="h-[1000px] overflow-y-auto no-scroll">
               {itemCount > 0 ? (
                 <Virtuoso
                   totalCount={itemCount}

@@ -33,20 +33,20 @@ const SeatMap = ({
           airline: flightInfo.fD?.aI?.name,
           flightNumber: flightInfo?.fD.fN,
           flightCode: flightInfo?.fD?.aI?.code,
-          flightClass: flightData.tripInfos.find((trip) =>
+          flightClass: flightData?.tripInfos.find((trip) =>
             trip.sI.some((segment) => segment.id === flightId)
           )?.cabinClass,
-          departure: flightInfo.da.cityCode,
-          arrival: flightInfo.aa.cityCode,
-          departureTime: new Date(flightInfo.dt).toLocaleTimeString(),
-          arrivalTime: new Date(flightInfo.at).toLocaleTimeString(),
+          departure: flightInfo?.da?.cityCode,
+          arrival: flightInfo?.aa.cityCode,
+          departureTime: new Date(flightInfo?.dt).toLocaleTimeString(),
+          arrivalTime: new Date(flightInfo?.at).toLocaleTimeString(),
         });
 
         const tripSeat = booking?.tripSeatMap?.tripSeat[flightId];
-        console.log("heeeee", tripSeat);
+      
         if (tripSeat) {
-          setSData(tripSeat.sData);
-          setSInfo(tripSeat.sInfo);
+          setSData(tripSeat?.sData);
+          setSInfo(tripSeat?.sInfo);
         }
       }
     }
@@ -58,9 +58,9 @@ const SeatMap = ({
         ? passenger.selectedSeat
             .filter((seat) => seat.key === flightId) // Filter seats with the correct flightId
             .map((seat) => ({
-              key: seat.key,
-              code: seat.code,
-              amount: seat.amount,
+              key: seat?.key,
+              code: seat?.code,
+              amount: seat?.amount,
             }))
         : []
     );
@@ -129,17 +129,17 @@ const SeatMap = ({
     }
 
     if (seat.isAisle) {
-      className += " mr-4";
+      className += " mr-14";
     }
 
     return (
       <button
-        key={seat.seatNo}
+        key={seat?.seatNo}
         className={className}
         onClick={() => toggleSeat(seat)}
-        disabled={seat.isBooked}
+        disabled={seat?.isBooked}
       >
-        {seat.isBooked || isSeatSelected(seat.seatNo)
+        {seat?.isBooked || isSeatSelected(seat?.seatNo)
           ? seat.seatNo
           : `${seat.amount}`}
       </button>
@@ -179,13 +179,15 @@ const SeatMap = ({
 
   return (
     <div className="container ">
-      <p className="text-base font-semibold ">
+     
+      <div className="flex flex-col gap-6 md:flex-row w-full justify-around ">
+        {/* First portion for displaying the data - make it sticky */}
+        
+        <div className="md:sticky md:top-0 md:self-start bg-white md:w-[40%] border-r-2 flex flex-col">
+          <div className="w-full  flex-grow ">
+          <p className="text-base font-semibold ">
         Your booking is protected by MyAirDeal {flightId}
       </p>
-      <div className="flex flex-col gap-6 md:flex-row w-full justify-around">
-        {/* First portion for displaying the data - make it sticky */}
-        <div className="md:sticky md:top-0 md:self-start md:min-h-screen bg-white md:w-[40%] border-r-2 flex flex-col">
-          <div className="w-full  flex-grow overflow-y-auto">
             <div className=" px-3 py-2">
               <p className="text-sm md:text-base font-semibold">
                 Seat Selection
@@ -212,7 +214,7 @@ const SeatMap = ({
                 </div>
               </div>
             </div>
-            <div className="mt-6 md:max-h-[calc(100vh-300px)] w-full   overflow-y-auto custom-scrollbar">
+            <div className="mt-6 md:max-h-[calc(100vh-300px)] w-full  custom-scrollbar">
               <div className="grid  mx-2 grid-cols-3">
                 <div className="flex flex-col text-center items-center ">
                   <h1 className="text-sm font-semibold text-center border-b-2  w-full mb-2">
@@ -296,12 +298,12 @@ const SeatMap = ({
         </div>
 
         {/*  Second portion - the seats interface */}
-        <div className="bg-gray-100 md:w-2/4 p-4 rounded-lg overflow-x-auto">
+        <div className="bg-gray-100 md:w-2/4 p-4 rounded-lg">
           {renderSeatMap()}
         </div>
 
         {/*  Third Portion to display the Identifiers*/}
-        <div className="text-sm md:sticky md:top-0 md:self-start md:min-h-screen border-l-2 md:w-[20%] flex flex-col  items-center md:items-start  p-4">
+        <div className="text-sm md:sticky md:top-0 md:self-start md:min-h-[550px] border-l-2 md:w-[20%] flex flex-col  items-center md:items-start  p-4">
           <h1 className="font-semibold">Seat Status</h1>
           <div className="w-max text-left grid grid-cols-2 gap-y-4 md:grid-cols-1 space-y-2 mt-2">
             <div className="flex justify-start items-start">

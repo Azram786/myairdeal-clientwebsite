@@ -110,21 +110,21 @@ const FlightSearchSummary = ({ data, tripType }) => {
                   </span>
                 </div>
                 {/* Tooltip */}
-                <div className="absolute bottom-full left-0 mb-0.5 z-50  w-max px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  {`${paxInfo.ADULT} Adults, ${
-                    paxInfo.CHILD > 0
-                      ? `${paxInfo.CHILD} Child${
-                          paxInfo.CHILD > 1 ? "ren" : ""
-                        }`
-                      : "No Children"
-                  }, ${
-                    paxInfo.INFANT > 0
-                      ? `${paxInfo.INFANT} Infant${
-                          paxInfo.INFANT > 1 ? "s" : ""
-                        }`
-                      : "No Infants"
-                  }`}
-                </div>
+                <div className="absolute bottom-full left-0 mb-0.5 w-max px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
+                    {`${paxInfo.ADULT} Adult(s), ${
+                      paxInfo.CHILD > 0
+                        ? `${paxInfo.CHILD} Child${
+                            paxInfo.CHILD > 1 ? "ren ," : ","
+                          }`
+                        : ""
+                    } ${
+                      paxInfo.INFANT > 0
+                        ? `${paxInfo.INFANT} Infant${
+                            paxInfo.INFANT > 1 ? "s " : ""
+                          }`
+                        : ""
+                    }| ${cabinClass}`}
+                  </div>
               </div>
             </div>
           </div>
@@ -306,19 +306,19 @@ const FlightSearchSummary = ({ data, tripType }) => {
                   </div>
                   {/* Tooltip */}
                   <div className="absolute bottom-full left-0 mb-0.5 w-max px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
-                    {`${paxInfo.ADULT} Adults, ${
+                    {`${paxInfo.ADULT} Adult(s), ${
                       paxInfo.CHILD > 0
                         ? `${paxInfo.CHILD} Child${
-                            paxInfo.CHILD > 1 ? "ren" : ""
+                            paxInfo.CHILD > 1 ? "ren ," : ","
                           }`
-                        : "No Children"
-                    }, ${
+                        : ""
+                    } ${
                       paxInfo.INFANT > 0
                         ? `${paxInfo.INFANT} Infant${
-                            paxInfo.INFANT > 1 ? "s" : ""
+                            paxInfo.INFANT > 1 ? "s " : ""
                           }`
-                        : "No Infants"
-                    }`}
+                        : ""
+                    }| ${cabinClass}`}
                   </div>
                 </div>
               </div>
@@ -492,19 +492,19 @@ const FlightSearchSummary = ({ data, tripType }) => {
                   </div>
                   {/* Tooltip */}
                   <div className="absolute bottom-full left-0 mb-0.5 w-max px-3 py-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
-                    {`${paxInfo.ADULT} Adults, ${
+                    {`${paxInfo.ADULT} Adult(s), ${
                       paxInfo.CHILD > 0
                         ? `${paxInfo.CHILD} Child${
-                            paxInfo.CHILD > 1 ? "ren" : ""
+                            paxInfo.CHILD > 1 ? "ren ," : ","
                           }`
-                        : "No Children"
-                    }, ${
+                        : ""
+                    } ${
                       paxInfo.INFANT > 0
                         ? `${paxInfo.INFANT} Infant${
-                            paxInfo.INFANT > 1 ? "s" : ""
+                            paxInfo.INFANT > 1 ? "s " : ""
                           }`
-                        : "No Infants"
-                    }`}
+                        : ""
+                    }| ${cabinClass}`}
                   </div>
                 </div>
                 </div>

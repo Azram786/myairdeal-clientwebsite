@@ -107,7 +107,7 @@ const SideBar = ({ flights, filters, setFilters, activeTabIndex, passenger }) =>
   }
 
   return (
-    <div className="flex flex-row text-xs md:text-base w-[80%] border p-4 m-2 shadow-md rounded-md min-h-screen">
+    <div className="flex flex-row text-xs md:text-base w-[250px] border p-4 m-2 shadow-md rounded-md min-h-screen">
       <div className="grid gap-2 w-full grid-cols-1">
         {/* Price slider */}
         <div className="mb-6 border-b border-gray-300 pb-4">

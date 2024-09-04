@@ -577,7 +577,7 @@ const RoundTrip = ({
           </div>
         </div>
 
-        <div className="  flex h-[950px] flex-col lg-custom:flex-row">
+        <div className="  flex h-[950px] flex-col lg-custom:flex-row w-full">
           <div
             className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
               activeSection === "onward" ? "block" : "hidden"

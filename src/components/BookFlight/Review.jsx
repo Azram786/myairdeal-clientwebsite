@@ -161,6 +161,7 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
                           <MdFlight className="w-3 h-3 rotate-45" />
                           <span>{segment.fD.eT}</span>
                         </div>
+                        {segment.id}
                       </div>
                     </div>
                     <div className=" flex w-full sm:min-w-[80%]">
@@ -192,7 +193,7 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
                         </div>
                         <div className="relative text-xs md:text-sm group">
                           <span>{segment.da.name}</span>
-                          <div className="absolute left-0 bottom-full mb-2 w-max p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                          <div className="absolute left-0 bottom-full first-letter:uppercase hover:flex hover:flex-wrap p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                             {segment.da.name}
                           </div>
                         </div>
@@ -253,7 +254,7 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
 
                         <div className="relative text-xs md:text-sm group">
                           <span>{segment.da.name}</span>
-                          <div className="absolute left-0 bottom-full mb-2 w-max p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                          <div className="absolute left-0 bottom-full first-letter:uppercase hover:flex hidden:flex-wrap p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                             {segment.da.name}
                           </div>
                         </div>
@@ -301,7 +302,7 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
           </div>
         ))}
       </div>
-
+      {console.log({ passengersData }, "passengersData")}
       {/* Passenger & Contact Details Section */}
       <div className="mb-6 overflow-x-scroll">
         <h2 className="text-xl font-semibold mb-4 mt-2">Passenger Details</h2>
@@ -326,7 +327,7 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
             <tbody>
               {passengersData?.passengers?.map((passenger, index) => {
                 return (
-                  <tr key={index} className="h-24 border-t">
+                  <tr key={index} className="h-12 border-t">
                     <td className="py-2 px-4 border-b text-xs min-w-[11rem]">
                       {index + 1}
                     </td>
@@ -346,7 +347,8 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
                       passenger.selectedSeat.length > 0
                         ? passenger.selectedSeat.map((seat, seatIndex) => (
                             <div key={seatIndex}>
-                              Seat: {seat.code} (₹{seat.amount})
+                              Seat: FlightId-{seat?.key}
+                              <br /> {seat.code} (₹{seat.amount})
                             </div>
                           ))
                         : "No seat selected"}
@@ -358,7 +360,9 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
                             <div>
                               {passenger.selectedMeal.map((meal, mealIndex) => (
                                 <div key={mealIndex}>
-                                  Meal: {meal.code} - {meal.desc} (₹
+                                  Meal: FLightID-{meal.key}
+                                  <br />
+                                  {meal.code} - {meal.desc} (₹
                                   {meal.amount})
                                 </div>
                               ))}
@@ -370,7 +374,9 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
                               {passenger.selectedBaggage.map(
                                 (baggage, baggageIndex) => (
                                   <div key={baggageIndex}>
-                                    Baggage: {baggage.code} - {baggage.desc} (₹
+                                    Baggage: Flight Id-{baggage.key}
+                                    <br />
+                                    {baggage.code} - {baggage.desc} (₹
                                     {baggage.amount})
                                   </div>
                                 )

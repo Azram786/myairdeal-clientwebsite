@@ -401,7 +401,7 @@ const FlightSummary = () => {
                                         </span>
 
                                         {/* Tooltip */}
-                                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hover:flex hover:flex-wrap text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                           {segment.da.name}
                                         </div>
                                       </div>
@@ -483,7 +483,7 @@ const FlightSummary = () => {
                                         </span>
 
                                         {/* Tooltip */}
-                                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hover:flex hover:flex-wrap text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                           {segment.aa.name}
                                         </div>
                                       </div>

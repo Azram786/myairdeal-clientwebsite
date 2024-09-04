@@ -142,28 +142,53 @@ const FlightDetailsCard = ({
     const minutes = Math.floor(layoverMinutes % 60);
     return `${hours}h ${minutes}m`;
   };
-  console.log(data, "fvadkhbsjn");
 
-  const totalDuration = data[0].duration;
+  //calculate total duration
+  function calculateTotalDuration(segments) {
+    if (!segments || segments.length === 0) return "N/A";
+
+    let totalDuration = 0;
+
+    for (let i = 0; i < segments.length; i++) {
+      // Add flight duration
+      totalDuration += segments[i].duration;
+
+      // Add layover time if there's a next segment
+      if (i < segments.length - 1) {
+        const arrivalTime = new Date(segments[i].at);
+        const departureTime = new Date(segments[i + 1].dt);
+        const layoverTime = (departureTime - arrivalTime) / (1000 * 60); // in minutes
+        totalDuration += layoverTime;
+      }
+    }
+
+    const hours = Math.floor(totalDuration / 60);
+    const minutes = Math.round(totalDuration % 60);
+    return `${hours}h ${minutes}m`;
+  }
+
+  // const totalDuration = data[0].duration;
   const renderTabs = () => {
     switch (activeTab) {
       case "Flight Details":
         return (
           <div className="w-full bg-[#f0e1c0] ">
-            <div className="text-lg font-bold bg-[#1B1D29] text-[#D7B56D] mb-4 pl-4 py-2 ">
-              {data[0]?.da?.city} → {data[data.length - 1]?.aa?.city}{" "}
-              <span className="text-white text-sm">
-                On{" "}
-                {new Date(data[0].dt).toLocaleString("en-US", {
-                  month: "short",
+            <div className="text-lg font-bold bg-[#1B1D29] text-[#D7B56D] mb-4 pl-4 py-2 justify-between flex items-center">
+              <div>
+                {data[0]?.da?.city} → {data[data.length - 1]?.aa?.city}{" "}
+                <span className="text-white text-sm">
+                  On{" "}
+                  {new Date(data[0].dt).toLocaleString("en-US", {
+                    month: "short",
 
-                  day: "numeric",
-                })}
-                ,
-                {new Date(data[0].dt).toLocaleString("en-US", {
-                  weekday: "long",
-                })}
-              </span>
+                    day: "numeric",
+                    weekday:"short",
+                  })}
+                </span>
+              </div>
+              <div className="pr-4 text-white text-sm font-medium hidden md:flex">
+                Total Duration : {calculateTotalDuration(data)}
+              </div>
             </div>
             {data.map((segment, index) => {
               return (
@@ -183,7 +208,7 @@ const FlightDetailsCard = ({
                       />
                       <div>
                         <div className="font-bold text-sm">
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-gray-500 line-clamp-1">
                             {segment.da.city} → {segment.aa.city}{" "}
                             {/* {formatDateTime(segment.dt).split(",")[0]}
                           {getDayOfWeek(segment.dt)} */}
@@ -217,63 +242,84 @@ const FlightDetailsCard = ({
                             })}
                           </div>
                         </div>
-                        <div className="text-xs  text-gray-500">
-                          {segment.da.city}, {segment?.da?.country}
-                        </div>
-                        <div className="relative group text-[10px]  text-xs text-gray-500">
-                          <span className="text-xs">{segment.da.name}</span>
+
+                        <div className="relative group text-[10px]   text-xs text-gray-500">
+                          <span className="text-xs line-clamp-1">
+                            {segment?.da?.city}, {segment?.da?.country}
+                          </span>
 
                           {/* Tooltip */}
-                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            {segment.da.name}
+                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full  hover:flex hover:flex-wrap text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                            {segment?.da?.city}, {segment?.da?.country}
+                          </div>
+                        </div>
+                        <div className="relative group text-[10px]   text-xs text-gray-500">
+                          <span className="text-xs line-clamp-1">
+                            {segment?.da?.name}
+                          </span>
+
+                          {/* Tooltip */}
+                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full  hover:flex hover:flex-wrap text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                            {segment?.da?.name}
                           </div>
                         </div>
                         <div className="text-xs text-gray-500">
-                          {segment.da.terminal || "N/A"}
+                          {segment?.da?.terminal || "N/A"}
                         </div>
                       </div>
                       <div className="flex justify-center w-20  md:min-w-[25%] lg-custom:min-w-[35%] mr-0 md:mr-6 flex-col items-center ">
                         <div className="text-xs text-gray-500">
                           {/* {convertToHoursMinutes(segment.duration)} */}
-                          {convertToHoursMinutes(segment.duration)}
+                          {convertToHoursMinutes(segment?.duration)}
                         </div>
                         <FaPlane className="my-2 text-gray-400" />
                         <div className="text-[10px] md:text-xs text-end text-gray-500">
                           {segment.stops === 0
                             ? "Non-Stop"
-                            : `${segment.stops} Stop(s)`}
+                            : `${segment?.stops} Stop(s)`}
                         </div>
                       </div>
                       <div className="text-left p-2   min-w-[30%] md:w-[55%] ml-0 lg-custom:ml-8 ">
                         <div className="font-bold text-xs md:text-sm">
-                          {new Date(segment.at).toLocaleString("en-US", {
+                          {new Date(segment?.at).toLocaleString("en-US", {
                             month: "short",
                             day: "numeric",
                           })}
                           ,
-                          {new Date(segment.at).toLocaleString("en-US", {
+                          {new Date(segment?.at).toLocaleString("en-US", {
                             weekday: "short",
                           })}
                           ,
-                          {new Date(segment.at).toLocaleString("en-US", {
+                          {new Date(segment?.at).toLocaleString("en-US", {
                             hour: "2-digit",
                             minute: "2-digit",
                             hour12: false,
                           })}
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {segment.aa.city}, {segment.aa.country}
-                        </div>
-                        <div className="relative group text-[10px]  text-xs text-gray-500">
-                          <span className="text-xs">{segment.aa.name}</span>
+
+                        <div className="relative group text-[10px]text-xs text-gray-500">
+                          <span className="text-xs  line-clamp-1  ">
+                            {" "}
+                            {segment?.aa?.city}, {segment?.aa?.country}
+                          </span>
 
                           {/* Tooltip */}
-                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            {segment.aa.name}
+                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full  hover:flex hover:flex-wrap text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                            {segment?.aa?.city}, {segment?.aa?.country}
+                          </div>
+                        </div>
+                        <div className="relative group text-[10px] text-xs text-gray-500">
+                          <span className="text-xs line-clamp-1  ">
+                            {segment?.aa?.name}
+                          </span>
+
+                          {/* Tooltip */}
+                          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full  hover:flex hover:flex-wrap text-xs p-2 bg-gray-800 text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                            {segment?.aa?.name}
                           </div>
                         </div>
                         <div className="text-xs text-gray-500">
-                          {segment.aa.terminal || "N/A"}
+                          {segment?.aa?.terminal || "N/A"}
                         </div>
                       </div>
                     </div>
@@ -334,10 +380,10 @@ const FlightDetailsCard = ({
                         </div>
 
                         <div className="text-xs md:text-sm">
-                          ₹{details.fC.TAF.toFixed(2)} x {count}
+                          ₹{details?.fC?.TAF.toFixed(2)} x {count}
                         </div>
                         <div className="text-xs md:text-sm">
-                          ₹{(details.fC.TAF * count).toFixed(2)}
+                          ₹{(details?.fC?.TAF * count).toFixed(2)}
                         </div>
                       </div>
                     </div>
@@ -399,13 +445,13 @@ const FlightDetailsCard = ({
               />
               <div className="flex flex-col">
                 <div className="relative group text-base ">
-                  <div className="text-base font-bold line-clamp-2">
-                    {startSegment.da.code}
+                  <div className="text-base font-bold line-clamp-1">
+                    {startSegment?.da?.code}
                   </div>
 
                   {/* Tooltip */}
-                  <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
-                    {startSegment.da.name}
+                  <div className="  absolute bottom-full left-1/2 transform -translate-x-1/2  hover:flex hover:flex-wrap hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
+                    {startSegment?.da?.name}
                   </div>
                 </div>
 
@@ -438,17 +484,17 @@ const FlightDetailsCard = ({
             <div className="md:flex-row  flex-col  flex justify-center items-center mb-4 md:mb-0">
               <div className="flex flex-col">
                 <div className="relative group text-base ">
-                  <div className="text-base font-bold line-clamp-2">
-                    {endSegment.aa.code}
+                  <div className="text-base font-bold line-clamp-1">
+                    {endSegment?.aa?.code}
                   </div>
 
                   {/* Tooltip */}
-                  <div className=" w-max absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
-                    {endSegment.aa.name}
+                  <div className="  absolute bottom-full left-1/2 transform -translate-x-1/2  hover:flex hover:flex-wrap hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
+                    {endSegment?.aa?.name}
                   </div>
                 </div>
                 <h1 className="text-xs w-[80px] sm:w-max">
-                  {formatDateTime(endSegment.at)}
+                  {formatDateTime(endSegment?.at)}
                 </h1>
               </div>
             </div>
@@ -463,11 +509,11 @@ const FlightDetailsCard = ({
                   <br />
                 </p>
                 <div className="text-xs font-bold">
-                  Carry on bag : 
+                  Carry on bag :
                   {flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.cB}
                 </div>
                 <div className="text-xs font-bold">
-                  Check-In bag : <br/>
+                  Check-In bag : <br />
                   {flightDetails?.totalPriceList[0]?.fd?.ADULT?.bI?.iB}
                 </div>
               </div>
@@ -475,7 +521,7 @@ const FlightDetailsCard = ({
           </div>
 
           <div className="flex flex-col w-full  ">
-            <div className="flex flex-wrap mt-3 gap-2 overflow-x-auto no-scroll items-start">
+            <div className="flex mt-3 gap-2 overflow-x-auto no-scroll items-start">
               {displayedPrices?.map((price, index) => (
                 <div
                   key={index}
