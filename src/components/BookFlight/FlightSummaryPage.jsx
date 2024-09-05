@@ -222,6 +222,12 @@ const FlightSummary = () => {
   const extrasTotal = calculateExtrasTotal();
   const amountToPay = totalFare + extrasTotal;
 
+  function convertMinutesToHoursAndMinutes(minutes) {
+    const hours = Math.floor(minutes / 60); // Get the number of full hours
+    const remainingMinutes = minutes % 60; // Get the remaining minutes
+    return `${hours} Hr ${remainingMinutes} Mins`;
+  }
+
   if (Loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -410,14 +416,14 @@ const FlightSummary = () => {
                                       </div>
                                       <div className="  text-xs md:text-sm font-semibold ">
                                         {new Date(
-                                          item.sI[0].dt
+                                          segment.dt
                                         ).toLocaleDateString("en-US", {
                                           month: "short",
                                           day: "numeric",
                                         })}
                                         ,
                                         {new Date(
-                                          item.sI[0].dt
+                                          segment.dt
                                         ).toLocaleDateString("en-US", {
                                           weekday: "short",
                                         })}
@@ -492,14 +498,14 @@ const FlightSummary = () => {
                                       </div>
                                       <div className="text-xs md:text-sm font-semibold ">
                                         {new Date(
-                                          item.sI[0].dt
+                                          segment.at
                                         ).toLocaleDateString("en-US", {
                                           month: "short",
                                           day: "numeric",
                                         })}
                                         ,
                                         {new Date(
-                                          item.sI[0].dt
+                                          segment.at
                                         ).toLocaleDateString("en-US", {
                                           weekday: "short",
                                         })}
@@ -539,7 +545,9 @@ const FlightSummary = () => {
                                             <span className=" text-xs md:text-sm">
                                               Total Layover Time:{" "}
                                               <span className="font-bold">
-                                                {calculateLayoverTime(item.sI)}
+                                                {convertMinutesToHoursAndMinutes(
+                                                  segment?.cT
+                                                )}
                                               </span>
                                             </span>
                                           </div>
