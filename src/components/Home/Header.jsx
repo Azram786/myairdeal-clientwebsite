@@ -40,6 +40,7 @@ const Header = () => {
     dispatch(logout());
     dispatch(clearResent());
     dispatch(clearUser());
+    localStorage.clear();
     navigate("/sign-in");
     setMobileMenuOpen(false);
   };

@@ -487,15 +487,18 @@ const RoundTrip = ({
   const [runJoyride, setRunJoyride] = useState(false);
 
   useEffect(() => {
-    const storedJoyride = localStorage.getItem("joyride-rT");
+    const storedJoyride = localStorage.getItem("roundTrip-Tutorial");
     if (!storedJoyride) {
-      localStorage.setItem("joyride-rT", "notexecuted");
+      localStorage.setItem("roundTrip-Tutorial", "notexecuted");
     }
 
     if (storedJoyride === "notexecuted") {
       setRunJoyride(true);
-      localStorage.setItem("joyride-rT", "executed");
+      setTimeout(() => {
+        localStorage.setItem("roundTrip-Tutorial", "executed");
+      }, 1000);
     }
+    if (storedJoyride === "executed") setRunJoyride(false);
   }, []);
 
   const joyrideSteps = [
@@ -666,23 +669,23 @@ const RoundTrip = ({
             </div>
           </div>
 
-        <div className="  flex h-[950px] flex-col lg-custom:flex-row w-full">
-          <div
-            className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
-              activeSection === "onward" ? "block" : "hidden"
-            } lg-custom:block`}
-          >
-            {renderFlightSection(filteredOnward, "onward")}
-          </div>
-          <div
-            className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
-              activeSection === "return" ? "block" : "hidden"
-            } lg-custom:block`}
-          >
-            {renderFlightSection(filteredReturn, "return")}
+          <div className="  flex h-[950px] flex-col lg-custom:flex-row w-full">
+            <div
+              className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
+                activeSection === "onward" ? "block" : "hidden"
+              } lg-custom:block`}
+            >
+              {renderFlightSection(filteredOnward, "onward")}
+            </div>
+            <div
+              className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
+                activeSection === "return" ? "block" : "hidden"
+              } lg-custom:block`}
+            >
+              {renderFlightSection(filteredReturn, "return")}
+            </div>
           </div>
         </div>
-      </div>
 
         {(selectedOnwardFlight || selectedReturnFlight) && (
           <BookingCard
