@@ -48,12 +48,14 @@ const FilterSection = ({
   // const [storedJoyride] = useState(localStorage.getItem("joyride"));
   console.log({ runJoyride });
   useEffect(() => {
-    const storedJoyride = localStorage.getItem("joyride");
-    if (!storedJoyride) localStorage.setItem("joyride", "notexecuted");
+    const storedJoyride = localStorage.getItem("home-tutorial");
+    if (!storedJoyride) localStorage.setItem("home-tutorial", "notexecuted");
 
     if (storedJoyride === "notexecuted") {
       setRunJoyride(true);
-      localStorage.setItem("joyride", "executed");
+      setTimeout(() => {
+        localStorage.setItem("home-tutorial", "executed");
+      }, 1000);
     }
     if (storedJoyride === "executed") setRunJoyride(false);
   }, []);
