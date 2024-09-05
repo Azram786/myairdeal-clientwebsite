@@ -587,7 +587,7 @@ ${
                         ? "bg-[#D7B56D] text-[#1B1D29]  font-bold"
                         : "bg-[#1B1D29] text-[#D7B56D]"
                     }  font-semibold  text-sm my-2 px-8 md:px-16 py-2 rounded-md`}
-                    onClick={() => onSelect(localSelectedPriceIndex)}
+                    onClick={() => onSelect(localSelectedPriceIndex || 0)}
                   >
                     {isSelected ? "Selected" : "Select"}
                   </button>
