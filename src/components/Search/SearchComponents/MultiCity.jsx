@@ -6,6 +6,7 @@ import flightLogo from "../../../assets/home/logo/image 40.png";
 import SideBar from "./SideBar";
 import BookingCard from "./BookingCards";
 import { useNavigate } from "react-router-dom";
+import ReactJoyride from "react-joyride";
 import { useSelector, useDispatch } from "react-redux";
 import ReactToast from "../../util/ReactToast";
 import { FaFilter, FaTimes } from "react-icons/fa";
@@ -201,9 +202,56 @@ const MultiCity = ({ flightProps, passenger, query }) => {
     filter.stops.includes("0")
   );
 
+  const [runJoyride, setRunJoyride] = useState(false);
+
+  useEffect(() => {
+    const storedJoyride = localStorage.getItem("multicity-Tutorial");
+    if (!storedJoyride) {
+      localStorage.setItem("multicity-Tutorial", "notexecuted");
+    }
+
+    if (storedJoyride === "notexecuted") {
+      setRunJoyride(true);
+      setTimeout(() => {
+        localStorage.setItem("multicity-Tutorial", "executed");
+      }, 1000);
+    }
+    if (storedJoyride === "executed") setRunJoyride(false);
+  }, []);
+
+  const joyrideSteps = [
+    {
+      target: ".multicity-sidebar",
+      content: "Navigate through available options using this sidebar.",
+    },
+    {
+      target: ".price-selection",
+      content: "Choose your preferred price range from the options here.",
+    },
+    {
+      target: ".view-details",
+      content: "Click here to view more details about the selected flight.",
+    },
+  ];
+
   return (
     <div>
-      <div className="filter-container">
+      {runJoyride && (
+          <ReactJoyride
+            steps={joyrideSteps}
+            run={runJoyride}
+            continuous={true}
+            scrollToFirstStep={true}
+            showProgress={true}
+            showSkipButton={true}
+            callback={(data) => {
+              if (data.action === "reset") {
+                setRunJoyride(false);
+              }
+            }}
+          />
+        )}
+      <div className="filter-container price-selection">
         <div
           className={`filter-container-button ${
             cheapest ? "filter-container-button-active" : ""
@@ -268,7 +316,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
 
         <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
           <div
-            className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 lg-custom:z-0 bg-white transform ${
+            className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 right-0 z-50 lg-custom:z-0 bg-white transform multicity-sidebar ${
               isSidebarOpen ? "translate-x-0" : "translate-x-full"
             } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
             style={{

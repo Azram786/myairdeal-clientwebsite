@@ -6,10 +6,10 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import flightLogo from "../../../assets/home/logo/image 40.png";
 import OneWaySideBar from "./OneWaySidebar";
 import BookingCard from "./BookingCards";
-import ReactJoyride from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ReactToast from "../../util/ReactToast";
+import ReactJoyride from "react-joyride";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { BsFillFilterSquareFill } from "react-icons/bs";
 import { setLastSearch } from "../../../store/slices/aut.slice";
@@ -23,9 +23,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
   const [cheapest, setCheaptest] = useState(false);
   const [highest, setHighest] = useState(false);
   const [nonStop, setNonStop] = useState(false);
-  const [runJoyride, setRunJoyride] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const navigate = useNavigate();
   const [filters, setFilters] = useState({
     maxPrice: 100000,
     stops: [],
@@ -38,49 +35,8 @@ const Oneway = ({ flightProps, passenger, query }) => {
   const [selectedFlight, setSelectedFlight] = useState([
     // { flightIndex: 0, priceIndex: 0 },
   ]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedJoyride = localStorage.getItem("onewayTrip-Tutorial");
-    if (!storedJoyride) {
-      localStorage.setItem("onewayTrip-Tutorial", "notexecuted");
-    }
-
-    if (storedJoyride === "notexecuted") {
-      setRunJoyride(true);
-      setTimeout(() => {
-        localStorage.setItem("onewayTrip-Tutorial", "executed");
-      }, 1000);
-    }
-    if (storedJoyride === "executed") setRunJoyride(false);
-  }, []);
-
-  useEffect(() => {
-    if (runJoyride) {
-      document.body.classList.add('no-scroll');
-      window.scrollTo(0, 0); // Keep page at top
-    } else {
-      document.body.classList.remove('no-scroll');
-    }
-  }, [runJoyride]);
-  const joyrideSteps = [
-    {
-      target: ".filter-section",
-      content:
-        "Select your first trip (outbound flight) for the round trip here.",
-    },
-    {
-      target: ".sort-flights",
-      content:
-        "Now, select your second trip (return flight) for the round trip here.",
-    },
-    {
-      target: ".view-more-details",
-      content:
-        "Now, select your second trip (return flight) for the round trip here.",
-    },
-  ];
-
-  //calculate total price
   const calculateTotalPrice = useMemo(
     () => (flight) => {
       let total = 0;
@@ -95,7 +51,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
     [passenger]
   );
 
-  //get strop count
   const getStopsCount = (flight) => {
     return flight.sI.length - 1;
   };
@@ -109,7 +64,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
     }
   };
 
-  //sort flights by lowest price
   const sortFlightsByLowestPrice = (flights) => {
     return flights.sort((a, b) => {
       const priceA = calculateTotalPrice(a);
@@ -118,7 +72,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
     });
   };
 
-  //sort flights by highest price
   const sortFlightsByHighestPrice = (flights) => {
     return flights.sort((a, b) => {
       const priceA = calculateTotalPrice(a);
@@ -126,7 +79,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
       return priceB - priceA;
     });
   };
-
   useEffect(() => {
     setSelectedFlight([]);
     const newFilteredFlights = flightProps.filter((flight) => {
@@ -175,13 +127,11 @@ const Oneway = ({ flightProps, passenger, query }) => {
     }
   }, [filters, flightProps, calculateTotalPrice, cheapest, highest]);
 
-  //handle flight selection
   const handleFlightSelection = (flightIndex, priceIndex) => {
     setSelectedFlight([{ flightIndex, priceIndex }]);
     console.log(selectedFlight[0].priceIndex);
   };
 
-  //handle flight booking
   const handleBooking = () => {
     if (selectedFlight.length > 0) {
       const bookings = selectedFlight?.map((selected) => ({
@@ -202,7 +152,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
     }
   };
 
-  //get the total price of the selected flight
   const getTotalPrice = () => {
     if (selectedFlight.length > 0) {
       const selected = selectedFlight[0];
@@ -213,47 +162,62 @@ const Oneway = ({ flightProps, passenger, query }) => {
     }
     return 0;
   };
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
+  const [runJoyride, setRunJoyride] = useState(false);
+
+  useEffect(() => {
+    const storedJoyride = localStorage.getItem("oneway-Tutorial");
+    if (!storedJoyride) {
+      localStorage.setItem("oneway-Tutorial", "notexecuted");
+    }
+
+    if (storedJoyride === "notexecuted") {
+      setRunJoyride(true);
+      setTimeout(() => {
+        localStorage.setItem("oneway-Tutorial", "executed");
+      }, 1000);
+    }
+    if (storedJoyride === "executed") setRunJoyride(false);
+  }, []);
+
+  const joyrideSteps = [
+    {
+      target: ".oneway-sidebar",
+      content: "Navigate through available options using this sidebar.",
+    },
+    {
+      target: ".price-selection",
+      content: "Choose your preferred price range from the options here.",
+    },
+    {
+      target: ".view-details",
+      content: "Click here to view more details about the selected flight.",
+    },
+  ];
 
   
   return (
     <div>
-      
       {runJoyride && (
-        <ReactJoyride
-          steps={joyrideSteps}
-          run={runJoyride}
-          continuous={true}
-          scrollToFirstStep={false}
-          showProgress={true}
-          showSkipButton={true}
-          callback={(data) => {
-            if (data.action === "reset" || data.status === "finished") {
-              setRunJoyride(false);
-            }
-          }}
-          styles={{
-            options: {
-              zIndex: 10000, // Ensure it's on top of other elements
-              arrowColor: '#000', // Customize arrow color
-              backgroundColor: '#fff', // Customize background color
-              overlayColor: 'rgba(0, 0, 0, 0.7)', // Customize overlay color
-              primaryColor: '#f00', // Customize primary color
-              textColor: '#000', // Customize text color
-              // Adjust tooltip positioning
-              tooltipContainer: {
-                position: 'absolute',
-              },
-              tooltip: {
-                whiteSpace: 'pre-wrap', // Wrap text within the tooltip
-              },
-            },
-          }}
-        />
-      )}
-      <div className="filter-container">
+          <ReactJoyride
+            steps={joyrideSteps}
+            run={runJoyride}
+            continuous={true}
+            scrollToFirstStep={true}
+            showProgress={true}
+            disableScrollParentFix={true}
+            showSkipButton={true}
+            callback={(data) => {
+              if (data.action === "reset") {
+                setRunJoyride(false);
+              }
+            }}
+          />
+        )}
+      <div className="filter-container price-selection">
         <div
           className={`filter-container-button ${
             cheapest ? "filter-container-button-active" : ""
@@ -299,6 +263,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         </div>
       </div>
       <div className="flex  relative md:flex-row flex-col mt-5">
+        
         <button
           className="absolute top-10 right-0 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
           onClick={toggleSidebar}
@@ -306,9 +271,9 @@ const Oneway = ({ flightProps, passenger, query }) => {
           <BsFillFilterSquareFill className="w-6 h-6 white" />
           <div className="text-xs white">Filters</div>
         </button>
-        <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row sort-flights">
+        <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
           <div
-            className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 lg-custom:z-0 rounded-xl bg-white transform ${
+            className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 oneway-sidebar lg-custom:z-0 rounded-xl bg-white transform ${
               isSidebarOpen ? "translate-x-0" : "translate-x-full"
             } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
             style={{

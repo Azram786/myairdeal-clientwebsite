@@ -3,7 +3,7 @@ import { Tabs } from "antd";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { FallOutlined, StopOutlined, RiseOutlined } from "@ant-design/icons";
-
+import ReactJoyride from "react-joyride";
 import flightLogo from "../../../assets/home/logo/image 40.png";
 import { BsFillFilterSquareFill } from "react-icons/bs";
 import BookingCard from "./BookingCards";
@@ -170,9 +170,56 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const itemCount = filteredFlights.length;
 
+
+  const [runJoyride, setRunJoyride] = useState(false);
+
+  useEffect(() => {
+    const storedJoyride = localStorage.getItem("combo-Tutorial");
+    if (!storedJoyride) {
+      localStorage.setItem("combo-Tutorial", "notexecuted");
+    }
+
+    if (storedJoyride === "notexecuted") {
+      setRunJoyride(true);
+      setTimeout(() => {
+        localStorage.setItem("combo-Tutorial", "executed");
+      }, 1000);
+    }
+    if (storedJoyride === "executed") setRunJoyride(false);
+  }, []);
+
+  const joyrideSteps = [
+    {
+      target: ".combo-sidebar",
+      content: "Navigate through available options using this sidebar.",
+    },
+    {
+      target: ".price-selection",
+      content: "Choose your preferred price range from the options here.",
+    },
+    {
+      target: ".view-details",
+      content: "Click here to view more details about the selected flight.",
+    },
+  ];
   return (
     <div>
-      <div className="filter-container">
+      {runJoyride && (
+          <ReactJoyride
+            steps={joyrideSteps}
+            run={runJoyride}
+            continuous={true}
+            scrollToFirstStep={true}
+            showProgress={true}
+            showSkipButton={true}
+            callback={(data) => {
+              if (data.action === "reset") {
+                setRunJoyride(false);
+              }
+            }}
+          />
+        )}
+      <div className="filter-container price-selection">
         <div
           className={`filter-container-button ${
             cheapest ? "filter-container-button-active" : ""
@@ -227,7 +274,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
         </button>
         <div className="relative h-full flex flex-wrap flex-col lg-custom:flex-row">
           <div
-            className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 lg-custom:z-0 rounded-xl bg-white transform ${
+            className={`fixed h-full overflow-y-auto lg-custom:static top-0 bottom-0 bg-blur right-0 z-50 lg-custom:z-0 rounded-xl bg-white transform combo-sidebar ${
               isSidebarOpen ? "translate-x-0" : "translate-x-full"
             } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
             style={{

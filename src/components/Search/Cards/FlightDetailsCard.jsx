@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaPlane } from "react-icons/fa";
 import { GiRollingSuitcase } from "react-icons/gi";
+import ReactJoyride from "react-joyride";
 import FareToolTip from "./FareTooltip";
 import calculateDuration from "../../util/calculateDuration";
 import defaultAirline from "../../../assets/booking/viewBookings/flightLogo.png";
@@ -560,7 +561,7 @@ const FlightDetailsCard = ({
             <div className="flex justify-between items-center w-full ">
               <button
                 onClick={() => setShowDetails(!showDetails)}
-                className=" font-semibold text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2 view-more-details"
+                className=" font-semibold text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2 view-details"
               >
                 {showDetails ? (
                   <span className="text-black">
