@@ -45,21 +45,19 @@ const FilterSection = ({
   const dispatch = useDispatch();
 
   const [runJoyride, setRunJoyride] = useState(false);
-
+  // const [storedJoyride] = useState(localStorage.getItem("joyride"));
+  console.log({ runJoyride });
   useEffect(() => {
-    const storedJoyride = localStorage.getItem("joyride");
-    if (!storedJoyride) localStorage.setItem("joyride", "notexecuted");
-
-    if (!storedJoyride) localStorage.setItem("joyride", "notexecuted");
+    const storedJoyride = localStorage.getItem("home-tutorial");
+    if (!storedJoyride) localStorage.setItem("home-tutorial", "notexecuted");
 
     if (storedJoyride === "notexecuted") {
       setRunJoyride(true);
-      localStorage.setItem("joyride", "executed");
-
-      setRunJoyride(true);
-      localStorage.setItem("joyride", "executed");
-    } else {
+      setTimeout(() => {
+        localStorage.setItem("home-tutorial", "executed");
+      }, 1000);
     }
+    if (storedJoyride === "executed") setRunJoyride(false);
   }, []);
 
   // State for Joyride steps

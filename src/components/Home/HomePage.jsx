@@ -54,18 +54,20 @@ const HomePage = () => {
 
   async function getResentSearch() {
     try {
-      setLoading(true);
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      if (token) {
+        setLoading(true);
+        const response = await axios.get(
+          `${import.meta.env.VITE_SERVER_URL}search/searchQueryHistory`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      setResentSearchData(response.data.data);
-      setLoading(false);
+        setResentSearchData(response.data.data);
+        setLoading(false);
+      }
     } catch (error) {
       setLoading(false);
       console.log(error.message);

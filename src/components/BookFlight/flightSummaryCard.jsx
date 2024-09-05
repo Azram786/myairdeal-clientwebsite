@@ -1,7 +1,6 @@
 import React from "react";
 
 function FlightSummaryCard({ data, currentStep }) {
- 
   return (
     <div>
       <div className="w-full md:w-[70%] rounded-lg bg-white p-2 space-y-4">
@@ -42,9 +41,12 @@ function FlightSummaryCard({ data, currentStep }) {
                               <div className="mb-2">
                                 <div className="font-semibold text-xs border rounded-md inline-flex items-center shadow-md p-1 space-x-2">
                                   <div className="w-8 h-8">
-                                
                                     <img
-                                      src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${segment.fD.aI.code}.png`}
+                                      src={`${
+                                        import.meta.env.VITE_SERVER_URL
+                                      }uploads/AirlinesLogo/${
+                                        segment.fD.aI.code
+                                      }.png`}
                                       onError={(e) =>
                                         (e.currentTarget.src = defaultAirline)
                                       }

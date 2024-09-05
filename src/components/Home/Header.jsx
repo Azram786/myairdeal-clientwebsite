@@ -16,6 +16,7 @@ import { FiMenu } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import Avatar from "../../assets/home/banner/avatar.png";
 import axios from "axios";
+import ReactToast from "../util/ReactToast";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -39,6 +40,7 @@ const Header = () => {
     dispatch(logout());
     dispatch(clearResent());
     dispatch(clearUser());
+    localStorage.clear();
     navigate("/sign-in");
     setMobileMenuOpen(false);
   };
