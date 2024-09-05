@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Logo from "../../assets/home/logo/FinalLogo.jpg";
-import SliderImg from "../../assets/auth/slider.png";
+import SliderImg from "../../assets/auth/slider1.jpg";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactToast from "../util/ReactToast";

@@ -432,6 +432,7 @@ const FlightDetailsCard = ({
 
   return (
     <div className="border p-4 rounded-lg m-2 justify-between items-center  bg-white shadow-md  ">
+      
       <div className="flex   flex-col md:flex-row  justify-between  mb-2">
         <div className="flex flex-col w-full ">
           <div className="flex justify-around  gap-0 md:gap-3 w-full">
@@ -559,7 +560,7 @@ const FlightDetailsCard = ({
             <div className="flex justify-between items-center w-full ">
               <button
                 onClick={() => setShowDetails(!showDetails)}
-                className=" font-semibold text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2"
+                className=" font-semibold text-sm my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 py-2 view-more-details"
               >
                 {showDetails ? (
                   <span className="text-black">
