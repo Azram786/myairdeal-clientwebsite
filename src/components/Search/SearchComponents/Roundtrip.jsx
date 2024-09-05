@@ -354,7 +354,10 @@ const RoundTrip = ({
         );
 
         setFilteredReturn(updatedReturnFlights);
-        setSelectedOnwardFlight({ ...flight, selectedPriceIndex: priceIndex });
+        setSelectedOnwardFlight({
+          ...flight,
+          selectedPriceIndex: priceIndex ,
+        });
         // setSelectedReturnFlight(null);
 
         setSelectedReturnFlight({
