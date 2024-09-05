@@ -90,7 +90,7 @@ const AddonsCard = ({
   return (
     <div className="">
       {/* Joyride component */}
-      <ReactJoyride
+      {/* <ReactJoyride
         steps={joyrideSteps}
         run={runJoyride}
         continuous
@@ -100,10 +100,10 @@ const AddonsCard = ({
           options: {
             zIndex: 10000,
           },
-        }}
+        }} */}
         
        
-      />
+      {/* /> */}
       <div
         className="p-3 border-b border-gray-300 cursor-pointer flex justify-between items-center"
         onClick={toggleCard}

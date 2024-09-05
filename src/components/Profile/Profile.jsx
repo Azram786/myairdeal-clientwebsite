@@ -414,14 +414,16 @@ const UserProfile = () => {
   const getProfileData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}user/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      if (token) {
+        const response = await axios.get(
+          `${import.meta.env.VITE_SERVER_URL}user/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
 
       const profileData = {
         firstName: response.data.firstName,
