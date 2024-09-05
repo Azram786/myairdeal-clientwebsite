@@ -211,6 +211,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
             continuous={true}
             scrollToFirstStep={true}
             showProgress={true}
+            scrollOffset={600}
             showSkipButton={true}
             callback={(data) => {
               if (data.action === "reset") {

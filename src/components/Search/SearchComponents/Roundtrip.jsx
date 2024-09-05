@@ -584,6 +584,7 @@ const RoundTrip = ({
             continuous={true}
             scrollToFirstStep={true}
             showProgress={true}
+            scrollOffset={300}
             showSkipButton={true}
             callback={(data) => {
               if (data.action === "reset") {

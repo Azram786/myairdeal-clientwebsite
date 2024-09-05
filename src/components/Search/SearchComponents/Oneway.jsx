@@ -210,6 +210,7 @@ const Oneway = ({ flightProps, passenger, query }) => {
             showProgress={true}
             disableScrollParentFix={true}
             showSkipButton={true}
+            scrollOffset={500}
             callback={(data) => {
               if (data.action === "reset") {
                 setRunJoyride(false);
