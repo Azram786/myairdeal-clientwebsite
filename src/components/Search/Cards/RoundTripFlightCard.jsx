@@ -8,6 +8,7 @@ import {
   FaShoppingCart,
   FaConciergeBell,
 } from "react-icons/fa";
+import { MdAccessTimeFilled } from "react-icons/md";
 
 // import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import FareToolTip from "./FareTooltip";
@@ -185,8 +186,8 @@ const RoundTripCard = ({
                   })}
                 </span>
               </div>
-              <div className="pr-4 text-white text-sm font-medium hidden md:flex">
-                Total Duration : {calculateTotalDuration(data)}
+              <div className="pr-4 text-white text-sm font-medium hidden md:flex justify-center items-center gap-1">
+              <MdAccessTimeFilled /> {calculateTotalDuration(data)}
               </div>
             </div>
             {data.map((segment, index) => (
@@ -412,13 +413,20 @@ const RoundTripCard = ({
         <div className="flex flex-col  w-full">
           <div className="flex justify-around  gap-0 md:gap-3 w-full ">
             <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
-              <img
-                src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${
-                  startSegment?.fD?.aI?.code
-                }.png`}
-                alt={startSegment?.fD?.aI?.code}
-                className="md:size-16 lg-custom:size-12 rounded-md mr-8 lg-custom:mr-4 md:flex hidden"
-              />
+              <div className="flex flex-col mx-auto">
+                <img
+                  src={`${
+                    import.meta.env.VITE_SERVER_URL
+                  }uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                  alt={startSegment?.fD?.aI?.code}
+                  className="md:size-16 lg-custom:size-12 rounded-md mr-8 lg-custom:mr-4 md:flex hidden"
+                />
+                <p className="text-xs font-bold ">
+                  {" "}
+                  {startSegment?.fD?.aI?.name}
+                </p>
+              </div>
+
               <div className="">
                 <div className="relative group text-base ">
                   <div className="text-base font-bold line-clamp-2">
@@ -426,7 +434,7 @@ const RoundTripCard = ({
                   </div>
 
                   {/* Tooltip */}
-                  <div className="hover:flex hover:flex-wrap absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                  <div className="hover:flex hover:flex-wrap absolute top-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
                     {startSegment?.da?.name}
                   </div>
                 </div>
@@ -479,7 +487,7 @@ const RoundTripCard = ({
                   </div>
 
                   {/* Tooltip */}
-                  <div className="hover:flex hover:flex-wrap absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                  <div className="hover:flex hover:flex-wrap absolute top-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
                     {endSegment?.aa?.name}
                   </div>
                 </div>

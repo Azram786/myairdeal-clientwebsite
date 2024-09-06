@@ -518,7 +518,7 @@ const RoundTrip = ({
   ];
 
   return (
-    <div>
+    <div className="">
       <div className="filter-container">
         <div
           className={`filter-container-button ${
@@ -576,7 +576,7 @@ const RoundTrip = ({
           <b>Highest Prices</b>
         </div>
       </div>
-      <div className="relative  flex flex-wrap flex-col  md:flex-row mb-24  w-full ">
+      <div className="relative  flex flex-wrap flex-col  md:flex-row  w-full ">
         {runJoyride && (
           <ReactJoyride
             steps={joyrideSteps}
@@ -601,9 +601,9 @@ const RoundTrip = ({
           <BsFillFilterSquareFill className="w-6 h-6 white" />
           <div className="text-xs text-[#1B1D29]">Filters</div>
         </button>
-        <div className=" w-[20%] h-full flex flex-wrap flex-col lg-custom:flex-row ">
+        <div className=" w-[20%] h-full  flex flex-wrap flex-col lg-custom:flex-row ">
           <div
-            className={`fixed h-full overflow-y-auto lg-custom:static m-2 top-0 bottom-0 right-0 z-50 lg-custom:z-0 rounded-xl w-full bg-white transform ${
+            className={`fixed h-full overflow-y-auto lg-custom:static pt-1 mx-2 top-0 bottom-0 right-0 z-50 lg-custom:z-0 rounded-xl w-full bg-white transform ${
               isSidebarOpen ? "translate-x-0" : "translate-x-full"
             } transition-transform duration-300 ease-in-out lg-custom:transform-none`}
             style={{
@@ -645,9 +645,9 @@ const RoundTrip = ({
             />
           )}
         </div>
-        <div className="flex flex-wrap h-full  mx-0 flex-col w-full lg-custom:w-[80%]">
-          <div className="flex gap-6">
-            <div className="w-max lg-custom:w-1/2 relative onward-section">
+        <div className="flex flex-wrap    flex-col w-full lg-custom:w-[80%]">
+          <div className="flex gap-6  ">
+            <div className="w-max lg-custom:w-1/2 relative onward-section ">
               <h2
                 className={`text-sm text-center p-2 lg-custom:text-xl font-semibold mb-2 cursor-pointer lg-custom:cursor-default ${
                   activeSection === "onward"
@@ -673,7 +673,7 @@ const RoundTrip = ({
             </div>
           </div>
 
-          <div className="  flex h-[950px] flex-col lg-custom:flex-row w-full">
+          <div className="  flex  flex-col lg-custom:flex-row w-full">
             <div
               className={`w-full lg-custom:w-1/2 overflow-auto no-scroll ${
                 activeSection === "onward" ? "block" : "hidden"
