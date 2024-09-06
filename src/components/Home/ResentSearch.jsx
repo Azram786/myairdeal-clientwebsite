@@ -70,7 +70,31 @@ const RecentSearch = ({ ResentSearchData }) => {
             <div
               key={index}
               className="rounded-2xl  shadow-lg max-w-60 md:max-w-64 my-4 p-4 border gap-4 border-[#D7B56D] font-poppins cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 "
+              // onClick={() => {
+              //   setResentStateHandler(search);
+              // }}
               onClick={() => {
+                const scrollToPosition = (targetPosition, duration) => {
+                  const start = window.pageYOffset;
+                  const distance = targetPosition - start;
+                  let startTime = null;
+
+                  const scrollStep = (currentTime) => {
+                    if (!startTime) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const progress = Math.min(timeElapsed / duration, 1);
+                    window.scrollTo(0, start + distance * progress);
+
+                    if (progress < 1) {
+                      requestAnimationFrame(scrollStep);
+                    }
+                  };
+
+                  requestAnimationFrame(scrollStep);
+                };
+
+                scrollToPosition(400, 1000);
+
                 setResentStateHandler(search);
               }}
             >

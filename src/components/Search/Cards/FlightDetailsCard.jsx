@@ -438,13 +438,16 @@ const FlightDetailsCard = ({
         <div className="flex flex-col w-full ">
           <div className="flex justify-around  gap-0 md:gap-3 w-full">
             <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
+              <div className="flex flex-col ">
               <img
                 src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${
                   startSegment?.fD?.aI?.code
                 }.png`}
                 alt={startSegment?.fD?.aI?.code}
-                className="md:size-12  rounded-md  mr-6 md:flex hidden"
+                className="md:size-12  rounded-md  mr-6 md:flex hidden mx-auto" 
               />
+             <p className="text-xs font-bold "> {startSegment?.fD?.aI?.name}</p>
+              </div>
               <div className="flex flex-col">
                 <div className="relative group text-base ">
                   <div className="text-base font-bold line-clamp-1">
@@ -452,7 +455,7 @@ const FlightDetailsCard = ({
                   </div>
 
                   {/* Tooltip */}
-                  <div className="  absolute bottom-full left-1/2 transform -translate-x-1/2  hover:flex hover:flex-wrap hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
+                  <div className="  absolute top-full left-1/2 transform -translate-x-1/2  hover:flex hover:flex-wrap hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
                     {startSegment?.da?.name}
                   </div>
                 </div>
@@ -491,7 +494,7 @@ const FlightDetailsCard = ({
                   </div>
 
                   {/* Tooltip */}
-                  <div className="  absolute bottom-full left-1/2 transform -translate-x-1/2  hover:flex hover:flex-wrap hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
+                  <div className="  absolute top-full left-1/2 transform -translate-x-1/2  hover:flex hover:flex-wrap hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
                     {endSegment?.aa?.name}
                   </div>
                 </div>

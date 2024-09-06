@@ -92,6 +92,7 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
         </thead>
         <tbody>
           {passengerDetails.map((passenger, index) => (
+            
             <tr key={index} className="border-b w-full text-sm">
               <td className="p-2">{index + 1}</td>
 

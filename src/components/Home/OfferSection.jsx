@@ -153,7 +153,28 @@ const OfferSection = ({ setFormData }) => {
                   }}
                   onClick={() => {
                     dispatch(clearResent());
-                    window.scrollTo(0, 500);
+
+                    const scrollToPosition = (targetPosition, duration) => {
+                      const start = window.pageYOffset;
+                      const distance = targetPosition - start;
+                      let startTime = null;
+
+                      const scrollStep = (currentTime) => {
+                        if (!startTime) startTime = currentTime;
+                        const timeElapsed = currentTime - startTime;
+                        const progress = Math.min(timeElapsed / duration, 1);
+                        window.scrollTo(0, start + distance * progress);
+
+                        if (progress < 1) {
+                          requestAnimationFrame(scrollStep);
+                        }
+                      };
+
+                      requestAnimationFrame(scrollStep);
+                    };
+
+                    scrollToPosition(400, 1000);
+
                     setFormData((prev) => ({
                       ...prev,
                       toCityOrAirport: offer.src,

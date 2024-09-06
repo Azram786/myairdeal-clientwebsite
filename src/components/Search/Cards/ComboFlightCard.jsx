@@ -236,15 +236,15 @@ const ComboFlightCard = ({
                                   hour12: false,
                                 })}
                               </div>
-                             
+
                               <div className="relative group">
                                 <div className="text-xs text-gray-500 line-clamp-1">
-                                {segment?.da?.city}, {segment?.da?.country}
+                                  {segment?.da?.city}, {segment?.da?.country}
                                 </div>
 
                                 {/* Tooltip */}
                                 <div className="absolute bottom-full left-1/4 transform -translate-x-1/2 mb-0.5 z-50 hover:flex hover:flex-wrap hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
-                                {segment?.da?.city}, {segment?.da?.country}
+                                  {segment?.da?.city}, {segment?.da?.country}
                                 </div>
                               </div>
                               <div className="relative group">
@@ -462,7 +462,6 @@ const ComboFlightCard = ({
 
   return (
     <>
-    
       <div className="border p-4 rounded-lg m-2 justify-between items-center overflow-x-auto bg-white shadow-md">
         <div className="flex   flex-col md:flex-row  justify-between items-stretch  mb-2">
           <div className="flex flex-col w-full ">
@@ -480,12 +479,8 @@ const ComboFlightCard = ({
                 const isConnectionFlight = group.length > 1;
 
                 return (
-                  <div
-                    key={index}
-                    className="flex justify-around  p-4 rounded-md"
-                  >
-                    {/* Departure Information */}
-                    <div className="flex flex-col items-center ">
+                  <div className=" flex md:flex-row flex-col">
+                    <div className=" mx-3 px-4">
                       <img
                         src={`${
                           import.meta.env.VITE_SERVER_URL
@@ -496,14 +491,25 @@ const ComboFlightCard = ({
                         alt={startSegment?.fD?.aI?.code}
                         className="size-12"
                       />
-
+                      <p className="text-xs font-bold ">
+                        {" "}
+                        {startSegment?.fD?.aI?.name}
+                      </p>
+                    </div>
+                  <div
+                    key={index}
+                    className="flex justify-around p-4 mx-auto  w-full md:w-[90%] rounded-md"
+                  >
+                    
+                    {/* Departure Information */}
+                    <div className="flex flex-col items-center ">
                       <div className="relative group text-base ">
                         <div className="text-base font-bold line-clamp-2">
                           {startSegment?.da?.code}
                         </div>
 
                         {/* Tooltip */}
-                        <div className=" absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hover:flex hover:flex-wrap  hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
+                        <div className=" absolute top-full left-1/2 transform -translate-x-1/2 mb-2 hover:flex hover:flex-wrap  hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
                           {startSegment?.da?.name}
                         </div>
                       </div>
@@ -535,21 +541,13 @@ const ComboFlightCard = ({
 
                     {/* Arrival Information */}
                     <div className="flex flex-col items-center">
-                      <img
-                        src={`${
-                          import.meta.env.VITE_SERVER_URL
-                        }uploads/AirlinesLogo/${endSegment?.fD?.aI?.code}.png`}
-                        onError={(e) => (e.currentTarget.src = defaultAirline)}
-                        alt={endSegment?.fD?.aI?.code}
-                        className="size-12"
-                      />
                       <div className="relative group text-base ">
                         <div className="text-base font-bold line-clamp-2">
                           {endSegment?.aa?.code}
                         </div>
 
                         {/* Tooltip */}
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hover:flex hover:flex-wrap hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mb-2 hover:flex hover:flex-wrap hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-50">
                           {endSegment?.aa?.name}
                         </div>
                       </div>
@@ -558,6 +556,7 @@ const ComboFlightCard = ({
                         {formatDateTime(endSegment?.at)}
                       </h1>
                     </div>
+                  </div>
                   </div>
                 );
               })}
