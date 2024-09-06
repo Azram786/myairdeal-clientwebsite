@@ -1,5 +1,8 @@
 import Logo from "../../assets/home/logo/FinalLogo.jpg";
-import SliderImg from "../../assets/auth/slider.png";
+import SliderImg from "../../assets/auth/slider1.jpg";
+import SliderImg2 from "../../assets/auth/slider2.webp";
+import SliderImg3 from "../../assets/auth/slider3.webp";
+
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState, useEffect } from "react";
@@ -43,6 +46,22 @@ const Login = () => {
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
+
+  const sliderImages = [SliderImg, SliderImg2, SliderImg3];
+  //changes image of the slider
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Automatically change image every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === sliderImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 2000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     let interval;
@@ -204,23 +223,48 @@ const Login = () => {
             {step !== "sent-otp" && (
               <div className="flex flex-row items-center w-full justify-center">
                 <h2 className="flex items-center text-sm md:text-[15px] text-red-600">
-                  <a href="/sign-in">Wrong Number? <span className="text-blue-600 hover:underline">Click Here</span></a>
+                  <a href="/sign-in">
+                    Wrong Number?{" "}
+                    <span className="text-blue-600 hover:underline">
+                      Click Here
+                    </span>
+                  </a>
                 </h2>
               </div>
             )}
           </motion.div>
         </div>
-        <div className="hidden  md:w-[50%]  md:flex md:items-center md:h-full">
-          <div className="h-full flex w-full justify-center items-center">
-            <motion.img
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-              className="h-[90%]"
-              src={SliderImg}
-              alt="Slider"
-            />
-          </div>
+        <div className="hidden  md:w-[50%]  md:flex  pl-12 justify-center md:h-full">
+        <div className="relative h-full w-[70%] rounded-md  flex flex-col justify-center items-center">
+      <div className="relative w-full h-[90%] rounded-xl ">
+        {sliderImages.map((image, index) => (
+          <motion.img
+            key={index}
+            src={image}
+            alt={`Slider ${index}`}
+            className="absolute rounded-xl w-full h-full object-cover"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: currentIndex === index ? 1 : 0 }}
+            transition={{ duration: 1 }}
+          />
+        ))}
+      </div>
+
+      {/* Dots Container */}
+      <div className="absolute bottom-10 flex items-center space-x-2">
+        {sliderImages.map((_, index) => (
+          <motion.div
+            key={index}
+            className={`h-3 w-3 rounded-full ${
+              currentIndex === index ? "bg-[#D7B56D]" : "bg-white"
+            }`}
+            initial={{ scale: 1 }}
+            animate={{ scale: currentIndex === index ? 1.2 : 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          />
+        ))}
+      </div>
+    </div>
         </div>
       </div>
     </div>

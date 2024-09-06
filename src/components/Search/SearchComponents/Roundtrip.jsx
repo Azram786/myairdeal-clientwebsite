@@ -354,7 +354,10 @@ const RoundTrip = ({
         );
 
         setFilteredReturn(updatedReturnFlights);
-        setSelectedOnwardFlight({ ...flight, selectedPriceIndex: priceIndex });
+        setSelectedOnwardFlight({
+          ...flight,
+          selectedPriceIndex: priceIndex ,
+        });
         // setSelectedReturnFlight(null);
 
         setSelectedReturnFlight({
@@ -581,6 +584,7 @@ const RoundTrip = ({
             continuous={true}
             scrollToFirstStep={true}
             showProgress={true}
+            scrollOffset={300}
             showSkipButton={true}
             callback={(data) => {
               if (data.action === "reset") {

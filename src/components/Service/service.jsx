@@ -6,7 +6,7 @@ import background1 from "../../assets/service/world2.png";
 function Card(props) {
   return (
     <div className="bg-white bg-cover relative pb-12 transition-transform transform hover:scale-105 duration-300 ease-in-out text-sky-950 rounded-xl p-6 shadow-md w-32 h-44 sm:w-44 md:w-52 md:h-60">
-      <div className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4  border-solid border-4 border-[#1B1D29] bg-[#1B1D29] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm items-center justify-center">
+      <div className="w-12 md:w-20 h-12 md:h-20 mx-auto mb-4  border-solid border-4 border-[#3C4A8C] bg-[#3C4A8C] rounded-tl-sm rounded-tr-2xl rounded-bl-2xl rounded-br-sm items-center justify-center">
         <img
           src={props?.imgURL}
           alt="plane"

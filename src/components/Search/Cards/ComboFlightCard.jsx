@@ -462,6 +462,7 @@ const ComboFlightCard = ({
 
   return (
     <>
+    
       <div className="border p-4 rounded-lg m-2 justify-between items-center overflow-x-auto bg-white shadow-md">
         <div className="flex   flex-col md:flex-row  justify-between items-stretch  mb-2">
           <div className="flex flex-col w-full ">
@@ -613,7 +614,7 @@ const ComboFlightCard = ({
               <div className="flex justify-between h-14 gap-2">
                 <button
                   onClick={() => setShowDetails(!showDetails)}
-                  className="my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2"
+                  className="my-2 bg-[#D7B56D] rounded-md text-[#1B1D29] px-2 view-details"
                 >
                   {showDetails ? (
                     <span>

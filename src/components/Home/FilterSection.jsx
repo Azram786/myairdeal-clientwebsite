@@ -531,9 +531,8 @@ const FilterSection = ({
           steps={joyrideSteps}
           run={runJoyride}
           continuous={true}
-          scrollToFirstStep={true}
           showProgress={true}
-          showSkipButton={true}
+          scrollOffset={200}
           callback={(data) => {
             if (data.action === "reset") {
               setRunJoyride(false);
@@ -541,7 +540,7 @@ const FilterSection = ({
           }}
         />
       )}
-      {/* <div className="     md:rounded-xl w-[90%] mt-4  p-2 shadow-md border border-gray-200 bg-white flex gap-2  flex-col  justify-center md:px-5  md:gap-4   relative  md:top-[-60px]   "> */}
+
       <div
         className={`
   md:rounded-xl w-[90%] mt-4 p-2 shadow-md border border-gray-200 bg-white 
