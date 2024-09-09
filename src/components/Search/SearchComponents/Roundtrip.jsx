@@ -19,7 +19,7 @@ const RoundTrip = ({
   query,
 }) => {
   const dispatch = useDispatch();
-  const [cheapest, setCheaptest] = useState(false);
+  const [cheapest, setCheaptest] = useState(true);
   const [highest, setHighest] = useState(false);
   const [nonStop, setNonStop] = useState(false);
   const [filteredOnward, setFilteredOnward] = useState([]);
@@ -356,7 +356,7 @@ const RoundTrip = ({
         setFilteredReturn(updatedReturnFlights);
         setSelectedOnwardFlight({
           ...flight,
-          selectedPriceIndex: priceIndex ,
+          selectedPriceIndex: priceIndex,
         });
         // setSelectedReturnFlight(null);
 

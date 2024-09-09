@@ -20,7 +20,7 @@ const { TabPane } = Tabs;
 const Oneway = ({ flightProps, passenger, query }) => {
   const dispatch = useDispatch();
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
-  const [cheapest, setCheaptest] = useState(false);
+  const [cheapest, setCheaptest] = useState(true);
   const [highest, setHighest] = useState(false);
   const [nonStop, setNonStop] = useState(false);
   const [filters, setFilters] = useState({
@@ -198,26 +198,25 @@ const Oneway = ({ flightProps, passenger, query }) => {
     },
   ];
 
-  
   return (
     <div>
       {runJoyride && (
-          <ReactJoyride
-            steps={joyrideSteps}
-            run={runJoyride}
-            continuous={true}
-            scrollToFirstStep={true}
-            showProgress={true}
-            disableScrollParentFix={true}
-            showSkipButton={true}
-            scrollOffset={500}
-            callback={(data) => {
-              if (data.action === "reset") {
-                setRunJoyride(false);
-              }
-            }}
-          />
-        )}
+        <ReactJoyride
+          steps={joyrideSteps}
+          run={runJoyride}
+          continuous={true}
+          scrollToFirstStep={true}
+          showProgress={true}
+          disableScrollParentFix={true}
+          showSkipButton={true}
+          scrollOffset={500}
+          callback={(data) => {
+            if (data.action === "reset") {
+              setRunJoyride(false);
+            }
+          }}
+        />
+      )}
       <div className="filter-container price-selection">
         <div
           className={`filter-container-button ${
@@ -264,7 +263,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
         </div>
       </div>
       <div className="flex  relative md:flex-row flex-col mt-5">
-        
         <button
           className="absolute top-10 right-0 z-50 flex justify-center items-center flex-col  lg-custom:hidden"
           onClick={toggleSidebar}

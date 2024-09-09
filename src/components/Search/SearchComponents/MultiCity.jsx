@@ -20,7 +20,7 @@ const MultiCity = ({ flightProps, passenger, query }) => {
   const dispatch = useDispatch();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const token = useSelector((state) => state.auth.token);
-  const [cheapest, setCheaptest] = useState(false);
+  const [cheapest, setCheaptest] = useState(true);
   const [highest, setHighest] = useState(false);
   const [filters, setFilters] = useState(
     flightProps.map(() => ({
@@ -237,20 +237,20 @@ const MultiCity = ({ flightProps, passenger, query }) => {
   return (
     <div>
       {runJoyride && (
-          <ReactJoyride
-            steps={joyrideSteps}
-            run={runJoyride}
-            continuous={true}
-            scrollToFirstStep={true}
-            showProgress={true}
-            showSkipButton={true}
-            callback={(data) => {
-              if (data.action === "reset") {
-                setRunJoyride(false);
-              }
-            }}
-          />
-        )}
+        <ReactJoyride
+          steps={joyrideSteps}
+          run={runJoyride}
+          continuous={true}
+          scrollToFirstStep={true}
+          showProgress={true}
+          showSkipButton={true}
+          callback={(data) => {
+            if (data.action === "reset") {
+              setRunJoyride(false);
+            }
+          }}
+        />
+      )}
       <div className="filter-container price-selection">
         <div
           className={`filter-container-button ${

@@ -22,7 +22,7 @@ const { TabPane } = Tabs;
 
 const Oneway = ({ flightProps, passenger, query }) => {
   const dispatch = useDispatch();
-  const [cheapest, setCheaptest] = useState(false);
+  const [cheapest, setCheaptest] = useState(true);
   const [highest, setHighest] = useState(false);
   const [nonStop, setNonStop] = useState(false);
   const [filteredFlights, setFilteredFlights] = useState(flightProps);
@@ -170,7 +170,6 @@ const Oneway = ({ flightProps, passenger, query }) => {
 
   const itemCount = filteredFlights.length;
 
-
   const [runJoyride, setRunJoyride] = useState(false);
 
   useEffect(() => {
@@ -205,21 +204,21 @@ const Oneway = ({ flightProps, passenger, query }) => {
   return (
     <div>
       {runJoyride && (
-          <ReactJoyride
-            steps={joyrideSteps}
-            run={runJoyride}
-            continuous={true}
-            scrollToFirstStep={true}
-            showProgress={true}
-            scrollOffset={600}
-            showSkipButton={true}
-            callback={(data) => {
-              if (data.action === "reset") {
-                setRunJoyride(false);
-              }
-            }}
-          />
-        )}
+        <ReactJoyride
+          steps={joyrideSteps}
+          run={runJoyride}
+          continuous={true}
+          scrollToFirstStep={true}
+          showProgress={true}
+          scrollOffset={600}
+          showSkipButton={true}
+          callback={(data) => {
+            if (data.action === "reset") {
+              setRunJoyride(false);
+            }
+          }}
+        />
+      )}
       <div className="filter-container price-selection">
         <div
           className={`filter-container-button ${
@@ -306,115 +305,116 @@ const Oneway = ({ flightProps, passenger, query }) => {
             </div>
           </div>
 
-        {isSidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
-            onClick={() => setIsSidebarOpen(false)}
+          {isSidebarOpen && (
+            <div
+              className="fixed inset-0 bg-black opacity-50 z-30 lg-custom:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
+        </div>
+        <div className="flex-grow  ">
+          <Tabs defaultActiveKey="1">
+            <TabPane
+              tab={
+                <span className="hidden">
+                  <span className="flex flex-col justify-center ">
+                    <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
+                    <p className="text-[10px]">
+                      {filteredFlights[0]?.sI[0] &&
+                        new Intl.DateTimeFormat("en-GB", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        })
+                          .format(new Date(filteredFlights[0].sI[0].dt))
+                          .split("/")
+                          .join("-")}
+                    </p>
+                  </span>
+                  <ArrowRightOutlined />
+                  <span className="flex flex-col justify-center">
+                    <p>
+                      {
+                        filteredFlights[0]?.sI[
+                          filteredFlights[0]?.sI.length - 1
+                        ]?.aa?.city
+                      }
+                    </p>
+                    <p className="text-[10px]">
+                      {filteredFlights[0]?.sI[0] &&
+                        new Intl.DateTimeFormat("en-GB", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        })
+                          .format(
+                            new Date(
+                              filteredFlights[0].sI[
+                                filteredFlights[0]?.sI.length - 1
+                              ].at
+                            )
+                          )
+                          .split("/")
+                          .join("-")}
+                    </p>
+                  </span>
+                </span>
+              }
+              key="1"
+            >
+              <div className="h-[1000px] overflow-y-auto no-scroll">
+                {itemCount > 0 ? (
+                  <Virtuoso
+                    totalCount={itemCount}
+                    itemContent={(index) => {
+                      const flight = filteredFlights[index];
+                      return (
+                        <ComboFlightCard
+                          key={index}
+                          passenger={passenger}
+                          logo={flightLogo}
+                          flightDetails={flight}
+                          isSelected={selectedFlight.some(
+                            (selected) => selected.flightIndex === index
+                          )}
+                          selectedPriceIndex={
+                            selectedFlight.find(
+                              (selected) => selected.flightIndex === index
+                            )?.priceIndex
+                          }
+                          onSelect={(priceIndex) =>
+                            handleFlightSelection(index, priceIndex)
+                          }
+                          totalPrice={calculateTotalPrice(flight)}
+                        />
+                      );
+                    }}
+                  />
+                ) : (
+                  <p>No flights match the current filters.</p>
+                )}
+              </div>
+            </TabPane>
+          </Tabs>
+        </div>
+        {selectedFlight.length > 0 && (
+          <BookingCard
+            passenger={passenger}
+            selectedPriceIndex={selectedFlight}
+            // selectedFlights={selectedFlight.map(
+            //   (selected) => filteredFlights[selected.flightIndex]
+            // )}
+            selectedFlights={selectedFlight.map((selected) => ({
+              ...filteredFlights[selected.flightIndex],
+              selectedPriceIndex: selected.priceIndex,
+            }))}
+            totalPrice={getTotalPrice()}
+            onBook={handleBooking}
+            calculateTotalPrice={calculateTotalPrice}
+            combo={true}
           />
         )}
       </div>
-      <div className="flex-grow  ">
-        <Tabs defaultActiveKey="1">
-          <TabPane
-            tab={
-              <span className="hidden">
-                <span className="flex flex-col justify-center ">
-                  <p>{filteredFlights[0]?.sI[0]?.da?.city}</p>
-                  <p className="text-[10px]">
-                    {filteredFlights[0]?.sI[0] &&
-                      new Intl.DateTimeFormat("en-GB", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      })
-                        .format(new Date(filteredFlights[0].sI[0].dt))
-                        .split("/")
-                        .join("-")}
-                  </p>
-                </span>
-                <ArrowRightOutlined />
-                <span className="flex flex-col justify-center">
-                  <p>
-                    {
-                      filteredFlights[0]?.sI[filteredFlights[0]?.sI.length - 1]
-                        ?.aa?.city
-                    }
-                  </p>
-                  <p className="text-[10px]">
-                    {filteredFlights[0]?.sI[0] &&
-                      new Intl.DateTimeFormat("en-GB", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      })
-                        .format(
-                          new Date(
-                            filteredFlights[0].sI[
-                              filteredFlights[0]?.sI.length - 1
-                            ].at
-                          )
-                        )
-                        .split("/")
-                        .join("-")}
-                  </p>
-                </span>
-              </span>
-            }
-            key="1"
-          >
-            <div className="h-[1000px] overflow-y-auto no-scroll">
-              {itemCount > 0 ? (
-                <Virtuoso
-                  totalCount={itemCount}
-                  itemContent={(index) => {
-                    const flight = filteredFlights[index];
-                    return (
-                      <ComboFlightCard
-                        key={index}
-                        passenger={passenger}
-                        logo={flightLogo}
-                        flightDetails={flight}
-                        isSelected={selectedFlight.some(
-                          (selected) => selected.flightIndex === index
-                        )}
-                        selectedPriceIndex={
-                          selectedFlight.find(
-                            (selected) => selected.flightIndex === index
-                          )?.priceIndex
-                        }
-                        onSelect={(priceIndex) =>
-                          handleFlightSelection(index, priceIndex)
-                        }
-                        totalPrice={calculateTotalPrice(flight)}
-                      />
-                    );
-                  }}
-                />
-              ) : (
-                <p>No flights match the current filters.</p>
-              )}
-            </div>
-          </TabPane>
-        </Tabs>
-      </div>
-      {selectedFlight.length > 0 && (
-        <BookingCard
-          passenger={passenger}
-          selectedPriceIndex={selectedFlight}
-          // selectedFlights={selectedFlight.map(
-          //   (selected) => filteredFlights[selected.flightIndex]
-          // )}
-          selectedFlights={selectedFlight.map((selected) => ({
-            ...filteredFlights[selected.flightIndex],
-            selectedPriceIndex: selected.priceIndex,
-          }))}
-          totalPrice={getTotalPrice()}
-          onBook={handleBooking}
-          calculateTotalPrice={calculateTotalPrice}
-          combo={true}
-        />
-      )}
-    </div>
     </div>
   );
 };
