@@ -282,6 +282,7 @@ import { setUser } from "../../store/slices/aut.slice";
 // Create a list of countries with their dial codes and country codes.
 import { FaUserPen } from "react-icons/fa6";
 import EditPassengerDetails from "./EditPassengerDetails";
+import ReactToast from "../util/ReactToast";
 const spinnerVariants = {
   animate: {
     rotate: [0, 360],
@@ -414,16 +415,15 @@ const UserProfile = () => {
   const getProfileData = async () => {
     try {
       setLoading(true);
-      if (token) {
-        const response = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}user/profile`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      }
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}user/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const profileData = {
         firstName: response.data.firstName,

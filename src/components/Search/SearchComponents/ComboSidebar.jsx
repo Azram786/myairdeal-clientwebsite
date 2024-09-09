@@ -21,7 +21,9 @@ const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
   );
 
   useEffect(() => {
-    const highestPrice =Math.floor( Math.max(...flights.map(calculateTotalPrice)));
+    const highestPrice = Math.floor(
+      Math.max(...flights.map(calculateTotalPrice))
+    );
     setMaxPrice(highestPrice);
     setFilters((prev) => ({ ...prev, maxPrice: highestPrice }));
   }, [flights, calculateTotalPrice, setFilters]);
@@ -66,18 +68,14 @@ const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
   const handleStopsChange = (stop) => {
     setFilters((prev) => ({
       ...prev,
-      stops: prev.stops.includes(stop)
-        ? prev.stops.filter((s) => s !== stop)
-        : [...prev.stops, stop],
+      stops: prev.stops.includes(stop) ? [] : [stop],
     }));
   };
 
   const handleTimeChange = (type, time) => {
     setFilters((prev) => ({
       ...prev,
-      [type]: prev[type].includes(time)
-        ? prev[type].filter((t) => t !== time)
-        : [...prev[type], time],
+      [type]: prev[type].includes(time) ? [] : [time],
     }));
   };
 
@@ -160,7 +158,7 @@ const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 hover:bg-[#D7B56D] border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500  border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters.departureTime.includes(time) ? "bg-[#D7B56D]" : ""
                 }`}
                 onClick={() => handleTimeChange("departureTime", time)}
@@ -184,7 +182,7 @@ const ComboSideBar = ({ flights, filters, setFilters, passenger }) => {
             ].map(({ icon, time }) => (
               <span
                 key={time}
-                className={`border-gray-500 hover:bg-[#D7B56D] border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
+                className={`border-gray-500 border flex flex-col justify-center items-center rounded-md py-1 w-full cursor-pointer ${
                   filters.arrivalTime.includes(time) ? "bg-[#D7B56D]" : ""
                 }`}
                 onClick={() => handleTimeChange("arrivalTime", time)}

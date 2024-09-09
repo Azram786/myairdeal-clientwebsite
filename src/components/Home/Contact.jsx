@@ -4,7 +4,6 @@ import { IoCallOutline } from "react-icons/io5";
 import { CiLocationOn, CiMail } from "react-icons/ci";
 import { FaChevronDown } from "react-icons/fa";
 
-
 import contactMain from "../../assets/home/contact/background.png";
 import ReactToast from "../BookFlight/Util/ReactToast";
 
@@ -42,7 +41,7 @@ const Contact = () => {
         `${import.meta.env.VITE_SERVER_URL}contact/create`,
         formData
       );
-      
+
       if (response.data && response.data.message) {
         ReactToast(response.data.message);
       } else {
@@ -57,10 +56,14 @@ const Contact = () => {
         agree: false,
       });
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         ReactToast(error.response.data.message);
       } else {
-       ReactToast("Failed to send message. Please try again.");
+        ReactToast("Failed to send message. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -69,8 +72,6 @@ const Contact = () => {
 
   return (
     <div className="w-full bg-[#1B1D29] py-10 max-w-[1900px] min-w-[250px] mx-auto font-poppins">
-    
-      
       <div className="md:flex-row flex flex-col gap-4 sm:px-10 items-center">
         {/* Image Section */}
         <div className="flex items-center justify-center">
@@ -94,10 +95,7 @@ const Contact = () => {
             </div>
           </div>
           <div className="w-full sm:w-[90%] mt-6">
-            <form
-              onSubmit={handleSubmit}
-              className="w-[80%] mt-6 px-6"
-            >
+            <form onSubmit={handleSubmit} className="w-[80%] mt-6 px-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="w-full flex flex-col">
                   <label htmlFor="name" className="text-white text-sm">
@@ -202,7 +200,11 @@ const Contact = () => {
                   <div className="flex flex-col text-sm">
                     <span className="text-white font-semibold">Address</span>
                     <span className="text-white">
-                      123 Main Street, City, Country
+                      2nd Floor, Anjali Plaza, jayanagar,Bengaluru, India-
+                      560076
+                    </span>
+                    <span className="text-white mt-5">
+                      I 10,Block 1,Phase 1,Saih Shuaib 2, Dubai, UAE.
                     </span>
                   </div>
                 </div>
@@ -212,7 +214,7 @@ const Contact = () => {
                   </div>
                   <div className="flex flex-col text-sm">
                     <span className="text-white font-semibold">Email</span>
-                    <span className="text-white">contact@example.com</span>
+                    <span className="text-white">support@myairdeal.com</span>
                   </div>
                 </div>
               </div>
