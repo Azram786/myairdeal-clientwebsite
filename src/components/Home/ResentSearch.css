@@ -1,6 +1,6 @@
 .slick-prev:before,
 .slick-next:before {
-  color: #D7B56D;
+  color: #d7b56d;
   font-size: 40px; /* Default font size */
   /* Set the hover color for the arrow buttons */
 }
@@ -17,7 +17,7 @@
 
 .slick-prev:hover:before,
 .slick-next:hover:before {
-  color: #D7B56D;
+  color: #d7b56d;
   /* Set the hover color for the arrow buttons */
 }
 
@@ -35,8 +35,40 @@
   left: 0;
   right: 0;
   height: 50px; /* Adjust height to hide bottom overflow */
-  background-color: #1B1D29; /* Background color to match the parent div */
+  background-color: #1b1d29; /* Background color to match the parent div */
   z-index: 10;
+}
+.custom-calendar-size .react-datepicker {
+  width: 230px; /* Set your desired width */
+  height: auto; /* Let the height adjust automatically */
+  /* margin-right: 100px; */
+  right: -70px;
+  position: absolute;
+}
+
+.custom-calendar-size .react-datepicker__month-container {
+  width: 100%;
+}
+
+.custom-calendar-sizee .react-datepicker__day {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.custom-calendar-sizee .react-datepicker {
+  width: 230px; /* Set your desired width */
+  height: auto; /* Let the height adjust automatically */
+  /* margin-right: 100px; */
+  right: -200px;
+  position: absolute;
+}
+
+.custom-calendar-sizee .react-datepicker__month-container {
+  width: 100%;
+}
+
+.custom-calendar-size .react-datepicker__day {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 /* Media query for screens below 800px */
@@ -47,7 +79,7 @@
   }
 
   .slick-prev {
-    left: -25px; /* Adjust position */
+    left: -20px; /* Adjust position */
   }
 
   .slick-next {
@@ -67,6 +99,6 @@
   }
 
   .slick-next {
-    right: 5px; /* Adjust position */
+    right:-10px; /* Adjust position */
   }
 }

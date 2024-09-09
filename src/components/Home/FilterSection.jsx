@@ -15,6 +15,7 @@ import CustomSelect from "../util/CustomSelect";
 import MultiCityForm from "../util/MultiCityForm";
 // import Modal from "../util/CustomModal";
 import ReactToast from "../util/ReactToast";
+import "./ResentSearch.css"
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -638,8 +639,8 @@ const FilterSection = ({
 
             {/* date picker section  */}
             <div className="flex flex-col md:flex-row    w-full  lg-custom:w-1/2 gap-2 ">
-              <div className="  rounded   flex items-center border md:w-1/2  py-2 travel-date-picker">
-                <div className="flex items-center text-sm md:text-base justify-center gap-4   w-full ">
+              <div className="  rounded   flex items-center border  md:w-1/2  py-2 travel-date-picker">
+                <div className="flex items-center text-sm md:text-base justify-left gap-4   w-full ">
                   <DatePicker
                     minDate={new Date()}
                     selected={formData.travelDate}
@@ -659,6 +660,7 @@ const FilterSection = ({
                     }
                     dateFormat="dd-MM-yyyy"
                     value={formData.travelDate}
+                    popperClassName="custom-calendar-sizee relative" 
                   />
                   {typeOfTravel !== "multi-city" ? (
                     <>
@@ -676,14 +678,15 @@ const FilterSection = ({
                         customInput={<CustomInput />}
                         dateFormat="dd-MM-yyyy"
                         disabled={typeOfTravel !== "round-trip"}
+                        popperClassName="custom-calendar-size relative" 
                       />
-                      <FaTimes
-                        className="text-transparent cursor-pointer"
+                      {/* <FaTimes
+                        className="text-transparent bg-green-400 cursor-pointer"
                         onClick={() => {
                           // setStartDate(null);
                           // setEndDate(null);
                         }}
-                      />
+                      /> */}
                     </>
                   ) : (
                     <div className="p-2 md:w-[40%] "></div>
