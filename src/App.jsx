@@ -17,6 +17,14 @@ import EnquiryForm from "./components/Home/EnquiryForm";
 import NoFlights from "./components/Search/NoFlights";
 import TermsAndConditions from "./components/Home/TermsAndConditions";
 import PrivacyPolicy from "./components/Home/PrivacyPolicy";
+import { useLocation } from "react-router-dom";
+
+function Layout({ children }) {
+  const location = useLocation();
+  const isHomeScreen = location.pathname === "/";
+
+  return <div className={`${isHomeScreen ? "pt-0" : "pt-14"}`}>{children}</div>;
+}
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -25,7 +33,7 @@ function App() {
     <>
       <BrowserRouter>
         <Header />
-        <div className="">
+        <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route
@@ -56,7 +64,7 @@ function App() {
             />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Routes>
-        </div>
+        </Layout>
         <Footer />
       </BrowserRouter>
     </>
