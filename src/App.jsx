@@ -25,7 +25,7 @@ function App() {
     <>
       <BrowserRouter>
         <Header />
-        <div className="pt-14">
+        <div className="">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route

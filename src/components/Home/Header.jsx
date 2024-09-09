@@ -96,7 +96,7 @@ const Header = () => {
     <>
       <Link
         to="/"
-        className={`font-medium py-2 text-center border-r border-[#D7B56D] mx- px-3 ${
+        className={`font-medium py-2 text-center border-r border-[#D7B56D]  px-3 ${
           location.pathname === "/"
             ? "bg-[#D7B56D] text-[#1B1D29]"
             : "text-[#D7B56D]"
@@ -110,7 +110,7 @@ const Header = () => {
       </Link>
       <Link
         to="/enquiry"
-        className={`font-medium py-2 text-center border-r border-[#D7B56D] mx- px-3 ${
+        className={`font-medium py-2 text-center border-r border-[#D7B56D]  px-3 ${
           location.pathname === "/enquiry"
             ? "bg-[#D7B56D] text-[#1B1D29]"
             : "text-[#D7B56D]"
