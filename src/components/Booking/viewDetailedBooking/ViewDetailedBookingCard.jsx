@@ -48,7 +48,7 @@ const ViewDetailedBookingCard = ({
   };
   console.log({ singleBookingData });
   return (
-    <div className=" border-l-0 w-full lg:w-[72%] ">
+    <div className=" border-l-0 w-full lg:w-[72%]">
       <div className="rounded-lg my-2">
         <div className="flex justify-between items-center bg-[white] border-2 flex-wrap p-4 rounded-t-xl text-[black]">
           <div className="flex w-full  flex-col xs:flex-row justify-end ">
