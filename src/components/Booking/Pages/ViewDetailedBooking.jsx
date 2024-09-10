@@ -117,13 +117,13 @@ const ViewDetailedBooking = () => {
   // }
 
   return (
-    <div className="">
+    <div className="flex justify-center items-center w-full">
       {loading ? (
         <div className="h-[85vh] w-full flex  justify-center items-center ">
           <Spinner />
         </div>
       ) : (
-        <div className="  p-2 border rounded-lg md:px-10  mt-3  flex justify-center items-center  ">
+        <div className="w-[90%]  p-2 border rounded-lg md:px-10  mt-3  flex justify-center items-center md:w-[100%]">
           <div className=" flex flex-col w-full   ">
             <div className=" bg-[#dce3e8] border-2 gap-2 flex flex-wrap justify-between items-center text-black rounded-xl px-10   py-4">
               <div className="text-[1.3rem] flex  font-bold">
