@@ -686,28 +686,27 @@ const FlightSummary = () => {
                     >
                       {taxesExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
-                        {Object.entries(taxDetails).map(([key, value]) => {
-                          let displayName;
-            
-                         
-                          if (key === "AGST") {
-                            displayName = "Airline GST";
-                          } else if (key === "OT") {
-                            displayName = "Other Taxes";
-                          } else {
-                            displayName = key
-                              .replace(/([A-Z])/g, " $1")
-                              .replace(/^./, (str) => str.toUpperCase());
-                          }
-            
-                          return (
-                            <div className="flex justify-between" key={key}>
-                              <span>{displayName}</span>
-                              <span>₹ {value || "N/A"}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
+                          {Object.entries(taxDetails).map(([key, value]) => {
+                            let displayName;
+
+                            if (key === "AGST") {
+                              displayName = "Airline GST";
+                            } else if (key === "OT") {
+                              displayName = "Other Taxes";
+                            } else {
+                              displayName = key
+                                .replace(/([A-Z])/g, " $1")
+                                .replace(/^./, (str) => str.toUpperCase());
+                            }
+
+                            return (
+                              <div className="flex justify-between" key={key}>
+                                <span>{displayName}</span>
+                                <span>₹ {value || "N/A"}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -769,7 +768,7 @@ const FlightSummary = () => {
                   </div>
                   <div className="mt-2">
                     <div
-                      className="flex justify-between text-xs md:text-sm lg:text-base font-bold cursor-pointer"
+                      className="flex justify-between text-xs md:text-sm lg:text-base font-bold cursor-pointer items-start"
                       onClick={toggleAmount}
                     >
                       <span className="flex justify-center text-base md:text-lg items-center">
@@ -780,8 +779,7 @@ const FlightSummary = () => {
                           <FaChevronDown className="ml-2 text-xs md:text-sm lg:text-base" />
                         )}
                       </span>
-                      <div className="flex items-center">
-                        &nbsp;
+                      <div className="flex flex-col items-start">
                         <span>
                           ₹ {(amountToPay + commision - promoValue).toFixed(2)}
                         </span>
@@ -789,7 +787,7 @@ const FlightSummary = () => {
                           <span
                             className={`${promoValue ? "strike-through" : ""}`}
                           >
-                            ₹ {amountToPay + commision}
+                            ₹ {(amountToPay + commision).toFixed(2)}
                           </span>
                         )}
                         &nbsp; &nbsp;
