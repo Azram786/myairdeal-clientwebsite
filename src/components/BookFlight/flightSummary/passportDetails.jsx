@@ -9,6 +9,7 @@ import { TextField } from "@mui/material";
 import Select from "react-select";
 import { getCode, getName, getNames } from "country-list";
 import Flag from "react-world-flags";
+import ReactToast from "../Util/ReactToast";
 
 const PassportDetails = forwardRef(
   (
@@ -90,27 +91,27 @@ const PassportDetails = forwardRef(
       }
     }, [passenger, reset]);
 
-    useEffect(() => {
-      if (watchIssueDate) {
-        const issueDate = new Date(watchIssueDate);
-        issueDate.setFullYear(
-          issueDate.getFullYear() + (passengerType === "ADULT" ? 10 : 5)
-        );
-        issueDate.setDate(issueDate.getDate() - 1);
-        const expiryDate = issueDate.toISOString().split("T")[0];
-        if (watchExpiryDate !== expiryDate) {
-          setValue("expiryDate", expiryDate);
-          updatePassenger(index, "expiryDate", expiryDate);
-        }
-      }
-    }, [
-      watchIssueDate,
-      setValue,
-      watchExpiryDate,
-      updatePassenger,
-      index,
-      passengerType,
-    ]);
+    // useEffect(() => {
+    //   if (watchIssueDate) {
+    //     const issueDate = new Date(watchIssueDate);
+    //     issueDate.setFullYear(
+    //       issueDate.getFullYear() + (passengerType === "ADULT" ? 10 : 5)
+    //     );
+    //     issueDate.setDate(issueDate.getDate() - 1);
+    //     const expiryDate = issueDate.toISOString().split("T")[0];
+    //     if (watchExpiryDate !== expiryDate) {
+    //       setValue("expiryDate", expiryDate);
+    //       updatePassenger(index, "expiryDate", expiryDate);
+    //     }
+    //   }
+    // }, [
+    //   watchIssueDate,
+    //   setValue,
+    //   watchExpiryDate,
+    //   updatePassenger,
+    //   index,
+    //   passengerType,
+    // ]);
 
     const handleChange = (selectedOption, field) => {
       setSelectedNationality(selectedOption);
@@ -120,9 +121,31 @@ const PassportDetails = forwardRef(
     };
 
     const handleInputChange = (name, value) => {
-      setValue(name, value);
-      trigger(name);
-      updatePassenger(index, name, value);
+      if (!passenger.dob) {
+        ReactToast("Please Select Date of Birth before, going further");
+        setValue(name, "");
+        trigger(name);
+        updatePassenger(index, name, "");
+      } else if (name === "issueDate") {
+        setValue(name, value);
+        trigger(name);
+        updatePassenger(index, name, value);
+      } else if (name === "expiryDate") {
+        if (!passenger.issueDate) {
+          ReactToast("Please Select Issue Date before going further");
+          setValue(name, "");
+          trigger(name);
+          updatePassenger(index, name, "");
+        } else {
+          setValue(name, value);
+          trigger(name);
+          updatePassenger(index, name, value);
+        }
+      } else {
+        setValue(name, value);
+        trigger(name);
+        updatePassenger(index, name, value);
+      }
     };
 
     const CustomPlaceholder = ({ placeholder }) => (
@@ -147,6 +170,56 @@ const PassportDetails = forwardRef(
     );
 
     const today = new Date().toISOString().split("T")[0];
+
+    const calculateDate = (years) => {
+      const date = new Date(departureDate);
+      date.setFullYear(date.getFullYear() - years);
+      return date.toISOString().split("T")[0];
+    };
+
+    const getMinDateIssue = (birthdate) => {
+      if (!birthdate) {
+        return calculateDate(10);
+      }
+      const birthDate = new Date(birthdate);
+      const today = new Date();
+
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDifference = today.getMonth() - birthDate.getMonth();
+
+      // Check if the birthdate has not yet occurred this year
+      if (
+        monthDifference < 0 ||
+        (monthDifference === 0 && today.getDate() < birthDate.getDate())
+      ) {
+        age--;
+      }
+      if (age >= 18) {
+        return calculateDate(10);
+      } else {
+        return calculateDate(5);
+      }
+    };
+
+    const getMaxDateExpiry = () => {
+      let date;
+      if (passenger.issueDate) {
+        date = new Date(passenger.issueDate);
+      } else {
+        date = new Date(departureDate);
+      }
+      date.setFullYear(date.getFullYear() + 11);
+      return date.toISOString().split("T")[0];
+    };
+
+    const calculateDateFromDeparture = (departureDate, monthsToAdd) => {
+      const date = new Date(departureDate);
+      date.setMonth(date.getMonth() + monthsToAdd);
+      // Add one extra day
+      date.setDate(date.getDate() + 1);
+
+      return date.toISOString().split("T")[0]; // Convert to YYYY-MM-DD format
+    };
 
     return (
       <div className=" mt-4">
@@ -193,7 +266,6 @@ const PassportDetails = forwardRef(
                   dropdownIndicator: (provided) => ({
                     ...provided,
                     color: errors.nationality ? "red" : provided.color,
-                    
                   }),
                   valueContainer: (provided) => ({
                     ...provided,
@@ -208,10 +280,10 @@ const PassportDetails = forwardRef(
             control={control}
             rules={{
               required: "Passport Number is required",
-              minLength: { value: 8, message: "Minimum 8 characters" },
-              maxLength: { value: 9, message: "Maximum 9 characters" },
+              minLength: { value: 6, message: "Minimum 6 characters" },
+              maxLength: { value: 12, message: "Maximum 12 characters" },
               pattern: {
-                value: /^[A-Z][1-9][0-9][A-Z0-9]{5,6}$/,
+                value: /^(?!^0+$)[a-zA-Z0-9]{6,12}$/,
                 message: "Invalid Passport",
               },
             }}
@@ -245,7 +317,10 @@ const PassportDetails = forwardRef(
                   label="Issue Date"
                   type="date"
                   InputLabelProps={{ shrink: true }}
-                  inputProps={{ max: today }}
+                  inputProps={{
+                    max: today,
+                    min: getMinDateIssue(passenger?.dob),
+                  }}
                   error={!!errors.issueDate}
                   helperText={errors.issueDate?.message}
                   onChange={(e) => {
@@ -273,7 +348,10 @@ const PassportDetails = forwardRef(
                   label="Expiry Date"
                   type="date"
                   InputLabelProps={{ shrink: true }}
-                  inputProps={{ min: today }}
+                  inputProps={{
+                    min: calculateDateFromDeparture(departureDate, 6),
+                    max: getMaxDateExpiry(),
+                  }}
                   error={!!errors.expiryDate}
                   helperText={errors.expiryDate?.message}
                   onChange={(e) => {

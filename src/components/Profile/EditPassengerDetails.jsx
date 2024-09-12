@@ -11,6 +11,7 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
   const [passengerDetails, setPassengerDetails] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [newPassenger, setNewPassenger] = useState({
+    pt: "ADULT",
     ti: "",
     fN: "",
     lN: "",
@@ -63,11 +64,18 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
 
   const validateForm = (passenger) => {
     const newErrors = {};
+    const passportRegex = /^(?!^0+$)[a-zA-Z0-9]{6,12}$/;
     if (!passenger.ti) newErrors.ti = "Please select a title";
     if (!passenger.fN) newErrors.fN = "First name is required";
     if (!passenger.lN) newErrors.lN = "Last name is required";
     if (!passenger.dob) newErrors.dob = "Date of birth is required";
     if (!passenger.pNat) newErrors.pNat = "Nationality is required";
+
+    if (passenger.pNum) {
+      if (!passportRegex.test(passenger.pNum)) {
+        newErrors.pNum = "Invalid Passport Number";
+      }
+    }
 
     const passportFields = ["pNum", "eD", "pid"];
     const filledPassportFields = passportFields.filter(
@@ -116,6 +124,7 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
           ReactToast("Passenger updated successfully");
         getPassengersHandler();
         setNewPassenger({
+          pt: "ADULT",
           ti: "",
           fN: "",
           lN: "",
@@ -163,6 +172,7 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
         if (response.status === 200) ReactToast("Passenger added successfully");
         getPassengersHandler();
         setNewPassenger({
+          pt: "ADULT",
           ti: "",
           fN: "",
           lN: "",
@@ -173,6 +183,7 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
           pNat: null,
         });
       } catch (error) {
+        ReactToast(error.response.data.error);
         console.log(error.message);
       }
     }
@@ -181,6 +192,7 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
   const handleCancelEdit = () => {
     setEditingId(null);
     setNewPassenger({
+      pt: "ADULT",
       ti: "",
       fN: "",
       lN: "",
@@ -214,6 +226,54 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
   );
   const totalPages = Math.ceil(passengerDetails.length / passengersPerPage);
 
+  const calculateDate = (years) => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - years);
+    return date.toISOString().split("T")[0];
+  };
+
+  const calculateMaxDate = (years) => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + years);
+    return date.toISOString().split("T")[0];
+  };
+
+  const getMinDateIssue = (birthdate) => {
+    if (!birthdate) {
+      return calculateDate(10);
+    }
+    const birthDate = new Date(birthdate);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    // Check if the birthdate has not yet occurred this year
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+    if (age >= 18) {
+      return calculateDate(10);
+    } else {
+      return calculateDate(5);
+    }
+  };
+
+  const getMaxDate = (passengerType) => {
+    if (passengerType === "ADULT") return calculateDate(12);
+    if (passengerType === "CHILD") return calculateDate(2);
+    if (passengerType === "INFANT") return calculateDate(0);
+  };
+
+  const getMinDate = (passengerType) => {
+    if (passengerType === "ADULT") return calculateDate(60);
+    if (passengerType === "CHILD") return calculateDate(12);
+    if (passengerType === "INFANT") return calculateDate(2);
+  };
+
   return (
     <div className="w-full h-full p-2 sm:p-4 bg-gray-100">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
@@ -231,11 +291,13 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
 
       <div className="bg-white rounded-lg shadow p-3 sm:p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0  md:gap-2 lg:gap-4">
-          {["ti", "fN", "lN", "dob", "pNum", "eD", "pid", "pNat"].map(
+          {["pt", "ti", "fN", "lN", "dob", "pNum", "pid", "eD", "pNat"].map(
             (field) => (
               <div key={field} className="mb-4 ">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {field === "ti"
+                  {field === "pt"
+                    ? "Passenger Type"
+                    : field === "ti"
                     ? "Title"
                     : field === "fN"
                     ? "First Name"
@@ -245,13 +307,26 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
                     ? "Date of Birth"
                     : field === "pNum"
                     ? "Passport Number"
-                    : field === "eD"
-                    ? "Expiry Date"
                     : field === "pid"
                     ? "Issue Date"
+                    : field === "eD"
+                    ? "Expiry Date"
                     : "Nationality"}
                 </label>
-                {field === "ti" ? (
+                {field === "pt" ? (
+                  <select
+                    name={field}
+                    value={newPassenger[field]}
+                    onChange={handleInputChange}
+                    className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#D7B56D] ${
+                      errors[field] ? "border-red-500" : "border-gray-300"
+                    }`}
+                  >
+                    <option value="ADULT">ADULT</option>
+                    <option value="CHILD">CHILD</option>
+                    <option value="INFANT">INFANT</option>
+                  </select>
+                ) : field === "ti" ? (
                   <select
                     name={field}
                     value={newPassenger[field]}
@@ -273,21 +348,37 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
                     filterOption={customFilterOption}
                     formatOptionLabel={formatOptionLabel}
                     styles={selectStyles}
-                    // className="w-3/4"
+                  />
+                ) : field === "dob" ? (
+                  <input
+                    type="date"
+                    name="dob"
+                    value={newPassenger.dob}
+                    onChange={handleInputChange}
+                    min={getMinDate(newPassenger.pt)}
+                    max={getMaxDate(newPassenger.pt)}
+                    className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#D7B56D] ${
+                      errors.dob ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+                ) : field === "pid" ? (
+                  <input
+                    type={"date"}
+                    name={field}
+                    value={newPassenger[field]}
+                    onChange={handleInputChange}
+                    min={getMinDateIssue(newPassenger.dob)}
+                    max={calculateDate(0)}
+                    className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#D7B56D] ${
+                      errors[field] ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
                 ) : (
                   <input
-                    type={
-                      field === "dob" || field === "eD" || field === "pid"
-                        ? "date"
-                        : "text"
-                    }
+                    type={field === "eD" ? "date" : "text"}
+                    min={calculateDate(0)}
+                    max={calculateMaxDate(10)}
                     name={field}
-                    max={
-                      field === "dob"
-                        ? new Date().toISOString().split("T")[0]
-                        : undefined
-                    }
                     value={newPassenger[field]}
                     onChange={handleInputChange}
                     className={`w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#D7B56D] ${
@@ -302,6 +393,7 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
             )
           )}
         </div>
+
         <div className="mt-4 flex flex-wrap gap-2">
           <button
             onClick={editingId ? handleUpdate : handleAdd}
@@ -326,12 +418,13 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
             <thead className="text-[#D7B56D]">
               <tr>
                 {[
+                  "Type",
                   "Title",
                   "Name",
                   "DOB",
                   "Passport",
-                  "Expiry",
                   "Issue",
+                  "Expiry",
                   "Nation",
                   "Actions",
                 ].map((header) => (
@@ -347,6 +440,7 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
                   key={passenger._id}
                   className="text-[#1B1D29] border-b hover:bg-gray-50"
                 >
+                  <td className="py-2 px-1 sm:px-2">{passenger.pt || "N/A"}</td>
                   <td className="py-2 px-1 sm:px-2">{passenger.ti || "N/A"}</td>
                   <td className="py-2 px-1 sm:px-2">
                     {`${passenger.fN || ""} ${passenger.lN || ""}`.trim() ||
@@ -358,12 +452,13 @@ const EditPassengerDetails = ({ setIsModalOpen }) => {
                   <td className="py-2 px-1 sm:px-2">
                     {passenger.pNum || "N/A"}
                   </td>
-                  <td className="py-2 px-1 sm:px-2">{passenger.eD || "N/A"}</td>
                   <td className="py-2 px-1 sm:px-2">
                     {passenger.pid || "N/A"}
                   </td>
+                  <td className="py-2 px-1 sm:px-2">{passenger.eD || "N/A"}</td>
+
                   <td className="py-2 px-1 sm:px-2">
-                    {getName(passenger.pNat) || "N/A"}
+                    {(passenger?.pNat && getName(passenger?.pNat)) || ""}
                   </td>
                   <td className="py-2 px-1 sm:px-2">
                     <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">

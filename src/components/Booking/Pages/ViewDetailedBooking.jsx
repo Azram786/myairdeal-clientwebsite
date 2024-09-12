@@ -179,76 +179,41 @@ const ViewDetailedBooking = () => {
                       </div>
                     </div>
                     <div className="flex justify-between">
-                      <div>Convenience Fees</div>
+                      <div>Meals,Baggae & Seats</div>
                       <div className="flex ">
-                        ₹
-                        {Math.abs(
+                        ₹{" "}
+                        {
                           singleBookingData?.itemInfos.AIR.totalPriceInfo
-                            .totalFareDetail.fC.TF -
-                            (data?.payment?.amount + data?.promo?.value || 0)
-                        )}
+                            .totalFareDetail.fC.SSRP
+                        }
                       </div>
                     </div>
-                    {/* <div>
-                      <h2>
-                        Baggage,Meals and Seats{" "}
-                        <span>
-                          {singleBookingData?.itemInfos?.AIR?.travellerInfos[0]}
-                        </span>
-                      </h2>
-                      {Object.entries(combinedInfo).map(([segment, info]) => (
-                        <div key={segment} className="segment-info">
-                          <h4 className="text-base font-bold">
-                            Trip: {segment}
-                          </h4>
-                          {info.baggage && (
-                            <div className="baggage-info  w-full">
-                              <h4 className="text-sm font-semibold">
-                                Baggage Details
-                              </h4>
-                              <p className="text-sm w-full  flex justify-between ">
-                                Baggage Code:<span>{info.baggage.code}</span>
-                              </p>
-                              <p className="text-sm w-full  flex justify-between ">
-                                Amount: <span>₹{info.baggage.amount}</span>
-                              </p>
-                              <p className="text-sm w-full  flex justify-between ">
-                                Description:<span> {info.baggage.desc}</span>
-                              </p>
-                            </div>
-                          )}
-                          {info.meal && (
-                            <div className="meal-info">
-                              <h4 className="text-sm font-semibold">
-                                Meal Details
-                              </h4>
-                              <p className="text-sm w-full  flex justify-between">
-                                Meal Code: <span>{info.meal.code}</span>
-                              </p>
-                              <p className="text-sm w-full  flex justify-between">
-                                Amount: <span>₹{info.meal.amount}</span>
-                              </p>
-                              <p className="text-sm w-full  flex justify-between">
-                                Description: <span>{info.meal.desc}</span>
-                              </p>
-                            </div>
-                          )}
-                          {info.seat && (
-                            <div className="seat-info ">
-                              <h4 className="text-sm font-semibold">
-                                Seat Details
-                              </h4>
-                              <p className="text-sm w-full  flex justify-between">
-                                Seat Code:<span> {info.seat.code}</span>
-                              </p>
-                              <p className="text-sm w-full  flex justify-between">
-                                Amount: <span> ₹{info.seat.amount}</span>
-                              </p>
-                            </div>
-                          )}
+                    {singleBookingData?.order?.status === "CANCELLED" && (
+                      <div className="flex justify-between">
+                        <div>Refundable Amount</div>
+                        <div className="flex ">
+                          ₹
+                          {singleBookingData?.itemInfos.AIR.totalPriceInfo
+                            .totalFareDetail.fC?.AAR -
+                            singleBookingData?.itemInfos.AIR.totalPriceInfo
+                              .totalFareDetail.fC?.AFS}
                         </div>
-                      ))}
-                    </div> */}
+                      </div>
+                    )}
+
+                    {singleBookingData?.order?.status === "CANCELLED" && (
+                      <div className="flex justify-between">
+                        <div>Amendment Charge</div>
+                        <div className="flex ">
+                          ₹
+                          {
+                            singleBookingData?.itemInfos.AIR.totalPriceInfo
+                              .totalFareDetail.fC?.AFS
+                          }
+                        </div>
+                      </div>
+                    )}
+
                     <div className=" flex flex-col">
                       <div
                         className="flex justify-between  cursor-pointer"
@@ -264,33 +229,17 @@ const ViewDetailedBooking = () => {
                         </div>
                       </div>
                       {isDropdownOpen && (
-                        <div className="mt-2 ml-4  bg-slate-200 p-2 shadow-sm rounded-lg">
-                          <div className="flex justify-between">
-                            <div>IGST</div>
-                            <div className="flex">
-                              ₹
-                              {singleBookingData?.itemInfos.AIR.totalPriceInfo
-                                .totalFareDetail.afC.TAF?.AGST || "N/A"}
+                        <div className="mt-2 ml-4 bg-slate-200 p-2 shadow-sm rounded-lg">
+                          {Object.entries(
+                            singleBookingData?.itemInfos.AIR.totalPriceInfo
+                              .totalFareDetail.afC?.TAF || {}
+                          ).map(([key, value]) => (
+                            <div className="flex justify-between" key={key}>
+                              <div>{key}</div>{" "}
+                              {/* A function to map the key to a more readable label */}
+                              <div className="flex">₹{value || "N/A"}</div>
                             </div>
-                          </div>
-                          <div className="flex justify-between">
-                            <div>Other Taxes</div>
-                            <div>
-                              ₹
-                              {singleBookingData?.itemInfos.AIR.totalPriceInfo
-                                .totalFareDetail.afC?.TAF?.OT || "N/A"}
-                            </div>
-                          </div>
-                          <div className="flex justify-between">
-                            <div>Fuel Surcharge</div>
-                            <div>
-                              ₹
-                              {singleBookingData?.itemInfos.AIR.totalPriceInfo
-                                .totalFareDetail.afC.TAF?.YR || "N/A"}
-                            </div>
-                          </div>
-
-                          {/* Add other details as needed */}
+                          ))}
                         </div>
                       )}
                     </div>
@@ -307,6 +256,19 @@ const ViewDetailedBooking = () => {
                         </div>
                       </div>
                     )}
+                  </div>
+                  <div className="flex justify-between">
+                    <div>Convenience Fees</div>
+                    <div className="flex ">
+                      ₹
+                      {Math.abs(
+                        data?.payment?.amount -
+                          (singleBookingData?.itemInfos.AIR.totalPriceInfo
+                            .totalFareDetail.fC?.AAR ??
+                            singleBookingData?.itemInfos.AIR.totalPriceInfo
+                              .totalFareDetail.fC.TF)
+                      ) + (data?.promo?.value || 0)}
+                    </div>
                   </div>
                   <div className="flex justify-between pt-3 border-t">
                     <div>Total</div>

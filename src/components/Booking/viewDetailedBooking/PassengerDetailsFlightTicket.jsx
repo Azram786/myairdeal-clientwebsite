@@ -1,6 +1,7 @@
 import React from "react";
 
 const PassengerDetailsTable = ({ passengerDetails }) => {
+  console.log("psg", passengerDetails);
   return (
     <div className="p-4 bg-white shadow rounded-lg ">
       <h2 className="text-base md:text-lg font-bold mb-4">
@@ -57,7 +58,7 @@ const PassengerDetailsTable = ({ passengerDetails }) => {
                       <span className="text-green-500">
                         {passenger?.pnrDetails[segment]}
                       </span>{" "}
-                      ({passenger?.ticketNumberDetails[segment]})
+                      {passenger?.ticketNumberDetails?.[segment] || ""}
                     </div>
                   ))}
                 </td>
