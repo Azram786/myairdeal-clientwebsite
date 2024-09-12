@@ -446,6 +446,7 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getProfileData();
   }, []);
 

@@ -37,6 +37,10 @@ const AddDetails = ({
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  const [departureDate, setDepartureDate] = useState(
+    flightData?.tripInfos[0].sI[0]?.dt
+  );
+
   const [isPassengersCompleted, setIsPassengersCompleted] = useState(false);
 
   const [numAdults, setNumAdults] = useState(
@@ -136,11 +140,8 @@ const AddDetails = ({
 
     let isInternationalDetailsFilled = true;
     if (isInternational) {
-      const passportRegex = /^[A-Z][1-9][0-9][A-Z0-9]{5,6}$/;
-      const isPassportValid = passportRegex.test(passenger.passportNumber);
-
       isInternationalDetailsFilled = !!(
-        isPassportValid &&
+        passenger.passportNumber &&
         passenger.nationality &&
         passenger.issueDate &&
         passenger.expiryDate &&
@@ -219,6 +220,8 @@ const AddDetails = ({
     const areAllPassengersValid = checkAllPassengersCompleted();
     let isNameUnique;
     let isPassportUnique;
+    let isPassportNumberValid = true;
+    let isPassportExpiryValid = true;
     passengers.map((passenger, index) => {
       isNameUnique = !passengers.some(
         (p, i) =>
@@ -227,10 +230,10 @@ const AddDetails = ({
           p.lastName.toLowerCase() === passenger.lastName.toLowerCase()
       );
     });
-    // if (!isNameUnique) {
-    //   ReactToast("Passengers Cannot have Same Last Name and First Name");
-    //   return;
-    // }
+    if (!isNameUnique) {
+      ReactToast("Passengers Cannot have Same Last Name and First Name");
+      return;
+    }
     passengers.map((passenger, index) => {
       isPassportUnique = isInternational
         ? !passengers.some(
@@ -245,6 +248,33 @@ const AddDetails = ({
 
     if (!isPassportUnique) {
       ReactToast("Passenger's cannot have same passport number");
+      return;
+    }
+
+    passengers.forEach((passenger) => {
+      if (isInternational) {
+        const expiryDate = new Date(passenger.expiryDate);
+        const expiryLimitDate = new Date(departureDate);
+        expiryLimitDate.setMonth(expiryLimitDate.getMonth() + 6);
+        const passportRegex = /^(?!^0+$)[a-zA-Z0-9]{6,12}$/;
+        if (!passportRegex.test(passenger.passportNumber)) {
+          isPassportNumberValid = false;
+          return;
+        }
+        if (expiryDate < expiryLimitDate) {
+          isPassportExpiryValid = false;
+          return;
+        }
+      }
+    });
+    if (!isPassportNumberValid) {
+      ReactToast("Passport Details : Invalid Passport Number");
+      return;
+    }
+    if (!isPassportExpiryValid) {
+      ReactToast(
+        "Passport Details : Expiry Date cannot be within 6 months of departure date"
+      );
       return;
     }
 
