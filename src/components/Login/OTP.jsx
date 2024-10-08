@@ -5,7 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { setToken } from "../../store/slices/aut.slice";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
-const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
+const OTPInput = ({
+  value,
+  timer,
+  secondLoading,
+  handleSendOTP,
+  fromBooking,
+}) => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", ""]);
   const { lastSearch } = useSelector((state) => state.auth);
@@ -80,7 +86,10 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
       );
       setLoading(false);
       dispatch(setToken(response.data.token));
-
+      ReactToast("Login Successful");
+      if (fromBooking) {
+        return;
+      }
       if (response && response.data) {
         if (response.data.profile === false)
           navigate(`/enter-detail?token=${response.data.token}`);
@@ -92,7 +101,7 @@ const OTPInput = ({ value, timer, secondLoading, handleSendOTP }) => {
       }
     } catch (error) {
       setLoading(false);
-      ReactToast("Error verifying OTP:", error.message);
+      ReactToast(error.response.data.error);
     }
   };
   const handleResendOTP = () => {

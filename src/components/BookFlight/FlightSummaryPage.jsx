@@ -27,6 +27,7 @@ import ShowBaggageInfo from "./Util/ShowBaggageInfo";
 import { setIsaModifySearch } from "../../store/slices/aut.slice";
 import "./promo.css";
 import AdvertisePromo from "../util/AdvertisePromo";
+import Login from "../Login/Login";
 
 const FlightSummary = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -106,6 +107,10 @@ const FlightSummary = () => {
         // navigate("/");
         // console.log(error);
       });
+  };
+
+  const handleLoginSuccess = () => {
+    setCurrentStep(1);
   };
 
   useEffect(() => {
@@ -316,6 +321,10 @@ const FlightSummary = () => {
         ReactToast(error.response.data.error);
       });
   };
+
+  if (currentStep === 1 && !token) {
+    return <Login fromBooking={true} />;
+  }
 
   return (
     <div className=" min-h-screen my-auto   ">

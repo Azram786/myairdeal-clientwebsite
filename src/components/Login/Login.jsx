@@ -37,7 +37,7 @@ const StyledPhoneInput = ({ value, onChange }) => {
   );
 };
 
-const Login = () => {
+const Login = ({ fromBooking }) => {
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState({});
   const [step, setStep] = useState("sent-otp");
@@ -194,6 +194,7 @@ const Login = () => {
                     timer={timer}
                     secondLoading={loading}
                     handleSendOTP={handleSendOTP}
+                    fromBooking={fromBooking}
                   />
                 </motion.div>
               )}
@@ -235,36 +236,36 @@ const Login = () => {
           </motion.div>
         </div>
         <div className="hidden  md:w-[50%]  md:flex  pl-12 justify-center md:h-full">
-        <div className="relative h-full w-[70%] rounded-md  flex flex-col justify-center items-center">
-      <div className="relative w-full h-[90%] rounded-xl ">
-        {sliderImages.map((image, index) => (
-          <motion.img
-            key={index}
-            src={image}
-            alt={`Slider ${index}`}
-            className="absolute rounded-xl w-full h-full object-cover"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: currentIndex === index ? 1 : 0 }}
-            transition={{ duration: 1 }}
-          />
-        ))}
-      </div>
+          <div className="relative h-full w-[70%] rounded-md  flex flex-col justify-center items-center">
+            <div className="relative w-full h-[90%] rounded-xl ">
+              {sliderImages.map((image, index) => (
+                <motion.img
+                  key={index}
+                  src={image}
+                  alt={`Slider ${index}`}
+                  className="absolute rounded-xl w-full h-full object-cover"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: currentIndex === index ? 1 : 0 }}
+                  transition={{ duration: 1 }}
+                />
+              ))}
+            </div>
 
-      {/* Dots Container */}
-      <div className="absolute bottom-10 flex items-center space-x-2">
-        {sliderImages.map((_, index) => (
-          <motion.div
-            key={index}
-            className={`h-3 w-3 rounded-full ${
-              currentIndex === index ? "bg-[#D7B56D]" : "bg-white"
-            }`}
-            initial={{ scale: 1 }}
-            animate={{ scale: currentIndex === index ? 1.2 : 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          />
-        ))}
-      </div>
-    </div>
+            {/* Dots Container */}
+            <div className="absolute bottom-10 flex items-center space-x-2">
+              {sliderImages.map((_, index) => (
+                <motion.div
+                  key={index}
+                  className={`h-3 w-3 rounded-full ${
+                    currentIndex === index ? "bg-[#D7B56D]" : "bg-white"
+                  }`}
+                  initial={{ scale: 1 }}
+                  animate={{ scale: currentIndex === index ? 1.2 : 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -50,10 +50,7 @@ function App() {
             />
             <Route path="/search" element={<FlightList />} />
 
-            <Route
-              path="/book-flight"
-              element={token ? <FlightSummaryPage /> : <Login />}
-            />
+            <Route path="/book-flight" element={<FlightSummaryPage />} />
             <Route path="/profile" element={token ? <Profile /> : <Login />} />
             <Route path="/enquiry" element={<EnquiryForm />} />
 
