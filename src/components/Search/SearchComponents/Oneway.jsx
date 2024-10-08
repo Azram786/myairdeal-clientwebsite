@@ -142,11 +142,11 @@ const Oneway = ({ flightProps, passenger, query }) => {
           ].id,
       }));
 
-      if (!token) {
-        ReactToast("Please login first");
-        navigate("/sign-in");
-        dispatch(setLastSearch(bookings));
-      }
+      // if (!token) {
+      //   ReactToast("Please login first");
+      //   navigate("/sign-in");
+      //   dispatch(setLastSearch(bookings));
+      // }
 
       navigate("/book-flight", { state: { bookings } });
     }
