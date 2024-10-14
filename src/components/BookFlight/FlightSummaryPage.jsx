@@ -668,7 +668,9 @@ const FlightSummary = () => {
                   <div className="flex justify-between text-xs md:text-sm lg:text-base font-medium">
                     <span className="text-sm md:text-base ">Base fare</span>
                     <span>
-                      ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.BF}
+                      ₹{" "}
+                      {data?.totalPriceInfo?.totalFareDetail?.fC?.BF +
+                        commision}
                     </span>
                   </div>
                   <div className="mt-2">
@@ -809,7 +811,7 @@ const FlightSummary = () => {
                     >
                       {amountExpanded && (
                         <div className="text-xs md:text-sm lg:text-base text-gray-500 mt-2 space-y-1">
-                          <div className="flex justify-between">
+                          {/* <div className="flex justify-between">
                             <span>Convenience Fees</span>
                             <span>₹ {commision}</span>
                           </div>
@@ -819,7 +821,7 @@ const FlightSummary = () => {
                             <span>
                               ₹ {data?.totalPriceInfo?.totalFareDetail?.fC?.NF}
                             </span>
-                          </div>
+                          </div> */}
                           {promoApplied && (
                             <div className="flex justify-between ">
                               <span>Promo Code</span>

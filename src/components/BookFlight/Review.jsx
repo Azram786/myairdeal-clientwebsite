@@ -9,6 +9,7 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
   const token = useSelector((state) => state.auth.token);
   const renderValue = (value) => value || "N/A";
   const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [isDomestic, setIsDomestic] = useState(data?.searchQuery?.isDomestic);
 
   const renderObjectEntries = (obj, renderFunction) => {
     if (!obj || Object.keys(obj).length === 0) return "N/A";
@@ -55,15 +56,22 @@ const Review = ({ setCurrentStep, data, passengersData, saveCommission }) => {
         },
       })
       .then((res) => {
+        let value;
+        if (isDomestic) {
+          value = res.data.domesticValue;
+        } else {
+          value = res.data.internationalValue;
+        }
+
         if (res.data.flatPrice) {
-          saveCommission(res.data.value);
+          saveCommission(value);
         } else if (res.data.percentage) {
           if (res.data.totalFare) {
-            const markUpAmount = parseFloat((totalFare / 100) * res.data.value);
+            const markUpAmount = parseFloat((totalFare / 100) * value);
             saveCommission(markUpAmount);
           } else if (res.data.baseFare) {
             const bF = data?.totalPriceInfo?.totalFareDetail.fC?.BF;
-            const markUpAmount = parseFloat((bF / 100) * res.data.value);
+            const markUpAmount = parseFloat((bF / 100) * value);
             saveCommission(markUpAmount);
           }
         }

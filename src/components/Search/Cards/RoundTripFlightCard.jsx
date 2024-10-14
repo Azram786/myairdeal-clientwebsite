@@ -187,7 +187,7 @@ const RoundTripCard = ({
                 </span>
               </div>
               <div className="pr-4 text-white text-sm font-medium hidden md:flex justify-center items-center gap-1">
-              <MdAccessTimeFilled /> {calculateTotalDuration(data)}
+                <MdAccessTimeFilled /> {calculateTotalDuration(data)}
               </div>
             </div>
             {data.map((segment, index) => (
@@ -419,7 +419,7 @@ const RoundTripCard = ({
                     import.meta.env.VITE_SERVER_URL
                   }uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
                   alt={startSegment?.fD?.aI?.code}
-                  className="md:size-16 lg-custom:size-12 rounded-md mr-8 lg-custom:mr-4 md:flex hidden"
+                  className="md:size-16 lg-custom:size-12 rounded-md mr-8 lg-custom:mr-4 md:flex "
                 />
                 <p className="text-xs font-bold ">
                   {" "}

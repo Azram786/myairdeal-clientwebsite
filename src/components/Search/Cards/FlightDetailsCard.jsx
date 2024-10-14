@@ -176,7 +176,7 @@ const FlightDetailsCard = ({
           <div className="w-full bg-[#f0e1c0] ">
             <div className="text-lg font-bold bg-[#1B1D29] text-[#D7B56D] mb-4 pl-4 py-2 justify-between flex items-center">
               <div>
-                {data[0]?.da?.city} → {data[data.length - 1]?.aa?.city}{" "}
+                {data[0]?.da?.city} → {data[data.length - 1]?.aa?.city}
                 <span className="text-white text-sm">
                   On{" "}
                   {new Date(data[0].dt).toLocaleString("en-US", {
@@ -210,7 +210,7 @@ const FlightDetailsCard = ({
                       <div>
                         <div className="font-bold text-sm">
                           <div className="text-xs text-gray-500 line-clamp-1">
-                            {segment.da.city} → {segment.aa.city}{" "}
+                            {segment.da.city} → {segment.aa.city}
                             {/* {formatDateTime(segment.dt).split(",")[0]}
                           {getDayOfWeek(segment.dt)} */}
                           </div>
@@ -433,20 +433,22 @@ const FlightDetailsCard = ({
 
   return (
     <div className="border p-4 rounded-lg m-2 justify-between items-center  bg-white shadow-md  ">
-      
       <div className="flex   flex-col md:flex-row  justify-between  mb-2">
         <div className="flex flex-col w-full ">
           <div className="flex justify-around  gap-0 md:gap-3 w-full">
             <div className="md:flex-row  flex-col flex justify-center   items-center mb-4 md:mb-0">
               <div className="flex flex-col ">
-              <img
-                src={`${import.meta.env.VITE_SERVER_URL}uploads/AirlinesLogo/${
-                  startSegment?.fD?.aI?.code
-                }.png`}
-                alt={startSegment?.fD?.aI?.code}
-                className="md:size-12  rounded-md  mr-6 md:flex hidden mx-auto" 
-              />
-             <p className="text-xs font-bold "> {startSegment?.fD?.aI?.name}</p>
+                <img
+                  src={`${
+                    import.meta.env.VITE_SERVER_URL
+                  }uploads/AirlinesLogo/${startSegment?.fD?.aI?.code}.png`}
+                  alt={startSegment?.fD?.aI?.code}
+                  className="md:size-12  rounded-md  mr-6 md:flex mx-auto"
+                />
+                <p className="text-xs font-bold ">
+                  {" "}
+                  {startSegment?.fD?.aI?.name}
+                </p>
               </div>
               <div className="flex flex-col">
                 <div className="relative group text-base ">

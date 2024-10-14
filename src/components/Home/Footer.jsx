@@ -27,7 +27,7 @@ const Footer = () => {
             </p>
             <br />
             <p className="font-normal text-base md:text-sm text-white">
-              2nd Floor, Anjali Plaza, jayanagar,
+              Anjali Plaza, 1st Main Road, 6th Cross Road, NS Palya,
             </p>
             <p className="font-normal text-base md:text-sm text-white">
               Bengaluru, India-560076
