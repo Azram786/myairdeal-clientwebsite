@@ -26,6 +26,7 @@ const PaymentPage = ({
   const [bookingHoldStatus, setBookingHoldStatus] = useState(false);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const [isDomestic, setIsDomestic] = useState(data?.searchQuery?.isDomestic);
 
   useEffect(() => {
     console.log("ScrollToTop effect triggered");
@@ -77,18 +78,23 @@ const PaymentPage = ({
         },
       })
       .then((res) => {
-        console.log(res.data);
+        let value;
+        if (isDomestic) {
+          value = res.data.domesticValue;
+        } else {
+          value = res.data.internationalValue;
+        }
         if (res.data.flatPrice) {
-          setConvenienceFee(res.data.value);
-          saveCommission(res.data.value);
+          setConvenienceFee(value);
+          saveCommission(value);
         } else if (res.data.percentage) {
           if (res.data.totalFare) {
-            const markUpAmount = parseFloat((totalFare / 100) * res.data.value);
+            const markUpAmount = parseFloat((totalFare / 100) * value);
             setConvenienceFee(markUpAmount);
             saveCommission(markUpAmount);
           } else if (res.data.baseFare) {
             const bF = data?.totalPriceInfo?.totalFareDetail.fC?.BF;
-            const markUpAmount = parseFloat((bF / 100) * res.data.value);
+            const markUpAmount = parseFloat((bF / 100) * value);
             setConvenienceFee(markUpAmount);
             saveCommission(markUpAmount);
           }

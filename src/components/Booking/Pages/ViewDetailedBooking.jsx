@@ -172,10 +172,16 @@ const ViewDetailedBooking = () => {
                       <div>Base Fare</div>
                       <div className="flex ">
                         ₹{" "}
-                        {
-                          singleBookingData?.itemInfos.AIR.totalPriceInfo
-                            .totalFareDetail.fC.BF
-                        }
+                        {singleBookingData?.itemInfos.AIR.totalPriceInfo
+                          .totalFareDetail.fC.BF +
+                          Math.abs(
+                            data?.payment?.amount -
+                              (singleBookingData?.itemInfos.AIR.totalPriceInfo
+                                .totalFareDetail.fC?.AAR ??
+                                singleBookingData?.itemInfos.AIR.totalPriceInfo
+                                  .totalFareDetail.fC.TF)
+                          ) +
+                          (data?.promo?.value || 0)}
                       </div>
                     </div>
                     <div className="flex justify-between">
@@ -257,7 +263,7 @@ const ViewDetailedBooking = () => {
                       </div>
                     )}
                   </div>
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <div>Convenience Fees</div>
                     <div className="flex ">
                       ₹
@@ -269,7 +275,7 @@ const ViewDetailedBooking = () => {
                               .totalFareDetail.fC.TF)
                       ) + (data?.promo?.value || 0)}
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex justify-between pt-3 border-t">
                     <div>Total</div>
                     <div className="flex">₹ {data?.payment?.amount}</div>
