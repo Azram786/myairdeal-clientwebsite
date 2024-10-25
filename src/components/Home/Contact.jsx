@@ -200,7 +200,7 @@ const Contact = () => {
                   <div className="flex flex-col text-sm">
                     <span className="text-white font-semibold">Address</span>
                     <span className="text-white">
-                      2nd Floor, Anjali Plaza, jayanagar,Bengaluru, India-
+                      2nd Floor,Anjali Plaza,BTM Layout,Bengaluru, India-
                       560076
                     </span>
                     <span className="text-white mt-5">
