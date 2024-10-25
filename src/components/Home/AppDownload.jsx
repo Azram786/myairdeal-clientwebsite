@@ -1,9 +1,10 @@
-
-import "./ResentSearch.css"
+import "./ResentSearch.css";
 import React from "react";
 import mobile from "../../assets/home/mobile/Phonebg.png";
+import { useNavigate } from "react-router-dom";
 
 const DownloadApp = () => {
+  const navigate = useNavigate();
   return (
     <div className="px-3 md:px-16 mx-auto p-6 font-poppins overflow-hidden relative m-5  ">
       {/* <h2 className="text-base font-sans text-gray-500 font-bold">Download</h2> */}
@@ -12,18 +13,27 @@ const DownloadApp = () => {
         <div className="relative w-full  flex   rounded-lg ">
           <section className=" text-white md:w-3/4">
             <h2 className="text-base md:text-2xl font-bold mb-4">
-              We Are Available On PlayStore & AppStore!
+              We Are Available On PlayStore
             </h2>
             <p className="mb-6">
               Available for Android and iOS. It's Free! Download Now!
             </p>
             <div className="flex justify-around md:justify-start gap-4">
-              <button className="text-sm md:text-base bg-[#D7B56D] px-4 text-black border-none py-2  md:px-6 rounded-full">
+              <button
+                className="text-sm md:text-base bg-[#D7B56D] px-4 text-black border-none py-2  md:px-6 rounded-full"
+                onClick={() => {
+                  window.open(
+                    "https://play.google.com/store/apps/details?id=com.myairdealsapp.mobile",
+                    "_blank",
+                    "noopener,noreferrer"
+                  );
+                }}
+              >
                 Play Store
               </button>
-              <button className="text-sm md:text-base bg-white text-[#0f1e35] py-2 px-4 md:px-6 rounded-full">
+              {/* <button className="text-sm md:text-base bg-white text-[#0f1e35] py-2 px-4 md:px-6 rounded-full">
                 App Store
-              </button>
+              </button> */}
             </div>
           </section>
           <div className="absolute md:flex hidden right-1 lg-custom:right-16  lg:right-20  -top-32  ">

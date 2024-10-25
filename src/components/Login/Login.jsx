@@ -233,6 +233,18 @@ const Login = ({ fromBooking }) => {
                 </h2>
               </div>
             )}
+            <div
+              className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer font-medium transition-colors duration-200 ease-in-out w-max"
+              onClick={() => {
+                window.open(
+                  "https://b2b.myairdeal.com/register",
+                  "_blank",
+                  "noopener,noreferrer"
+                );
+              }}
+            >
+              Become a Partner
+            </div>
           </motion.div>
         </div>
         <div className="hidden  md:w-[50%]  md:flex  pl-12 justify-center md:h-full">
